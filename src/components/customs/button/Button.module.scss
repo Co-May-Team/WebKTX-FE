@@ -1,0 +1,9 @@
+@import '../../styles/index.scss';
+
+.button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font: 500 1.3rem $main-font;
+}
