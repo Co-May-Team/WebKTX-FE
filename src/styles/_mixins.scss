@@ -14,7 +14,7 @@
 }
 
 @mixin small-desktop {
-  @media only screen and (max-width: 132rem) {
+  @media only screen and (max-width: $small-desktop-width) {
     @content;
   }
 }
@@ -45,7 +45,7 @@
 
 // block-center
 @mixin block-center {
-  display: block;
+  // display: block;
   margin: 0 auto;
 }
 

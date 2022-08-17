@@ -1,10 +1,13 @@
 // breakpoints
 // 1rem = 10px (see more --> _base.scss)
-$mobie-width: 76.8rem;
-$tablet-width: 102.4rem;
-$desktop-width: 120rem;
+$mobie-width: 768px;
+$tablet-width: 1024px;
+$desktop-width: 1200px;
+$small-desktop-width: 1302px;
 // others
 $border-radius: 0.4rem;
+$header-height: 8rem;
+$header-shrink-height: 6rem;
 
 // Color
 $primary-color: #008000;
@@ -26,6 +29,10 @@ $green-color-8: rgba($primary-color, 0.8);
 $box-shadow: 0 0 10px rgb(0 0 0 / 10%);
 $primary-line-color: $primary-color;
 $second-line-color: #dddddd;
+
+// transision
+$linear-tss: all linear 0.3s;
+$ease-in-out-tss: all ease-in-out 0.3s;
 
 // font-family
 $main-font: 'Montserrat';
