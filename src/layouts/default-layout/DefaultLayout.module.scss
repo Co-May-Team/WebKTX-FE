@@ -1,0 +1,14 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.default {
+  padding-top: $header-height;
+  width: 100%;
+  min-height: 200vh;
+}
+
+@include mobile {
+  .default {
+    padding-top: $header-shrink-height;
+  }
+}
