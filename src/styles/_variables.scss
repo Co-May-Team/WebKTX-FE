@@ -1,3 +1,42 @@
-// entry-point
-$mobie-width: 600px;
+// breakpoints
+// 1rem = 10px (see more --> _base.scss)
+$mobie-width: 768px;
 $tablet-width: 1024px;
+$desktop-width: 1200px;
+$small-desktop-width: 1302px;
+// others
+$border-radius: 0.4rem;
+$header-height: 8rem;
+$header-shrink-height: 6rem;
+
+// Color
+$primary-color: #008000;
+$black-color: #000;
+$white-color: #fff;
+$red-color: #ff0000;
+$blue-color: #0000ff;
+$green-light-color: #72bf44;
+$gray-bold-color: #333333;
+$gray-regular-color: #7d7d7d;
+$gray-thin-color: #bbbbbb;
+$white-color-2: #f2f2f2;
+$white-color-5: #f5f5f5;
+$white-color-8: #f8f8f8;
+$green-color-5: rgba($primary-color, 0.5);
+$green-color-6: rgba($primary-color, 0.6);
+$green-color-7: rgba($primary-color, 0.7);
+$green-color-8: rgba($primary-color, 0.8);
+$box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+$primary-line-color: $primary-color;
+$second-line-color: #dddddd;
+
+// transision
+$linear-tss: all linear 0.3s;
+$ease-in-out-tss: all ease-in-out 0.3s;
+
+// font-family
+$main-font: 'Montserrat';
+
+// grid
+$column: column;
+$row: row;

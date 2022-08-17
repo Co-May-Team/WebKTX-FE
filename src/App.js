@@ -1,38 +1,16 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { AuthRoutes, DefaultRoutes, SystemsRoutes } from '~/routes';
+import useScrollToTop from './hooks/useScrollToTop';
 
-import { MainLayout, SystemLayout } from '~/layouts';
-import { publicRoutes, privateRoutes } from '~/router';
-
-function App() {
-  const renderRoutes = (layout, routes) => {
-    return routes?.map((route) => {
-      const Layout = layout;
-      const Page = route.page;
-      const path = route.path;
-      return (
-        <Route
-          path={path}
-          element={
-            <Layout>
-              <Page />
-            </Layout>
-          }
-        />
-      );
-    });
-  };
+export default function App() {
+  useScrollToTop();
   return (
-    <Router>
-      <Routes>
-        {/* Render public routes */}
-        {renderRoutes(MainLayout, publicRoutes)}
-        {/* Render private routes */}
-        {renderRoutes(SystemLayout, privateRoutes)}
-        {/* Catch another routes */}
-        {/* NotFound Page */}
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/auth/*" element={<AuthRoutes />} />
+      <Route path="/system/*" element={<SystemsRoutes />} />
+      <Route path="/404" element={<div>NotFound</div>} />
+      <Route path="/*" element={<DefaultRoutes />} />
+    </Routes>
   );
 }
-
-export default App;

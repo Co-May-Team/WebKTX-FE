@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-
+import 'bootstrap/dist/css/bootstrap.css';
 import '~/styles/index.scss';
 
-function GlobalStyles({ children }) {
+export default function GlobalStyles({ children }) {
   return children;
 }
-
-export default GlobalStyles;
 
 GlobalStyles.propTypes = {
   children: PropTypes.node.isRequired,
