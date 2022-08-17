@@ -1,0 +1,5 @@
+@import '/src/styles/mixins';
+
+.container {
+  @include grid(row, 2, 1fr);
+}
