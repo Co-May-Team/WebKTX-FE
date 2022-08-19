@@ -1,19 +1,21 @@
-import classnames from 'classnames/bind';
-
+import { NavLink } from 'react-router-dom';
+import { LogoIcon } from '~/components/icons';
+import { bindClassNames, path } from '~/utils';
 import styles from './Logo.module.scss';
-import { LogoIcon } from '../icons';
 
-const cx = classnames.bind(styles);
+const cx = bindClassNames(styles);
 
 function Logo() {
   return (
-    <div className={cx('logo')}>
-      <LogoIcon />
+    <NavLink to={path.HOME} className={cx('logo')}>
+      {/* LogoIcon */}
+      <LogoIcon className={cx('logo-icon')} />
+      {/* Logo name */}
       <div className={cx('logo-name')}>
         <span>KÝ TÚC XÁ</span>
-        <span>CỎ MAY</span>
+        <span>Cỏ May</span>
       </div>
-    </div>
+    </NavLink>
   );
 }
 

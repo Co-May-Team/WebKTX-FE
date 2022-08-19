@@ -7,13 +7,14 @@ import {
   Notifications,
 } from '~/containers/defaults';
 import { DefaultLayout } from '~/layouts';
+import { path } from '~/utils';
 
 const defaultRoutes = [
-  { id: Math.random(), Container: Home, path: '/' },
-  { id: Math.random(), Container: Notifications, path: '/notifications' },
-  { id: Math.random(), Container: Introduces, path: '/introduces' },
-  { id: Math.random(), Container: News, path: '/news' },
-  { id: Math.random(), Container: FormsDownload, path: '/form-download' },
+  { id: Math.random(), Container: Home, path: path.HOME },
+  { id: Math.random(), Container: Notifications, path: path.NOTIFICATION },
+  { id: Math.random(), Container: Introduces, path: path.INTRODUCE },
+  { id: Math.random(), Container: News, path: path.NEWS },
+  { id: Math.random(), Container: FormsDownload, path: path.FORMS_DOWNLOAD },
   {
     id: Math.random(),
     Container: Navigate,

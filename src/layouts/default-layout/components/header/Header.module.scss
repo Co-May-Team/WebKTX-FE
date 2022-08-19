@@ -7,11 +7,12 @@
 
 .container {
   @include flex-center();
+  position: fixed;
+  z-index: 11;
   width: 100%;
   min-height: $header-height;
   background-color: $white-color;
   box-shadow: $box-shadow;
-  position: fixed;
   transition: $ease-in-out-tss;
   &.shrink {
     @include shrink();
@@ -22,36 +23,8 @@
   @include flex(center, space-between);
 }
 
-// Navbar
-.main-nav {
-  @include flex(center, center, 3rem);
-}
-
-.nav-item {
-  position: relative;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: 1.3rem;
-  &.active {
-    color: $primary-color;
-  }
-  &::after {
-    position: absolute;
-    left: 0;
-    bottom: -0.4rem;
-    content: '';
-    height: 0.2rem;
-    width: 0;
-    transition: $ease-in-out-tss;
-  }
-  &:hover::after {
-    width: 100%;
-    background-color: $primary-color;
-  }
-}
-
-.bars-icon,
-.close {
+// Bars icon
+.bars-icon {
   display: none;
   font-size: 2rem;
 }
@@ -61,37 +34,8 @@
   .shrink {
     @include shrink();
   }
-  // Navbar
-  .navbar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 70%;
-    padding-top: 3rem;
-    background-color: #f5f5f5;
-    transform: translate(100%);
-    opacity: 0;
-    transition: $linear-tss;
-    border-top-left-radius: $border-radius;
-    border-bottom-left-radius: $border-radius;
-    &.visible {
-      transform: translate(0);
-      opacity: 1;
-    }
-  }
-  .main-nav {
-    flex-direction: column;
-    gap: 2rem;
-  }
 
-  .bars-icon,
-  .close {
+  .bars-icon {
     @include flex-center();
-  }
-  .close {
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
   }
 }
