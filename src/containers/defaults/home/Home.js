@@ -1,11 +1,40 @@
 import React from 'react';
-import { Swiper } from '~/components/customs';
+import { bindClassNames, path } from '~/utils';
+import styles from './Home.module.scss';
+import {
+  HeroSection,
+  ImageSection,
+  IntroSection,
+  NotificationSection,
+  VideoSection,
+} from './sections';
 
+const cx = bindClassNames(styles);
 export default function Home() {
   return (
-    <div style={{ width: 1200, margin: '0 auto' }}>
-      {/* Slider */}
-      <Swiper />
+    <div className={cx('home-container')}>
+      {/* Hero section */}
+      <HeroSection />
+
+      {/* Intro */}
+      <div className={cx('space-between')}>
+        <IntroSection />
+      </div>
+
+      {/* Notification */}
+      <div className={cx('space-between')}>
+        <NotificationSection />
+      </div>
+
+      {/* image */}
+      <div className={cx('space-between')}>
+        <ImageSection />
+      </div>
+
+      {/* Videos */}
+      <div className={cx('space-between')}>
+        <VideoSection />
+      </div>
     </div>
   );
 }

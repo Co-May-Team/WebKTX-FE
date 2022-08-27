@@ -11,6 +11,7 @@
   z-index: 11;
   width: 100%;
   min-height: $header-height;
+  border-top: 0.4rem solid $green-color-6;
   background-color: $white-color;
   box-shadow: $box-shadow;
   transition: $ease-in-out-tss;
@@ -37,5 +38,9 @@
 
   .bars-icon {
     @include flex-center();
+    transition: $linear-tss;
+    &:hover {
+      color: $gray-regular-color;
+    }
   }
 }

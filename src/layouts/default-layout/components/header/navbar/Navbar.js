@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { VscChromeClose } from 'react-icons/vsc';
+import { MdCloseFullscreen } from 'react-icons/md';
 
 import { Button } from '~/components/customs';
 import { useClickOutside } from '~/hooks';
@@ -18,6 +18,7 @@ const navList = [
 
 function Navbar({ isShow, setShow }) {
   const navbarRef = useRef();
+  const overlayRef = useRef();
 
   const renderNavList = () => {
     return navList.map((item) => (
@@ -38,18 +39,30 @@ function Navbar({ isShow, setShow }) {
     const className = cx('visible');
     if (isShow) {
       handleClassName.add(navbarRef, className);
+      handleClassName.add(overlayRef, className);
+      Object.assign(document.body.style, {
+        overflow: 'hidden',
+      });
     } else {
       handleClassName.remove(navbarRef, className);
+      handleClassName.remove(overlayRef, className);
+      Object.assign(document.body.style, {
+        overflowY: 'scroll',
+      });
     }
   }, [isShow]);
 
   return (
-    <div className={cx('navbar')} ref={navbarRef}>
-      <nav className={cx('main-nav')}>{renderNavList()}</nav>
-      <Button className={cx('close')} onClick={() => setShow(false)}>
-        <VscChromeClose />
-      </Button>
-    </div>
+    <>
+      <div className={cx('navbar')} ref={navbarRef}>
+        <nav className={cx('main-nav')}>{renderNavList()}</nav>
+        <Button className={cx('close')} onClick={() => setShow(false)}>
+          {/* <VscChromeClose /> */}
+          <MdCloseFullscreen />
+        </Button>
+      </div>
+      <div className={cx('overlay')} ref={overlayRef}></div>
+    </>
   );
 }
 

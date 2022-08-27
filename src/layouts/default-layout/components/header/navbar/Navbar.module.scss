@@ -34,21 +34,30 @@
   font-size: 2rem;
 }
 
+// overlay
+.overlay {
+  display: none;
+}
+
 @include mobile {
-  // Navbar
-  .navbar {
+  .navbar,
+  .overlay {
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
-    width: 70%;
-    padding-top: 3rem;
-    background-color: rgba($white-color-5, 0.8);
-    transform: translate(100%);
     opacity: 0;
     transition: $linear-tss;
+  }
+  // Navbar
+  .navbar {
+    width: 70%;
+    padding-top: 4rem;
+    z-index: 20;
     border-top-left-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
+    background-color: $white-color;
+    transform: translateX(100%);
     &.visible {
       transform: translate(0);
       opacity: 1;
@@ -58,11 +67,25 @@
     flex-direction: column;
     gap: 2rem;
   }
-
   .close {
     @include flex-center();
     position: absolute;
     top: 2rem;
     left: 2rem;
+    transition: $linear-tss;
+    &:hover {
+      color: $gray-regular-color;
+    }
+  }
+  // overlay
+  .overlay {
+    display: block;
+    left: 0;
+    visibility: hidden;
+    background-color: rgba($black-color, 0.3);
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }

@@ -13,7 +13,7 @@ import styles from './Swiper.module.scss';
 const cx = bindClassNames(styles);
 
 export default function Swiper(props) {
-  const { className } = props;
+  const { className, data, children } = props;
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
 
@@ -21,17 +21,28 @@ export default function Swiper(props) {
     return `<span class="${_className} ${cx('dashed')}"></span>`;
   };
 
+  const renderSwiperSlide = (data) => {
+    if (!data) return;
+    return data?.map((item) => (
+      <SwiperSlide key={item.id}>
+        <img src={item.url} alt={item.alt} className={cx('image-slide')} />
+      </SwiperSlide>
+    ));
+  };
+
+  const toogleNavigation = (isHidden, navRef, className) => {
+    if (!navRef.current) return;
+    isHidden
+      ? handleClassName.add(navRef, className)
+      : handleClassName.remove(navRef, className);
+  };
+
   const handleSlideChangle = (swiper) => {
     const { isBeginning, isEnd } = swiper;
     const className = cx('hidden');
 
-    isBeginning
-      ? handleClassName.add(navigationPrevRef, className)
-      : handleClassName.remove(navigationPrevRef, className);
-
-    isEnd
-      ? handleClassName.add(navigationNextRef, className)
-      : handleClassName.remove(navigationNextRef, className);
+    toogleNavigation(isBeginning, navigationPrevRef, className);
+    toogleNavigation(isEnd, navigationNextRef, className);
   };
 
   useEffect(() => {
@@ -59,16 +70,9 @@ export default function Swiper(props) {
       modules={[Pagination, Navigation]}
       className={cx('default', { [className]: className })}
     >
-      <SwiperSlide>Slide 1</SwiperSlide>
-      <SwiperSlide>Slide 2</SwiperSlide>
-      <SwiperSlide>Slide 3</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
-      <SwiperSlide>Slide 4</SwiperSlide>
+      {/* Render image slide */}
+      {data && renderSwiperSlide(data)}
+      {children}
       <div ref={navigationPrevRef} className={cx('nav', 'prev')}>
         <FiArrowLeft />
       </div>
@@ -80,6 +84,8 @@ export default function Swiper(props) {
 }
 
 Swiper.propTypes = {
+  breakpoints: PropTypes.object,
+  // data: PropTypes.array.isRequired,
   className: PropTypes.string,
   spaceBetween: PropTypes.number,
   slidesPerView: PropTypes.number,
