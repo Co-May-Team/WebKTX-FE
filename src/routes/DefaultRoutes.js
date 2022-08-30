@@ -5,6 +5,7 @@ import {
   Introduces,
   News,
   Notifications,
+  Post,
 } from '~/containers/defaults';
 import { DefaultLayout } from '~/layouts';
 import { path } from '~/utils';
@@ -15,6 +16,7 @@ const defaultRoutes = [
   { id: Math.random(), Container: Introduces, path: path.INTRODUCE },
   { id: Math.random(), Container: News, path: path.NEWS },
   { id: Math.random(), Container: FormsDownload, path: path.FORMS_DOWNLOAD },
+  { id: Math.random(), Container: Post, path: path.POST },
   {
     id: Math.random(),
     Container: Navigate,
@@ -28,6 +30,7 @@ export default function DefaultRoutes() {
   const renderRoutes = () => {
     return defaultRoutes.map((item) => {
       const Container = item.Container;
+
       return (
         <Route
           key={item.id}

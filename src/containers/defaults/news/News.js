@@ -1,5 +1,6 @@
 import React from 'react';
+import { NotificationSection } from '../home/sections';
 
 export default function News() {
-  return <div>News</div>;
+  return <NotificationSection />;
 }
