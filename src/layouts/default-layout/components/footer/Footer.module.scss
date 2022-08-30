@@ -1,5 +1,6 @@
+@import '/src/styles/variables';
 @import '/src/styles/mixins';
 
 .container {
-  @include grid(row, 2, 1fr);
+  @include flex-center();
 }

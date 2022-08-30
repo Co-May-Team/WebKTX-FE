@@ -1,0 +1,61 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.default {
+  position: relative;
+}
+
+.dashed {
+  width: 2rem;
+  height: 0.5rem;
+  border-radius: $border-radius;
+  background-color: $white-color;
+}
+
+.nav {
+  @include flex-center();
+  position: absolute;
+  z-index: 100;
+  top: 40%;
+  min-width: 3rem;
+  min-height: 3rem;
+  background-color: $white-color-5;
+  color: $gray-bold-color;
+  cursor: pointer;
+  opacity: 1;
+  transition: $linear-tss;
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+    cursor: auto;
+  }
+}
+
+.image-slide {
+  width: 100%;
+  max-height: 40rem;
+  object-fit: cover;
+}
+
+.prev {
+  left: 2rem;
+}
+
+.next {
+  right: 2rem;
+}
+
+@include tablet {
+  .image-slide {
+    max-height: 30rem;
+  }
+}
+
+@include mobile {
+  .image-slide {
+    min-height: 35rem;
+  }
+  .nav {
+    display: none;
+  }
+}
