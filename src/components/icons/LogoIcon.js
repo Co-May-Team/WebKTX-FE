@@ -1,14 +1,25 @@
-function LogoIcon({ width = 50, height = 50 }) {
+import PropTypes from 'prop-types';
+import { bindClassNames } from '~/utils';
+
+const cx = bindClassNames();
+
+function LogoIcon({ width = 45, height = 45, className }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={50}
-      height={50}
+      width={width}
+      height={height}
       viewBox="0 0 50 50"
       fill="none"
+      className={cx({ [className]: className })}
     >
-      <rect width={50} height={50} fill="url(#pattern0)" />
+      <rect
+        width={width}
+        height={height}
+        fill="url(#pattern0)"
+        style={{ width: '100%', height: '100%' }}
+      />
       <defs>
         <pattern
           id="pattern0"
@@ -30,3 +41,9 @@ function LogoIcon({ width = 50, height = 50 }) {
 }
 
 export default LogoIcon;
+
+LogoIcon.propTypes = {
+  with: PropTypes.number,
+  height: PropTypes.number,
+  className: PropTypes.string,
+};

@@ -1,0 +1,54 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.body {
+  @include flex(flex-start, center, 3rem);
+}
+
+.preview,
+.content {
+  width: 50%;
+}
+
+.preview {
+  border-radius: $border-radius;
+  max-height: 40rem;
+  object-fit: cover;
+}
+
+.small-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.demo {
+  @include text-justify();
+  text-indent: 3rem;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.detail-btn {
+  border: 1px solid $primary-color;
+  border-radius: $border-radius;
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem;
+}
+
+@include tablet {
+  .body {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .preview,
+  .content {
+    width: 100%;
+  }
+  .preview {
+    max-height: 30rem;
+  }
+}
+
+@include mobile {
+}

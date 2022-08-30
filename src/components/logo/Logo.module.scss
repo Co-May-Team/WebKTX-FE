@@ -1,24 +1,31 @@
-@import '../../styles/index.scss';
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
 
-$size: ($l, $m, $s, $xs);
-
+// Logo
 .logo {
-  font-weight: bold;
   @include flex(center, center);
-  .logo-name {
-    @include flex(flex-start, center);
-    flex-direction: column;
-    & > span:last-of-type {
-      color: #72bf44;
-    }
+}
+
+.logo-name {
+  @include flex-column();
+  font-weight: 700;
+  text-transform: uppercase;
+  & > span:last-of-type {
+    font-size: 1.5rem;
+    color: $green-light-color;
+    transition: $linear-tss;
+  }
+  & > span:last-of-type:hover {
+    color: $green-regular-color;
   }
 }
 
-// Responsive
-@each $var in $size {
-  @include respond($var) {
-    .logo {
-      font-size: 1.4rem;
-    }
+@include mobile {
+  .logo-icon {
+    width: 4rem;
+    height: 4rem;
+  }
+  .logo-name > span {
+    font-size: 1.4rem;
   }
 }
