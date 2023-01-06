@@ -2,45 +2,45 @@
 @import '/src/styles/mixins';
 
 @mixin shrink {
-  min-height: $header-shrink-height;
+    min-height: $header-shrink-height;
 }
 
 .container {
-  @include flex-center();
-  position: fixed;
-  z-index: 11;
-  width: 100%;
-  min-height: $header-height;
-  border-top: 0.4rem solid $green-color-6;
-  background-color: $white-color;
-  box-shadow: $box-shadow;
-  transition: $ease-in-out-tss;
-  &.shrink {
-    @include shrink();
-  }
+    @include flex-center();
+    position: fixed;
+    z-index: 11;
+    width: 100%;
+    min-height: $header-height;
+    border-top: 0.4rem solid $green-color-6;
+    background-color: $white-color;
+    box-shadow: $box-shadow;
+    transition: $ease-in-out-tss;
+    &.shrink {
+        @include shrink();
+    }
 }
 
 .wrapper {
-  @include flex(center, space-between);
+    @include flex(center, space-between);
 }
 
 // Bars icon
 .bars-icon {
-  display: none;
-  font-size: 2rem;
+    display: none;
+    font-size: 2rem;
 }
 
 @include mobile {
-  .container,
-  .shrink {
-    @include shrink();
-  }
-
-  .bars-icon {
-    @include flex-center();
-    transition: $linear-tss;
-    &:hover {
-      color: $gray-regular-color;
+    .container,
+    .shrink {
+        @include shrink();
     }
-  }
+
+    .bars-icon {
+        @include flex-center();
+        transition: $linear-tss;
+        &:hover {
+            color: $gray-regular-color;
+        }
+    }
 }

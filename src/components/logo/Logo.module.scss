@@ -3,29 +3,29 @@
 
 // Logo
 .logo {
-  @include flex(center, center);
+    @include flex(center, center);
 }
 
 .logo-name {
-  @include flex-column();
-  font-weight: 700;
-  text-transform: uppercase;
-  & > span:last-of-type {
-    font-size: 1.5rem;
-    color: $green-light-color;
-    transition: $linear-tss;
-  }
-  & > span:last-of-type:hover {
-    color: $green-regular-color;
-  }
+    @include flex-column();
+    font-weight: 700;
+    text-transform: uppercase;
+    & > span:last-of-type {
+        font-size: 1.5rem;
+        color: $green-light-color;
+        transition: $linear-tss;
+    }
+    & > span:last-of-type:hover {
+        color: $green-regular-color;
+    }
 }
 
 @include mobile {
-  .logo-icon {
-    width: 4rem;
-    height: 4rem;
-  }
-  .logo-name > span {
-    font-size: 1.4rem;
-  }
+    .logo-icon {
+        width: 4rem;
+        height: 4rem;
+    }
+    .logo-name > span {
+        font-size: 1.4rem;
+    }
 }

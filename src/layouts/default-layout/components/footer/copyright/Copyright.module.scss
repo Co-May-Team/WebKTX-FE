@@ -3,26 +3,26 @@
 
 // copyright
 .copyright {
-  width: 100%;
-  min-height: 4rem;
-  background-color: #1f1e23;
+    width: 100%;
+    min-height: 4rem;
+    background-color: #1f1e23;
 }
 .wrapper,
 .content {
-  min-height: inherit;
+    min-height: inherit;
 }
 
 .content {
-  @include flex(center, center);
-  font-size: 1.5rem;
-  a {
-    margin: 0 0.5rem;
-  }
-  &,
-  a {
-    color: $gray-thin-color;
-  }
-  a:hover {
-    color: $gray-regular-color;
-  }
+    @include flex(center, center);
+    font-size: 1.5rem;
+    a {
+        margin: 0 0.5rem;
+    }
+    &,
+    a {
+        color: $gray-thin-color;
+    }
+    a:hover {
+        color: $gray-regular-color;
+    }
 }
