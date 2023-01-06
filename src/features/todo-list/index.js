@@ -1,2 +1,2 @@
-export { default as todoListReducer } from './todoListSlice';
-export * as actions from './todoListSlice';
+export { default as todoListReducer } from './todoListSlice'
+export * as actions from './todoListSlice'

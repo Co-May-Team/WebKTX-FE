@@ -1,10 +1,10 @@
 .default-label {
-  color: red;
+    color: red;
 }
 
 .default-input {
-  &:focus {
-    box-shadow: none !important;
-    font-size: 1.6rem;
-  }
+    &:focus {
+        box-shadow: none !important;
+        font-size: 1.6rem;
+    }
 }

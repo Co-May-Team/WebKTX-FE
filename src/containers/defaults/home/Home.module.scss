@@ -2,17 +2,17 @@
 @import '/src/styles/mixins';
 
 .space-between {
-  margin: 8rem 0;
+    margin: 8rem 0;
 }
 
 @include tablet {
-  .space-between {
-    margin: 6rem 0;
-  }
+    .space-between {
+        margin: 6rem 0;
+    }
 }
 
 @include mobile {
-  .space-between {
-    margin: 4rem 0;
-  }
+    .space-between {
+        margin: 4rem 0;
+    }
 }

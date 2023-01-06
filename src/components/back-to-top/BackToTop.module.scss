@@ -4,25 +4,25 @@
 $bottom: 2rem;
 
 .back-to-top {
-  @include flex-center();
-  padding: 1rem;
-  position: fixed;
-  right: 2rem;
-  bottom: $bottom;
-  font-size: 1.6rem;
-  border: 1px solid $green-color-5;
-  border-radius: $border-radius;
-  transition: $linear-tss;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(calc(100% + $bottom));
-  &:hover {
-    background-color: $green-color-8;
-    color: $white-color;
-  }
-  &.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+    @include flex-center();
+    padding: 1rem;
+    position: fixed;
+    right: 2rem;
+    bottom: $bottom;
+    font-size: 1.6rem;
+    border: 1px solid $green-color-5;
+    border-radius: $border-radius;
+    transition: $linear-tss;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(100% + $bottom));
+    &:hover {
+        background-color: $green-color-8;
+        color: $white-color;
+    }
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
 }
