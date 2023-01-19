@@ -1,5 +1,5 @@
 function System() {
-  return <div>System Page</div>;
+    return <div>System Page</div>
 }
 
-export default System;
+export default System
