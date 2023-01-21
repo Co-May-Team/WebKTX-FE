@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Posts from '~/containers/systems/posts/Posts'
-import System from '~/containers/systems/System'
-import { SystemLayout } from '~/layouts'
+import Posts from '~/containers/admin/posts/Posts'
+import Admin from '~/containers/admin/Admin'
+import { AdminLayout } from '~/layouts'
 import { path } from '~/utils'
 
-const systemsRoutes = [
+const adminRoutes = [
     {
         id: Math.random(),
         Container: Navigate,
@@ -14,7 +14,7 @@ const systemsRoutes = [
     },
     {
         id: Math.random(),
-        Container: System,
+        Container: Admin,
         path: path.HOME,
     },
     {
@@ -25,9 +25,9 @@ const systemsRoutes = [
 ]
 
 
-export default function SystemsRoutes() {
+export default function AdminRoutes() {
     const renderRoutes = () => {
-        return systemsRoutes.map(item => {
+        return adminRoutes.map(item => {
             const Container = item.Container
             return (
                 <Route
@@ -41,8 +41,8 @@ export default function SystemsRoutes() {
         })
     }
     return (
-        <SystemLayout>
+        <AdminLayout>
             <Routes>{renderRoutes()}</Routes>
-        </SystemLayout>
+        </AdminLayout>
     )
 }

@@ -8,7 +8,7 @@ import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
-export default function SystemLayout({ children }) {
+export default function AdminLayout({ children }) {
     const containerRef = useRef()
     useEventListener('scroll', () => {
         if (
@@ -36,6 +36,6 @@ export default function SystemLayout({ children }) {
     )
 }
 
-SystemLayout.propTypes = {
+AdminLayout.propTypes = {
     children: PropTypes.node.isRequired,
 }
