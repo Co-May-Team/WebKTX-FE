@@ -6,8 +6,8 @@ $desktop-width: 1200px;
 $small-desktop-width: 1302px;
 // others
 $border-radius: 0.4rem;
-$header-height: 8rem;
-$header-shrink-height: 6rem;
+$header-height: 7rem;
+$header-shrink-height: 7rem;
 
 // Color
 $primary-color: #008000;
@@ -41,3 +41,22 @@ $main-font: 'Montserrat';
 // grid
 $column: column;
 $row: row;
+
+// button
+$btn-color: $primary-color;
+$btn-color-hover: $white-color;
+$btn-bg-color: transparent;
+$btn-bg-color-hover: $green-color-8;
+$btn-color-active: $white-color;
+$btn-color-active-hover: $white-color-8;
+$btn-bg-color-active: $primary-color;
+$btn-bg-color-active-hover: $green-color-8;
+
+// Sidebar variables
+$sidebar-width: 300px;
+$sidebar-item-color: $black-color;
+$sidebar-item-bg-color: $white-color;
+$sidebar-item-bg-hover-color: $gray-thin-color;
+$sidebar-item-active-color: $white-color;
+$sidebar-item-active-bg-color: $green-color-8;
+$sidebar-item-active-bg-hover-color: $green-color-6;

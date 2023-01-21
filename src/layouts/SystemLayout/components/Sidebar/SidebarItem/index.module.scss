@@ -1,0 +1,150 @@
+@import '/src/styles/variables';
+
+.item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 10px;
+    gap: 15px;
+    width: 270px;
+    border-radius: 1rem;
+    margin: 0 auto;
+    cursor: pointer;
+    &:hover {
+        background: $sidebar-item-bg-hover-color;
+    }
+    svg {
+        width: 2rem;
+        height: 2rem;
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+        color: $sidebar-item-active-bg-color;
+    }
+    .label {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 1.5rem;
+        line-height: 2.2rem;
+        letter-spacing: 0.01em;
+        color: $sidebar-item-color;
+    }
+    &.active {
+        background: $sidebar-item-active-bg-color;
+        box-shadow: 0px 0px 1rem $sidebar-item-active-bg-color;
+        &:hover {
+            background: $green-color-7;
+        }
+        svg {
+            color: $sidebar-item-active-color !important;
+        }
+        .label {
+            color: $sidebar-item-active-color !important;
+        }
+    }
+}
+.group-item {
+    gap: 15px;
+    width: 270px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 1rem;
+    transition: color 0.4 ease-in-out, background-color 0.4 ease-in-out,
+        border-color 0.4 ease-in-out, box-shadow 0.4 ease-in-out,
+        border-radius 0.4 ease;
+    .parent-item {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+        width: 270px;
+        padding: 15px 10px;
+        border-radius: 1rem;
+        cursor: pointer;
+        &:hover {
+            background: $sidebar-item-bg-hover-color;
+        }
+        &::after {
+            content: '';
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+            position: absolute;
+            right: 2rem;
+            background: url('../../../../../assets/icons/arrow-right.svg')
+                no-repeat;
+            background-position: center left;
+            transform: rotate(0deg);
+            transition: transform 0.2s ease-in-out;
+            &:hover {
+                background: $sidebar-item-bg-hover-color;
+            }
+        }
+        svg {
+            width: 2rem;
+            height: 2rem;
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+            color: $sidebar-item-active-bg-color;
+        }
+        .label {
+            font-style: normal;
+            font-weight: 500;
+            font-size: 1.5rem;
+            line-height: 2.2rem;
+            letter-spacing: 0.01em;
+            color: $sidebar-item-color;
+        }
+        &.active {
+            box-shadow: none;
+            transition: all 0.25s ease-out;
+            &::after {
+                transform: rotate(90deg);
+            }
+            svg {
+                color: $sidebar-item-active-bg-color !important;
+            }
+            .label {
+                color: $sidebar-item-color !important;
+            }
+            ~ .item {
+                display: flex;
+                width: 250px;
+                &:hover {
+                    background: $sidebar-item-bg-hover-color;
+                }
+                &.active {
+                    background: $sidebar-item-active-bg-color;
+                    box-shadow: 0px 0px 1rem $sidebar-item-active-bg-color;
+                    color: $white-color !important;
+                    &:hover {
+                        background: $green-color-7;
+                    }
+                    svg {
+                        color: $white-color !important;
+                    }
+                }
+            }
+        }
+        ~ .item {
+            display: none;
+            width: 250px;
+            margin: auto;
+            &:hover {
+                background: $sidebar-item-bg-hover-color;
+            }
+        }
+    }
+    &.active {
+        background-color: rgba(80, 60, 60, 0) !important;
+        box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px,
+            rgba(17, 17, 26, 0.05) 0px 8px 32px;
+        transition: color 0.4 ease-in-out, background-color 0.4 ease-in-out,
+            border-color 0.4 ease-in-out, box-shadow 0.4 ease-in-out,
+            border-radius 0.4 ease;
+    }
+}

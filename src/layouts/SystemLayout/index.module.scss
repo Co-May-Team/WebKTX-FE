@@ -1,0 +1,25 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.container {
+    background-color: $white-color;
+}
+
+.content {
+    gap: 30px;
+    width: calc(100% - 300px);
+    min-height: 200vh;
+    transition: $linear-tss;
+    padding-top: $header-height;
+    margin-left: 300px;
+    margin-right: 0;
+    &.padding-top {
+        padding-top: $header-shrink-height;
+    }
+}
+
+@include mobile {
+    .content {
+        padding-top: $header-shrink-height;
+    }
+}

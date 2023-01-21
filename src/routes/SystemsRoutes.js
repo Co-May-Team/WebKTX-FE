@@ -1,5 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import Posts from '~/containers/systems/posts/Posts'
+import System from '~/containers/systems/System'
 import { SystemLayout } from '~/layouts'
+import { path } from '~/utils'
 
 const systemsRoutes = [
     {
@@ -8,6 +11,16 @@ const systemsRoutes = [
         path: '*',
         replace: true,
         to: '/404',
+    },
+    {
+        id: Math.random(),
+        Container: System,
+        path: path.HOME,
+    },
+    {
+        id: Math.random(),
+        Container: Posts,
+        path: path.POSTS,
     },
 ]
 
