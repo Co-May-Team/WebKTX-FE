@@ -1,11 +1,10 @@
-import React from 'react'
 // import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom'
+import { imageUrl } from '~/assets/images'
+import { Button } from '~/components/customs'
 import { bindClassNames, path } from '~/utils'
 import DefaultSection from '../default-section/DefaultSection'
 import styles from './IntroSection.module.scss'
-import { imageUrl } from '~/assets/images'
-import { NavLink } from 'react-router-dom'
-import { Button } from '~/components/customs'
 
 const cx = bindClassNames(styles)
 

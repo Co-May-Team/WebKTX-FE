@@ -4,7 +4,7 @@ const initialState = {
     todos: [],
 }
 
-const makeTodo = title => ({
+const makeTodo = (title) => ({
     id: Math.random(),
     title,
     completed: false,

@@ -1,8 +1,7 @@
-
 import { Wrapper } from '~/components/customs'
 import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
 import Account from './Account'
+import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 

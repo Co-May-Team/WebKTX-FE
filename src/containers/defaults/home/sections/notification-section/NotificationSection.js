@@ -1,10 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { bindClassNames, path } from '~/utils'
-import DefaultSection from '../default-section/DefaultSection'
-import styles from './NotificationSection.module.scss'
-import { imageUrl } from '~/assets/images'
-import { Button } from '~/components/customs'
+import { BsCalendar4 } from 'react-icons/bs'
 import {
     Card,
     CardBody,
@@ -13,13 +7,17 @@ import {
     CardText,
     CardTitle,
 } from 'reactstrap'
-import { BsCalendar4 } from 'react-icons/bs'
+import { imageUrl } from '~/assets/images'
+import { Button } from '~/components/customs'
+import { bindClassNames } from '~/utils'
+import DefaultSection from '../default-section/DefaultSection'
+import styles from './NotificationSection.module.scss'
 
 const cx = bindClassNames(styles)
 
 export default function NotificationSection(props) {
     const renderCardList = () => {
-        return [1, 2, 3].map(item => (
+        return [1, 2, 3].map((item) => (
             <Card key={item} className={cx('card-item')}>
                 <CardImg src={imageUrl} alt="" className={cx('card-img')} />
                 <CardBody className={cx('card-body')}>

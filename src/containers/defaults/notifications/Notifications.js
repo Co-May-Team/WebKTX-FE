@@ -1,4 +1,3 @@
-import React from 'react'
 import { bindClassNames } from '~/utils'
 import { NotificationSection } from '../home/sections'
 import styles from './Notifications.module.scss'

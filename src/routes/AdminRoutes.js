@@ -1,6 +1,6 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Posts from '~/containers/admin/posts/Posts'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Admin from '~/containers/admin/Admin'
+import Posts from '~/containers/admin/posts/Posts'
 import { AdminLayout } from '~/layouts'
 import { path } from '~/utils'
 
@@ -24,10 +24,9 @@ const adminRoutes = [
     },
 ]
 
-
 export default function AdminRoutes() {
     const renderRoutes = () => {
-        return adminRoutes.map(item => {
+        return adminRoutes.map((item) => {
             const Container = item.Container
             return (
                 <Route

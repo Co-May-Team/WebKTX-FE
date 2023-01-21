@@ -1,8 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { bindClassNames, handleClassName } from '~/utils'
-import styles from './index.module.scss'
 import defaultAvatar from '~/assets/images/dormitory.jpg'
+import { bindClassNames } from '~/utils'
+import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
@@ -11,9 +9,9 @@ function Account(props) {
         <div className={cx('container')}>
             <div className={cx('info')}>
                 <div className={cx('name')}>Admin</div>
-                <div className={cx('position')}>Ký túc xã Cỏ May</div>
+                <div className={cx('position')}>Ký túc xá Cỏ May</div>
             </div>
-            <img className={cx('avatar')} src={defaultAvatar} />
+            <img className={cx('avatar')} src={defaultAvatar} alt="avt" />
         </div>
     )
 }

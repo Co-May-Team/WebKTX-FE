@@ -1,9 +1,7 @@
-import { useRef } from 'react'
-import { NavLink } from 'react-router-dom'
 import Logo from '~/components/logo/Logo'
-import { bindClassNames, handleClassName } from '~/utils'
-import listSidebarItem from './listSidebarItem'
+import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
+import listSidebarItem from './listSidebarItem'
 import SidebarItem from './SidebarItem'
 
 const cx = bindClassNames(styles)
@@ -16,14 +14,16 @@ function Sidebar() {
                 <Logo />
             </div>
             <div className={cx('wrap-item')}>
-                {listSidebarItem.map(sidebarItem => (
+                {listSidebarItem.map((sidebarItem) => (
                     <SidebarItem {...sidebarItem} />
                 ))}
             </div>
             <div className={cx('copyright')}>
-                © <a className={cx('name')} href="/">
+                ©{' '}
+                <a className={cx('name')} href="/">
                     Co May Dormitory
-                </a> 2023
+                </a>{' '}
+                2023
             </div>
         </div>
     )

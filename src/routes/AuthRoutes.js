@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { Login, Register } from '~/containers/auth'
 import { EmptyLayout } from '~/layouts'
 
@@ -16,7 +16,7 @@ const authRoutes = [
 
 export default function AuthRoutes() {
     const renderRoutes = () => {
-        return authRoutes.map(item => {
+        return authRoutes.map((item) => {
             const Container = item.Container
             return (
                 <Route key={item.id} path={item.path} element={<Container />} />

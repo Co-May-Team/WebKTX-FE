@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button } from '~/components/customs'
 import { bindClassNames } from '~/utils'
 import styles from './Posts.module.scss'

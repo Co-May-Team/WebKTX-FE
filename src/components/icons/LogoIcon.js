@@ -12,7 +12,8 @@ function LogoIcon({ width = 45, height = 45, className }) {
             height={height}
             viewBox="0 0 50 50"
             fill="none"
-            className={cx({ [className]: className })}>
+            className={cx({ [className]: className })}
+        >
             <rect
                 width={width}
                 height={height}
@@ -24,7 +25,8 @@ function LogoIcon({ width = 45, height = 45, className }) {
                     id="pattern0"
                     patternContentUnits="objectBoundingBox"
                     width={1}
-                    height={1}>
+                    height={1}
+                >
                     <use
                         xlinkHref="#image0_66_151"
                         transform="scale(0.00390625)"

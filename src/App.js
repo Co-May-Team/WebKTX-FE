@@ -1,6 +1,5 @@
-import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { AuthRoutes, DefaultRoutes, AdminRoutes } from '~/routes'
+import { AdminRoutes, AuthRoutes, DefaultRoutes } from '~/routes'
 import useScrollToTop from './hooks/useScrollToTop'
 
 export default function App() {

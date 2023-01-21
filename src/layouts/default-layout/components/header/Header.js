@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
 import { BsLayoutTextSidebarReverse } from 'react-icons/bs'
 
+import { Button, Wrapper } from '~/components/customs'
+import Logo from '~/components/logo/Logo'
 import { useEventListener } from '~/hooks'
-import Navbar from './navbar/Navbar'
-import { Wrapper, Button } from '~/components/customs'
 import { bindClassNames, handleClassName } from '~/utils'
 import styles from './Header.module.scss'
-import Logo from '~/components/logo/Logo'
+import Navbar from './navbar/Navbar'
 
 const cx = bindClassNames(styles)
 
@@ -46,7 +46,8 @@ function Header() {
                 {!isShow && (
                     <Button
                         className={cx('bars-icon')}
-                        onClick={() => setShow(true)}>
+                        onClick={() => setShow(true)}
+                    >
                         {/* <FaBars /> */}
                         {/* <BsArrowBarLeft /> */}
                         {/* <BsFillBarChartFill /> */}

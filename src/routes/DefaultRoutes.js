@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import {
     FormsDownload,
     Home,
@@ -28,7 +28,7 @@ const defaultRoutes = [
 
 export default function DefaultRoutes() {
     const renderRoutes = () => {
-        return defaultRoutes.map(item => {
+        return defaultRoutes.map((item) => {
             const Container = item.Container
 
             return (

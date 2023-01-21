@@ -1,6 +1,5 @@
-import React from 'react'
 import { AiOutlineFileWord } from 'react-icons/ai'
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
+import { Pagination, PaginationItem } from 'reactstrap'
 import { Button } from '~/components/customs'
 import { bindClassNames } from '~/utils'
 import { DefaultSection } from '../home/sections'
@@ -10,7 +9,7 @@ const cx = bindClassNames(styles)
 
 export default function FormsDownload() {
     const renderFormList = () => {
-        return [...Array(10).keys()].map(item => (
+        return [...Array(10).keys()].map((item) => (
             <div className={cx('form-item')} key={item}>
                 <div className={cx('form-icon-wrapp')}>
                     <AiOutlineFileWord className={cx('form-icon')} />
@@ -33,7 +32,8 @@ export default function FormsDownload() {
                         <Pagination className={cx('pagination-list')}>
                             <PaginationItem
                                 active
-                                className={cx('pagination-item')}>
+                                className={cx('pagination-item')}
+                            >
                                 <Button className={cx('pagination-link')}>
                                     1
                                 </Button>

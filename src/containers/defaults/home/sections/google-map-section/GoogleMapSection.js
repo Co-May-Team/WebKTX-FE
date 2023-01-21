@@ -1,6 +1,6 @@
-import { Map, GoogleApiWrapper } from 'google-maps-react'
+import { GoogleApiWrapper, Map } from 'google-maps-react'
 
-const MapContainer = prop => {
+const MapContainer = (prop) => {
     const defaultProps = {
         center: {
             lat: 10.870462432503459,

@@ -7,14 +7,15 @@ const cx = bindClassNames(styles)
 
 export default function WidgetItem({ widgetItem }) {
     const renderLinks = () => {
-        return widgetItem.links.map(item => {
+        return widgetItem.links.map((item) => {
             const Component = item?.to ? NavLink : 'a'
             return (
                 <Component
                     to={item.to}
                     key={item.id}
                     href={item.href}
-                    target={item.href && '_blank'}>
+                    target={item.href && '_blank'}
+                >
                     {item.display}
                 </Component>
             )

@@ -1,4 +1,3 @@
-import React from 'react'
 import { imageUrl } from '~/assets/images'
 import { Button } from '~/components/customs'
 import { bindClassNames } from '~/utils'
@@ -34,7 +33,7 @@ export default function Introduces() {
                     NHIỆM VỤ, TỔ CHỨC NHÂN SỰ & CƠ SỞ VẬT CHẤT
                 </h3>
                 <div className={cx('info-list')}>
-                    {[...Array(3).keys()].map(item => (
+                    {[...Array(3).keys()].map((item) => (
                         <div className={cx('info-item')} key={item}>
                             <img
                                 src={imageUrl}
@@ -51,7 +50,7 @@ export default function Introduces() {
             <div className={cx('image')}>
                 <h3 className={cx('heading')}>HÌNH ẢNH KÝ TÚC XÁ CỎ MAY</h3>
                 <div className={cx('img-list')}>
-                    {[...Array(10).keys()].map(item => (
+                    {[...Array(10).keys()].map((item) => (
                         <div className={cx('img-item')} key={item}>
                             <img src={imageUrl} alt={item} />
                         </div>

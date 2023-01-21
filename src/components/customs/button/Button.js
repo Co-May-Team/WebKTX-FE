@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
 import classNames from 'classnames/bind'
+import PropTypes from 'prop-types'
 
-import styles from './Button.module.scss'
 import { forwardRef } from 'react'
+import styles from './Button.module.scss'
 
 const cx = classNames.bind(styles)
 
@@ -14,7 +14,8 @@ const Button = forwardRef(({ children, className, variant, onClick }, ref) => {
                 [className]: className,
                 [variant]: variant,
             })}
-            onClick={onClick}>
+            onClick={onClick}
+        >
             {children}
         </button>
     )

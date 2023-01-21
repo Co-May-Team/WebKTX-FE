@@ -1,4 +1,3 @@
-import React from 'react'
 import { SwiperSlide } from 'swiper/react'
 import { imageUrl } from '~/assets/images'
 import { Swiper } from '~/components/customs'
@@ -47,7 +46,7 @@ export default function ImageSection() {
     const renderImages = () => {
         return (
             <Swiper spaceBetween={20} breakpoints={breakpoints}>
-                {data.map(item => (
+                {data.map((item) => (
                     <SwiperSlide key={item?.id}>
                         <div className={cx('image-item')}>
                             <img src={item?.url} alt={item?.alt} />

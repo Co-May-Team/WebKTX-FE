@@ -1,5 +1,4 @@
-import React from 'react'
-import { Swiper, Wrapper } from '~/components/customs'
+import { Swiper } from '~/components/customs'
 import { bindClassNames } from '~/utils'
 import styles from './HeroSection.module.scss'
 

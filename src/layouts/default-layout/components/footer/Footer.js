@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind'
-import Widgets from './widgets/Widgets'
-import styles from './Footer.module.scss'
 import Copyright from './copyright/Copyright'
+import styles from './Footer.module.scss'
+import Widgets from './widgets/Widgets'
 
 const cx = classNames.bind(styles)
 

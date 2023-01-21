@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
-import { useState } from 'react'
 
 const cx = bindClassNames(styles)
 
@@ -13,14 +13,16 @@ function SidebarItem({ id, label, icon, to, children }) {
             {children && children.length > 0 ? (
                 <div
                     key={id}
-                    className={cx('group-item', { active: activeParent })}>
+                    className={cx('group-item', { active: activeParent })}
+                >
                     <div
                         className={cx('parent-item', { active: activeParent })}
-                        onClick={() => setActiveParent(!activeParent)}>
+                        onClick={() => setActiveParent(!activeParent)}
+                    >
                         {icon}
                         <div className={cx('label')}>{label}</div>
                     </div>
-                    {children.map(children => (
+                    {children.map((children) => (
                         <SidebarItem {...children} />
                     ))}
                 </div>
@@ -30,7 +32,8 @@ function SidebarItem({ id, label, icon, to, children }) {
                     className={({ isActive }) =>
                         isActive ? cx('item', 'active') : cx('item')
                     }
-                    end>
+                    end
+                >
                     {icon}
                     <div className={cx('label')}>{label}</div>
                 </NavLink>
