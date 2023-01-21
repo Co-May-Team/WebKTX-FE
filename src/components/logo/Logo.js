@@ -5,7 +5,7 @@ import styles from './Logo.module.scss'
 
 const cx = bindClassNames(styles)
 
-function Logo() {
+function Logo({ className }) {
     return (
         <NavLink to={path.HOME} className={cx('logo')}>
             {/* LogoIcon */}

@@ -4,6 +4,8 @@
 2. Turn on terminal and run command `yarn` --> install all depends package
 3. Next, run command `yarn start` to start project
 
+-   Before commit code, run `npm run beautiful` to format code
+
 ### Inside src folder
 
 1. apis --> Chứa các APIs để lấy dữ liêu
