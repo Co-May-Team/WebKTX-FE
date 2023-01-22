@@ -2,13 +2,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import authApi from '~/apis/authApi'
 import authSlice from './slice'
 
-export const { setStatus, logout } = authSlice.actions
+export const { setStatus, getUserInfo, logout } = authSlice.actions
 
-// export const getUserInfo = createAsyncThunk("auth/getUserInfo", async () => {
-//     const userId = JSON.parse(localStorage.getItem("userInfo")).id
-//     const response = await employeesApi.getEmployeeDetailById(userId)
-//     return response.data.data
-// })
 export const login = createAsyncThunk('auth/login', async (userInfo) => {
     const response = await authApi.login(userInfo)
     return response.data

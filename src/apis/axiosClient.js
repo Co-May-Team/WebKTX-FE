@@ -1,11 +1,9 @@
 import axios from 'axios'
+import queryString from 'query-string'
 import Swal from 'sweetalert2'
-
-const queryString = require('query-string')
-
 // Thiết lập cấu hình mặc định cho http request
 const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_BACKEND_URL,
+    baseURL: 'http://222.255.238.159:9090/',
     headers: {
         'content-type': 'application/json',
     },
@@ -13,7 +11,7 @@ const axiosClient = axios.create({
 })
 axiosClient.interceptors.request.use(async (config) => {
     // Xử lý token
-    // config.headers.Authorization = localStorage.getItem("accessToken")
+    config.headers.Authorization = localStorage.getItem('accessToken')
     return config
 })
 axiosClient.interceptors.request.use(
@@ -45,6 +43,7 @@ axiosClient.interceptors.response.use(
         return response
     },
     (error) => {
+        console.log(error)
         if (error.response.status === 401 || error.response.status === 403) {
             Swal.fire({
                 title: 'Cảnh báo đăng nhập',
@@ -54,7 +53,7 @@ axiosClient.interceptors.response.use(
             }).then(() => {
                 localStorage.removeItem('accessToken')
                 localStorage.removeItem('userInfo')
-                window.location.href = '/login'
+                window.location.href = '/auth/login'
             })
             // setTimeout(() => {
             //     localStorage.removeItem("accessToken")

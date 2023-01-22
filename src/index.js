@@ -7,16 +7,16 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import App from '~/App'
 import { GlobalStyles } from '~/components'
-import store from '~/store'
+import store from './store'
 
-const persistor = persistStore(store)
+const pStore = persistStore(store)
 
 function renderApp() {
     const root = ReactDOM.createRoot(document.getElementById('root'))
     root.render(
         <React.StrictMode>
-            <Provider store={persistor}>
-                <PersistGate loading={null} persistor={persistor}>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={pStore}>
                     <Router>
                         <GlobalStyles>
                             <App />

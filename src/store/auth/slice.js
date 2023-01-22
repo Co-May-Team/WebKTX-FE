@@ -27,6 +27,9 @@ const authSlice = createSlice({
         setStatus: (state, action) => {
             state.status = action.payload
         },
+        getUserInfo: (state, action) => {
+            return state.userInfo
+        },
         logout: (state, action) => {
             state.status = 'idle'
             state.userInfo = {}
