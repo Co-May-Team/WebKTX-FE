@@ -5,28 +5,30 @@ import styles from './InputField.module.scss'
 
 const cx = bindClassNames(styles)
 
-export default function InputField(props) {
-    const {
-        label,
-        formGroupClassName,
-        labelClassName,
-        inputClassName,
-        type,
-        formFeedbackClassName,
-        placeholder,
-    } = props
+export default function InputField({
+    label,
+    formGroupClassName,
+    labelClassName,
+    inputClassName,
+    type,
+    feedback,
+    formFeedbackClassName,
+    placeholder,
+    ...props
+}) {
     return (
         <FormGroup className={cx('form-group', formGroupClassName)}>
             <Label className={cx('label', labelClassName)}>
-                {label || 'Label'}
+                {label || 'Label mặc định'}
             </Label>
             <Input
                 className={cx('input', inputClassName)}
                 type={type || 'text'}
                 placeholder={placeholder}
+                {...props}
             />
             <FormFeedback className={cx(formFeedbackClassName)}>
-                Error
+                {feedback}
             </FormFeedback>
         </FormGroup>
     )
@@ -34,6 +36,7 @@ export default function InputField(props) {
 
 InputField.propTypes = {
     label: PropTypes.string.isRequired,
+    feedback: PropTypes.string,
     formFeedbackClassName: PropTypes.string,
     formGroupClassName: PropTypes.string,
     labelClassName: PropTypes.string,

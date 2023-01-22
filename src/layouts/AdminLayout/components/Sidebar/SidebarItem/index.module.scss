@@ -22,11 +22,6 @@
         color: $sidebar-item-active-bg-color;
     }
     .label {
-        font-style: normal;
-        font-weight: 500;
-        font-size: 1.5rem;
-        line-height: 2.2rem;
-        letter-spacing: 0.01em;
         color: $sidebar-item-color;
     }
     &.active {
@@ -92,11 +87,6 @@
             color: $sidebar-item-active-bg-color;
         }
         .label {
-            font-style: normal;
-            font-weight: 500;
-            font-size: 1.5rem;
-            line-height: 2.2rem;
-            letter-spacing: 0.01em;
             color: $sidebar-item-color;
         }
         &.active {

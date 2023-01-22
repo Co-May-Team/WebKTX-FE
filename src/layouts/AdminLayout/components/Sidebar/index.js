@@ -15,7 +15,7 @@ function Sidebar() {
             </div>
             <div className={cx('wrap-item')}>
                 {listSidebarItem.map((sidebarItem) => (
-                    <SidebarItem {...sidebarItem} />
+                    <SidebarItem key={sidebarItem.id} {...sidebarItem} />
                 ))}
             </div>
             <div className={cx('copyright')}>

@@ -23,7 +23,7 @@ function SidebarItem({ id, label, icon, to, children }) {
                         <div className={cx('label')}>{label}</div>
                     </div>
                     {children.map((children) => (
-                        <SidebarItem {...children} />
+                        <SidebarItem key={children.id} {...children} />
                     ))}
                 </div>
             ) : (
