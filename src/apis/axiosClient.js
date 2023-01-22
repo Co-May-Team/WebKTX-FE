@@ -1,13 +1,13 @@
-import axios from "axios"
-import Swal from "sweetalert2"
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
-const queryString = require("query-string")
+const queryString = require('query-string')
 
 // Thiết lập cấu hình mặc định cho http request
 const axiosClient = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_URL,
     headers: {
-        "content-type": "application/json"
+        'content-type': 'application/json',
     },
     paramsSerializer: (params) => queryString.stringify(params),
 })
@@ -28,15 +28,14 @@ axiosClient.interceptors.response.use(
     (response) => {
         if (response.status === 401 || response.status === 403) {
             Swal.fire({
-                title: "Cảnh báo đăng nhập",
-                text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại!",
-                icon: "warning"
+                title: 'Cảnh báo đăng nhập',
+                text: 'Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại!',
+                icon: 'warning',
+            }).then(() => {
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('userInfo')
+                window.location.href = '/login'
             })
-                .then(() => {
-                    localStorage.removeItem("accessToken")
-                    localStorage.removeItem("userInfo")
-                    window.location.href = "/login"
-                })
             // setTimeout(() => {
             //     localStorage.removeItem("accessToken")
             //     localStorage.removeItem("userInfo")
@@ -48,16 +47,15 @@ axiosClient.interceptors.response.use(
     (error) => {
         if (error.response.status === 401 || error.response.status === 403) {
             Swal.fire({
-                title: "Cảnh báo đăng nhập",
-                text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại!",
-                icon: "warning",
-                button: "OK"
+                title: 'Cảnh báo đăng nhập',
+                text: 'Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại!',
+                icon: 'warning',
+                button: 'OK',
+            }).then(() => {
+                localStorage.removeItem('accessToken')
+                localStorage.removeItem('userInfo')
+                window.location.href = '/login'
             })
-                .then(() => {
-                    localStorage.removeItem("accessToken")
-                    localStorage.removeItem("userInfo")
-                    window.location.href = "/login"
-                })
             // setTimeout(() => {
             //     localStorage.removeItem("accessToken")
             //     localStorage.removeItem("userInfo")

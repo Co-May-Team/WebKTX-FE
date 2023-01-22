@@ -1,6 +1,6 @@
-import axiosClient from "./axiosClient"
+import axiosClient from './axiosClient'
 
-const baseUrl =  "/api/auth"
+const baseUrl = '/api/auth'
 const authApi = {
     login: (userInfo) => {
         const requestUrl = `${baseUrl}/signin`
@@ -12,7 +12,7 @@ const authApi = {
     },
     forgotPassword: (body) => {
         const requestUrl = `${baseUrl}/forgot_password`
-        return axiosClient.post(requestUrl,body)
+        return axiosClient.post(requestUrl, body)
     },
     checkToken: (token) => {
         const requestUrl = `${baseUrl}/reset_password?token=${token}`
@@ -21,7 +21,7 @@ const authApi = {
     resetPassword: (body) => {
         const requestUrl = `${baseUrl}/reset_password`
         return axiosClient.post(requestUrl, body)
-    }
+    },
 }
 
 export default authApi

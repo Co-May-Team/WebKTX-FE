@@ -1,10 +1,10 @@
-import axiosClient from "./axiosClient"
+import axiosClient from './axiosClient'
 
-const baseUrl = "/posts"
+const baseUrl = '/posts'
 const postsApi = {
     getAll: (filtersParams) => {
         const requestUrl = `${baseUrl}`
-        return axiosClient.get(requestUrl, {params:{...filtersParams}})
+        return axiosClient.get(requestUrl, { params: { ...filtersParams } })
     },
     get: (postId) => {
         const requestUrl = `${baseUrl}/${postId}`
@@ -26,10 +26,10 @@ const postsApi = {
         const requestUrl = `${baseUrl}/${postId}/likes`
         return axiosClient.get(requestUrl)
     },
-    uploadImages:(data)=>{
-        const url =  "api/upload-images"
-       return axiosClient.post(url, data)
-    }
+    uploadImages: (data) => {
+        const url = 'api/upload-images'
+        return axiosClient.post(url, data)
+    },
 }
 //
 
