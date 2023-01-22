@@ -1,5 +1,5 @@
 import { Wrapper } from '~/components/customs'
-import { path, bindClassNames } from '~/utils'
+import { bindClassNames, path } from '~/utils'
 import WidgetItem from './WidgetItem'
 import styles from './Widgets.module.scss'
 
@@ -64,7 +64,7 @@ export default function Widgets() {
         <div className={cx('widgets')}>
             <Wrapper>
                 <div className={cx('inner')}>
-                    {widgets.map(item => (
+                    {widgets.map((item) => (
                         <WidgetItem widgetItem={item} key={item.id} />
                     ))}
                     <div className={cx('widget-item')}>

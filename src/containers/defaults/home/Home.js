@@ -1,5 +1,4 @@
-import React from 'react'
-import { bindClassNames, path } from '~/utils'
+import { bindClassNames } from '~/utils'
 import styles from './Home.module.scss'
 import {
     HeroSection,
@@ -44,7 +43,8 @@ export default function Home() {
                     height: '400px',
                     width: '100%',
                     position: 'relative',
-                }}>
+                }}
+            >
                 <GoogleMapSection />
             </div>
         </div>

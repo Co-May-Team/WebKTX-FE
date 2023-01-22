@@ -1,4 +1,3 @@
-import React from 'react'
 import { SwiperSlide } from 'swiper/react'
 import { Swiper } from '~/components/customs'
 import { bindClassNames } from '~/utils'
@@ -19,7 +18,7 @@ export default function VideoSection() {
     const renderVideosCard = () => {
         return (
             <Swiper spaceBetween={20} breakpoints={breakpoints}>
-                {[1, 2, 3, 4, 5].map(item => (
+                {[1, 2, 3, 4, 5].map((item) => (
                     <SwiperSlide key={item}>
                         <div className={cx('video-item')}>
                             <iframe
@@ -28,7 +27,8 @@ export default function VideoSection() {
                                 title="[05/2017] - Ký túc xá Cỏ May học tập thực tế tại doanh nghiệp Cỏ May - tỉnh Đồng Tháp"
                                 frameBorder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen></iframe>
+                                allowFullScreen
+                            ></iframe>
                             <p className={cx('video-title')}>
                                 [05/2017] - Ký túc xá Cỏ May học tập thực tế tại
                                 doanh nghiệp Cỏ May - tỉnh Đồng Tháp

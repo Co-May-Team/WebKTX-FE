@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
+import { useEffect, useRef } from 'react'
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
-import { Swiper as DefaultSwiper, SwiperSlide } from 'swiper/react'
-import { Pagination, Navigation } from 'swiper'
+import { Navigation, Pagination } from 'swiper'
 import 'swiper/css'
-import 'swiper/css/pagination'
 import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import { Swiper as DefaultSwiper, SwiperSlide } from 'swiper/react'
 
 import { bindClassNames, handleClassName } from '~/utils'
 import styles from './Swiper.module.scss'
@@ -21,9 +21,9 @@ export default function Swiper(props) {
         return `<span class="${_className} ${cx('dashed')}"></span>`
     }
 
-    const renderSwiperSlide = data => {
+    const renderSwiperSlide = (data) => {
         if (!data) return
-        return data?.map(item => (
+        return data?.map((item) => (
             <SwiperSlide key={item.id}>
                 <img
                     src={item.url}
@@ -41,7 +41,7 @@ export default function Swiper(props) {
             : handleClassName.remove(navRef, className)
     }
 
-    const handleSlideChangle = swiper => {
+    const handleSlideChangle = (swiper) => {
         const { isBeginning, isEnd } = swiper
         const className = cx('hidden')
 
@@ -62,7 +62,7 @@ export default function Swiper(props) {
                 prevEl: navigationPrevRef.current,
                 nextEl: navigationNextRef.current,
             }}
-            onBeforeInit={swiper => {
+            onBeforeInit={(swiper) => {
                 swiper.params.navigation.prevEl = navigationPrevRef.current
                 swiper.params.navigation.nextEl = navigationNextRef.current
             }}
@@ -72,7 +72,8 @@ export default function Swiper(props) {
                 renderBullet,
             }}
             modules={[Pagination, Navigation]}
-            className={cx('default', { [className]: className })}>
+            className={cx('default', { [className]: className })}
+        >
             {/* Render image slide */}
             {data && renderSwiperSlide(data)}
             {children}

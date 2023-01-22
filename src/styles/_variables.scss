@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 // breakpoints
 // 1rem = 10px (see more --> _base.scss)
 $mobie-width: 768px;
@@ -31,16 +33,41 @@ $box-shadow: 0 3px 10px rgb(0 0 0 / 10%);
 $primary-line-color: $primary-color;
 $second-line-color: #dddddd;
 
+// Basic
+$body-font-family: 'Montserrat', sans-serif;
+$body-font-size: 1rem;
+$body-font-weight: 400;
+$body-line-height: 1.5;
+$body-color: #212529;
+$border-color: $primary-color;
+
+// Z-index
+$zindex-sidebar: 2;
+$zindex-header: 2;
+
 // transision
 $linear-tss: all linear 0.3s;
 $ease-in-out-tss: all ease-in-out 0.3s;
 
-// font-family
-$main-font: 'Montserrat';
-
 // grid
 $column: column;
 $row: row;
+
+// Table
+$table-color: $body-color;
+$table-bg: transparent;
+$table-border-color: $border-color;
+$table-accent-bg: transparent;
+$table-striped-color: $body-color;
+$table-striped-bg: rgba(246, 246, 246, 1);
+$table-active-color: $body-color;
+$table-active-bg: rgba(246, 246, 246, 0.6);
+$table-hover-color: $body-color;
+$table-hover-bg: rgba(246, 246, 246, 0.8);
+$table-cell-padding-y: 2rem;
+$table-cell-padding-x: 2rem;
+$table-cell-padding-y-sm: 0.5rem;
+$table-cell-padding-x-sm: 0.5rem;
 
 // button
 $btn-color: $primary-color;
@@ -49,8 +76,8 @@ $btn-bg-color: transparent;
 $btn-bg-color-hover: $green-color-8;
 $btn-color-active: $white-color;
 $btn-color-active-hover: $white-color-8;
-$btn-bg-color-active: $primary-color;
-$btn-bg-color-active-hover: $green-color-8;
+$btn-bg-color-active: $green-color-8;
+$btn-bg-color-active-hover: $green-regular-color;
 
 // Sidebar variables
 $sidebar-width: 300px;
@@ -59,4 +86,4 @@ $sidebar-item-bg-color: $white-color;
 $sidebar-item-bg-hover-color: $gray-thin-color;
 $sidebar-item-active-color: $white-color;
 $sidebar-item-active-bg-color: $green-color-8;
-$sidebar-item-active-bg-hover-color: $green-color-6;
+$sidebar-item-active-bg-hover-color: $green-regular-color;

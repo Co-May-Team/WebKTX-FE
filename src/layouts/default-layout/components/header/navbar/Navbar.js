@@ -1,10 +1,10 @@
 import { memo, useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
 import { MdCloseFullscreen } from 'react-icons/md'
+import { NavLink } from 'react-router-dom'
 
 import { Button } from '~/components/customs'
 import { useClickOutside } from '~/hooks'
-import { path, bindClassNames, handleClassName } from '~/utils'
+import { bindClassNames, handleClassName, path } from '~/utils'
 import styles from './Navbar.module.scss'
 
 const cx = bindClassNames(styles)
@@ -21,14 +21,15 @@ function Navbar({ isShow, setShow }) {
     const overlayRef = useRef()
 
     const renderNavList = () => {
-        return navList.map(item => (
+        return navList.map((item) => (
             <NavLink
                 to={item.to}
                 key={item.id}
                 className={({ isActive }) =>
                     cx('nav-item', { active: isActive })
                 }
-                onClick={() => setShow(false)}>
+                onClick={() => setShow(false)}
+            >
                 {item.display}
             </NavLink>
         ))

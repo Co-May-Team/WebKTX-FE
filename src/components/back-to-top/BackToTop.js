@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import { HiArrowSmUp } from 'react-icons/hi'
 
 import { Button } from '~/components/customs'
@@ -32,7 +32,8 @@ export default function BackToTop() {
         <Button
             className={cx('back-to-top')}
             ref={backToTopRef}
-            onClick={handleScrollTo}>
+            onClick={handleScrollTo}
+        >
             <HiArrowSmUp />
         </Button>
     )
