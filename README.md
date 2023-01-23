@@ -1,23 +1,24 @@
-# Note
+### Lưu ý
 
-1. Clone project from your repos (forked from Co-May-Team/WebKTX-FE)
-2. Turn on terminal and run command `yarn` --> install all depends package
-3. Next, run command `yarn start` to start project
+1.  Clone project từ repository (forked từ Co-May-Team/WebKTX-FE)
+2.  Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
+3.  Gõ lệnh `npm start` để chạy project trên localhost.
 
--   Before commit code, run `npm run beautiful` to format code
+-   Trước khi commit code, gõ lệnh `npm run beautiful` để format code theo chuẩn của project
 
-### Inside src folder
+### Cấu trúc thư mục
 
-1. apis --> Chứa các APIs để lấy dữ liêu
-2. containers (pages) --> Chứa các page của website
-3. contexts --> Chứa các contexts Provider share data giữa các components (VD: Using Dark mode)
-4. features --> Chứa các slice (1 slice gồm 1 reducer và actions). See more <https://redux-toolkit.js.org/>
-5. hoc --> HIGHER ORDER COMPONENT (VD: authentication --> wrapper các component lại để check có quyền được access component này hay không)
-6. layouts --> define layouts
-7. styles --> base, global variables, mixins, ...
-8. axios --> custom axios call APIs
-9. store --> custom store redux
+1.  apis --> Chứa các APIs để lấy dữ liệu.
+2.  assets --> Chứa các tài nguyên của website (hình ảnh, icon,...).
+3.  components --> Chứa các component tùy chỉnh.
+4.  containers --> Chứa các page của website.
+5.  hooks --> Chứa các hooks tùy chỉnh.
+6.  layouts --> Chứa các layout của website.
+7.  routes --> Chứa các routes của website.
+8.  store --> Chứa các file liên quan đến store redux.
+9.  styles --> Chứa các file scss.
 
-### flow
+### Flow
 
-src/index --> src/App --> src/routes --> src/layouts --> src/containers --> src/components
+-   src/index.js --> src/App.js --> src/routes --> src/layouts --> src/containers --> src/components
+-   src/containers --> src/store/{feature name}/slice.js --> src/store/{feature name}/action.js --> src/apis

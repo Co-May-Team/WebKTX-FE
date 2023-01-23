@@ -1,8 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Admin from '~/containers/admin/Admin'
-import Images from '~/containers/admin/Images'
-import Posts from '~/containers/admin/Posts'
-import Videos from '~/containers/admin/Videos'
+import { Images, Posts, Videos } from '~/containers/admin'
 import { AdminLayout } from '~/layouts'
 import { path } from '~/utils'
 
@@ -16,8 +13,10 @@ const adminRoutes = [
     },
     {
         id: Math.random(),
-        Container: Admin,
+        Container: Navigate,
         path: path.HOME,
+        replace: true,
+        to: '/',
     },
     {
         id: Math.random(),

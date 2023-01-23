@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Login, Register } from '~/containers/auth'
+import { Login } from '~/containers/auth'
 import { EmptyLayout } from '~/layouts'
+import { path } from '~/utils'
 
 const authRoutes = [
-    { id: Math.random(), Container: Login, path: '/login' },
-    { id: Math.random(), Container: Register, path: '/register' },
+    { id: Math.random(), Container: Login, path: path.LOGIN },
     {
         id: Math.random(),
         Container: Navigate,

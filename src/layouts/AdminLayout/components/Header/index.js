@@ -1,4 +1,4 @@
-import { Wrapper } from '~/components/customs'
+import { Wrapper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
 import Account from './Account'
 import styles from './index.module.scss'
