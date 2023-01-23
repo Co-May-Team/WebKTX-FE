@@ -1,4 +1,4 @@
-import Logo from '~/components/logo/Logo'
+import Logo from '~/components/Logo'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 import listSidebarItem from './listSidebarItem'

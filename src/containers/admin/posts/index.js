@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from '~/components/customs'
+import { Button } from '~/components/Customs'
 import { fetchPosts } from '~/store/posts/actions'
 import { postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'

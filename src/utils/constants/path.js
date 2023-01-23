@@ -1,13 +1,18 @@
 export const path = {
-    HOME: '/',
-
     // Default path
-    INTRODUCE: '/introduce',
+    HOME: '/',
+    INTRODUCES: '/introduces',
+    NOTIFICATIONS: '/notifications',
     NEWS: '/news',
-    NOTIFICATION: '/notification',
-    FORMS_DOWNLOAD: '/forms-download',
+    // DETAIL_POST: '/post/:id',
+    FORMS: '/forms',
 
-    // System path
+    // Auth path
+    AUTH: '/auth',
+    LOGIN: '/login',
+
+    // Admin path
+    ADMIN: '/admin',
     POSTS: '/posts',
     POSTSCREATEDBYME: '/posts/created-by-me',
     IMAGES: '/media/images',

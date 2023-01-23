@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import Table from '~/components/customs/Table'
+import Table from '~/components/Customs/Table'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 

@@ -1,0 +1,66 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.container {
+    padding: 4rem 0;
+}
+
+// Form
+.form-container {
+    @include grid(column, 4, 1fr, 3rem);
+    margin-bottom: 4rem;
+}
+
+.form-item {
+    background-color: $white-color-2;
+    border-radius: $border-radius;
+    padding: 2rem;
+    @include flex-center();
+    gap: 1.5rem;
+}
+
+.form-icon-wrapp {
+    padding: 2.5rem;
+    border-radius: $border-radius;
+    border: 2px solid $green-color-7;
+}
+
+.form-icon {
+    font-size: 4rem;
+    color: $green-color-7;
+}
+
+.form-title {
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+@include tablet {
+    .form-container {
+        @include grid(column, 3, 1fr, 2rem);
+    }
+}
+
+@include mobile {
+    .form-container {
+        @include grid(column, 2, 1fr, 1.5rem);
+    }
+}
+
+// Pagination
+.pagination-container {
+    @include flex-center();
+}
+
+.pagination-list {
+    ul {
+        gap: 0.5rem;
+    }
+}
+
+.pagination-link {
+    padding: 0.5rem 1rem;
+    border: 1px solid;
+    border-radius: $border-radius;
+}
