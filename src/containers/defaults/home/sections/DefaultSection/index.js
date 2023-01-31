@@ -10,7 +10,7 @@ export default function DefaultSection({ title, children }) {
         <Wrapper>
             <div className={cx('inner')}>
                 <div className={cx('heading')}>
-                    <h3 className={cx('title')}>{title}</h3>
+                    {title && <h3 className={cx('title')}>{title}</h3>}
                 </div>
                 {/* body */}
                 {children}
@@ -20,6 +20,6 @@ export default function DefaultSection({ title, children }) {
 }
 
 DefaultSection.propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     children: PropTypes.node.isRequired,
 }

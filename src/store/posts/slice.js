@@ -46,12 +46,15 @@ const postsSlice = createSlice({
                 state.status = 'loading'
             })
             .addCase(fetchPosts.fulfilled, (state, action) => {
-                state.posts = action.payload
+                state.posts = action.payload.posts
                 state.pagination = action.payload.pagination
                 state.status = 'success'
             })
             .addCase(fetchPosts.rejected, (state, action) => {
                 state.status = 'error'
+            })
+            .addCase(addPost.pending, (state, action) => {
+                state.status = 'isSubmitting'
             })
             .addCase(addPost.fulfilled, (state, action) => {
                 if (action.payload.status === 'OK') {
@@ -75,6 +78,9 @@ const postsSlice = createSlice({
                     text: action.error.message,
                     icon: 'error',
                 })
+            })
+            .addCase(updatePost.pending, (state, action) => {
+                state.status = 'isSubmitting'
             })
             .addCase(updatePost.fulfilled, (state, action) => {
                 if (action.payload.status === 'OK') {

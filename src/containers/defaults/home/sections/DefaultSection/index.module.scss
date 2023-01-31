@@ -4,6 +4,7 @@
 .inner {
     @include flex-column();
     gap: 3rem;
+    padding: 4rem 0;
 }
 
 .heading {

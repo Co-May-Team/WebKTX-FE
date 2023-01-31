@@ -1,10 +1,12 @@
 import { memo, useEffect, useRef } from 'react'
 import { MdCloseFullscreen } from 'react-icons/md'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import { Button } from '~/components/Customs'
 import { useClickOutside } from '~/hooks'
 import Account from '~/layouts/AdminLayout/components/Header/Account'
+import { authSelector } from '~/store/selectors'
 import { bindClassNames, handleClassName, path } from '~/utils'
 import styles from './index.module.scss'
 
@@ -18,6 +20,8 @@ const navList = [
 ]
 
 function Navbar({ isShow, setShow }) {
+    const userInfo = useSelector(authSelector).userInfo
+
     const navbarRef = useRef()
     const overlayRef = useRef()
 
@@ -60,7 +64,7 @@ function Navbar({ isShow, setShow }) {
             <div className={cx('navbar')} ref={navbarRef}>
                 <nav className={cx('main-nav')}>
                     {renderNavList()}
-                    <Account />
+                    {userInfo?.id && <Account />}
                 </nav>
                 <Button className={cx('close')} onClick={() => setShow(false)}>
                     {/* <VscChromeClose /> */}

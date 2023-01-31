@@ -4,9 +4,9 @@ import { useEffect } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Button, Form } from 'reactstrap'
+import { Form } from 'reactstrap'
 import * as Yup from 'yup'
-import { InputField } from '~/components/Customs'
+import { Button, InputField } from '~/components/Customs'
 import { login } from '~/store/auth/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
@@ -22,9 +22,9 @@ export default function Login() {
     const status = useSelector(authSelector).status
 
     useEffect(() => {
-        // if (userInfo) {
-        //     navigate('/admin')
-        // }
+        if (userInfo?.id) {
+            navigate('/admin')
+        }
     }, [status])
 
     /* Xử lý form */
@@ -77,8 +77,8 @@ export default function Login() {
                                 <InputField
                                     type="text"
                                     name="username"
-                                    placeholder="Tên người dùng"
-                                    label="Nhập tên người dùng..."
+                                    placeholder="Nhập tên người dùng..."
+                                    label="Tên người dùng:"
                                     inputClassName={cx({
                                         'is-invalid':
                                             touched.username && errors.username,
@@ -91,8 +91,8 @@ export default function Login() {
                                 <InputField
                                     type="password"
                                     name="password"
-                                    placeholder="Mật khẩu"
-                                    label="Nhập mật khẩu"
+                                    placeholder="Nhập mật khẩu..."
+                                    label="Mật khẩu:"
                                     inputClassName={cx({
                                         'is-invalid':
                                             touched.password && errors.password,
@@ -106,20 +106,18 @@ export default function Login() {
                                     <Button
                                         type="submit"
                                         disabled={!(dirty && isValid)}
-                                        className={cx('btn-login')}
+                                        variant="active"
                                     >
-                                        <span className="fw-bold fs-4">
-                                            Đăng nhập
-                                        </span>
+                                        Đăng nhập
                                         {status === 'loading' && (
                                             <div className="d-inline text-center ms-3">
                                                 <div className="spinner-border"></div>
                                             </div>
                                         )}
                                     </Button>
-                                    <Button className={cx('btn-forgot-pwd')}>
+                                    <div className={cx('btn-forgot-pwd')}>
                                         Quên mật khẩu
-                                    </Button>
+                                    </div>
                                 </div>
                             </Form>
                         )}

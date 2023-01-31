@@ -11,7 +11,7 @@ export default function Copyright() {
             <Wrapper className={cx('wrapper')}>
                 <div className={cx('content')}>
                     © Copyright by <NavLink to="/">Co May Dormitory</NavLink>{' '}
-                    2022.
+                    2023.
                 </div>
             </Wrapper>
         </div>

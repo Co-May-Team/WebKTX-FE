@@ -19,7 +19,7 @@
 }
 
 .card-title,
-.card-text {
+.summary {
     @include text-justify();
     line-height: 1.6;
 }
@@ -32,25 +32,45 @@
 
 .card-subtitle {
     @include flex(center, flex-start, 1rem);
-    &,
-    span {
+    .create-time {
+        display: inline;
         color: #333;
+        padding: 0.25rem 1rem;
         font-size: 1.2rem;
+        border-radius: 0.5rem;
+        background-color: rgb(193, 193, 193);
+    }
+    .category-name {
+        background-color: rgb(0, 162, 255);
+        color: white;
+        padding: 0.25rem 1rem;
+        font-size: 1.4rem;
+        border-radius: 0.5rem;
+        text-align: center;
     }
 }
 
-.card-text {
+.summary {
     font-size: 1.3rem;
-    text-indent: 3rem;
+    // text-indent: 3rem;
 }
 
-.more-btn {
+.action {
     display: block;
     margin-left: auto;
     padding: 1rem 1.5rem;
-    border: 1px solid $primary-color;
-    border-radius: $border-radius;
+    border-top: 1px solid $primary-color;
     font-size: 1.3rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .action-item {
+        font-weight: bold;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
 }
 
 @include tablet {

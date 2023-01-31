@@ -7,8 +7,8 @@
     align-items: center;
     color: $btn-color;
     background: $btn-bg-color;
-    border-radius: 0.5rem;
-    padding: 10px 30px;
+    border-radius: $btn-border-radius;
+    padding: $btn-padding-y $btn-padding-x;
     gap: 10px;
     cursor: pointer;
     border: none;
@@ -24,6 +24,10 @@
         &:hover {
             color: $btn-color-active-hover;
             background-color: $btn-bg-color-active-hover;
+        }
+        &:disabled {
+            pointer-events: none;
+            opacity: 0.65;
         }
     }
 }
