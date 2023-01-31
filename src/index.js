@@ -14,17 +14,15 @@ const pStore = persistStore(store)
 function renderApp() {
     const root = ReactDOM.createRoot(document.getElementById('root'))
     root.render(
-        <React.StrictMode>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={pStore}>
-                    <Router>
-                        <GlobalStyles>
-                            <App />
-                        </GlobalStyles>
-                    </Router>
-                </PersistGate>
-            </Provider>
-        </React.StrictMode>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={pStore}>
+                <Router>
+                    <GlobalStyles>
+                        <App />
+                    </GlobalStyles>
+                </Router>
+            </PersistGate>
+        </Provider>
     )
 }
 

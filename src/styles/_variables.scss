@@ -13,7 +13,7 @@ $header-shrink-height: 7rem;
 
 // Color
 $primary-color: #008000;
-$black-color: #000;
+$black-color: black;
 $white-color: #fff;
 $red-color: #ff0000;
 $blue-color: #0000ff;
@@ -21,7 +21,7 @@ $green-light-color: #72bf44;
 $green-regular-color: #4da74d;
 $gray-bold-color: #333333;
 $gray-regular-color: #7d7d7d;
-$gray-thin-color: #bbbbbb;
+$gray-thin-color: #dddddd;
 $white-color-2: #f2f2f2;
 $white-color-5: #f5f5f5;
 $white-color-8: #f8f8f8;
@@ -38,12 +38,13 @@ $body-font-family: 'Montserrat', sans-serif;
 $body-font-size: 1rem;
 $body-font-weight: 400;
 $body-line-height: 1.5;
-$body-color: #212529;
+$body-color: $black-color;
 $border-color: $primary-color;
 
 // Z-index
 $zindex-sidebar: 2;
 $zindex-header: 2;
+$zindex-dropdown: 3;
 
 // transision
 $linear-tss: all linear 0.3s;
@@ -69,7 +70,7 @@ $table-cell-padding-x: 2rem;
 $table-cell-padding-y-sm: 0.5rem;
 $table-cell-padding-x-sm: 0.5rem;
 
-// button
+// Button
 $btn-color: $primary-color;
 $btn-color-hover: $white-color;
 $btn-bg-color: transparent;
@@ -78,6 +79,23 @@ $btn-color-active: $white-color;
 $btn-color-active-hover: $white-color-8;
 $btn-bg-color-active: $green-color-8;
 $btn-bg-color-active-hover: $green-regular-color;
+$btn-padding-x: 3rem;
+$btn-padding-y: 1rem;
+$btn-border-radius: 1rem;
+$btn-font-family: unset;
+$btn-font-size: 1.25rem;
+$btn-font-weight: 400;
+$btn-line-height: 1.5;
+$btn-color: #212529;
+$btn-bg: transparent;
+$btn-border-width: 1px;
+$btn-border-color: transparent;
+$btn-border-radius: 0.375rem;
+$btn-hover-border-color: transparent;
+$btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 1px 1px rgba(0, 0, 0, 0.075);
+$btn-disabled-opacity: 0.65;
+$btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), 0.5);
 
 // Sidebar variables
 $sidebar-width: 300px;
@@ -87,3 +105,30 @@ $sidebar-item-bg-hover-color: $gray-thin-color;
 $sidebar-item-active-color: $white-color;
 $sidebar-item-active-bg-color: $green-color-8;
 $sidebar-item-active-bg-hover-color: $green-regular-color;
+
+// Dropdown
+$dropdown-min-width: 10rem;
+$dropdown-padding-x: 0;
+$dropdown-padding-y: 0.5rem;
+$dropdown-spacer: 0.125rem;
+$dropdown-font-size: 1rem;
+$dropdown-color: $black-color;
+$dropdown-bg: $white-color;
+$dropdown-border-color: rgba(0, 0, 0, 0.15);
+$dropdown-border-radius: 0rem;
+$dropdown-border-width: 1px;
+$dropdown-inner-border-radius: calc(0.375rem - 1px);
+$dropdown-divider-bg: $border-color;
+$dropdown-divider-margin-y: 0.5rem;
+$dropdown-box-shadow: 0 2rem 1rem rgba(0, 0, 0, 0.15);
+$dropdown-link-color: $black-color;
+$dropdown-link-hover-color: #1e2125;
+$dropdown-link-hover-bg: $gray-thin-color;
+$dropdown-link-active-color: white;
+$dropdown-link-active-bg: $green-color-6;
+$dropdown-link-disabled-color: #adb5bd;
+$dropdown-item-padding-x: 2rem;
+$dropdown-item-padding-y: 1rem;
+$dropdown-header-color: #6c757d;
+$dropdown-header-padding-x: 1rem;
+$dropdown-header-padding-y: 0.5rem;

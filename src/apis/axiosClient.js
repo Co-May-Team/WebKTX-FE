@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import Swal from 'sweetalert2'
 // Thiết lập cấu hình mặc định cho http request
 const axiosClient = axios.create({
-    baseURL: 'http://222.255.238.159:9090/',
+    baseURL: 'http://222.255.238.159:8080/',
     headers: {
         'content-type': 'application/json',
     },
@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
             }).then(() => {
                 localStorage.removeItem('accessToken')
                 localStorage.removeItem('userInfo')
-                window.location.href = '/login'
+                window.location.href = '/auth/login'
             })
             // setTimeout(() => {
             //     localStorage.removeItem("accessToken")

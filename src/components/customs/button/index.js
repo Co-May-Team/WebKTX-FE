@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 
 const cx = classNames.bind(styles)
 
-const Button = forwardRef(({ children, className, variant, onClick }, ref) => {
+const Button = forwardRef(({ children, className, variant, ...props }, ref) => {
     return (
         <button
             ref={ref}
@@ -14,7 +14,7 @@ const Button = forwardRef(({ children, className, variant, onClick }, ref) => {
                 [className]: className,
                 [variant]: variant,
             })}
-            onClick={onClick}
+            {...props}
         >
             {children}
         </button>
@@ -27,5 +27,4 @@ Button.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     variant: PropTypes.string,
-    onClick: PropTypes.func,
 }

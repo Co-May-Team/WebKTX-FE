@@ -32,6 +32,11 @@ const authSlice = createSlice({
         },
         logout: (state, action) => {
             state.status = 'idle'
+            Toast.fire({
+                title: 'Đăng xuất',
+                text: 'Đăng xuất thành công',
+                icon: 'success',
+            })
             state.userInfo = {}
             state.accessToken = ''
             localStorage.removeItem('accessToken')

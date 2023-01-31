@@ -7,16 +7,16 @@ const cx = bindClassNames(styles)
 const widgets = [
     {
         id: Math.random(),
-        title: 'liên kết nhanh',
+        title: 'Liên kết nhanh',
         links: [
             {
                 id: Math.random(),
-                to: path.INTRODUCE,
+                to: path.INTRODUCES,
                 display: 'Giới thiệu',
             },
             {
                 id: Math.random(),
-                to: path.NOTIFICATION,
+                to: path.NOTIFICATIONS,
                 display: 'Thông báo',
             },
             {
@@ -26,14 +26,14 @@ const widgets = [
             },
             {
                 id: Math.random(),
-                to: path.FORMS_DOWNLOAD,
+                to: path.FORMS,
                 display: 'Biểu mẫu',
             },
         ],
     },
     {
         id: Math.random(),
-        title: 'liên kết',
+        title: 'Liên kết',
         links: [
             {
                 id: Math.random(),

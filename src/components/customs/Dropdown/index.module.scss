@@ -1,0 +1,30 @@
+@import '/src/styles/variables';
+
+.container {
+    position: relative;
+    .toggle {
+        white-space: nowrap;
+    }
+
+    .menu {
+        position: absolute;
+        z-index: $zindex-dropdown;
+        top: 100%;
+        right: 2rem;
+        margin-top: var(--bs-dropdown-spacer);
+        display: none;
+        // min-width: $dropdown-min-width;
+        padding: $dropdown-padding-y $dropdown-padding-x;
+        font-size: $dropdown-font-size;
+        color: $dropdown-color;
+        text-align: left;
+        list-style: none;
+        background-color: $dropdown-bg;
+        background-clip: padding-box;
+        border: $dropdown-border-width solid $dropdown-border-color;
+        border-radius: $dropdown-border-radius;
+        &.visible {
+            display: block;
+        }
+    }
+}

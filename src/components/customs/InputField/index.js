@@ -14,23 +14,29 @@ export default function InputField({
     feedback,
     formFeedbackClassName,
     placeholder,
+    customInputElement,
+    isRequired,
+    invalid,
     ...props
 }) {
     return (
-        <FormGroup className={cx('form-group', formGroupClassName)}>
+        <div className={cx('form-group', formGroupClassName)}>
             <Label className={cx('label', labelClassName)}>
                 {label || 'Label mặc định'}
+                {isRequired && <span style={{ color: 'red' }}>*</span>}:
             </Label>
-            <Input
-                className={cx('input', inputClassName)}
-                type={type || 'text'}
-                placeholder={placeholder}
-                {...props}
-            />
-            <FormFeedback className={cx(formFeedbackClassName)}>
-                {feedback}
-            </FormFeedback>
-        </FormGroup>
+            {customInputElement ? (
+                customInputElement
+            ) : (
+                <Input
+                    className={cx('input', inputClassName)}
+                    type={type || 'text'}
+                    placeholder={placeholder}
+                    {...props}
+                />
+            )}
+            {invalid && <div className="invalid-feedback">{feedback}</div>}
+        </div>
     )
 }
 
@@ -42,4 +48,6 @@ InputField.propTypes = {
     labelClassName: PropTypes.string,
     inputClassName: PropTypes.string,
     placeholder: PropTypes.string,
+    isRequired: PropTypes.bool,
+    invalid: PropTypes.bool,
 }

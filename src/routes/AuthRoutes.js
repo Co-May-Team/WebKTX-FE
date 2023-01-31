@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Login } from '~/containers/auth'
-import { EmptyLayout } from '~/layouts'
+import { Login } from '~/containers/defaults'
+import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
 
 const authRoutes = [
@@ -25,8 +25,8 @@ export default function AuthRoutes() {
     }
 
     return (
-        <EmptyLayout>
+        <DefaultLayout>
             <Routes>{renderRoutes()}</Routes>
-        </EmptyLayout>
+        </DefaultLayout>
     )
 }

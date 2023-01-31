@@ -30,10 +30,7 @@ export default function Forms() {
                     </div>
                     <div className={cx('pagination-container')}>
                         <Pagination className={cx('pagination-list')}>
-                            <PaginationItem
-                                active
-                                className={cx('pagination-item')}
-                            >
+                            <PaginationItem active>
                                 <Button className={cx('pagination-link')}>
                                     1
                                 </Button>

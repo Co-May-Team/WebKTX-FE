@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { HiArrowSmUp } from 'react-icons/hi'
+import { RxChevronUp } from 'react-icons/rx'
 
 import { Button } from '~/components/Customs'
 import { useEventListener } from '~/hooks'
@@ -34,7 +34,7 @@ export default function BackToTop() {
             ref={backToTopRef}
             onClick={handleScrollTo}
         >
-            <HiArrowSmUp />
+            <RxChevronUp />
         </Button>
     )
 }
