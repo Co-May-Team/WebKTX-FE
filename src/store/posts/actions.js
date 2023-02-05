@@ -26,7 +26,7 @@ export const deletePost = createAsyncThunk(
     'posts/deletePost',
     async (postId) => {
         const response = await postsApi.deletePost(postId)
-        return { ...response.data, id: postId }
+        return { ...response.data, postId: postId }
     }
 )
 export const likePost = createAsyncThunk(

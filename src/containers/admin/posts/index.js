@@ -26,8 +26,8 @@ function Posts() {
                 <div className={cx('title')}>Tất cả bài viết</div>
                 <div className={cx('action')}>
                     <Button
-                        variant="active"
-                        className="fs-4 fw-bold"
+                        color="primary"
+                        className="fw-bold"
                         onClick={setVisibleSubmitPost}
                     >
                         Đăng bài mới

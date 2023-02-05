@@ -1,30 +1,11 @@
-import classNames from 'classnames/bind'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { Button as BootstrapButton } from 'reactstrap'
 
-import { forwardRef } from 'react'
-import styles from './index.module.scss'
+function Button(props) {
+    return <BootstrapButton {...props} />
+}
 
-const cx = classNames.bind(styles)
-
-const Button = forwardRef(({ children, className, variant, ...props }, ref) => {
-    return (
-        <button
-            ref={ref}
-            className={cx('button', {
-                [className]: className,
-                [variant]: variant,
-            })}
-            {...props}
-        >
-            {children}
-        </button>
-    )
-})
+Button.propTypes = {}
 
 export default Button
-
-Button.propTypes = {
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    variant: PropTypes.string,
-}

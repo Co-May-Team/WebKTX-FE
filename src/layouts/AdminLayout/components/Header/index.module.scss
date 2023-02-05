@@ -1,3 +1,4 @@
+@import '/src/styles/mixins';
 @import '/src/styles/variables';
 
 .container {
@@ -14,5 +15,12 @@
     justify-content: flex-end;
     .wrapper {
         margin: auto 0;
+    }
+}
+
+@include small-desktop {
+    .container {
+        margin: auto;
+        width: 100%;
     }
 }

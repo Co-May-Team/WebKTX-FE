@@ -7,7 +7,7 @@ import {
     BsFillTrash2Fill,
     BsThreeDotsVertical,
 } from 'react-icons/bs'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     Card,
     CardBody,
@@ -16,11 +16,13 @@ import {
     CardText,
     CardTitle,
 } from 'reactstrap'
-import Table from '~/components/Customs/Table'
+import postsApi from '~/apis/postsApi'
+import Confirm from '~/components/Customs/Confirm'
 import {
     DefaultSection,
     NotificationsSection,
 } from '~/containers/defaults/Home/sections'
+import { deletePost } from '~/store/posts/actions'
 import { authSelector, postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import SubmitPost from '../SubmitPost'
@@ -30,15 +32,16 @@ const cx = bindClassNames(styles)
 
 function ListPost({ data, categoryName }) {
     const userInfo = useSelector(authSelector).userInfo
+    const dispatch = useDispatch()
 
     moment.locale('vi')
 
     const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
+    const [visibleDeletePost, setVisibleDeletePost] = useState(false)
     const [currentPost, setCurrentPost] = useState(null)
 
-    const handleShowFormEditPost = (post) => {
-        setVisibleFormEditPost(true)
-        setCurrentPost(post)
+    const handleDeletePost = () => {
+        dispatch(deletePost(currentPost.postId))
     }
 
     const renderCardList = () => {
@@ -50,11 +53,11 @@ function ListPost({ data, categoryName }) {
                         src={'data:image/png;base64,' + item.thumbnail}
                         className={cx('card-img')}
                     />
-                    <CardBody className={cx('card-body')}>
-                        <CardTitle tag="h4" className={cx('card-title')}>
+                    <CardBody>
+                        <CardTitle className={cx('card-title')}>
                             {item.title}
                         </CardTitle>
-                        <CardSubtitle tag="h6" className={cx('card-subtitle')}>
+                        <CardSubtitle className={cx('card-subtitle')}>
                             <span className={cx('create-time')}>
                                 <BsCalendar4 className="me-2" />
                                 {moment(item.createAt).format('llll')}
@@ -71,12 +74,21 @@ function ListPost({ data, categoryName }) {
                             <div className={cx('action')}>
                                 <div
                                     className={cx('action-item')}
-                                    onClick={() => handleShowFormEditPost(item)}
+                                    onClick={() => {
+                                        setVisibleFormEditPost(true)
+                                        setCurrentPost(item)
+                                    }}
                                 >
                                     <AiOutlineEdit /> Chỉnh sửa
                                 </div>
                                 |
-                                <div className={cx('action-item')}>
+                                <div
+                                    className={cx('action-item')}
+                                    onClick={() => {
+                                        setVisibleDeletePost(true)
+                                        setCurrentPost(item)
+                                    }}
+                                >
                                     <BsFillTrash2Fill /> Xóa
                                 </div>
                             </div>
@@ -95,6 +107,15 @@ function ListPost({ data, categoryName }) {
                         setVisibleFormEditPost(!visibleFormEditPost)
                     }
                     post={currentPost}
+                />
+            )}
+            {visibleDeletePost && (
+                <Confirm
+                    visible={visibleDeletePost}
+                    setVisible={() => setVisibleDeletePost(!visibleDeletePost)}
+                    title="Xóa bài đăng"
+                    content="Bạn có chắc muốn xóa bài đăng này?"
+                    onConfirm={handleDeletePost}
                 />
             )}
         </DefaultSection>

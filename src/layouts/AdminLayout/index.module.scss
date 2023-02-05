@@ -7,11 +7,11 @@
 
 .content {
     gap: 30px;
-    width: calc(100% - 300px);
+    width: calc(100% - $sidebar-width);
     min-height: 200vh;
     transition: $linear-tss;
     padding-top: $header-height;
-    margin-left: 300px;
+    margin-left: $sidebar-width;
     margin-right: 0;
     &.padding-top {
         padding-top: $header-shrink-height;
@@ -21,5 +21,12 @@
 @include mobile {
     .content {
         padding-top: $header-shrink-height;
+    }
+}
+
+@include small-desktop {
+    .content {
+        margin-left: 0;
+        width: 100%;
     }
 }

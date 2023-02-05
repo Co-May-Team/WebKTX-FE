@@ -20,8 +20,8 @@ export default function InputField({
     ...props
 }) {
     return (
-        <div className={cx('form-group', formGroupClassName)}>
-            <Label className={cx('label', labelClassName)}>
+        <div className={cx(formGroupClassName) + ' mb-3'}>
+            <Label className={cx(labelClassName)}>
                 {label || 'Label mặc định'}
                 {isRequired && <span style={{ color: 'red' }}>*</span>}:
             </Label>
@@ -29,7 +29,7 @@ export default function InputField({
                 customInputElement
             ) : (
                 <Input
-                    className={cx('input', inputClassName)}
+                    className={cx(inputClassName)}
                     type={type || 'text'}
                     placeholder={placeholder}
                     {...props}

@@ -30,6 +30,14 @@ const postsApi = {
         const url = 'api/upload-images'
         return axiosClient.post(url, data)
     },
+    getAllCategory: () => {
+        const requestUrl = '/category'
+        return axiosClient.get(requestUrl)
+    },
+    getAllTag: () => {
+        const requestUrl = '/tags'
+        return axiosClient.get(requestUrl)
+    },
 }
 //
 

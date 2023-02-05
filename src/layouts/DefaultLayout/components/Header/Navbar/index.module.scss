@@ -10,7 +10,6 @@
     position: relative;
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 1.3rem;
     &.active {
         color: $green-regular-color;
     }
@@ -31,7 +30,6 @@
 
 .close {
     display: none;
-    font-size: 2rem;
 }
 
 // overlay

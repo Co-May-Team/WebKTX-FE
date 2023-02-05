@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css'
 import PropTypes from 'prop-types'
 import '~/styles/index.scss'
 

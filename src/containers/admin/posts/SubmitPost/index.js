@@ -12,74 +12,43 @@ import * as Yup from 'yup'
 import postsApi from '~/apis/postsApi'
 import { Button, InputField } from '~/components/Customs'
 import Modal from '~/components/Customs/Modal'
+import MultiSelect from '~/components/Customs/MultiSelect'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
 import { postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
+import { env } from '~/utils/constants/env'
 import styles from './index.module.scss'
+import {
+    default as QuillEditor,
+    default as RichTextEditor,
+} from './QuillEditor'
 
 const cx = bindClassNames(styles)
 
 function SubmitPost({ visible, setVisible, post }) {
     const status = useSelector(postsSelector).status
     const dispatch = useDispatch()
-    const thumbnailRef = useRef()
 
-    function uploadAdapter(loader) {
-        const body = new FormData()
-        return {
-            upload: () => {
-                return new Promise((resolve) => {
-                    loader.file.then((file) => {
-                        body.append('image', file)
-                        return postsApi.uploadImages(body).then((q) => {
-                            resolve({
-                                default: `http://222.255.238.159:8080/api/get-image/${q.data.data.name}`,
-                            })
-                        })
-                    })
-                })
-            },
+    const [tagList, setTagList] = useState([])
+    const [categoryList, setCategoryList] = useState([])
+
+    useEffect(() => {
+        postsApi.getAllCategory().then((response) => {
+            setCategoryList(response.data.data.categories)
+        })
+        postsApi.getAllTag().then((response) => {
+            setTagList(response.data.data)
+        })
+    }, [])
+
+    const handleUploadThumbnail = (event, setFieldValue) => {
+        const file = event.target.files[0]
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = () => {
+            const base64 = reader.result.split(',')[1]
+            setFieldValue('thumbnail', base64)
         }
-    }
-
-    function uploadPlugin(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-            return uploadAdapter(loader)
-        }
-    }
-    const deletePlugin = (images) => {
-        console.log(images)
-    }
-
-    const base64toSrc = (b64Data) => {
-        const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-            const byteCharacters = atob(b64Data)
-            const byteArrays = []
-
-            for (
-                let offset = 0;
-                offset < byteCharacters.length;
-                offset += sliceSize
-            ) {
-                const slice = byteCharacters.slice(offset, offset + sliceSize)
-
-                const byteNumbers = new Array(slice.length)
-                for (let i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i)
-                }
-
-                const byteArray = new Uint8Array(byteNumbers)
-                byteArrays.push(byteArray)
-            }
-
-            const blob = new Blob(byteArrays, { type: contentType })
-            return blob
-        }
-
-        const contentType = 'image/png'
-
-        const blob = b64toBlob(b64Data, contentType)
-        return URL.createObjectURL(blob)
     }
 
     let initialValues = {
@@ -88,20 +57,16 @@ function SubmitPost({ visible, setVisible, post }) {
         summary: '',
         isPublished: true,
         publishAt: new Date().toISOString().slice(0, 16),
-        category: 2,
+        category: {},
+        tagModels: [],
         thumbnail: '',
     }
     if (post?.postId) {
         initialValues = {
             ...initialValues,
             ...post,
-            thumbnail: '',
         }
-        thumbnailRef.current.src = base64toSrc(post.thumbnail)
     }
-    useEffect(() => {
-        // thumbnailRef.current.src = base64toSrc(post.thumbnail)
-    }, [])
     const validationSchema = Yup.object({
         title: Yup.string()
             .required('Vui lòng nhập tiêu đề bài viết.')
@@ -115,14 +80,19 @@ function SubmitPost({ visible, setVisible, post }) {
             .min(50, 'Tóm tắt bài viết phải nhiều hơn 50 ký tự.')
             .max(200, 'Tóm tắt bài viết phải ít hơn 200 ký tự.'),
         publishAt: Yup.string()
-            .required('Vui lòng nhập ngày công bố bài viết.')
+            .required('Vui lòng chọn thời gian công bố bài viết.')
             .test(
                 'publishAt',
                 'Thời gian công bố bài viết không hợp lệ.',
-                function (publishAt, context) {
+                function (publishAt) {
                     return new Date().getTime() < new Date(publishAt).getTime()
                 }
             ),
+        category: Yup.object({
+            categoryId: Yup.number().required(
+                'Vui lòng chọn thể loại bài viết.'
+            ),
+        }),
     })
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true)
@@ -224,6 +194,61 @@ function SubmitPost({ visible, setVisible, post }) {
                                 isRequired
                             />
                             <InputField
+                                label="Thể loại"
+                                isRequired
+                                invalid={touched.category && errors.category}
+                                feedback={errors.category}
+                                customInputElement={
+                                    <MultiSelect
+                                        singleSelect
+                                        displayValue="categoryName"
+                                        placeholder="Chọn thể loại bài viết..."
+                                        // selectedValues={type === "proposal-type" ? info?.proposalConfigTargets : info?.approvalConfigTargets}
+                                        options={categoryList}
+                                        onSelect={(selectedItem) => {
+                                            console.log(values.content)
+                                            setFieldValue(
+                                                'category',
+                                                selectedItem
+                                            )
+                                        }}
+                                        onRemove={(selectedItem) => {
+                                            setFieldValue(
+                                                'category',
+                                                selectedItem
+                                            )
+                                        }}
+                                    />
+                                }
+                            />
+                            <InputField
+                                label="Thẻ"
+                                isRequired
+                                invalid={touched.tagModels && errors.tagModels}
+                                feedback={errors.tagModels}
+                                customInputElement={
+                                    <MultiSelect
+                                        showCheckbox
+                                        displayValue="tagName"
+                                        placeholder="Chọn thẻ bài viết..."
+                                        // selectedValues={type === "proposal-type" ? info?.proposalConfigTargets : info?.approvalConfigTargets}
+                                        options={tagList}
+                                        onSelect={(selectedList) => {
+                                            setFieldValue(
+                                                'tagModels',
+                                                selectedList
+                                            )
+                                        }}
+                                        onRemove={(selectedList) => {
+                                            setFieldValue(
+                                                'tagModels',
+                                                selectedList
+                                            )
+                                        }}
+                                    />
+                                }
+                            />
+                            <InputField
                                 type="textarea"
                                 name="summary"
                                 rows="5"
@@ -250,17 +275,11 @@ function SubmitPost({ visible, setVisible, post }) {
                                 })}
                                 feedback="Vui lòng nhập nội dung bài viết."
                                 customInputElement={
-                                    <CKEditor
-                                        config={{
-                                            extraPlugins: [uploadPlugin],
-                                        }}
-                                        editor={ClassicEditor}
-                                        data={values.content}
-                                        onChange={(event, editor) => {
-                                            const data = editor.getData()
-                                            // console.log(editor);
-                                            setFieldValue('content', data)
-                                        }}
+                                    <QuillEditor
+                                        content={values.content}
+                                        handleEditorChange={(newContent) =>
+                                            setFieldValue('content', newContent)
+                                        }
                                     />
                                 }
                                 isRequired
@@ -277,17 +296,12 @@ function SubmitPost({ visible, setVisible, post }) {
                                                 touched.thumbnail &&
                                                 errors.thumbnail,
                                         })}
-                                        value={values.thumbnail}
                                         feedback={errors.thumbnail}
                                         onChange={(e) => {
-                                            setFieldValue(
-                                                'thumbnail',
-                                                e.target.value
+                                            handleUploadThumbnail(
+                                                e,
+                                                setFieldValue
                                             )
-                                            const src = URL.createObjectURL(
-                                                e.target.files[0]
-                                            )
-                                            thumbnailRef.current.src = src
                                         }}
                                         onBlur={handleBlur}
                                         invalid={
@@ -321,7 +335,10 @@ function SubmitPost({ visible, setVisible, post }) {
                                 <img
                                     className="col-4"
                                     style={{ height: '200px', width: '200px' }}
-                                    ref={thumbnailRef}
+                                    src={
+                                        'data:image/jpeg;base64,' +
+                                        values.thumbnail
+                                    }
                                 />
                             </div>
                             <div style={{ marginBottom: '4rem' }} />

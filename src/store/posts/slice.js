@@ -34,7 +34,7 @@ const postsSlice = createSlice({
         },
         updatePostList: (state, action) => {
             state.posts.forEach((post, index, array) => {
-                if (post.id === action.payload.id) {
+                if (post.postId === action.payload.postId) {
                     array[index] = action.payload
                 }
             })
@@ -85,7 +85,7 @@ const postsSlice = createSlice({
             .addCase(updatePost.fulfilled, (state, action) => {
                 if (action.payload.status === 'OK') {
                     state.posts.forEach((post, index, array) => {
-                        if (post.id === action.payload.data.id) {
+                        if (post.postId === action.payload.data.postId) {
                             array[index] = action.payload.data
                         }
                     })
@@ -112,7 +112,7 @@ const postsSlice = createSlice({
             .addCase(deletePost.fulfilled, (state, action) => {
                 if (action.payload.status === 'OK') {
                     state.posts = state.posts.filter(
-                        (post) => post.id !== action.payload.id
+                        (post) => post.postId !== action.payload.postId
                     )
                     Toast.fire({
                         title: 'Xóa bài viết',
@@ -136,7 +136,7 @@ const postsSlice = createSlice({
             })
             .addCase(likePost.fulfilled, (state, action) => {
                 state.posts = state.posts.map((post) => {
-                    if (post.id === action.payload.id) {
+                    if (post.postId === action.payload.postId) {
                         return action.payload
                     } else {
                         return post

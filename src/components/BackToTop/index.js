@@ -29,12 +29,12 @@ export default function BackToTop() {
     useEventListener('scroll', handleScroll)
 
     return (
-        <Button
+        <button
             className={cx('back-to-top')}
             ref={backToTopRef}
             onClick={handleScrollTo}
         >
             <RxChevronUp />
-        </Button>
+        </button>
     )
 }
