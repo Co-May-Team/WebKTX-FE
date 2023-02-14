@@ -1,13 +1,18 @@
+import { useState } from 'react'
 import { AiOutlineFileWord } from 'react-icons/ai'
-import { Pagination, PaginationItem } from 'reactstrap'
-import { Button } from '~/components/Customs'
+import { Wrapper } from '~/components/Customs'
+import Pagination from '~/components/Pagination'
 import { bindClassNames } from '~/utils'
-import { DefaultSection } from '../Home/sections'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
 export default function Forms() {
+    const [pagination, setPagination] = useState({
+        page: 1,
+        limit: 10,
+        totalItem: 150,
+    })
     const renderFormList = () => {
         return [...Array(10).keys()].map((item) => (
             <div className={cx('form-item')} key={item}>
@@ -22,53 +27,17 @@ export default function Forms() {
     }
 
     return (
-        <div className={cx('container')}>
-            <DefaultSection title="BIỂU MẪU">
-                <div className={cx('body')}>
-                    <div className={cx('form-container')}>
-                        {renderFormList()}
-                    </div>
-                    <div className={cx('pagination-container')}>
-                        <Pagination className={cx('pagination-list')}>
-                            <PaginationItem active>
-                                <Button className={cx('pagination-link')}>
-                                    1
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    2
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    3
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    4
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    5
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    {'Next >'}
-                                </Button>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <Button className={cx('pagination-link')}>
-                                    {'Last >>'}
-                                </Button>
-                            </PaginationItem>
-                        </Pagination>
-                    </div>
+        <Wrapper>
+            <div className={cx('Inner')}>
+                <div className={cx('Heading')}>
+                    <h3 className={cx('Title')}>Hình ảnh Cỏ May</h3>
                 </div>
-            </DefaultSection>
-        </div>
+                <div className={cx('form-container')}>{renderFormList()}</div>
+                <Pagination
+                    pagination={pagination}
+                    onPageChange={setPagination}
+                />
+            </div>
+        </Wrapper>
     )
 }

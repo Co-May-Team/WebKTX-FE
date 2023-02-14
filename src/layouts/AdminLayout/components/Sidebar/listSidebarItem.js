@@ -4,32 +4,27 @@ import { GoBroadcast } from 'react-icons/go'
 
 const listSidebarItem = [
     {
-        id: Math.random(),
-        label: 'Trang chủ',
+        name: 'Bảng điều khiển',
         to: '/admin',
-        icon: <AiTwotoneHome />,
+        icon: AiTwotoneHome,
     },
     {
-        id: Math.random(),
-        label: 'Bài đăng',
-        icon: <AiFillEdit />,
+        name: 'Quản lý bài viết',
+        icon: AiFillEdit,
         to: '/admin/posts',
     },
     {
-        id: Math.random(),
-        label: 'Thư viện',
-        icon: <GoBroadcast />,
+        name: 'Thư viện',
+        icon: GoBroadcast,
         children: [
             {
-                id: Math.random(),
-                label: 'Hình ảnh',
-                icon: <BiImage />,
+                name: 'Quản lý hình ảnh',
+                icon: BiImage,
                 to: '/admin/media/images',
             },
             {
-                id: Math.random(),
-                label: 'Video',
-                icon: <AiOutlinePlaySquare />,
+                name: 'Quản lý ideo',
+                icon: AiOutlinePlaySquare,
                 to: '/admin/media/videos',
             },
         ],

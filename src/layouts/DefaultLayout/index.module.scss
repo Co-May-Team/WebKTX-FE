@@ -9,7 +9,7 @@
     width: 100%;
     min-height: 100vh;
     transition: $linear-tss;
-    padding-top: $header-height;
+    padding-top: $header-min-height;
     &.padding-top {
         padding-top: $header-shrink-height;
     }

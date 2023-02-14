@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button } from '~/components/Customs'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Button } from 'reactstrap'
+import Pagination from '~/components/Pagination'
 import { fetchPosts } from '~/store/posts/actions'
 import { postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
@@ -13,18 +16,46 @@ const cx = bindClassNames(styles)
 
 function Posts() {
     const listPost = useSelector(postsSelector).posts
+    const pagination = useSelector(postsSelector).pagination
+
     const dispatch = useDispatch()
+    const location = useLocation()
+    const navigation = useNavigate()
 
     const [visibleSubmitPost, setVisibleSubmitPost] = useState(false)
+    const [filters, setFilters] = useState({
+        page: 1,
+    })
+
+    const handlePageChange = (newPage) => {
+        setFilters({
+            ...filters,
+            page: newPage,
+        })
+    }
 
     useEffect(() => {
-        dispatch(fetchPosts({ content: '' }))
+        document.title = 'Quản lý bài đăng - Control Panel'
+        const params = queryString.parse(location.search)
+        if (
+            Object.keys(params).length > 1 ||
+            (Object.keys(params).length > 0 && params.page !== '1')
+        ) {
+            setFilters(params)
+        }
     }, [])
+    useEffect(() => {
+        const requestUrl =
+            location.pathname + '?' + queryString.stringify(filters)
+        dispatch(fetchPosts(filters))
+        navigation(requestUrl)
+    }, [filters])
+
     return (
-        <div className={cx('container')}>
-            <div className={cx('header')}>
-                <div className={cx('title')}>Tất cả bài viết</div>
-                <div className={cx('action')}>
+        <div className={cx('Container')}>
+            <div className={cx('Header')}>
+                <div className={cx('Title')}>Tất cả bài viết</div>
+                <div className={cx('Action')}>
                     <Button
                         color="primary"
                         className="fw-bold"
@@ -41,6 +72,10 @@ function Posts() {
                     setVisible={() => setVisibleSubmitPost(!visibleSubmitPost)}
                 />
             )}
+            <Pagination
+                pagination={pagination}
+                onPageChange={handlePageChange}
+            />
         </div>
     )
 }

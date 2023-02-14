@@ -16,6 +16,7 @@ const defaultRoutes = [
     { id: Math.random(), Container: Introduces, path: path.INTRODUCES },
     { id: Math.random(), Container: News, path: path.NEWS },
     { id: Math.random(), Container: Forms, path: path.FORMS },
+    { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
     // { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
     {
         id: Math.random(),

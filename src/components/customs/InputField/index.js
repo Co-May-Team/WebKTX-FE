@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { FormFeedback, FormGroup, Input, Label } from 'reactstrap'
+import { Input, Label } from 'reactstrap'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 
@@ -12,6 +12,7 @@ export default function InputField({
     inputClassName,
     type,
     feedback,
+    note,
     formFeedbackClassName,
     placeholder,
     customInputElement,
@@ -22,7 +23,7 @@ export default function InputField({
     return (
         <div className={cx(formGroupClassName) + ' mb-3'}>
             <Label className={cx(labelClassName)}>
-                {label || 'Label mặc định'}
+                {label}
                 {isRequired && <span style={{ color: 'red' }}>*</span>}:
             </Label>
             {customInputElement ? (
@@ -35,6 +36,7 @@ export default function InputField({
                     {...props}
                 />
             )}
+            <small>{note}</small>
             {invalid && <div className="invalid-feedback">{feedback}</div>}
         </div>
     )
@@ -43,6 +45,7 @@ export default function InputField({
 InputField.propTypes = {
     label: PropTypes.string.isRequired,
     feedback: PropTypes.string,
+    note: PropTypes.string,
     formFeedbackClassName: PropTypes.string,
     formGroupClassName: PropTypes.string,
     labelClassName: PropTypes.string,

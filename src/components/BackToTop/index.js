@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { RxChevronUp } from 'react-icons/rx'
 
-import { Button } from '~/components/Customs'
 import { useEventListener } from '~/hooks'
 import { bindClassNames, handleClassName } from '~/utils'
 import styles from './index.module.scss'

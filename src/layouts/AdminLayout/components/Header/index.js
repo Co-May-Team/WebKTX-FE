@@ -1,16 +1,19 @@
-import { Wrapper } from '~/components/Customs'
-import { bindClassNames } from '~/utils'
+import { FaBars } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { toggleSidebarShow } from '~/store/sidebar/actions'
 import Account from './Account'
-import styles from './index.module.scss'
-
-const cx = bindClassNames(styles)
 
 function Header() {
+    const dispatch = useDispatch()
     return (
-        <header className={cx('container')}>
-            <Wrapper className={cx('wrapper')}>
-                <Account />
-            </Wrapper>
+        <header className="header header-sticky mb-4">
+            <FaBars
+                size={35}
+                className="header-toggler ps-1"
+                onClick={() => dispatch(toggleSidebarShow())}
+            />
+            <div className="col" />
+            <Account />
         </header>
     )
 }

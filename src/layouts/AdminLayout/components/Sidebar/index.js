@@ -1,30 +1,56 @@
+import { useDispatch, useSelector } from 'react-redux'
 import Logo from '~/components/Logo'
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
+import { sidebarSelector } from '~/store/selectors'
+import { toggleSidebarUnfoldable } from '~/store/sidebar/actions'
+import ListItem from './ListItem'
 import listSidebarItem from './listSidebarItem'
-import SidebarItem from './SidebarItem'
-
-const cx = bindClassNames(styles)
 
 function Sidebar() {
+    const sidebarUnfoldable = useSelector(sidebarSelector).sidebarUnfoldable
+    const sidebarShow = useSelector(sidebarSelector).sidebarShow
+    const dispatch = useDispatch()
     return (
-        <div className={cx('container')}>
-            {/* Logo */}
-            <div className={cx('wrap-logo')}>
+        <div
+            className={
+                sidebarShow && !sidebarUnfoldable
+                    ? 'sidebar sidebar-fixed'
+                    : sidebarShow && sidebarUnfoldable
+                    ? 'sidebar sidebar-fixed sidebar-narrow-unfoldable'
+                    : 'sidebar sidebar-fixed hide'
+            }
+        >
+            <div className="sidebar-brand d-none d-md-flex" to="/">
                 <Logo />
             </div>
-            <div className={cx('wrap-item')}>
-                {listSidebarItem.map((sidebarItem) => (
-                    <SidebarItem key={sidebarItem.id} {...sidebarItem} />
-                ))}
-            </div>
-            <div className={cx('copyright')}>
-                ©{' '}
-                <a className={cx('name')} href="/">
-                    Co May Dormitory
-                </a>{' '}
-                2023
-            </div>
+            <ul className="sidebar-nav">
+                <div className="simplebar-wrapper" style={{ margin: '0px' }}>
+                    <div className="simplebar-height-auto-observer-wrapper">
+                        <div className="simplebar-height-auto-observer" />
+                    </div>
+                </div>
+                <div className="simplebar-mask">
+                    <div
+                        className="simplebar-offset"
+                        style={{ right: '0px', bottom: '0px' }}
+                    >
+                        <div
+                            className="simplebar-content-wrapper"
+                            style={{ height: 'auto', overflow: 'hidden' }}
+                        >
+                            <div
+                                className="simplebar-content"
+                                style={{ padding: '0px' }}
+                            >
+                                <ListItem items={listSidebarItem} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ul>
+            <button
+                className="sidebar-toggler d-none d-lg-flex"
+                onClick={() => dispatch(toggleSidebarUnfoldable())}
+            />
         </div>
     )
 }

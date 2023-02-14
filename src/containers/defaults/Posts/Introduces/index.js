@@ -1,5 +1,5 @@
+import { Button } from 'reactstrap'
 import { imageUrl } from '~/assets/images'
-import { Button } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 

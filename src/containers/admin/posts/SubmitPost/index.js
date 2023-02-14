@@ -1,36 +1,41 @@
 /* eslint-disable jsx-a11y/alt-text */
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Formik } from 'formik'
-import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
-import DateTimePicker from 'react-datetime-picker'
-import { useDispatch, useSelector } from 'react-redux'
-import { Form, Label, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Spinner,
+} from 'reactstrap'
 import Swal from 'sweetalert2'
 import * as Yup from 'yup'
 import postsApi from '~/apis/postsApi'
-import { Button, InputField } from '~/components/Customs'
+import { InputField } from '~/components/Customs'
 import Modal from '~/components/Customs/Modal'
 import MultiSelect from '~/components/Customs/MultiSelect'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
-import { postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
-import { env } from '~/utils/constants/env'
+import defaultThumbnail from '~/utils/constants/defaultThumbnail'
 import styles from './index.module.scss'
-import {
-    default as QuillEditor,
-    default as RichTextEditor,
-} from './QuillEditor'
+import QuillEditor from './QuillEditor'
 
 const cx = bindClassNames(styles)
 
 function SubmitPost({ visible, setVisible, post }) {
-    const status = useSelector(postsSelector).status
     const dispatch = useDispatch()
 
     const [tagList, setTagList] = useState([])
     const [categoryList, setCategoryList] = useState([])
+    const [thumbnail, setThumbnail] = useState(
+        'data:image/jpeg;base64, ' + defaultThumbnail
+    )
 
     useEffect(() => {
         postsApi.getAllCategory().then((response) => {
@@ -47,18 +52,52 @@ function SubmitPost({ visible, setVisible, post }) {
         reader.readAsDataURL(file)
         reader.onloadend = () => {
             const base64 = reader.result.split(',')[1]
-            setFieldValue('thumbnail', base64)
+            setFieldValue('thumbnail', file)
+            setThumbnail(reader.result)
         }
+    }
+
+    const addedDate = (originalDate) => {
+        return moment(originalDate)
+            .add(7, 'hours')
+            .format('YYYY-MM-DDTHH:mm:ss')
+    }
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr)
+        let hours = date.getHours()
+        let minutes = date.getMinutes()
+        let seconds = date.getSeconds()
+        let day = date.getDate()
+        let month = date.getMonth() + 1
+        let year = date.getFullYear()
+
+        hours = hours < 10 ? `0${hours}` : hours
+        minutes = minutes < 10 ? `0${minutes}` : minutes
+        seconds = seconds < 10 ? `0${seconds}` : seconds
+        day = day < 10 ? `0${day}` : day
+        month = month < 10 ? `0${month}` : month
+
+        const dayOfWeek = [
+            'chủ nhật',
+            'thứ hai',
+            'thứ ba',
+            'thứ tư',
+            'thứ năm',
+            'thứ sáu',
+            'thứ bảy',
+        ][date.getDay()]
+
+        return `Bài viết sẽ được đăng vào lúc ${hours}:${minutes}:${seconds}, ${dayOfWeek} ${day}/${month}/${year}`
     }
 
     let initialValues = {
         title: '',
         content: '',
         summary: '',
-        isPublished: true,
-        publishAt: new Date().toISOString().slice(0, 16),
+        // isPublished: true,
+        publishAt: addedDate(new Date()),
         category: {},
-        tagModels: [],
+        tagIds: [],
         thumbnail: '',
     }
     if (post?.postId) {
@@ -67,7 +106,7 @@ function SubmitPost({ visible, setVisible, post }) {
             ...post,
         }
     }
-    const validationSchema = Yup.object({
+    const validationSchema = Yup.object().shape({
         title: Yup.string()
             .required('Vui lòng nhập tiêu đề bài viết.')
             .min(32, 'Tiêu đề bài viết phải nhiều hơn 32 ký tự.')
@@ -77,22 +116,18 @@ function SubmitPost({ visible, setVisible, post }) {
             .min(512, 'Nội dung bài viết phải nhiều hơn 512 ký tự.'),
         summary: Yup.string()
             .required('Vui lòng nhập tóm tắt bài viết')
-            .min(50, 'Tóm tắt bài viết phải nhiều hơn 50 ký tự.')
-            .max(200, 'Tóm tắt bài viết phải ít hơn 200 ký tự.'),
-        publishAt: Yup.string()
-            .required('Vui lòng chọn thời gian công bố bài viết.')
-            .test(
-                'publishAt',
-                'Thời gian công bố bài viết không hợp lệ.',
-                function (publishAt) {
-                    return new Date().getTime() < new Date(publishAt).getTime()
-                }
-            ),
-        category: Yup.object({
-            categoryId: Yup.number().required(
-                'Vui lòng chọn thể loại bài viết.'
-            ),
-        }),
+            .min(64, 'Tóm tắt bài viết phải nhiều hơn 64 ký tự.')
+            .max(256, 'Tóm tắt bài viết phải ít hơn 256 ký tự.'),
+        publishAt: Yup.string().required(),
+        category: Yup.object().required('Vui lòng chọn thể loại bài viết.'),
+        tagModels: Yup.array()
+            .of(
+                Yup.object().shape({
+                    tagId: Yup.string().required(),
+                    tagName: Yup.string().required(),
+                })
+            )
+            .required('Vui lòng chọn ít nhất 1 thẻ.'),
     })
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true)
@@ -108,7 +143,21 @@ function SubmitPost({ visible, setVisible, post }) {
             },
         })
         if (post?.postId) {
-            postsApi.updatePost(values).then((response) => {
+            const formData = new FormData()
+            formData.append('image', values.thumbnail)
+            const nameThumbnail = await postsApi
+                .uploadImages(formData)
+                .then((response) => {
+                    return response.data.data.name
+                })
+            const data = {
+                ...values,
+                thumbnail: nameThumbnail,
+                tagIds: values.tagModels.map((tag) => tag.tagId),
+                category: values.category.categoryId,
+            }
+            console.log(data)
+            postsApi.updatePost({ ...data }).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
                         title: 'Chỉnh sửa bài viết',
@@ -126,7 +175,21 @@ function SubmitPost({ visible, setVisible, post }) {
                 }
             })
         } else {
-            postsApi.addPost(values).then((response) => {
+            const formData = new FormData()
+            formData.append('image', values.thumbnail)
+            const nameThumbnail = await postsApi
+                .uploadImages(formData)
+                .then((response) => {
+                    return response.data.data.name
+                })
+            const data = {
+                ...values,
+                thumbnail: nameThumbnail,
+                tagIds: values.tagModels.map((tag) => tag.tagId),
+                category: values.category.categoryId,
+            }
+            console.log(data)
+            postsApi.addPost(data).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
                         title: 'Thêm bài viết',
@@ -176,6 +239,7 @@ function SubmitPost({ visible, setVisible, post }) {
                         setFieldValue,
                         isValid,
                         dirty,
+                        isSubmitting,
                     }) => (
                         <Form onSubmit={handleSubmit}>
                             <InputField
@@ -200,22 +264,20 @@ function SubmitPost({ visible, setVisible, post }) {
                                 feedback={errors.category}
                                 customInputElement={
                                     <MultiSelect
-                                        singleSelect
+                                        singleSelect={true}
                                         displayValue="categoryName"
+                                        key="categoryId"
                                         placeholder="Chọn thể loại bài viết..."
-                                        // selectedValues={type === "proposal-type" ? info?.proposalConfigTargets : info?.approvalConfigTargets}
+                                        selectedValues={
+                                            values.category
+                                                ? [values.category]
+                                                : [null]
+                                        }
                                         options={categoryList}
-                                        onSelect={(selectedItem) => {
-                                            console.log(values.content)
+                                        onSelect={(selectedList) => {
                                             setFieldValue(
                                                 'category',
-                                                selectedItem
-                                            )
-                                        }}
-                                        onRemove={(selectedItem) => {
-                                            setFieldValue(
-                                                'category',
-                                                selectedItem
+                                                selectedList[0]
                                             )
                                         }}
                                     />
@@ -231,7 +293,7 @@ function SubmitPost({ visible, setVisible, post }) {
                                         showCheckbox
                                         displayValue="tagName"
                                         placeholder="Chọn thẻ bài viết..."
-                                        // selectedValues={type === "proposal-type" ? info?.proposalConfigTargets : info?.approvalConfigTargets}
+                                        selectedValues={values.tagModels}
                                         options={tagList}
                                         onSelect={(selectedList) => {
                                             setFieldValue(
@@ -267,25 +329,24 @@ function SubmitPost({ visible, setVisible, post }) {
                             />
                             <InputField
                                 type="text"
-                                name="content"
                                 label="Nội dung"
                                 inputClassName={cx({
                                     'is-invalid':
                                         touched.content && errors.content,
                                 })}
-                                feedback="Vui lòng nhập nội dung bài viết."
+                                feedback={errors.content}
                                 customInputElement={
                                     <QuillEditor
                                         content={values.content}
-                                        handleEditorChange={(newContent) =>
-                                            setFieldValue('content', newContent)
-                                        }
+                                        onChange={(content) => {
+                                            setFieldValue('content', content)
+                                        }}
                                     />
                                 }
                                 isRequired
                             />
                             <div className="d-flex gap-5">
-                                <div className="col">
+                                <div className="col-md col-12">
                                     <InputField
                                         type="file"
                                         accept="image/*"
@@ -312,17 +373,15 @@ function SubmitPost({ visible, setVisible, post }) {
                                     <InputField
                                         type="datetime-local"
                                         name="publishAt"
-                                        min={new Date()
-                                            .toISOString()
-                                            .slice(0, 16)}
                                         label="Thời gian công bố"
                                         inputClassName={cx({
                                             'is-invalid':
                                                 touched.publishAt &&
                                                 errors.publishAt,
                                         })}
-                                        value={values.publishAt}
+                                        value={addedDate(values.publishAt)}
                                         feedback={errors.publishAt}
+                                        note={formatDate(values.publishAt)}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         invalid={
@@ -331,31 +390,55 @@ function SubmitPost({ visible, setVisible, post }) {
                                         }
                                         isRequired
                                     />
+                                    <div
+                                        className="mb-3"
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={() =>
+                                            setFieldValue(
+                                                'isPublished',
+                                                !values.isPublished
+                                            )
+                                        }
+                                    >
+                                        <FormGroup switch>
+                                            <Input
+                                                type="switch"
+                                                name="isPublished"
+                                                checked={!values.isPublished}
+                                            />
+                                            <Label check>Ẩn bài viết</Label>
+                                        </FormGroup>
+                                    </div>
                                 </div>
                                 <img
-                                    className="col-4"
+                                    className="col-md-4 col-12 order-md-2 order-1"
+                                    alt="No thumbnail"
                                     style={{ height: '200px', width: '200px' }}
                                     src={
-                                        'data:image/jpeg;base64,' +
-                                        values.thumbnail
+                                        // 'data:image/jpeg;base64,' +
+                                        thumbnail
                                     }
                                 />
                             </div>
                             <div style={{ marginBottom: '4rem' }} />
                             <ModalFooter>
                                 <Button
+                                    color="primary"
                                     disabled={!(dirty && isValid)}
-                                    variant="active"
                                     className="fw-bolder"
                                     type="submit"
                                 >
                                     {post?.postId
                                         ? 'Cập nhật'
                                         : 'Đăng bài viết'}
-                                    {status === 'isSubmitting' && (
-                                        <div className="d-inline text-center ms-3">
-                                            <div className="spinner-border"></div>
-                                        </div>
+                                    {isSubmitting && (
+                                        <Spinner
+                                            color="white"
+                                            size="sm"
+                                            className="ms-2"
+                                        >
+                                            Loading...
+                                        </Spinner>
                                     )}
                                 </Button>
                             </ModalFooter>

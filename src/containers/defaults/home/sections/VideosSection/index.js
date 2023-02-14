@@ -1,7 +1,6 @@
 import { SwiperSlide } from 'swiper/react'
-import { Swiper } from '~/components/Customs'
+import { Swiper, Wrapper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
-import DefaultSection from '../DefaultSection'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
@@ -40,8 +39,13 @@ export default function VideosSection() {
         )
     }
     return (
-        <DefaultSection title="VIDEO CỎ MAY">
-            <div className={cx('body')}>{renderVideosCard()}</div>
-        </DefaultSection>
+        <Wrapper>
+            <div className={cx('Inner')}>
+                <div className={cx('Heading')}>
+                    <h3 className={cx('Title')}>Video Cỏ May</h3>
+                </div>
+                <div className={cx('body')}>{renderVideosCard()}</div>
+            </div>
+        </Wrapper>
     )
 }

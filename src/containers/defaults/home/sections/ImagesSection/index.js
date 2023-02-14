@@ -1,8 +1,7 @@
 import { SwiperSlide } from 'swiper/react'
 import { imageUrl } from '~/assets/images'
-import { Swiper } from '~/components/Customs'
+import { Swiper, Wrapper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
-import DefaultSection from '../DefaultSection'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
@@ -57,8 +56,13 @@ export default function ImagesSection() {
         )
     }
     return (
-        <DefaultSection title="HÌNH ẢNH CỎ MAY">
-            <div className={cx('image-list')}>{renderImages()}</div>
-        </DefaultSection>
+        <Wrapper>
+            <div className={cx('Inner')}>
+                <div className={cx('Heading')}>
+                    <h3 className={cx('Title')}>Hình ảnh Cỏ May</h3>
+                </div>
+                <div className={cx('image-list')}>{renderImages()}</div>
+            </div>
+        </Wrapper>
     )
 }

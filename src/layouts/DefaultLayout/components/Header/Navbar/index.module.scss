@@ -1,16 +1,16 @@
 @import '/src/styles/variables';
 @import '/src/styles/mixins';
 
-// Navbar
-.main-nav {
+// Container
+.NavWrapper {
     @include flex(center, center, 3rem);
 }
 
-.nav-item {
+.NavItem {
     position: relative;
     text-transform: uppercase;
     font-weight: 700;
-    &.active {
+    &.Active {
         color: $green-regular-color;
     }
     &::after {
@@ -28,18 +28,18 @@
     }
 }
 
-.close {
+.Close {
     display: none;
 }
 
-// overlay
-.overlay {
+// Overlay
+.Overlay {
     display: none;
 }
 
 @include mobile {
-    .navbar,
-    .overlay {
+    .Container,
+    .Overlay {
         position: fixed;
         top: 0;
         bottom: 0;
@@ -47,8 +47,8 @@
         opacity: 0;
         transition: $linear-tss;
     }
-    // Navbar
-    .navbar {
+    // Container
+    .Container {
         width: 70%;
         padding-top: 4rem;
         z-index: 20;
@@ -56,16 +56,16 @@
         border-bottom-left-radius: $border-radius;
         background-color: $white-color;
         transform: translateX(100%);
-        &.visible {
+        &.Visible {
             transform: translate(0);
             opacity: 1;
         }
     }
-    .main-nav {
+    .NavWrapper {
         flex-direction: column;
         gap: 2rem;
     }
-    .close {
+    .Close {
         @include flex-center();
         position: absolute;
         top: 2rem;
@@ -75,13 +75,13 @@
             color: $gray-regular-color;
         }
     }
-    // overlay
-    .overlay {
+    // Overlay
+    .Overlay {
         display: block;
         left: 0;
         visibility: hidden;
         background-color: rgba($black-color, 0.3);
-        &.visible {
+        &.Visible {
             opacity: 1;
             visibility: visible;
         }

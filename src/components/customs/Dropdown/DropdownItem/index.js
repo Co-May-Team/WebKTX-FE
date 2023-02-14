@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types'
-import React from 'react'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 

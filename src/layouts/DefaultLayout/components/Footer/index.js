@@ -7,7 +7,7 @@ const cx = classNames.bind(styles)
 
 function Footer() {
     return (
-        <footer className={cx('container')}>
+        <footer className={cx('Container')}>
             {/* Widgets */}
             <Widgets></Widgets>
             {/* Copyright */}

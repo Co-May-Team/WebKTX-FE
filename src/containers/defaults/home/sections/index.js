@@ -1,6 +1,3 @@
-export { default as DefaultSection } from './DefaultSection'
 export { default as HeroSection } from './HeroSection'
 export { default as ImagesSection } from './ImagesSection'
-export { default as IntroducesSection } from './IntroducesSection'
-export { default as NotificationsSection } from './NotificationsSection'
 export { default as VideosSection } from './VideosSection'

@@ -1,5 +1,4 @@
 import Multiselect from 'multiselect-react-dropdown'
-import React from 'react'
 
 export default function MultiSelect({ ...props }) {
     const style = {

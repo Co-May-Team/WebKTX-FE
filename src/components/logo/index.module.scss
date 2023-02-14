@@ -2,30 +2,19 @@
 @import '/src/styles/mixins';
 
 // Logo
-.logo {
+.Container {
     @include flex(center, center);
-}
-
-.logo-name {
-    @include flex-column();
-    font-weight: 700;
-    text-transform: uppercase;
-    & > span:last-of-type {
-        font-size: 1.25rem;
-        color: $green-light-color;
-        transition: $linear-tss;
-    }
-    & > span:last-of-type:hover {
-        color: $green-regular-color;
-    }
-}
-
-@include mobile {
-    .logo-icon {
-        width: 3rem;
-        height: 3rem;
-    }
-    .logo-name > span {
-        font-size: 1rem;
+    .LogoName {
+        @include flex-column();
+        font-weight: 700;
+        text-transform: uppercase;
+        & > span:last-of-type {
+            font-size: 1.25rem;
+            color: $green-light-color;
+            transition: $linear-tss;
+        }
+        & > span:last-of-type:hover {
+            color: $green-regular-color;
+        }
     }
 }

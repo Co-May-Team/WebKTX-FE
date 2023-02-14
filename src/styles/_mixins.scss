@@ -2,6 +2,9 @@
 //
 // Used in conjunction with global variables to enable certain theme features.
 
+// LTR & RTL
+@import 'mixins/ltr-rtl';
+
 // Vendor
 @import 'vendor/rfs';
 
@@ -22,6 +25,7 @@
 
 // Components
 @import 'mixins/alert';
+@import 'mixins/avatar';
 @import 'mixins/backdrop';
 @import 'mixins/buttons';
 @import 'mixins/caret';
@@ -30,6 +34,7 @@
 @import 'mixins/list-group';
 @import 'mixins/forms';
 @import 'mixins/table-variants';
+@import 'mixins/icon';
 
 // Skins
 @import 'mixins/border-radius';
@@ -41,8 +46,6 @@
 @import 'mixins/clearfix';
 @import 'mixins/container';
 @import 'mixins/grid';
-
-@import './variables';
 
 // Resopnsive
 @mixin mobile {

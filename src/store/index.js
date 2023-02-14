@@ -6,8 +6,10 @@ import thunk from 'redux-thunk'
 
 import authSlice from './auth/slice'
 import postsSlice from './posts/slice'
+import sidebarSlice from './sidebar/slice'
 
 const reducers = combineReducers({
+    sidebar: sidebarSlice.reducer,
     auth: authSlice.reducer,
     posts: postsSlice.reducer,
 })

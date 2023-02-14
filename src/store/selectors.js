@@ -1,2 +1,3 @@
+export const sidebarSelector = (state) => state.sidebar
 export const authSelector = (state) => state.auth
 export const postsSelector = (state) => state.posts

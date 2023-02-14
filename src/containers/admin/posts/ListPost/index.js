@@ -2,39 +2,21 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
-import {
-    BsCalendar4,
-    BsFillTrash2Fill,
-    BsThreeDotsVertical,
-} from 'react-icons/bs'
+import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    Card,
-    CardBody,
-    CardImg,
-    CardSubtitle,
-    CardText,
-    CardTitle,
-} from 'reactstrap'
-import postsApi from '~/apis/postsApi'
+import { Badge } from 'reactstrap'
 import Confirm from '~/components/Customs/Confirm'
-import {
-    DefaultSection,
-    NotificationsSection,
-} from '~/containers/defaults/Home/sections'
 import { deletePost } from '~/store/posts/actions'
-import { authSelector, postsSelector } from '~/store/selectors'
+import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import SubmitPost from '../SubmitPost'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
-function ListPost({ data, categoryName }) {
+function ListPost({ data }) {
     const userInfo = useSelector(authSelector).userInfo
     const dispatch = useDispatch()
-
-    moment.locale('vi')
 
     const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
     const [visibleDeletePost, setVisibleDeletePost] = useState(false)
@@ -45,61 +27,54 @@ function ListPost({ data, categoryName }) {
     }
 
     const renderCardList = () => {
-        return data
-            .filter((item) => item.categoryName.includes(categoryName))
-            .map((item) => (
-                <Card key={item.postId} className={cx('card-item')}>
-                    <CardImg
-                        src={'data:image/png;base64,' + item.thumbnail}
-                        className={cx('card-img')}
-                    />
-                    <CardBody>
-                        <CardTitle className={cx('card-title')}>
-                            {item.title}
-                        </CardTitle>
-                        <CardSubtitle className={cx('card-subtitle')}>
-                            <span className={cx('create-time')}>
-                                <BsCalendar4 className="me-2" />
-                                {moment(item.createAt).format('llll')}
-                            </span>
-                            |
-                            <span className={cx('category-name')}>
-                                {item.categoryName}
-                            </span>
-                        </CardSubtitle>
-                        <CardText className={cx('summary')}>
-                            {item.summary}
-                        </CardText>
-                        {userInfo?.id && (
-                            <div className={cx('action')}>
-                                <div
-                                    className={cx('action-item')}
-                                    onClick={() => {
-                                        setVisibleFormEditPost(true)
-                                        setCurrentPost(item)
-                                    }}
-                                >
-                                    <AiOutlineEdit /> Chỉnh sửa
-                                </div>
-                                |
-                                <div
-                                    className={cx('action-item')}
-                                    onClick={() => {
-                                        setVisibleDeletePost(true)
-                                        setCurrentPost(item)
-                                    }}
-                                >
-                                    <BsFillTrash2Fill /> Xóa
-                                </div>
-                            </div>
-                        )}
-                    </CardBody>
-                </Card>
-            ))
+        return data.map((item) => (
+            <div key={item.postId} className={cx('CardItem')}>
+                <img
+                    src={'data:image/png;base64,' + item.thumbnail}
+                    alt="Thumbnail error"
+                    className={cx('CardImg')}
+                />
+                <div className={cx('CardBody')}>
+                    <div className={cx('CardTitle')}>{item.title}</div>
+                    <div className={cx('CardInfo')}>
+                        <Badge color="secondary" className={cx('CardTime')}>
+                            <BsCalendar4 className="me-2" />
+                            {moment(item.createdAt).locale('vi').format('llll')}
+                        </Badge>
+                        <Badge color="info" className="d-block">
+                            {item.category.categoryName}
+                        </Badge>
+                    </div>
+                    <div className={cx('Summary')}>{item.summary}</div>
+                </div>
+                {userInfo?.id && (
+                    <div className={cx('Action')}>
+                        <div
+                            className={cx('ActionItem')}
+                            onClick={() => {
+                                setVisibleFormEditPost(true)
+                                setCurrentPost(item)
+                            }}
+                        >
+                            <AiOutlineEdit /> Chỉnh sửa
+                        </div>
+                        <div
+                            className={cx('ActionItem')}
+                            onClick={() => {
+                                setVisibleDeletePost(true)
+                                setCurrentPost(item)
+                            }}
+                        >
+                            <BsFillTrash2Fill /> Xóa
+                        </div>
+                    </div>
+                )}
+            </div>
+        ))
     }
     return (
-        <DefaultSection title={categoryName}>
-            <div className={cx('body')}>{renderCardList()}</div>
+        <React.Fragment>
+            <div className={cx('GridPosts')}>{renderCardList()}</div>
             {visibleFormEditPost && (
                 <SubmitPost
                     visible={visibleFormEditPost}
@@ -118,7 +93,7 @@ function ListPost({ data, categoryName }) {
                     onConfirm={handleDeletePost}
                 />
             )}
-        </DefaultSection>
+        </React.Fragment>
     )
 }
 

@@ -81,7 +81,7 @@ hr {
     font-style: $headings-font-style;
     font-weight: $headings-font-weight;
     line-height: $headings-line-height;
-    color: $headings-color;
+    color: var(--#{$prefix}heading-color);
 }
 
 h1 {
@@ -146,10 +146,10 @@ address {
 
 // Lists
 
-ol,
-ul {
-    padding-left: 2rem;
-}
+// ol,
+// ul {
+//   @include ltr-rtl("padding-left", 2rem); // TODO: find solution
+// }
 
 ol,
 ul,
@@ -173,7 +173,7 @@ dt {
 
 dd {
     margin-bottom: 0.5rem;
-    margin-left: 0; // 1
+    @include ltr-rtl('margin-left', 0); // 1
 }
 
 // Blockquote
@@ -273,7 +273,7 @@ pre {
     margin-bottom: 1rem; // 2
     overflow: auto; // 3
     @include font-size($code-font-size);
-    color: $pre-color;
+    color: var(--#{$prefix}pre-color, $pre-color);
 
     // Account for some code outputs that place code tags in pre tags
     code {
@@ -297,8 +297,8 @@ code {
 kbd {
     padding: $kbd-padding-y $kbd-padding-x;
     @include font-size($kbd-font-size);
-    color: $kbd-color;
-    background-color: $kbd-bg;
+    color: var(--#{$prefix}kbd-color, $kbd-color);
+    background-color: var(--#{$prefix}kbd-bg, $kbd-bg);
     @include border-radius($border-radius-sm);
 
     kbd {
@@ -335,7 +335,7 @@ table {
 caption {
     padding-top: $table-cell-padding-y;
     padding-bottom: $table-cell-padding-y;
-    color: $table-caption-color;
+    color: var(--#{$prefix}table-caption-color, $table-caption-color);
     text-align: left;
 }
 
@@ -481,7 +481,7 @@ fieldset {
 //    See https://github.com/twbs/bootstrap/issues/29712
 
 legend {
-    float: left; // 1
+    @include ltr-rtl('float', left); // 1
     width: 100%;
     padding: 0;
     margin-bottom: $legend-margin-bottom;
@@ -524,17 +524,15 @@ legend {
 
 // 1. A few input types should stay LTR
 // See https://rtlstyling.com/posts/rtl-styling#form-inputs
-// 2. RTL only output
-// See https://rtlcss.com/learn/usage-guide/control-directives/#raw
 
-/* rtl:raw:
-[type="tel"],
-[type="url"],
-[type="email"],
-[type="number"] {
-  direction: ltr;
+*[dir='rtl'] {
+    [type='tel'],
+    [type='url'],
+    [type='email'],
+    [type='number'] {
+        direction: ltr;
+    }
 }
-*/
 
 // Remove the inner padding in Chrome and Safari on macOS.
 

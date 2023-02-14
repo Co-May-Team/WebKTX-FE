@@ -7,6 +7,7 @@
 
 // scss-docs-start gray-color-variables
 $white: #fff !default;
+$gray-base: #3c4b64 !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -34,6 +35,14 @@ $grays: (
 ) !default;
 // scss-docs-end gray-colors-map
 // fusv-enable
+
+$high-emphasis: $gray-900 !default;
+$medium-emphasis: $gray-700 !default;
+$disabled: $gray-400 !default;
+
+$high-emphasis-inverse: rgba($white, 0.87) !default;
+$medium-emphasis-inverse: rgba($white, 0.6) !default;
+$disabled-inverse: rgba($white, 0.38) !default;
 
 // scss-docs-start color-variables
 $blue: #0d6efd !default;
@@ -350,11 +359,17 @@ $enable-validation-icons: true !default;
 $enable-negative-margins: false !default;
 $enable-deprecation-messages: true !default;
 $enable-important-utilities: true !default;
+$enable-ltr: true !default;
+$enable-rtl: false !default;
 
 // Prefix for :root CSS variables
 
 $variable-prefix: comay- !default; // Deprecated in v5.2.0 for the shorter `$prefix`
 $prefix: $variable-prefix !default;
+
+// Set mobile breakpoint
+
+$mobile-breakpoint: md !default;
 
 // Gradient
 //
@@ -657,6 +672,13 @@ $list-inline-padding: 0.5rem !default;
 $mark-padding: 0.1875em !default;
 $mark-bg: $yellow-100 !default;
 // scss-docs-end type-variables
+
+// Icons
+$icon-size-base: 1rem !default;
+$icon-size-sm: $icon-size-base * 0.875 !default;
+$icon-size-lg: $icon-size-base * 1.25 !default;
+$icon-size-xl: $icon-size-base * 1.5 !default;
+$icon-size-xxl: $icon-size-base * 2 !default;
 
 // Tables
 //
@@ -1075,6 +1097,7 @@ $zindex-sidebar: 1000 !default;
 $zindex-dropdown: 1010 !default;
 $zindex-sticky: 1020 !default;
 $zindex-fixed: 1030 !default;
+$zindex-sidebar-backdrop: 1030 !default;
 $zindex-offcanvas-backdrop: 1040 !default;
 $zindex-offcanvas: 1045 !default;
 $zindex-modal-backdrop: 1050 !default;
@@ -1470,6 +1493,20 @@ $modal-transition: transform 0.3s ease-out !default;
 $modal-scale-transform: scale(1.02) !default;
 // scss-docs-end modal-variables
 
+// Avatars
+// scss-docs-start avatar-variables
+$avatar-width: 2rem !default;
+
+$avatar-widths: (
+    sm: 1.5rem,
+    md: 2.5rem,
+    lg: 3rem,
+    xl: 4rem,
+) !default;
+
+$avatar-transition: margin 0.15s !default;
+// scss-docs-end avatar-variables
+
 // Alerts
 //
 // Define alert colors, border radius, and padding.
@@ -1487,6 +1524,29 @@ $alert-color-scale: 40% !default;
 $alert-dismissible-padding-r: $alert-padding-x * 3 !default; // 3x covers width of x plus default padding on either side
 // scss-docs-end alert-variables
 
+// Callouts
+// scss-docs-start callout-variables
+$callout-padding-y: $spacer !default;
+$callout-padding-x: $spacer !default;
+$callout-margin-y: $spacer !default;
+$callout-margin-x: 0 !default;
+$callout-border-radius: $border-radius !default;
+$callout-border-width: $border-width !default;
+$callout-border-color: $border-color !default;
+$callout-border-left-width: (4 * $callout-border-width) !default;
+
+$callout-variants: (
+    'primary': $primary,
+    'secondary': $secondary,
+    'success': $success,
+    'danger': $danger,
+    'warning': $warning,
+    'info': $info,
+    'light': $light,
+    'dark': $dark,
+) !default;
+// scss-docs-end callout-variables
+
 // Progress bars
 
 // scss-docs-start progress-variables
@@ -1495,10 +1555,13 @@ $progress-font-size: $font-size-base * 0.75 !default;
 $progress-bg: $gray-200 !default;
 $progress-border-radius: $border-radius !default;
 $progress-box-shadow: $box-shadow-inset !default;
-$progress-bar-color: $white !default;
+$progress-bar-color: $high-emphasis-inverse !default;
 $progress-bar-bg: $primary !default;
 $progress-bar-animation-timing: 1s linear infinite !default;
 $progress-bar-transition: width 0.6s ease !default;
+
+$progress-group-margin-bottom: $spacer !default;
+$progress-group-header-margin-bottom: $spacer * 0.25 !default;
 // scss-docs-end progress-variables
 
 // List group
@@ -1529,6 +1592,66 @@ $list-group-action-hover-color: $list-group-action-color !default;
 $list-group-action-active-color: $body-color !default;
 $list-group-action-active-bg: $gray-200 !default;
 // scss-docs-end list-group-variables
+
+// Header
+// scss-docs-start header-variables
+$header-min-height: 5rem !default;
+$header-padding-y: $spacer * 0.5 !default;
+$header-padding-x: $spacer * 0.5 !default;
+$header-brand-font-size: $font-size-lg !default;
+$header-color: $body-color !default;
+$header-bg: $white !default;
+$header-border-color: $border-color !default;
+$header-border-width: 1px !default;
+$header-hover-color: $high-emphasis !default;
+$header-active-color: $high-emphasis !default;
+$header-disabled-color: $disabled !default;
+
+$nav-link-height: $font-size-base * $line-height-base + $nav-link-padding-y * 2 !default;
+$header-brand-height: $header-brand-font-size * $line-height-base !default;
+$header-brand-padding-y: ($nav-link-height - $header-brand-height) * 0.5 !default;
+$header-brand-margin-end: 1rem !default;
+$header-brand-font-size: $font-size-lg !default;
+$header-brand-color: $gray-900 !default;
+$header-brand-hover-color: shade-color($gray-900, 10%) !default;
+
+$header-toggler-padding-y: 0.25rem !default;
+$header-toggler-padding-x: 0.75rem !default;
+$header-toggler-font-size: $font-size-lg !default;
+$header-toggler-color: $header-color !default;
+$header-toggler-bg: transparent !default;
+$header-toggler-border-radius: $btn-border-radius !default;
+$header-toggler-hover-color: $header-active-color !default;
+
+$header-toggler-icon-bg: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$header-color}' stroke-width='2.25' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !default;
+$header-toggler-hover-icon-bg: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$header-hover-color}' stroke-width='2.25' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !default;
+
+$header-nav-link-padding-x: 0.5rem !default;
+$header-nav-link-padding-y: 0.5rem !default;
+
+$header-divider-border-width: 1px !default;
+$header-divider-border-color: $header-border-color !default;
+// scss-docs-end header-variables
+
+// Subheader
+// scss-docs-start subheader-variables
+$subheader-min-height: 3rem !default;
+$subheader-padding-y: $spacer * 0.5 !default;
+$subheader-padding-x: $spacer !default;
+$subheader-border-color: $border-color !default;
+$subheader-border-width: 1px !default;
+
+$subheader-nav-link-padding-x: 0.5rem !default;
+// scss-docs-end subheader-variables
+
+// Default theme
+// scss-docs-start subheader-default-themes
+$subheader-bg: $white !default;
+$subheader-color: $medium-emphasis !default;
+$subheader-hover-color: $high-emphasis !default;
+$subheader-active-color: $high-emphasis !default;
+$subheader-disabled-color: $disabled !default;
+// scss-docs-end subheader-default-themes
 
 // Image thumbnails
 
@@ -1602,6 +1725,17 @@ $carousel-dark-caption-color: $black !default;
 $carousel-dark-control-icon-filter: invert(1) grayscale(100) !default;
 // scss-docs-end carousel-dark-variables
 
+// Footer
+// scss-docs-start footer-variables
+$footer-min-height: 3rem !default;
+$footer-padding-y: $spacer * 0.5 !default;
+$footer-padding-x: $spacer !default;
+$footer-bg: $gray-100 !default;
+$footer-color: $body-color !default;
+$footer-border-width: 1px !default;
+$footer-border-color: $border-color !default;
+// scss-docs-end footer-variables
+
 // Spinners
 
 // scss-docs-start spinner-variables
@@ -1669,8 +1803,6 @@ $pre-color: null !default;
 $linear-tss: all linear 0.3s;
 $ease-in-out-tss: all ease-in-out 0.3s;
 
-// Header
-$header-height: 5rem;
 $header-shrink-height: 5rem;
 
 // Color
@@ -1695,11 +1827,97 @@ $box-shadow: 0 3px 10px rgb(0 0 0 / 10%);
 $primary-line-color: $primary-color;
 $second-line-color: #dddddd;
 
-// Sidebar variables
-$sidebar-width: 300px;
-$sidebar-item-color: $black-color;
-$sidebar-item-bg-color: $white-color;
-$sidebar-item-bg-hover-color: $gray-thin-color;
-$sidebar-item-active-color: $white-color;
-$sidebar-item-active-bg-color: $green-color-8;
-$sidebar-item-active-bg-hover-color: $green-regular-color;
+// scss-docs-start sidebar-variables
+$sidebar-width: 16rem !default;
+$sidebar-widths: (
+    sm: 12rem,
+    lg: 20rem,
+    xl: 24rem,
+) !default;
+$sidebar-padding-y: 0 !default;
+$sidebar-padding-x: 0 !default;
+$sidebar-color: $gray-800 !default;
+$sidebar-bg: $white !default;
+$sidebar-border-width: 0 !default;
+$sidebar-border-color: transparent !default;
+$sidebar-transition: margin-left 0.15s, margin-right 0.15s, box-shadow 0.075s,
+    transform 0.15s, width 0.15s, z-index 0s ease 0.15s !default;
+
+$sidebar-brand-height: 5rem !default;
+$sidebar-brand-color: $gray-900 !default;
+$sidebar-brand-bg: $white-color !default;
+
+$sidebar-header-height: 5rem !default;
+$sidebar-header-padding-y: 0.75rem !default;
+$sidebar-header-padding-x: 1rem !default;
+$sidebar-header-bg: rgba($black, 0.2) !default;
+$sidebar-header-height-transition: height 0.15s, padding 0.15s !default;
+
+$sidebar-narrow-width: 4rem !default;
+
+$sidebar-backdrop-bg: $black !default;
+$sidebar-backdrop-opacity: 0.5 !default;
+
+$sidebar-nav-title-padding-y: 0.75rem !default;
+$sidebar-nav-title-padding-x: 1rem !default;
+$sidebar-nav-title-margin-top: 1rem !default;
+$sidebar-nav-title-color: $gray-700 !default;
+$sidebar-nav-title-transition: height 0.15s, margin 0.15s !default;
+
+$sidebar-nav-link-padding-y: 0.8445rem !default;
+$sidebar-nav-link-padding-x: 1rem !default;
+$sidebar-nav-link-color: $gray-700 !default;
+$sidebar-nav-link-bg: transparent !default;
+$sidebar-nav-link-border-width: 0 !default;
+$sidebar-nav-link-border-color: transparent !default;
+$sidebar-nav-link-border-radius: 0 !default;
+$sidebar-nav-link-transition: background 0.15s ease, color 0.15s ease !default;
+$sidebar-nav-link-icon-color: $gray-700 !default;
+
+$sidebar-nav-link-hover-color: $white-color !default;
+$sidebar-nav-link-hover-bg: rgb($primary, 0.6) !default;
+$sidebar-nav-link-hover-icon-color: $white-color !default;
+
+$sidebar-nav-link-active-color: $white-color !default;
+$sidebar-nav-link-active-bg: rgb($primary, 0.85) !default;
+$sidebar-nav-link-active-icon-color: $white-color !default;
+
+$sidebar-nav-link-disabled-color: $gray-700 !default;
+$sidebar-nav-link-disabled-icon-color: $sidebar-nav-link-icon-color !default;
+
+$sidebar-nav-icon-width: 4rem !default;
+$sidebar-nav-icon-height: 1.25rem !default;
+$sidebar-nav-icon-font-size: $sidebar-nav-icon-height !default;
+
+$sidebar-nav-group-bg: rgba(0, 0, 0, 0.1) !default;
+$sidebar-nav-group-transition: background 0.15s ease-in-out !default;
+$sidebar-nav-group-toggle-show-color: $sidebar-nav-link-color !default;
+
+$sidebar-nav-group-items-padding-y: 0 !default;
+$sidebar-nav-group-items-padding-x: 0 !default;
+$sidebar-nav-group-items-transition: height 0.15s ease !default;
+
+$sidebar-nav-group-indicator-color: $gray-700 !default;
+$sidebar-nav-group-indicator-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$sidebar-nav-group-indicator-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !default;
+$sidebar-nav-group-indicator-hover-color: $sidebar-nav-link-hover-color !default;
+$sidebar-nav-group-indicator-hover-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$sidebar-nav-group-indicator-hover-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !default;
+$sidebar-nav-group-indicator-transition: transform 0.15s !default;
+
+$sidebar-footer-height: auto !default;
+$sidebar-footer-padding-y: 0.75rem !default;
+$sidebar-footer-padding-x: 1rem !default;
+$sidebar-footer-bg: rgba($black, 0.2) !default;
+$sidebar-footer-height-transition: height 0.15s, padding 0.15s !default;
+
+$sidebar-toggler-height: 3rem !default;
+$sidebar-toggler-bg: rgba($black, 0.2) !default;
+$sidebar-toggler-transition: transform 0.15s !default;
+
+$sidebar-toggler-indicator-width: 4rem !default;
+$sidebar-toggler-indicator-height: 3rem !default;
+$sidebar-toggler-indicator-color: $gray-600 !default;
+$sidebar-toggler-indicator-icon: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-toggler-indicator-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E") !default;
+$sidebar-toggler-hover-bg: rgba(0, 0, 0, 0.3) !default;
+$sidebar-toggler-indicator-hover-color: $sidebar-nav-link-hover-color !default;
+$sidebar-toggler-indicator-hover-icon: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath fill='#{$sidebar-toggler-indicator-hover-color}' d='M9.148 2.352l-4.148 4.148 4.148 4.148q0.148 0.148 0.148 0.352t-0.148 0.352l-1.297 1.297q-0.148 0.148-0.352 0.148t-0.352-0.148l-5.797-5.797q-0.148-0.148-0.148-0.352t0.148-0.352l5.797-5.797q0.148-0.148 0.352-0.148t0.352 0.148l1.297 1.297q0.148 0.148 0.148 0.352t-0.148 0.352z'/%3E%3C/svg%3E") !default;
+// scss-docs-end sidebar-variables

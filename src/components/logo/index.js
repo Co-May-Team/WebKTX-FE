@@ -7,13 +7,23 @@ const cx = bindClassNames(styles)
 
 function Logo() {
     return (
-        <NavLink to={path.HOME} className={cx('logo')}>
-            {/* LogoIcon */}
-            <LogoIcon className={cx('logo-icon')} />
-            {/* Logo name */}
-            <div className={cx('logo-name')}>
-                <span>KÝ TÚC XÁ</span>
-                <span>Cỏ May</span>
+        <NavLink to={path.HOME}>
+            <div
+                className={
+                    'icon icon-custom-size sidebar-brand-full ' +
+                    cx('Container')
+                }
+            >
+                {/* LogoIcon */}
+                <LogoIcon />
+                {/* Logo name */}
+                <div className={cx('LogoName')}>
+                    <span>KÝ TÚC XÁ</span>
+                    <span>Cỏ May</span>
+                </div>
+            </div>
+            <div className="icon icon-custom-size sidebar-brand-narrow">
+                <LogoIcon />
             </div>
         </NavLink>
     )

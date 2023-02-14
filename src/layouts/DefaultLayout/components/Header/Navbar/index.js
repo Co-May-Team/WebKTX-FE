@@ -2,8 +2,8 @@ import { memo, useEffect, useRef } from 'react'
 import { MdCloseFullscreen } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { Button } from 'reactstrap'
 
-import { Button } from '~/components/Customs'
 import { useClickOutside } from '~/hooks'
 import Account from '~/layouts/AdminLayout/components/Header/Account'
 import { authSelector } from '~/store/selectors'
@@ -31,7 +31,7 @@ function Navbar({ isShow, setShow }) {
                 to={item.to}
                 key={item.id}
                 className={({ isActive }) =>
-                    cx('nav-item', { active: isActive })
+                    cx('NavItem', { Active: isActive })
                 }
                 onClick={() => setShow(false)}
             >
@@ -43,7 +43,7 @@ function Navbar({ isShow, setShow }) {
     useClickOutside(navbarRef, () => setShow(false))
 
     useEffect(() => {
-        const className = cx('visible')
+        const className = cx('Visible')
         if (isShow) {
             handleClassName.add(navbarRef, className)
             handleClassName.add(overlayRef, className)
@@ -61,17 +61,21 @@ function Navbar({ isShow, setShow }) {
 
     return (
         <>
-            <div className={cx('navbar')} ref={navbarRef}>
-                <nav className={cx('main-nav')}>
+            <div className={cx('Container')} ref={navbarRef}>
+                <nav className={cx('NavWrapper')}>
                     {renderNavList()}
                     {userInfo?.id && <Account />}
                 </nav>
-                <Button className={cx('close')} onClick={() => setShow(false)}>
+                <Button
+                    color="none"
+                    className={cx('Close')}
+                    onClick={() => setShow(false)}
+                >
                     {/* <VscChromeClose /> */}
                     <MdCloseFullscreen />
                 </Button>
             </div>
-            <div className={cx('overlay')} ref={overlayRef}></div>
+            <div className={cx('Overlay')} ref={overlayRef}></div>
         </>
     )
 }

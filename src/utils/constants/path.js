@@ -4,8 +4,8 @@ export const path = {
     INTRODUCES: '/introduces',
     NOTIFICATIONS: '/notifications',
     NEWS: '/news',
-    // DETAIL_POST: '/post/:id',
     FORMS: '/forms',
+    DETAIL_POST: '/post/:id',
 
     // Auth path
     AUTH: '/auth',
