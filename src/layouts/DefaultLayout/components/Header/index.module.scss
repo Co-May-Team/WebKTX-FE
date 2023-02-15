@@ -1,0 +1,62 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+@mixin shrink {
+    min-height: $header-shrink-height;
+}
+
+.Container {
+    @include flex-center();
+    position: fixed;
+    z-index: 11;
+    width: 100%;
+    min-height: $header-min-height;
+    border-top: 0.4rem solid $green-color-6;
+    background-color: $white-color;
+    box-shadow: $box-shadow;
+    transition: $ease-in-out-tss;
+    &.Shrink {
+        @include shrink();
+    }
+}
+
+.Wrapper {
+    @include flex(center, space-between);
+}
+
+// Bars icon
+.BarsIcon {
+    display: none;
+}
+
+@include mobile {
+    .Container,
+    .Shrink {
+        @include shrink();
+    }
+
+    .BarsIcon {
+        @include flex-center();
+        transition: $linear-tss;
+        &:hover {
+            color: $gray-regular-color;
+        }
+    }
+}
+// Logo
+.LogoWrapper {
+    @include flex(center, center);
+    .LogoName {
+        @include flex-column();
+        font-weight: 700;
+        text-transform: uppercase;
+        & > span:last-of-type {
+            font-size: 1.25rem;
+            color: $green-light-color;
+            transition: $linear-tss;
+        }
+        & > span:last-of-type:hover {
+            color: $green-regular-color;
+        }
+    }
+}
