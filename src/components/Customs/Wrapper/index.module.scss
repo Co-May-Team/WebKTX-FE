@@ -1,0 +1,26 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.default {
+    width: $desktop-width;
+    max-width: 100%;
+    @include block-center();
+}
+
+@include small-desktop {
+    .default {
+        padding: 0 3rem;
+    }
+}
+
+@include tablet {
+    .default {
+        padding: 0 2rem;
+    }
+}
+
+@include mobile {
+    .default {
+        padding: 0 1.5rem;
+    }
+}

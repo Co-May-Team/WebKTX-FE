@@ -1,0 +1,7 @@
+export { default as Forms } from './Forms'
+export { default as Home } from './Home'
+export { default as Login } from './Login'
+export { default as DetailPost } from './Posts/DetailPost'
+export { default as Introduces } from './Posts/Introduces'
+export { default as News } from './Posts/News'
+export { default as Notifications } from './Posts/Notifications'

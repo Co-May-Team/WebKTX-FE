@@ -1,0 +1,7 @@
+@import '/src/styles/variables';
+@import '/src/styles/mixins';
+
+.Container {
+    @include flex-center();
+    margin-top: 2rem;
+}
