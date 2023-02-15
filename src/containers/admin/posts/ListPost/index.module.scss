@@ -58,7 +58,7 @@
 }
 
 .CardTitle {
-    @include text-justify();
+    text-align: justify !important;
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;

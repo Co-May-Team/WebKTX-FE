@@ -6,6 +6,9 @@ export default function MultiSelect({ ...props }) {
             background: '#008a00',
             borderRadius: '0.5rem',
         },
+        singleChip: {
+            color: 'white',
+        },
         optionListContainer: {
             border: '1px solid #008a00',
         },

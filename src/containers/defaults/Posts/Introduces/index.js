@@ -1,62 +1,152 @@
-import { Button } from 'reactstrap'
-import { imageUrl } from '~/assets/images'
+import moment from 'moment'
+import queryString from 'query-string'
+import { useEffect, useState } from 'react'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Badge } from 'reactstrap'
+import { Wrapper } from '~/components/Customs'
+import Confirm from '~/components/Customs/Confirm'
+import Pagination from '~/components/Pagination'
+import SubmitPost from '~/containers/admin/Posts/SubmitPost'
+import { deletePost, fetchPosts } from '~/store/posts/actions'
+import { authSelector, postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
-export default function Introduces() {
+function Introduces() {
+    const userInfo = useSelector(authSelector).userInfo
+    const listPost = useSelector(postsSelector).posts
+    const pagination = useSelector(postsSelector).pagination
+
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const navigation = useNavigate()
+
+    const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
+    const [visibleDeletePost, setVisibleDeletePost] = useState(false)
+    const [currentPost, setCurrentPost] = useState(null)
+
+    const [filters, setFilters] = useState({
+        category_id: 1,
+        page: 1,
+    })
+
+    const handlePageChange = (newPage) => {
+        setFilters({
+            ...filters,
+            page: newPage,
+        })
+    }
+
+    useEffect(() => {
+        document.title = 'Giới thiệu - KTX Cỏ May'
+        const params = queryString.parse(location.search)
+        if (
+            Object.keys(params).length > 1 ||
+            (Object.keys(params).length > 0 && params.page !== '1')
+        ) {
+            setFilters(params)
+        }
+    }, [])
+    useEffect(() => {
+        const requestUrl =
+            location.pathname + '?' + queryString.stringify(filters)
+        dispatch(fetchPosts(filters))
+        navigation(requestUrl)
+    }, [filters])
+
+    const handleDeletePost = () => {
+        dispatch(deletePost(currentPost.postId))
+    }
+
+    const renderCardList = () => {
+        return listPost.map((item) => (
+            <div key={item.postId} className={cx('CardItem')}>
+                <img
+                    src={'data:image/png;base64,' + item.thumbnail}
+                    alt="Thumbnail error"
+                    className={cx('CardImg')}
+                />
+                <div className={cx('CardBody')}>
+                    <NavLink
+                        className={cx('CardTitle')}
+                        to={`/post/${item.postId}`}
+                    >
+                        {item.title.slice(0, 82).trim()}...
+                    </NavLink>
+                    <div className={cx('CardInfo')}>
+                        <Badge color="secondary" className={cx('CardTime')}>
+                            <BsCalendar4 className="me-2" />
+                            {moment(item.createdAt).locale('vi').format('llll')}
+                        </Badge>
+                    </div>
+                    <div className={cx('Summary')}>
+                        {item.summary.slice(0, 100).trim()}...
+                    </div>
+                </div>
+                {userInfo?.id && (
+                    <div className={cx('Action')}>
+                        <div
+                            className={cx('ActionItem')}
+                            onClick={() => {
+                                setVisibleFormEditPost(true)
+                                setCurrentPost(item)
+                            }}
+                        >
+                            <AiOutlineEdit /> Chỉnh sửa
+                        </div>
+                        <div
+                            className={cx('ActionItem')}
+                            onClick={() => {
+                                setVisibleDeletePost(true)
+                                setCurrentPost(item)
+                            }}
+                        >
+                            <BsFillTrash2Fill /> Xóa
+                        </div>
+                    </div>
+                )}
+            </div>
+        ))
+    }
     return (
-        <div className={cx('container')}>
-            <div className={cx('detail')}>
-                <h3 className={cx('heading')}>KÝ TÚC XÁ CỎ MAY</h3>
-                <p className={cx('content')}>
-                    Ký túc xá Trường đại học Tôn Đức Thắng cơ sở Tân Phong gồm
-                    04 tòa nhà: Nhà H, I cao 10 tầng. Nhà K, L cao 20 tầng. Cơ
-                    chế hoạt động: Tự chủ tài chính, tự cân đối thu chi; Phương
-                    châm: Nề nếp, văn minh, hiệu quả, an toàn, bền vững, lâu
-                    dài; Tiêu chí: Phục vụ người học, tạo điều kiện tốt nhất
-                    trong ăn ở, sinh hoạt và học tập cho sinh viên ở nội trú. Bổ
-                    sung cho các hoạt động chính của Trường, góp phần thực hiện
-                    tốt mục tiêu và nhiệm vụ đào tạo của Nhà trường. Hệ thống Ký
-                    túc xá Đại học Tôn Đức Thắng gồm Ký túc xá Cơ sở Tân Phong,
-                    quận 7, Tp.HCM, Ký túc xá Cở sở Bảo Lộc và Ký túc xá Phân
-                    hiệu Nha Trang. Cung cấp 5831 chỗ ở cho sinh viên. Ký túc xá
-                    Trường Đại học Tôn Đức Thắng cơ sở Tân Phong gồm 04 khối nhà
-                    H, I, K và L. Với tổng diện tích sàn xây dựng là 42.414 m2;
-                    Phục vụ 4.772 chỗ ở cho sinh viên.
-                </p>
-                <Button className={cx('more-btn')}>Xem thêm</Button>
-            </div>
-            <div className={cx('info')}>
-                <h3 className={cx('heading')}>
-                    NHIỆM VỤ, TỔ CHỨC NHÂN SỰ & CƠ SỞ VẬT CHẤT
-                </h3>
-                <div className={cx('info-list')}>
-                    {[...Array(3).keys()].map((item) => (
-                        <div className={cx('info-item')} key={item}>
-                            <img
-                                src={imageUrl}
-                                alt={item}
-                                className={cx('info-img')}
-                            />
-                            <div className={cx('info-hover')}>
-                                <Button>Xem thêm</Button>
-                            </div>
-                        </div>
-                    ))}
+        <Wrapper>
+            <div className={cx('Inner')}>
+                <div className={cx('Heading')}>
+                    <h3 className={cx('Title')}>Giới thiệu</h3>
                 </div>
+                <div className={cx('GridPosts')}>{renderCardList()}</div>
+                <Pagination
+                    pagination={pagination}
+                    onPageChange={handlePageChange}
+                />
+                {visibleFormEditPost && (
+                    <SubmitPost
+                        visible={visibleFormEditPost}
+                        setVisible={() =>
+                            setVisibleFormEditPost(!visibleFormEditPost)
+                        }
+                        post={currentPost}
+                    />
+                )}
+                {visibleDeletePost && (
+                    <Confirm
+                        visible={visibleDeletePost}
+                        setVisible={() =>
+                            setVisibleDeletePost(!visibleDeletePost)
+                        }
+                        title="Xóa bài đăng"
+                        content="Bạn có chắc muốn xóa bài đăng này?"
+                        onConfirm={handleDeletePost}
+                    />
+                )}
             </div>
-            <div className={cx('image')}>
-                <h3 className={cx('heading')}>HÌNH ẢNH KÝ TÚC XÁ CỎ MAY</h3>
-                <div className={cx('img-list')}>
-                    {[...Array(10).keys()].map((item) => (
-                        <div className={cx('img-item')} key={item}>
-                            <img src={imageUrl} alt={item} />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
+        </Wrapper>
     )
 }
+
+export default Introduces

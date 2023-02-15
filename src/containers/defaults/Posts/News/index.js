@@ -76,7 +76,7 @@ function News() {
                         className={cx('CardTitle')}
                         to={`/post/${item.postId}`}
                     >
-                        {item.title}
+                        {item.title.slice(0, 82).trim()}...
                     </NavLink>
                     <div className={cx('CardInfo')}>
                         <Badge color="secondary" className={cx('CardTime')}>
@@ -84,7 +84,9 @@ function News() {
                             {moment(item.createdAt).locale('vi').format('llll')}
                         </Badge>
                     </div>
-                    <div className={cx('Summary')}>{item.summary}</div>
+                    <div className={cx('Summary')}>
+                        {item.summary.slice(0, 100).trim()}...
+                    </div>
                 </div>
                 {userInfo?.id && (
                     <div className={cx('Action')}>

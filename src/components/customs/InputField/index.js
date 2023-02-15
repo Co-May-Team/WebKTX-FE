@@ -10,6 +10,7 @@ export default function InputField({
     formGroupClassName,
     labelClassName,
     inputClassName,
+    showLengthValue,
     type,
     feedback,
     note,
@@ -22,10 +23,15 @@ export default function InputField({
 }) {
     return (
         <div className={cx(formGroupClassName) + ' mb-3'}>
-            <Label className={cx(labelClassName)}>
-                {label}
-                {isRequired && <span style={{ color: 'red' }}>*</span>}:
-            </Label>
+            <div className="d-flex">
+                <Label className="col">
+                    {label}
+                    {isRequired && <span style={{ color: 'red' }}>*</span>}:
+                </Label>
+                {showLengthValue && (
+                    <small className="col-auto">{props?.value?.length}</small>
+                )}
+            </div>
             {customInputElement ? (
                 customInputElement
             ) : (
@@ -50,6 +56,7 @@ InputField.propTypes = {
     formGroupClassName: PropTypes.string,
     labelClassName: PropTypes.string,
     inputClassName: PropTypes.string,
+    showLengthValue: PropTypes.bool,
     placeholder: PropTypes.string,
     isRequired: PropTypes.bool,
     invalid: PropTypes.bool,

@@ -21,12 +21,9 @@ import { InputField } from '~/components/Customs'
 import Modal from '~/components/Customs/Modal'
 import MultiSelect from '~/components/Customs/MultiSelect'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
-import { bindClassNames } from '~/utils'
 import defaultThumbnail from '~/utils/constants/defaultThumbnail'
-import styles from './index.module.scss'
+import './index.scss'
 import QuillEditor from './QuillEditor'
-
-const cx = bindClassNames(styles)
 
 function SubmitPost({ visible, setVisible, post }) {
     const dispatch = useDispatch()
@@ -44,6 +41,9 @@ function SubmitPost({ visible, setVisible, post }) {
         postsApi.getAllTag().then((response) => {
             setTagList(response.data.data)
         })
+        if (post?.postId) {
+            setThumbnail('data:image/jpeg;base64, ' + post.thumbnail)
+        }
     }, [])
 
     const handleUploadThumbnail = (event, setFieldValue) => {
@@ -94,8 +94,8 @@ function SubmitPost({ visible, setVisible, post }) {
         title: '',
         content: '',
         summary: '',
-        // isPublished: true,
-        publishAt: addedDate(new Date()),
+        isPublished: true,
+        publishedAt: addedDate(new Date()),
         category: {},
         tagIds: [],
         thumbnail: '',
@@ -118,7 +118,7 @@ function SubmitPost({ visible, setVisible, post }) {
             .required('Vui lòng nhập tóm tắt bài viết')
             .min(64, 'Tóm tắt bài viết phải nhiều hơn 64 ký tự.')
             .max(256, 'Tóm tắt bài viết phải ít hơn 256 ký tự.'),
-        publishAt: Yup.string().required(),
+        publishedAt: Yup.string().required(),
         category: Yup.object().required('Vui lòng chọn thể loại bài viết.'),
         tagModels: Yup.array()
             .of(
@@ -142,21 +142,23 @@ function SubmitPost({ visible, setVisible, post }) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             },
         })
+        const blob = new Blob([atob(thumbnail.split(',')[1])], {
+            type: 'image/jpeg',
+        })
+        const formData = new FormData()
+        formData.append('image', blob)
+        const nameThumbnail = await postsApi
+            .uploadImages(formData)
+            .then((response) => {
+                return response.data.data.name
+            })
+        const data = {
+            ...values,
+            thumbnail: nameThumbnail,
+            tagIds: values.tagModels.map((tag) => tag.tagId),
+            category: values.category.categoryId,
+        }
         if (post?.postId) {
-            const formData = new FormData()
-            formData.append('image', values.thumbnail)
-            const nameThumbnail = await postsApi
-                .uploadImages(formData)
-                .then((response) => {
-                    return response.data.data.name
-                })
-            const data = {
-                ...values,
-                thumbnail: nameThumbnail,
-                tagIds: values.tagModels.map((tag) => tag.tagId),
-                category: values.category.categoryId,
-            }
-            console.log(data)
             postsApi.updatePost({ ...data }).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
@@ -175,20 +177,6 @@ function SubmitPost({ visible, setVisible, post }) {
                 }
             })
         } else {
-            const formData = new FormData()
-            formData.append('image', values.thumbnail)
-            const nameThumbnail = await postsApi
-                .uploadImages(formData)
-                .then((response) => {
-                    return response.data.data.name
-                })
-            const data = {
-                ...values,
-                thumbnail: nameThumbnail,
-                tagIds: values.tagModels.map((tag) => tag.tagId),
-                category: values.category.categoryId,
-            }
-            console.log(data)
             postsApi.addPost(data).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
@@ -247,9 +235,12 @@ function SubmitPost({ visible, setVisible, post }) {
                                 name="title"
                                 placeholder="Nhập tiêu đề bài viết..."
                                 label="Tiêu đề"
-                                inputClassName={cx({
-                                    'is-invalid': touched.title && errors.title,
-                                })}
+                                inputClassName={
+                                    touched.title &&
+                                    errors.title &&
+                                    'is-invalid'
+                                }
+                                showLengthValue
                                 value={values.title}
                                 feedback={errors.title}
                                 onChange={handleChange}
@@ -267,6 +258,7 @@ function SubmitPost({ visible, setVisible, post }) {
                                         singleSelect={true}
                                         displayValue="categoryName"
                                         key="categoryId"
+                                        showArrow={false}
                                         placeholder="Chọn thể loại bài viết..."
                                         selectedValues={
                                             values.category
@@ -316,10 +308,12 @@ function SubmitPost({ visible, setVisible, post }) {
                                 rows="5"
                                 placeholder="Nhập tóm tắt bài viết..."
                                 label="Tóm tắt"
-                                inputClassName={cx({
-                                    'is-invalid':
-                                        touched.summary && errors.summary,
-                                })}
+                                inputClassName={
+                                    touched.summary &&
+                                    errors.summary &&
+                                    'is-invalid'
+                                }
+                                showLengthValue
                                 value={values.summary}
                                 feedback={errors.summary}
                                 onChange={handleChange}
@@ -330,11 +324,9 @@ function SubmitPost({ visible, setVisible, post }) {
                             <InputField
                                 type="text"
                                 label="Nội dung"
-                                inputClassName={cx({
-                                    'is-invalid':
-                                        touched.content && errors.content,
-                                })}
+                                value={values.content}
                                 feedback={errors.content}
+                                invalid={touched.content && errors.content}
                                 customInputElement={
                                     <QuillEditor
                                         content={values.content}
@@ -352,11 +344,6 @@ function SubmitPost({ visible, setVisible, post }) {
                                         accept="image/*"
                                         name="thumbnail"
                                         label="Thumbnail"
-                                        inputClassName={cx({
-                                            'is-invalid':
-                                                touched.thumbnail &&
-                                                errors.thumbnail,
-                                        })}
                                         feedback={errors.thumbnail}
                                         onChange={(e) => {
                                             handleUploadThumbnail(
@@ -372,21 +359,16 @@ function SubmitPost({ visible, setVisible, post }) {
                                     />
                                     <InputField
                                         type="datetime-local"
-                                        name="publishAt"
+                                        name="publishedAt"
                                         label="Thời gian công bố"
-                                        inputClassName={cx({
-                                            'is-invalid':
-                                                touched.publishAt &&
-                                                errors.publishAt,
-                                        })}
-                                        value={addedDate(values.publishAt)}
-                                        feedback={errors.publishAt}
-                                        note={formatDate(values.publishAt)}
+                                        value={addedDate(values.publishedAt)}
+                                        feedback={errors.publishedAt}
+                                        note={formatDate(values.publishedAt)}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         invalid={
-                                            touched.publishAt &&
-                                            errors.publishAt
+                                            touched.publishedAt &&
+                                            errors.publishedAt
                                         }
                                         isRequired
                                     />

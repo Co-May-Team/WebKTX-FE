@@ -15,72 +15,20 @@ $padding: 3rem;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 1rem;
     padding: 3rem 0;
+}
+.Title {
+    font-weight: bolder;
+}
+.Content > * {
     img {
         width: 100%;
     }
-}
-
-.Left {
-    /* Left */
-
-    /* Auto layout */
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 20px;
-}
-
-.Main {
-    /* Main */
-
-    box-sizing: border-box;
-
-    /* Auto layout */
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: $padding;
-    background: $body-bg;
-    border-bottom: 1px solid #dddddd;
-}
-.Title {
-    text-align: center;
-    font-weight: bolder;
-}
-
-.CreateTime {
-    text-align: center;
-}
-
-.Content {
-    /* Content */
-
-    /* Auto layout */
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 25px;
     text-align: justify;
 }
-
 .Share {
     display: flex;
-    gap: 1rem;
-}
-
-.Right {
-    /* Right */
-
-    /* Auto layout */
-
-    display: flex;
-    flex-direction: column;
     align-items: flex-start;
-    padding: 0px;
-    gap: 30px;
+    gap: 1rem;
 }

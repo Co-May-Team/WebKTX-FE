@@ -16,6 +16,7 @@ const cx = bindClassNames(styles)
 
 function ListPost({ data }) {
     const userInfo = useSelector(authSelector).userInfo
+
     const dispatch = useDispatch()
 
     const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
@@ -35,7 +36,9 @@ function ListPost({ data }) {
                     className={cx('CardImg')}
                 />
                 <div className={cx('CardBody')}>
-                    <div className={cx('CardTitle')}>{item.title}</div>
+                    <div className={cx('CardTitle')}>
+                        {item.title.slice(0, 82).trim()}...
+                    </div>
                     <div className={cx('CardInfo')}>
                         <Badge color="secondary" className={cx('CardTime')}>
                             <BsCalendar4 className="me-2" />
@@ -45,7 +48,9 @@ function ListPost({ data }) {
                             {item.category.categoryName}
                         </Badge>
                     </div>
-                    <div className={cx('Summary')}>{item.summary}</div>
+                    <div className={cx('Summary')}>
+                        {item.summary.slice(0, 100).trim()}...
+                    </div>
                 </div>
                 {userInfo?.id && (
                     <div className={cx('Action')}>

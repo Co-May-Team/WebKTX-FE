@@ -1,13 +1,7 @@
-import StaticsProvinceBySex from './StaticsProvinceBySex'
-
-function Home(props) {
-    return (
-        <div>
-            <StaticsProvinceBySex />
-        </div>
-    )
+function Dashboard(props) {
+    return <div>Dashboard</div>
 }
 
-Home.propTypes = {}
+Dashboard.propTypes = {}
 
-export default Home
+export default Dashboard

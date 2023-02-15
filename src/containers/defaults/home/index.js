@@ -10,7 +10,6 @@ const cx = bindClassNames(styles)
 
 export default function Home() {
     const posts = useSelector(postsSelector).posts
-    console.log(posts)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchPosts())

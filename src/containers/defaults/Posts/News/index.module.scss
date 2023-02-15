@@ -17,7 +17,7 @@
     line-height: 1.5;
     color: $green-color-7;
     position: relative;
-    n &::after {
+    &::after {
         position: absolute;
         content: '';
         left: 0;
