@@ -1,10 +1,11 @@
+import queryString from 'query-string'
 import axiosClient from './axiosClient'
 
 const baseUrl = '/posts'
 const postsApi = {
-    getAll: (filtersParams) => {
-        const requestUrl = `${baseUrl}`
-        return axiosClient.get(requestUrl, { params: { ...filtersParams } })
+    getAll: (params, filters) => {
+        const requestUrl = `${baseUrl}?${queryString.stringify(params)}`
+        return axiosClient.post(requestUrl, { ...filters } )
     },
     get: (postId) => {
         const requestUrl = `${baseUrl}/${postId}`

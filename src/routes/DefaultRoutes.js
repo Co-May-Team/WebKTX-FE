@@ -3,21 +3,16 @@ import {
     DetailPost,
     Forms,
     Home,
-    Introduces,
-    News,
-    Notifications,
+    Posts
 } from '~/containers/defaults'
 import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
 
 const defaultRoutes = [
     { id: Math.random(), Container: Home, path: path.HOME },
-    { id: Math.random(), Container: Notifications, path: path.NOTIFICATIONS },
-    { id: Math.random(), Container: Introduces, path: path.INTRODUCES },
-    { id: Math.random(), Container: News, path: path.NEWS },
+    { id: Math.random(), Container: Posts, path: "/:url" },
     { id: Math.random(), Container: Forms, path: path.FORMS },
     { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
-    // { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
     {
         id: Math.random(),
         Container: Navigate,

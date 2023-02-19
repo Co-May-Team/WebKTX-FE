@@ -7,7 +7,7 @@ export const { addPostToList, updatePostList } = postsSlice.actions
 export const fetchPosts = createAsyncThunk(
     'posts/fetchPosts',
     async (params) => {
-        const response = await postsApi.getAll(params)
+        const response = await postsApi.getAll(params.params, params.filters)
         return response.data.data
     }
 )

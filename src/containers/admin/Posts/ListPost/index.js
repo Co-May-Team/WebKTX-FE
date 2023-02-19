@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge } from 'reactstrap'
+import { NavLink } from 'react-router-dom'
+import { Badge, ListGroup, ListGroupItem } from 'reactstrap'
 import Confirm from '~/components/Customs/Confirm'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
@@ -36,20 +37,20 @@ function ListPost({ data }) {
                     className={cx('CardImg')}
                 />
                 <div className={cx('CardBody')}>
-                    <div className={cx('CardTitle')}>
+                    <NavLink
+                        className={cx('CardTitle')}
+                        to={`/post/${item.postId}`}
+                    >
                         {item.title.slice(0, 82).trim()}...
-                    </div>
+                    </NavLink>
                     <div className={cx('CardInfo')}>
                         <Badge color="secondary" className={cx('CardTime')}>
                             <BsCalendar4 className="me-2" />
                             {moment(item.createdAt).locale('vi').format('llll')}
                         </Badge>
-                        <Badge color="info" className="d-block">
-                            {item.category.categoryName}
-                        </Badge>
                     </div>
                     <div className={cx('Summary')}>
-                        {item.summary.slice(0, 100).trim()}...
+                        {item.summary}...
                     </div>
                 </div>
                 {userInfo?.id && (
@@ -79,6 +80,7 @@ function ListPost({ data }) {
     }
     return (
         <React.Fragment>
+            
             <div className={cx('GridPosts')}>{renderCardList()}</div>
             {visibleFormEditPost && (
                 <SubmitPost

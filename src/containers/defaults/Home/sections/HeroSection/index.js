@@ -1,3 +1,4 @@
+import { dormitory1, dormitory2, dormitory3 } from '~/assets/images'
 import { Swiper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
@@ -7,30 +8,23 @@ const cx = bindClassNames(styles)
 const data = [
     {
         id: Math.random(),
-        url: imageUrl,
+        url: dormitory1,
         alt: '',
     },
     {
         id: Math.random(),
-        url: imageUrl,
+        url: dormitory2,
         alt: '',
     },
     {
         id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-    {
-        id: Math.random(),
-        url: imageUrl,
+        url: dormitory3,
         alt: '',
     },
 ]
 
 export default function HeroSection() {
     return (
-        <div className={cx('_container')}>
             <Swiper data={data} />
-        </div>
     )
 }

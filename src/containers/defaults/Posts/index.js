@@ -4,64 +4,72 @@ import { useEffect, useState } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Badge } from 'reactstrap'
 import { Wrapper } from '~/components/Customs'
 import Confirm from '~/components/Customs/Confirm'
 import Pagination from '~/components/Pagination'
 import SubmitPost from '~/containers/admin/Posts/SubmitPost'
 import { deletePost, fetchPosts } from '~/store/posts/actions'
-import { authSelector, postsSelector } from '~/store/selectors'
+import { authSelector, postsSelector, tagsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
 
-function Notifications() {
-    const userInfo = useSelector(authSelector).userInfo
+function Posts() {
+    const tagList = useSelector(tagsSelector).tags
     const listPost = useSelector(postsSelector).posts
     const pagination = useSelector(postsSelector).pagination
 
     const dispatch = useDispatch()
+    const url = useParams().url
     const location = useLocation()
     const navigation = useNavigate()
 
+    const [tagInfo, setTagInfo] = useState(null)
     const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
     const [visibleDeletePost, setVisibleDeletePost] = useState(false)
     const [currentPost, setCurrentPost] = useState(null)
 
-    const [filters, setFilters] = useState({
-        category_id: 2,
+    const [params, setParams] = useState({
         page: 1,
     })
+    const [filters, setFilters] = useState(null)
 
     const handlePageChange = (newPage) => {
-        setFilters({
-            ...filters,
+        setParams({
+            ...params,
             page: newPage,
         })
     }
-
+    const searchTagByUrl = () => {
+        return tagList.filter(tag => convertToUrl(tag?.tagName) === url)[0]
+    }
+    document.title = tagInfo?.tagName ? `${tagInfo?.tagName} - KTX Cỏ May` : "KTX Cỏ May"
     useEffect(() => {
-        document.title = 'Thông báo - KTX Cỏ May'
+        const tag = searchTagByUrl()
+        setTagInfo(tag)
+        setFilters({
+            tag_id: tag.tagId
+        })
+    }, [url])
+    useEffect(() => {
         const params = queryString.parse(location.search)
         if (
             Object.keys(params).length > 1 ||
             (Object.keys(params).length > 0 && params.page !== '1')
         ) {
-            setFilters(params)
+            setParams(params)
         }
     }, [])
     useEffect(() => {
         const requestUrl =
-            location.pathname + '?' + queryString.stringify(filters)
-        dispatch(fetchPosts(filters))
+            location.pathname + '?' + queryString.stringify(params)
+        dispatch(fetchPosts({ params, filters }))
         navigation(requestUrl)
-    }, [filters])
-
-    const handleDeletePost = () => {
-        dispatch(deletePost(currentPost.postId))
-    }
+    }, [params, filters])
 
     const renderCardList = () => {
         return listPost.map((item) => (
@@ -85,31 +93,9 @@ function Notifications() {
                         </Badge>
                     </div>
                     <div className={cx('Summary')}>
-                        {item.summary.slice(0, 100).trim()}...
+                        {item.summary}...
                     </div>
                 </div>
-                {userInfo?.id && (
-                    <div className={cx('Action')}>
-                        <div
-                            className={cx('ActionItem')}
-                            onClick={() => {
-                                setVisibleFormEditPost(true)
-                                setCurrentPost(item)
-                            }}
-                        >
-                            <AiOutlineEdit /> Chỉnh sửa
-                        </div>
-                        <div
-                            className={cx('ActionItem')}
-                            onClick={() => {
-                                setVisibleDeletePost(true)
-                                setCurrentPost(item)
-                            }}
-                        >
-                            <BsFillTrash2Fill /> Xóa
-                        </div>
-                    </div>
-                )}
             </div>
         ))
     }
@@ -117,36 +103,27 @@ function Notifications() {
         <Wrapper>
             <div className={cx('Inner')}>
                 <div className={cx('Heading')}>
-                    <h3 className={cx('Title')}>Thông báo</h3>
+                    <h3 className={cx('Title')}>{tagInfo?.tagName}</h3>
                 </div>
-                <div className={cx('GridPosts')}>{renderCardList()}</div>
-                <Pagination
-                    pagination={pagination}
-                    onPageChange={handlePageChange}
-                />
-                {visibleFormEditPost && (
-                    <SubmitPost
-                        visible={visibleFormEditPost}
-                        setVisible={() =>
-                            setVisibleFormEditPost(!visibleFormEditPost)
-                        }
-                        post={currentPost}
-                    />
-                )}
-                {visibleDeletePost && (
-                    <Confirm
-                        visible={visibleDeletePost}
-                        setVisible={() =>
-                            setVisibleDeletePost(!visibleDeletePost)
-                        }
-                        title="Xóa bài đăng"
-                        content="Bạn có chắc muốn xóa bài đăng này?"
-                        onConfirm={handleDeletePost}
-                    />
-                )}
+                {listPost && listPost.length > 0 ? (
+                    <>
+                        <div className={cx('GridPosts')}>
+                            {renderCardList()}
+                        </div>
+                        <Pagination
+                            pagination={pagination}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                ) : (
+                    <div className="text-center">
+                        Trống
+                    </div>
+                )
+                }
             </div>
         </Wrapper>
     )
 }
 
-export default Notifications
+export default Posts

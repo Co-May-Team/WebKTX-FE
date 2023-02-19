@@ -48,7 +48,7 @@ const formats = [
     'align',
     'direction',
 ]
-const QuillEditor = ({ content, onChange }) => {
+const QuillEditor = ({ content, onChange, ...props }) => {
     return (
         <ReactQuill
             defaultValue={content}
@@ -56,6 +56,7 @@ const QuillEditor = ({ content, onChange }) => {
             onChange={onChange}
             modules={modules}
             formats={formats}
+            {...props}
         />
     )
 }

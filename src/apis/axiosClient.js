@@ -34,16 +34,10 @@ axiosClient.interceptors.response.use(
                 localStorage.removeItem('userInfo')
                 window.location.href = '/auth/login'
             })
-            // setTimeout(() => {
-            //     localStorage.removeItem("accessToken")
-            //     localStorage.removeItem("userInfo")
-            //     window.location.reload()
-            // }, 2000)
         }
         return response
     },
     (error) => {
-        console.log(error)
         if (error.response.status === 401 || error.response.status === 403) {
             Swal.fire({
                 title: 'Cảnh báo đăng nhập',
@@ -55,11 +49,6 @@ axiosClient.interceptors.response.use(
                 localStorage.removeItem('userInfo')
                 window.location.href = '/auth/login'
             })
-            // setTimeout(() => {
-            //     localStorage.removeItem("accessToken")
-            //     localStorage.removeItem("userInfo")
-            //     window.location.reload()
-            // }, 2000)
         }
         throw error
     }

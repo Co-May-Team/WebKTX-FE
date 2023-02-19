@@ -2,7 +2,7 @@
 @import '/src/styles/mixins';
 
 .GridPosts {
-    @include grid(column, 3, 1fr, 3rem);
+    @include grid(column, 3, 1fr, 1rem);
 }
 
 .CardItem {
@@ -99,9 +99,15 @@
     }
 }
 
+@include small-desktop {
+    .GridPosts {
+        @include grid(column, 2, 1fr, 3rem);
+    }
+}
+
 @include tablet {
     .GridPosts {
-        @include grid(column, 2, 1fr, 2rem);
+        @include grid(column, 1, 1fr, 2rem);
     }
 }
 

@@ -1,46 +1,47 @@
 import { memo, useEffect, useRef } from 'react'
 import { MdCloseFullscreen } from 'react-icons/md'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import { useClickOutside } from '~/hooks'
 import Account from '~/layouts/AdminLayout/components/Header/Account'
-import { authSelector } from '~/store/selectors'
+import { authSelector, tagsSelector } from '~/store/selectors'
+import { fetchTags } from '~/store/tags/actions'
 import { bindClassNames, handleClassName, path } from '~/utils'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
-const navList = [
-    { id: Math.random(), display: 'Trang chủ', to: path.HOME },
-    { id: Math.random(), display: 'Giới thiệu', to: path.INTRODUCES },
-    { id: Math.random(), display: 'Thông báo', to: path.NOTIFICATIONS },
-    { id: Math.random(), display: 'Tin tức', to: path.NEWS },
-    { id: Math.random(), display: 'Biểu mẫu', to: path.FORMS },
-]
 
 function Navbar({ isShow, setShow }) {
     const userInfo = useSelector(authSelector).userInfo
+    const tagList = useSelector(tagsSelector).tags
 
+    const dispatch = useDispatch()
     const navbarRef = useRef()
     const overlayRef = useRef()
 
     const renderNavList = () => {
-        return navList.map((item) => (
+        return tagList.map((tagItem) => (
             <NavLink
-                to={item.to}
-                key={item.id}
+                to={convertToUrl(tagItem.tagName)}
+                key={tagItem.tagId}
                 className={({ isActive }) =>
                     cx('NavItem', { Active: isActive })
                 }
                 onClick={() => setShow(false)}
             >
-                {item.display}
+                {tagItem.tagName}
             </NavLink>
         ))
     }
 
     useClickOutside(navbarRef, () => setShow(false))
+
+    useEffect(() => {
+        dispatch(fetchTags())
+    }, [])
 
     useEffect(() => {
         const className = cx('Visible')
@@ -63,6 +64,16 @@ function Navbar({ isShow, setShow }) {
         <>
             <div className={cx('Container')} ref={navbarRef}>
                 <nav className={cx('NavWrapper')}>
+            <NavLink
+                to="/"
+                key="home"
+                className={({ isActive }) =>
+                    cx('NavItem', { Active: isActive })
+                }
+                onClick={() => setShow(false)}
+            >
+                Trang chủ
+            </NavLink>
                     {renderNavList()}
                     {userInfo?.id && <Account />}
                 </nav>
