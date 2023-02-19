@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Formik } from 'formik'
+import { Field, Formik } from 'formik'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -51,7 +51,6 @@ function SubmitPost({ visible, setVisible, post }) {
         const reader = new FileReader()
         reader.readAsDataURL(file)
         reader.onloadend = () => {
-            const base64 = reader.result.split(',')[1]
             setFieldValue('thumbnail', file)
             setThumbnail(reader.result)
         }
@@ -114,20 +113,19 @@ function SubmitPost({ visible, setVisible, post }) {
         content: Yup.string()
             .required('Vui lòng nhập nội dung bài viết.')
             .min(512, 'Nội dung bài viết phải nhiều hơn 512 ký tự.'),
-        summary: Yup.string()
-            .required('Vui lòng nhập tóm tắt bài viết')
-            .min(64, 'Tóm tắt bài viết phải nhiều hơn 64 ký tự.')
-            .max(256, 'Tóm tắt bài viết phải ít hơn 256 ký tự.'),
+        summary: Yup.string(),
         publishedAt: Yup.string().required(),
-        category: Yup.object().required('Vui lòng chọn thể loại bài viết.'),
-        tagModels: Yup.array()
+        category: Yup.object().shape({
+            categoryId: Yup.string().required('Vui lòng chọn chuyên mục của bài viết.'),
+            categoryName: Yup.string().required('Vui lòng chọn chuyên mục của bài viết.'),
+        }),
+        tagModels: Yup.array().min(1, 'Bạn phải chọn ít nhất 1 thẻ.')
             .of(
                 Yup.object().shape({
                     tagId: Yup.string().required(),
                     tagName: Yup.string().required(),
                 })
             )
-            .required('Vui lòng chọn ít nhất 1 thẻ.'),
     })
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true)
@@ -142,41 +140,79 @@ function SubmitPost({ visible, setVisible, post }) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             },
         })
-        const blob = new Blob([atob(thumbnail.split(',')[1])], {
-            type: 'image/jpeg',
-        })
-        const formData = new FormData()
-        formData.append('image', blob)
-        const nameThumbnail = await postsApi
-            .uploadImages(formData)
-            .then((response) => {
-                return response.data.data.name
-            })
-        const data = {
-            ...values,
-            thumbnail: nameThumbnail,
-            tagIds: values.tagModels.map((tag) => tag.tagId),
-            category: values.category.categoryId,
-        }
         if (post?.postId) {
-            postsApi.updatePost({ ...data }).then((response) => {
-                if (response.data.status === 'OK') {
-                    Toast.fire({
-                        title: 'Chỉnh sửa bài viết',
-                        text: response.data.message,
-                        icon: 'success',
+            if (post?.thumbnail !== thumbnail) {
+                console.log(values.thumbnail)
+                const formData = new FormData()
+                formData.append('image', values.thumbnail)
+                const nameThumbnail = await postsApi
+                    .uploadImages(formData)
+                    .then((response) => {
+                        return response.data.data.name
                     })
-                    dispatch(updatePostList(response.data.data))
-                    setVisible()
-                } else {
-                    Toast.fire({
-                        title: 'Chỉnh sửa bài viết',
-                        text: response.data.message,
-                        icon: 'warning',
-                    })
+                const data = {
+                    ...values,
+                    thumbnail: nameThumbnail,
+                    tagIds: values.tagModels.map((tag) => tag.tagId),
+                    category: values.category.categoryId,
                 }
-            })
+                postsApi.updatePost(data).then((response) => {
+                    if (response.data.status === 'OK') {
+                        Toast.fire({
+                            title: 'Chỉnh sửa bài viết',
+                            text: response.data.message,
+                            icon: 'success',
+                        })
+                        dispatch(updatePostList(response.data.data))
+                        setVisible()
+                    } else {
+                        Toast.fire({
+                            title: 'Chỉnh sửa bài viết',
+                            text: response.data.message,
+                            icon: 'warning',
+                        })
+                    }
+                })
+            }
+            else {
+                const data = {
+                    ...values,
+                    tagIds: values.tagModels.map((tag) => tag.tagId),
+                    category: values.category.categoryId,
+                }
+                postsApi.updatePost(data).then((response) => {
+                    if (response.data.status === 'OK') {
+                        Toast.fire({
+                            title: 'Chỉnh sửa bài viết',
+                            text: response.data.message,
+                            icon: 'success',
+                        })
+                        dispatch(updatePostList(response.data.data))
+                        setVisible()
+                    } else {
+                        Toast.fire({
+                            title: 'Chỉnh sửa bài viết',
+                            text: response.data.message,
+                            icon: 'warning',
+                        })
+                    }
+                })
+            }
         } else {
+            const formData = new FormData()
+            formData.append('image', values.thumbnail)
+            console.log(values.thumbnail)
+            const nameThumbnail = await postsApi
+                .uploadImaaaaaaaaaaaaaaaaaâges(formData)
+                .then((response) => {
+                    return response.data.data.name
+                })
+            const data = {
+                ...values,
+                thumbnail: nameThumbnail,
+                tagIds: values.tagModels.map((tag) => tag.tagId),
+                category: values.category.categoryId,
+            }
             postsApi.addPost(data).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
@@ -225,6 +261,7 @@ function SubmitPost({ visible, setVisible, post }) {
                         handleBlur,
                         handleSubmit,
                         setFieldValue,
+                        setTouched,
                         isValid,
                         dirty,
                         isSubmitting,
@@ -248,92 +285,79 @@ function SubmitPost({ visible, setVisible, post }) {
                                 invalid={touched.title && errors.title}
                                 isRequired
                             />
-                            <InputField
-                                label="Thể loại"
-                                isRequired
-                                invalid={touched.category && errors.category}
-                                feedback={errors.category}
-                                customInputElement={
-                                    <MultiSelect
-                                        singleSelect={true}
-                                        displayValue="categoryName"
-                                        key="categoryId"
-                                        showArrow={false}
-                                        placeholder="Chọn thể loại bài viết..."
-                                        selectedValues={
-                                            values.category
-                                                ? [values.category]
-                                                : [null]
-                                        }
-                                        options={categoryList}
-                                        onSelect={(selectedList) => {
-                                            setFieldValue(
-                                                'category',
-                                                selectedList[0]
-                                            )
-                                        }}
-                                    />
-                                }
-                            />
-                            <InputField
-                                label="Thẻ"
-                                isRequired
-                                invalid={touched.tagModels && errors.tagModels}
-                                feedback={errors.tagModels}
-                                customInputElement={
-                                    <MultiSelect
-                                        showCheckbox
-                                        displayValue="tagName"
-                                        placeholder="Chọn thẻ bài viết..."
-                                        selectedValues={values.tagModels}
-                                        options={tagList}
-                                        onSelect={(selectedList) => {
-                                            setFieldValue(
-                                                'tagModels',
-                                                selectedList
-                                            )
-                                        }}
-                                        onRemove={(selectedList) => {
-                                            setFieldValue(
-                                                'tagModels',
-                                                selectedList
-                                            )
-                                        }}
-                                    />
-                                }
-                            />
+                            <div className='mb-3'>
+                                <Label>
+                                    Chuyên mục<span style={{ color: 'red' }}>*</span>:
+                                </Label>
+                                <MultiSelect
+                                    singleSelect={true}
+                                    displayValue="categoryName"
+                                    key="categoryId"
+                                    showArrow={false}
+                                    placeholder="Chọn chuyên mục..."
+                                    selectedValues={
+                                        values.category
+                                            ? [values.category]
+                                            : [null]
+                                    }
+                                    options={categoryList}
+                                    onSelect={(selectedList) => {
+                                        setFieldValue(
+                                            'category',
+                                            selectedList[0]
+                                        )
+                                    }}
+                                />
+                                {errors.category && <div className="invalid-feedback d-block">{errors.category}</div>}
+                            </div>
+                            <div className='mb-3'>
+                                <Label>
+                                    Thẻ<span style={{ color: 'red' }}>*</span>:
+                                </Label>
+                                <MultiSelect
+                                    showCheckbox
+                                    displayValue="tagName"
+                                    placeholder="Chọn thẻ bài viết..."
+                                    selectedValues={values.tagModels}
+                                    options={tagList}
+                                    onSelect={(selectedList) => {
+                                        setFieldValue(
+                                            'tagModels',
+                                            selectedList
+                                        )
+                                    }}
+                                    onRemove={(selectedList) => {
+                                        setFieldValue(
+                                            'tagModels',
+                                            selectedList
+                                        )
+                                    }}
+                                    onBlur={() => setTouched("tagModels", true)}
+                                />
+                                {errors.tagModels && <div className="invalid-feedback d-block">{errors.tagModels}</div>}
+                            </div>
                             <InputField
                                 type="textarea"
                                 name="summary"
                                 rows="5"
                                 placeholder="Nhập tóm tắt bài viết..."
                                 label="Tóm tắt"
-                                inputClassName={
-                                    touched.summary &&
-                                    errors.summary &&
-                                    'is-invalid'
-                                }
-                                showLengthValue
                                 value={values.summary}
-                                feedback={errors.summary}
                                 onChange={handleChange}
-                                onBlur={handleBlur}
-                                invalid={touched.summary && errors.summary}
-                                isRequired
                             />
                             <InputField
-                                type="text"
                                 label="Nội dung"
                                 value={values.content}
-                                feedback={errors.content}
-                                invalid={touched.content && errors.content}
                                 customInputElement={
-                                    <QuillEditor
-                                        content={values.content}
-                                        onChange={(content) => {
-                                            setFieldValue('content', content)
-                                        }}
-                                    />
+                                    <div>
+                                        <QuillEditor
+                                            content={values.content}
+                                            onChange={(content) => {
+                                                setFieldValue('content', content)
+                                            }}
+                                        />
+                                        {errors.content && <div className="invalid-feedback d-block">{errors.content}</div>}
+                                    </div>
                                 }
                                 isRequired
                             />
@@ -406,7 +430,7 @@ function SubmitPost({ visible, setVisible, post }) {
                             <ModalFooter>
                                 <Button
                                     color="primary"
-                                    disabled={!(dirty && isValid)}
+                                    // disabled={!(dirty && isValid)}
                                     className="fw-bolder"
                                     type="submit"
                                 >

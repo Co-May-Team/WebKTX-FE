@@ -29,20 +29,7 @@
     display: none;
 }
 
-@include mobile {
-    .Container,
-    .Shrink {
-        @include shrink();
-    }
 
-    .BarsIcon {
-        @include flex-center();
-        transition: $linear-tss;
-        &:hover {
-            color: $gray-regular-color;
-        }
-    }
-}
 // Logo
 .LogoWrapper {
     @include flex(center, center);
@@ -58,5 +45,30 @@
         & > span:last-of-type:hover {
             color: $green-regular-color;
         }
+    }
+    margin-left: 2rem;
+}
+
+@include small-desktop {
+    .LogoWrapper .LogoName {
+        display: none;
+    }
+}
+
+@include mobile {
+    .Container,
+    .Shrink {
+        @include shrink();
+    }
+
+    .BarsIcon {
+        @include flex-center();
+        transition: $linear-tss;
+        &:hover {
+            color: $gray-regular-color;
+        }
+    }
+    .LogoWrapper .LogoName {
+        display: flex;
     }
 }
