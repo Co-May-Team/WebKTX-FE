@@ -9,14 +9,14 @@ export default function VideosSection() {
     const data = [
         {
             id: 1,
-            title: "[05/2017] - Ký túc xá Cỏ May học tập thực tế tại doanh nghiệp Cỏ May - tỉnh Đồng Tháp",
-            src: "https://www.youtube.com/embed/-taMLkDG_ao",
+            title: '[05/2017] - Ký túc xá Cỏ May học tập thực tế tại doanh nghiệp Cỏ May - tỉnh Đồng Tháp',
+            src: 'https://www.youtube.com/embed/-taMLkDG_ao',
         },
         {
             id: 2,
-            title: "Phóng sự Ký túc xá Cỏ May trên kênh Camera Cận Cảnh",
-            src: "https://www.youtube.com/embed/lptvIdwU-NI",
-        }
+            title: 'Phóng sự Ký túc xá Cỏ May trên kênh Camera Cận Cảnh',
+            src: 'https://www.youtube.com/embed/lptvIdwU-NI',
+        },
     ]
     const breakpoints = {
         768: {
@@ -40,9 +40,7 @@ export default function VideosSection() {
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             ></iframe>
-                            <p className={cx('video-title')}>
-                                {item.title}
-                            </p>
+                            <p className={cx('video-title')}>{item.title}</p>
                         </div>
                     </SwiperSlide>
                 ))}

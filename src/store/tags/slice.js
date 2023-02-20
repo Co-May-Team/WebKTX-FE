@@ -5,13 +5,13 @@ const { createSlice } = require('@reduxjs/toolkit')
 const tagsSlice = createSlice({
     name: 'tags',
     initialState: {
-        tags: []
+        tags: [],
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTags.fulfilled, (state, action) => {
             state.tags = action.payload
         })
-    }
+    },
 })
 
 export default tagsSlice

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Field, Formik } from 'formik'
+import { Formik } from 'formik'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -116,16 +116,21 @@ function SubmitPost({ visible, setVisible, post }) {
         summary: Yup.string(),
         publishedAt: Yup.string().required(),
         category: Yup.object().shape({
-            categoryId: Yup.string().required('Vui lòng chọn chuyên mục của bài viết.'),
-            categoryName: Yup.string().required('Vui lòng chọn chuyên mục của bài viết.'),
+            categoryId: Yup.string().required(
+                'Vui lòng chọn chuyên mục của bài viết.'
+            ),
+            categoryName: Yup.string().required(
+                'Vui lòng chọn chuyên mục của bài viết.'
+            ),
         }),
-        tagModels: Yup.array().min(1, 'Bạn phải chọn ít nhất 1 thẻ.')
+        tagModels: Yup.array()
+            .min(1, 'Bạn phải chọn ít nhất 1 thẻ.')
             .of(
                 Yup.object().shape({
                     tagId: Yup.string().required(),
                     tagName: Yup.string().required(),
                 })
-            )
+            ),
     })
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true)
@@ -173,8 +178,7 @@ function SubmitPost({ visible, setVisible, post }) {
                         })
                     }
                 })
-            }
-            else {
+            } else {
                 const data = {
                     ...values,
                     tagIds: values.tagModels.map((tag) => tag.tagId),
@@ -285,9 +289,10 @@ function SubmitPost({ visible, setVisible, post }) {
                                 invalid={touched.title && errors.title}
                                 isRequired
                             />
-                            <div className='mb-3'>
+                            <div className="mb-3">
                                 <Label>
-                                    Chuyên mục<span style={{ color: 'red' }}>*</span>:
+                                    Chuyên mục
+                                    <span style={{ color: 'red' }}>*</span>:
                                 </Label>
                                 <MultiSelect
                                     singleSelect={true}
@@ -308,9 +313,13 @@ function SubmitPost({ visible, setVisible, post }) {
                                         )
                                     }}
                                 />
-                                {errors.category && <div className="invalid-feedback d-block">{errors.category}</div>}
+                                {errors.category && (
+                                    <div className="invalid-feedback d-block">
+                                        {errors.category}
+                                    </div>
+                                )}
                             </div>
-                            <div className='mb-3'>
+                            <div className="mb-3">
                                 <Label>
                                     Thẻ<span style={{ color: 'red' }}>*</span>:
                                 </Label>
@@ -321,20 +330,18 @@ function SubmitPost({ visible, setVisible, post }) {
                                     selectedValues={values.tagModels}
                                     options={tagList}
                                     onSelect={(selectedList) => {
-                                        setFieldValue(
-                                            'tagModels',
-                                            selectedList
-                                        )
+                                        setFieldValue('tagModels', selectedList)
                                     }}
                                     onRemove={(selectedList) => {
-                                        setFieldValue(
-                                            'tagModels',
-                                            selectedList
-                                        )
+                                        setFieldValue('tagModels', selectedList)
                                     }}
-                                    onBlur={() => setTouched("tagModels", true)}
+                                    onBlur={() => setTouched('tagModels', true)}
                                 />
-                                {errors.tagModels && <div className="invalid-feedback d-block">{errors.tagModels}</div>}
+                                {errors.tagModels && (
+                                    <div className="invalid-feedback d-block">
+                                        {errors.tagModels}
+                                    </div>
+                                )}
                             </div>
                             <InputField
                                 type="textarea"
@@ -353,10 +360,17 @@ function SubmitPost({ visible, setVisible, post }) {
                                         <QuillEditor
                                             content={values.content}
                                             onChange={(content) => {
-                                                setFieldValue('content', content)
+                                                setFieldValue(
+                                                    'content',
+                                                    content
+                                                )
                                             }}
                                         />
-                                        {errors.content && <div className="invalid-feedback d-block">{errors.content}</div>}
+                                        {errors.content && (
+                                            <div className="invalid-feedback d-block">
+                                                {errors.content}
+                                            </div>
+                                        )}
                                     </div>
                                 }
                                 isRequired

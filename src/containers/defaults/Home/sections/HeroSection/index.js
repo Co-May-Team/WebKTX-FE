@@ -24,7 +24,5 @@ const data = [
 ]
 
 export default function HeroSection() {
-    return (
-            <Swiper data={data} />
-    )
+    return <Swiper data={data} />
 }

@@ -16,12 +16,10 @@ const cx = bindClassNames(styles)
 */
 
 const Pagination = ({ pagination, onPageChange }) => {
-    // Lấy các đối tượng từ props pagination
-    let { page, limit, totalItem } = pagination
-    page = Number.parseInt(page)
+    const page = Number.parseInt(pagination?.page)
 
     // Tính toán tổng số trang
-    const totalPage = Math.ceil(totalItem / limit)
+    const totalPage = Math.ceil(pagination?.totalItem / pagination?.limit)
 
     // State lưu chiều rộng hiện tại của trình duyệt
     const [width, setWidth] = useState(window.innerWidth)
