@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '~/components/Logo'
-import { useEventListener } from '~/hooks'
 import { sidebarSelector } from '~/store/selectors'
 import { toggleSidebarUnfoldable } from '~/store/sidebar/actions'
 import ListItem from './ListItem'
@@ -20,8 +18,10 @@ function Sidebar() {
                 sidebarShow && !sidebarUnfoldable
                     ? 'sidebar sidebar-fixed'
                     : sidebarShow && sidebarUnfoldable
-                        ? 'sidebar sidebar-fixed sidebar-narrow-unfoldable'
-                        : sidebarShow && sidebarBackdropShow ? 'sidebar sidebar-fixed show' : 'sidebar sidebar-fixed hide'
+                    ? 'sidebar sidebar-fixed sidebar-narrow-unfoldable'
+                    : sidebarShow && sidebarBackdropShow
+                    ? 'sidebar sidebar-fixed show'
+                    : 'sidebar sidebar-fixed hide'
             }
         >
             <div className="sidebar-brand d-none d-md-flex" to="/">

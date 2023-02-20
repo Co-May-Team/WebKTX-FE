@@ -1,7 +1,10 @@
 import { FaBars } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
 import { useEventListener } from '~/hooks'
-import { toggleSidebarBackdropShow, toggleSidebarShow } from '~/store/sidebar/actions'
+import {
+    toggleSidebarBackdropShow,
+    toggleSidebarShow,
+} from '~/store/sidebar/actions'
 import Account from './Account'
 
 function Header() {
@@ -9,10 +12,9 @@ function Header() {
 
     const handleResize = () => {
         const mobileWidth = 768
-        if (window.innerWidth < mobileWidth) {  
+        if (window.innerWidth < mobileWidth) {
             dispatch(toggleSidebarBackdropShow(true))
-        }
-        else {
+        } else {
             dispatch(toggleSidebarBackdropShow(false))
         }
     }

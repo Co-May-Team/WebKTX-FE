@@ -5,7 +5,7 @@ import { AiOutlineEdit } from 'react-icons/ai'
 import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { Badge, ListGroup, ListGroupItem } from 'reactstrap'
+import { Badge } from 'reactstrap'
 import Confirm from '~/components/Customs/Confirm'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
@@ -49,9 +49,7 @@ function ListPost({ data }) {
                             {moment(item.createdAt).locale('vi').format('llll')}
                         </Badge>
                     </div>
-                    <div className={cx('Summary')}>
-                        {item.summary}...
-                    </div>
+                    <div className={cx('Summary')}>{item.summary}...</div>
                 </div>
                 {userInfo?.id && (
                     <div className={cx('Action')}>
@@ -80,7 +78,6 @@ function ListPost({ data }) {
     }
     return (
         <React.Fragment>
-            
             <div className={cx('GridPosts')}>{renderCardList()}</div>
             {visibleFormEditPost && (
                 <SubmitPost

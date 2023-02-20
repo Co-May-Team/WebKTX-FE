@@ -13,7 +13,6 @@ import {
     CardTitle,
     ListGroup,
     ListGroupItem,
-    Spinner,
 } from 'reactstrap'
 import postsApi from '~/apis/postsApi'
 import { InputField, Wrapper } from '~/components/Customs'
@@ -156,7 +155,7 @@ function DetailPost(props) {
                             <ListGroup>
                                 <ListGroupItem>
                                     <Button
-                                        className='mx-2'
+                                        className="mx-2"
                                         color="none"
                                         onClick={() => {
                                             setVisibleFormEditPost(true)
@@ -166,7 +165,7 @@ function DetailPost(props) {
                                     </Button>
                                     |
                                     <Button
-                                        className='mx-2'
+                                        className="mx-2"
                                         color="none"
                                         onClick={() => {
                                             setVisibleDeletePost(true)
@@ -203,9 +202,7 @@ function DetailPost(props) {
             {visibleDeletePost && (
                 <Confirm
                     visible={visibleDeletePost}
-                    setVisible={() =>
-                        setVisibleDeletePost(!visibleDeletePost)
-                    }
+                    setVisible={() => setVisibleDeletePost(!visibleDeletePost)}
                     title="Xóa bài đăng"
                     content="Bạn có chắc muốn xóa bài đăng này?"
                     onConfirm={handleDeletePost}

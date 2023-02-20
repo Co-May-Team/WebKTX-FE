@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import { BsLayoutTextSidebarReverse } from 'react-icons/bs'
 import { FaBars } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { Button } from 'reactstrap'

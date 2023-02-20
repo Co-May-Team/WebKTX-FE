@@ -5,7 +5,7 @@ const baseUrl = '/posts'
 const postsApi = {
     getAll: (params, filters) => {
         const requestUrl = `${baseUrl}?${queryString.stringify(params)}`
-        return axiosClient.post(requestUrl, { ...filters } )
+        return axiosClient.post(requestUrl, { ...filters })
     },
     get: (postId) => {
         const requestUrl = `${baseUrl}/${postId}`

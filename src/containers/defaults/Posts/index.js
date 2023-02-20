@@ -1,17 +1,14 @@
 import moment from 'moment'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
-import { AiOutlineEdit } from 'react-icons/ai'
-import { BsCalendar4, BsFillTrash2Fill } from 'react-icons/bs'
+import { BsCalendar4 } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { Badge } from 'reactstrap'
+import { Badge, Spinner } from 'reactstrap'
 import { Wrapper } from '~/components/Customs'
-import Confirm from '~/components/Customs/Confirm'
 import Pagination from '~/components/Pagination'
-import SubmitPost from '~/containers/admin/Posts/SubmitPost'
-import { deletePost, fetchPosts } from '~/store/posts/actions'
-import { authSelector, postsSelector, tagsSelector } from '~/store/selectors'
+import { fetchPosts } from '~/store/posts/actions'
+import { postsSelector, tagsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
@@ -20,6 +17,7 @@ const cx = bindClassNames(styles)
 
 function Posts() {
     const tagList = useSelector(tagsSelector).tags
+    const status = useSelector(postsSelector).status
     const listPost = useSelector(postsSelector).posts
     const pagination = useSelector(postsSelector).pagination
 
@@ -45,14 +43,16 @@ function Posts() {
         })
     }
     const searchTagByUrl = () => {
-        return tagList.filter(tag => convertToUrl(tag?.tagName) === url)[0]
+        return tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0]
     }
-    document.title = tagInfo?.tagName ? `${tagInfo?.tagName} - KTX Cỏ May` : "KTX Cỏ May"
+    document.title = tagInfo?.tagName
+        ? `${tagInfo?.tagName} - KTX Cỏ May`
+        : 'KTX Cỏ May'
     useEffect(() => {
         const tag = searchTagByUrl()
         setTagInfo(tag)
         setFilters({
-            tag_id: tag.tagId
+            tag_id: tag.tagId,
         })
     }, [url])
     useEffect(() => {
@@ -92,9 +92,7 @@ function Posts() {
                             {moment(item.createdAt).locale('vi').format('llll')}
                         </Badge>
                     </div>
-                    <div className={cx('Summary')}>
-                        {item.summary}...
-                    </div>
+                    <div className={cx('Summary')}>{item.summary}...</div>
                 </div>
             </div>
         ))
@@ -105,7 +103,14 @@ function Posts() {
                 <div className={cx('Heading')}>
                     <h3 className={cx('Title')}>{tagInfo?.tagName}</h3>
                 </div>
-                {listPost && listPost.length > 0 ? (
+                {status === 'loading' ? (
+                    <Spinner
+                        tag="div"
+                        className="text-center"
+                        color="primary"
+                        size="lg"
+                    />
+                ) : listPost && listPost.length > 0 ? (
                     <>
                         <div className={cx('GridPosts')}>
                             {renderCardList()}
@@ -116,11 +121,8 @@ function Posts() {
                         />
                     </>
                 ) : (
-                    <div className="text-center">
-                        Trống
-                    </div>
-                )
-                }
+                    <div className="text-center">Trống</div>
+                )}
             </div>
         </Wrapper>
     )

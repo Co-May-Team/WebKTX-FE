@@ -8,7 +8,7 @@ import { useClickOutside } from '~/hooks'
 import Account from '~/layouts/AdminLayout/components/Header/Account'
 import { authSelector, tagsSelector } from '~/store/selectors'
 import { fetchTags } from '~/store/tags/actions'
-import { bindClassNames, handleClassName, path } from '~/utils'
+import { bindClassNames, handleClassName } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
 
@@ -64,16 +64,16 @@ function Navbar({ isShow, setShow }) {
         <>
             <div className={cx('Container')} ref={navbarRef}>
                 <nav className={cx('NavWrapper')}>
-            <NavLink
-                to="/"
-                key="home"
-                className={({ isActive }) =>
-                    cx('NavItem', { Active: isActive })
-                }
-                onClick={() => setShow(false)}
-            >
-                Trang chủ
-            </NavLink>
+                    <NavLink
+                        to="/"
+                        key="home"
+                        className={({ isActive }) =>
+                            cx('NavItem', { Active: isActive })
+                        }
+                        onClick={() => setShow(false)}
+                    >
+                        Trang chủ
+                    </NavLink>
                     {renderNavList()}
                     {userInfo?.id && <Account />}
                 </nav>
