@@ -1,8 +1,9 @@
 /* eslint-disable jsx-a11y/alt-text */
+import { FormDataEncoder } from 'form-data-encoder'
 import { Formik } from 'formik'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
     Form,
@@ -20,29 +21,27 @@ import postsApi from '~/apis/postsApi'
 import { InputField } from '~/components/Customs'
 import Modal from '~/components/Customs/Modal'
 import MultiSelect from '~/components/Customs/MultiSelect'
+import { fetchCategories } from '~/store/categories/actions'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
+import { categoriesSelector, tagsSelector } from '~/store/selectors'
+import { fetchTags } from '~/store/tags/actions'
 import defaultThumbnail from '~/utils/constants/defaultThumbnail'
 import './index.scss'
 import QuillEditor from './QuillEditor'
 
 function SubmitPost({ visible, setVisible, post }) {
+    const tagList = useSelector(tagsSelector).tags
+    const categoryList = useSelector(categoriesSelector).categories
+
     const dispatch = useDispatch()
 
-    const [tagList, setTagList] = useState([])
-    const [categoryList, setCategoryList] = useState([])
-    const [thumbnail, setThumbnail] = useState(
-        'data:image/jpeg;base64, ' + defaultThumbnail
-    )
+    const [thumbnail, setThumbnail] = useState(defaultThumbnail)
 
     useEffect(() => {
-        postsApi.getAllCategory().then((response) => {
-            setCategoryList(response.data.data.categories)
-        })
-        postsApi.getAllTag().then((response) => {
-            setTagList(response.data.data)
-        })
+        dispatch(fetchTags())
+        dispatch(fetchCategories())
         if (post?.postId) {
-            setThumbnail('data:image/jpeg;base64, ' + post.thumbnail)
+            setThumbnail(post.thumbnail)
         }
     }, [])
 
@@ -52,7 +51,7 @@ function SubmitPost({ visible, setVisible, post }) {
         reader.readAsDataURL(file)
         reader.onloadend = () => {
             setFieldValue('thumbnail', file)
-            setThumbnail(reader.result)
+            setThumbnail(reader.result.split(",")[1])
         }
     }
 
@@ -116,13 +115,11 @@ function SubmitPost({ visible, setVisible, post }) {
         summary: Yup.string(),
         publishedAt: Yup.string().required(),
         category: Yup.object().shape({
-            categoryId: Yup.string().required(
-                'Vui lòng chọn chuyên mục của bài viết.'
-            ),
-            categoryName: Yup.string().required(
-                'Vui lòng chọn chuyên mục của bài viết.'
-            ),
-        }),
+            categoryId: Yup.string(),
+            categoryName: Yup.string(),
+        }).required(
+            'Vui lòng chọn chuyên mục của bài viết.'
+        ),
         tagModels: Yup.array()
             .min(1, 'Bạn phải chọn ít nhất 1 thẻ.')
             .of(
@@ -145,78 +142,60 @@ function SubmitPost({ visible, setVisible, post }) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             },
         })
+        function dataURItoBlob(dataURI) {
+            // Tách phần thông tin về kiểu dữ liệu và base64 từ chuỗi dataURI
+            const [type, base64] = dataURI.split(',');
+
+            // Chuyển đổi base64 sang đối tượng ArrayBuffer
+            const buffer = new ArrayBuffer(base64.length);
+            const view = new Uint8Array(buffer);
+            for (let i = 0; i < base64.length; i++) {
+                view[i] = base64.charCodeAt(i);
+            }
+
+            // Chuyển đổi ArrayBuffer sang đối tượng Blob với kiểu dữ liệu đã xác định từ dataURI
+            return new Blob([buffer], { type: type.split(';')[0] });
+        }
+        function dataURItoFormData(dataURI) {
+            // Tạo đối tượng FormData và thêm dữ liệu hình ảnh vào đó
+            const formData = new FormData();
+            formData.append('image', dataURItoBlob('data:image/jpeg;base64,' + dataURI), 'image.png');
+
+            // Trả về đối tượng FormData đã được khởi tạo với dữ liệu hình ảnh
+            return formData;
+        }
+        console.log(thumbnail)
+        console.log(dataURItoFormData(thumbnail))
+        const nameThumbnail = await postsApi
+            .uploadImages(dataURItoFormData(thumbnail))
+            .then((response) => {
+                return response.data.data.name
+            })
+        const data = {
+            ...values,
+            thumbnail: nameThumbnail,
+            tagIds: values.tagModels.map((tag) => tag.tagId),
+            category: values.category.categoryId,
+        }
         if (post?.postId) {
-            if (post?.thumbnail !== thumbnail) {
-                console.log(values.thumbnail)
-                const formData = new FormData()
-                formData.append('image', values.thumbnail)
-                const nameThumbnail = await postsApi
-                    .uploadImages(formData)
-                    .then((response) => {
-                        return response.data.data.name
+            postsApi.updatePost(data).then((response) => {
+                if (response.data.status === 'OK') {
+                    Toast.fire({
+                        title: 'Chỉnh sửa bài viết',
+                        text: response.data.message,
+                        icon: 'success',
                     })
-                const data = {
-                    ...values,
-                    thumbnail: nameThumbnail,
-                    tagIds: values.tagModels.map((tag) => tag.tagId),
-                    category: values.category.categoryId,
+                    dispatch(updatePostList(response.data.data))
+                    setVisible()
+                } else {
+                    Toast.fire({
+                        title: 'Chỉnh sửa bài viết',
+                        text: response.data.message,
+                        icon: 'warning',
+                    })
                 }
-                postsApi.updatePost(data).then((response) => {
-                    if (response.data.status === 'OK') {
-                        Toast.fire({
-                            title: 'Chỉnh sửa bài viết',
-                            text: response.data.message,
-                            icon: 'success',
-                        })
-                        dispatch(updatePostList(response.data.data))
-                        setVisible()
-                    } else {
-                        Toast.fire({
-                            title: 'Chỉnh sửa bài viết',
-                            text: response.data.message,
-                            icon: 'warning',
-                        })
-                    }
-                })
-            } else {
-                const data = {
-                    ...values,
-                    tagIds: values.tagModels.map((tag) => tag.tagId),
-                    category: values.category.categoryId,
-                }
-                postsApi.updatePost(data).then((response) => {
-                    if (response.data.status === 'OK') {
-                        Toast.fire({
-                            title: 'Chỉnh sửa bài viết',
-                            text: response.data.message,
-                            icon: 'success',
-                        })
-                        dispatch(updatePostList(response.data.data))
-                        setVisible()
-                    } else {
-                        Toast.fire({
-                            title: 'Chỉnh sửa bài viết',
-                            text: response.data.message,
-                            icon: 'warning',
-                        })
-                    }
-                })
-            }
+            })
         } else {
-            const formData = new FormData()
-            formData.append('image', values.thumbnail)
-            console.log(values.thumbnail)
-            const nameThumbnail = await postsApi
-                .uploadImaaaaaaaaaaaaaaaaaâges(formData)
-                .then((response) => {
-                    return response.data.data.name
-                })
-            const data = {
-                ...values,
-                thumbnail: nameThumbnail,
-                tagIds: values.tagModels.map((tag) => tag.tagId),
-                category: values.category.categoryId,
-            }
             postsApi.addPost(data).then((response) => {
                 if (response.data.status === 'OK') {
                     Toast.fire({
@@ -265,7 +244,8 @@ function SubmitPost({ visible, setVisible, post }) {
                         handleBlur,
                         handleSubmit,
                         setFieldValue,
-                        setTouched,
+                        setFieldTouched,
+                        setFieldError,
                         isValid,
                         dirty,
                         isSubmitting,
@@ -335,7 +315,12 @@ function SubmitPost({ visible, setVisible, post }) {
                                     onRemove={(selectedList) => {
                                         setFieldValue('tagModels', selectedList)
                                     }}
-                                    onBlur={() => setTouched('tagModels', true)}
+                                    onBlur={() => {
+                                        setFieldTouched('tagModels', true)
+                                        if (!values.tagModels) {
+                                            setFieldError("tagModels", "Vui lòng chọn thẻ sẽ hiển thị bài viết.")
+                                        }
+                                    }}
                                 />
                                 {errors.tagModels && (
                                     <div className="invalid-feedback d-block">
@@ -364,6 +349,15 @@ function SubmitPost({ visible, setVisible, post }) {
                                                     'content',
                                                     content
                                                 )
+                                                // if (!values.content) {
+                                                //     set
+                                                // }
+                                            }}
+                                            onBlur={() => {
+                                                setFieldTouched("content", true)
+                                                if (!values.content) {
+                                                    setFieldError("content", "Vui lòng nhập nội dung bài viết")
+                                                }
                                             }}
                                         />
                                         {errors.content && (
@@ -382,18 +376,12 @@ function SubmitPost({ visible, setVisible, post }) {
                                         accept="image/*"
                                         name="thumbnail"
                                         label="Thumbnail"
-                                        feedback={errors.thumbnail}
                                         onChange={(e) => {
                                             handleUploadThumbnail(
                                                 e,
                                                 setFieldValue
                                             )
                                         }}
-                                        onBlur={handleBlur}
-                                        invalid={
-                                            touched.thumbnail &&
-                                            errors.thumbnail
-                                        }
                                     />
                                     <InputField
                                         type="datetime-local"
@@ -432,10 +420,10 @@ function SubmitPost({ visible, setVisible, post }) {
                                 </div>
                                 <img
                                     className="col-md-4 col-12 order-md-2 order-1"
-                                    alt="No thumbnail"
+                                    alt="Thumbnail"
                                     style={{ height: '200px', width: '200px' }}
                                     src={
-                                        // 'data:image/jpeg;base64,' +
+                                        'data:image/jpeg;base64,' +
                                         thumbnail
                                     }
                                 />
@@ -444,7 +432,7 @@ function SubmitPost({ visible, setVisible, post }) {
                             <ModalFooter>
                                 <Button
                                     color="primary"
-                                    // disabled={!(dirty && isValid)}
+                                    disabled={!(dirty && isValid)}
                                     className="fw-bolder"
                                     type="submit"
                                 >
