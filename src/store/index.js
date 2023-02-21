@@ -5,12 +5,14 @@ import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 
 import authSlice from './auth/slice'
+import categoriesSlice from './categories/slice'
 import postsSlice from './posts/slice'
 import sidebarSlice from './sidebar/slice'
 import tagsSlice from './tags/slice'
 
 const reducers = combineReducers({
     tags: tagsSlice.reducer,
+    categories: categoriesSlice.reducer,
     sidebar: sidebarSlice.reducer,
     auth: authSlice.reducer,
     posts: postsSlice.reducer,
