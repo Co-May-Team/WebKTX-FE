@@ -32,6 +32,7 @@ axiosClient.interceptors.response.use(
             }).then(() => {
                 localStorage.removeItem('accessToken')
                 localStorage.removeItem('userInfo')
+                localStorage.removeItem('userInfoGoogle');
                 window.location.href = '/auth/login'
             })
         }
@@ -47,6 +48,7 @@ axiosClient.interceptors.response.use(
             }).then(() => {
                 localStorage.removeItem('accessToken')
                 localStorage.removeItem('userInfo')
+                localStorage.removeItem('userInfoGoogle');
                 window.location.href = '/auth/login'
             })
         }

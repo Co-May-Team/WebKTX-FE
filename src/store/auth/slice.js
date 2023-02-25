@@ -41,6 +41,7 @@ const authSlice = createSlice({
             state.accessToken = ''
             localStorage.removeItem('accessToken')
             localStorage.removeItem('userInfo')
+            localStorage.removeItem('userInfoGoogle');
         },
     },
     extraReducers: (builder) => {
