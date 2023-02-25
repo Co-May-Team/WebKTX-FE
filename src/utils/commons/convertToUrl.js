@@ -19,48 +19,48 @@ export default function convertToUrl(title) {
         .trim()
         .replace(/\s/g, '-')
 
-    // Loại bỏ các từ ngữ bị cấm
-    const bannedWords = [
-        'a',
-        'an',
-        'the',
-        'and',
-        'but',
-        'or',
-        'for',
-        'nor',
-        'on',
-        'at',
-        'to',
-        'from',
-        'by',
-        'of',
-        'in',
-        'out',
-        'off',
-        'up',
-        'down',
-        'over',
-        'with',
-        'after',
-        'before',
-        'during',
-        'under',
-        'till',
-        'than',
-        'like',
-        'as',
-    ]
-    bannedWords.forEach((word) => {
-        const regex = new RegExp(`\\b${word}\\b`, 'gi')
-        slug = slug.replace(regex, '')
-    })
+    // // Loại bỏ các từ ngữ bị cấm
+    // const bannedWords = [
+    //     'a',
+    //     'an',
+    //     'the',
+    //     'and',
+    //     'but',
+    //     'or',
+    //     'for',
+    //     'nor',
+    //     'on',
+    //     'at',
+    //     'to',
+    //     'from',
+    //     'by',
+    //     'of',
+    //     'in',
+    //     'out',
+    //     'off',
+    //     'up',
+    //     'down',
+    //     'over',
+    //     'with',
+    //     'after',
+    //     'before',
+    //     'during',
+    //     'under',
+    //     'till',
+    //     'than',
+    //     'like',
+    //     'as',
+    // ]
+    // bannedWords.forEach((word) => {
+    //     const regex = new RegExp(`\\b${word}\\b`, 'gi')
+    //     slug = slug.replace(regex, '')
+    // })
 
-    // Loại bỏ số thứ tự và các ký tự giống nhau liên tiếp
-    slug = slug.replace(/\d+/g, '').replace(/(.)\1+/g, '$1')
+    // // Loại bỏ số thứ tự và các ký tự giống nhau liên tiếp
+    // slug = slug.replace(/\d+/g, '').replace(/(.)\1+/g, '$1')
 
-    // Cắt độ dài URL tối đa là 70 ký tự
-    slug = slug.substring(0, 70)
+    // // Cắt độ dài URL tối đa là 70 ký tự
+    // slug = slug.substring(0, 70)
 
     // Loại bỏ ký tự gạch ngang (-) cuối cùng
     if (slug.charAt(slug.length - 1) === '-') {

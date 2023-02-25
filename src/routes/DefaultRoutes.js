@@ -5,7 +5,7 @@ import { path } from '~/utils'
 
 const defaultRoutes = [
     { id: Math.random(), Container: Home, path: path.HOME },
-    { id: Math.random(), Container: Posts, path: '/:url' },
+    { id: Math.random(), Container: Posts, path: path.TAGS },
     { id: Math.random(), Container: Forms, path: path.FORMS },
     { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
     {
@@ -37,7 +37,6 @@ export default function DefaultRoutes() {
         <DefaultLayout>
             <Routes>
                 {renderRoutes()}
-                {/* <Route path="*" element={<div>Not Found</div>} /> */}
             </Routes>
         </DefaultLayout>
     )

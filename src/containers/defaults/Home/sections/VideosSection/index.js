@@ -30,7 +30,7 @@ export default function VideosSection() {
         return (
             <Swiper spaceBetween={20} breakpoints={breakpoints}>
                 {data.map((item) => (
-                    <SwiperSlide key={item}>
+                    <SwiperSlide key={item.id}>
                         <div className={cx('video-item')}>
                             <iframe
                                 className={cx('video-frame')}

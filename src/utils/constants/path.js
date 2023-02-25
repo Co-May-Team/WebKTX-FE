@@ -1,11 +1,9 @@
 export const path = {
     // Default path
     HOME: '/',
-    INTRODUCES: '/introduces',
-    NOTIFICATIONS: '/notifications',
-    NEWS: '/news',
-    FORMS: '/forms',
-    DETAIL_POST: '/post/:id',
+    FORMS: '/bieu-mau',
+    TAGS: '/:url',
+    DETAIL_POST: '/:title/:id',
 
     // Auth path
     AUTH: '/auth',

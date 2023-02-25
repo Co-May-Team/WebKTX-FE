@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import moment from 'moment'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { BsCalendar4 } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -27,14 +29,11 @@ function Posts() {
     const navigation = useNavigate()
 
     const [tagInfo, setTagInfo] = useState(null)
-    const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
-    const [visibleDeletePost, setVisibleDeletePost] = useState(false)
-    const [currentPost, setCurrentPost] = useState(null)
 
     const [params, setParams] = useState({
         page: 1,
     })
-    const [filters, setFilters] = useState(null)
+    const [filters, setFilters] = useState({})
 
     const handlePageChange = (newPage) => {
         setParams({
@@ -74,15 +73,19 @@ function Posts() {
     const renderCardList = () => {
         return listPost.map((item) => (
             <div key={item.postId} className={cx('CardItem')}>
-                <img
-                    src={'data:image/png;base64,' + item.thumbnail}
-                    alt="Thumbnail error"
-                    className={cx('CardImg')}
-                />
+                <NavLink
+                    to={`/${convertToUrl(item.title)}/${item.postId}`}
+                >
+                    <img
+                        src={item.thumbnail}
+                        alt="Thumbnail error"
+                        className={cx('CardImg')}
+                    />
+                </NavLink>
                 <div className={cx('CardBody')}>
                     <NavLink
                         className={cx('CardTitle')}
-                        to={`/post/${item.postId}`}
+                        to={`/${convertToUrl(item.title)}/${item.postId}`}
                     >
                         {item.title.slice(0, 82).trim()}...
                     </NavLink>
@@ -98,33 +101,55 @@ function Posts() {
         ))
     }
     return (
-        <Wrapper>
-            <div className={cx('Inner')}>
-                <div className={cx('Heading')}>
-                    <h3 className={cx('Title')}>{tagInfo?.tagName}</h3>
-                </div>
-                {status === 'loading' ? (
-                    <Spinner
-                        tag="div"
-                        className="text-center"
-                        color="primary"
-                        size="lg"
-                    />
-                ) : listPost && listPost.length > 0 ? (
-                    <>
-                        <div className={cx('GridPosts')}>
-                            {renderCardList()}
-                        </div>
-                        <Pagination
-                            pagination={pagination}
-                            onPageChange={handlePageChange}
+        <>
+            <Helmet>
+                <title>{`${tagInfo?.tagName} - KTX Cỏ May`}</title>
+                <meta name="description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
+                <meta name="keywords" content="ktx cỏ may, ký túc xá, cỏ may, co may dormitory" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
+                <meta property="og:description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
+                <meta property="og:image" content="%PUBLIC_URL%/image.jpeg" />
+                <meta property="og:url" content="https://ktxcomay.com.vn/" />
+                <meta property="og:type" content="website" />
+                <meta name="twitter:card" content="summary" />
+                <meta name="twitter:title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
+                <meta name="twitter:description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
+                <meta name="twitter:image" content="%PUBLIC_URL%/image.jpeg" />
+                <meta name="author" content="Ký Túc Xá Cỏ May" />
+                <meta name="apple-mobile-web-app-title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
+                <meta name="application-name" content="Ký Túc Xá Cỏ May" />
+                <meta name="msapplication-TileColor" content="#ffffff" />
+                <meta name="theme-color" content="#ffffff" />
+            </Helmet>
+            <Wrapper>
+                <div className={cx('Inner')}>
+                    <div className={cx('Heading')}>
+                        <h3 className={cx('Title')}>{tagInfo?.tagName}</h3>
+                    </div>
+                    {status === 'loading' ? (
+                        <Spinner
+                            tag="div"
+                            className="text-center"
+                            color="primary"
+                            size="lg"
                         />
-                    </>
-                ) : (
-                    <div className="text-center">Trống</div>
-                )}
-            </div>
-        </Wrapper>
+                    ) : listPost && listPost.length > 0 ? (
+                        <>
+                            <div className={cx('GridPosts')}>
+                                {renderCardList()}
+                            </div>
+                            <Pagination
+                                pagination={pagination}
+                                onPageChange={handlePageChange}
+                            />
+                        </>
+                    ) : (
+                        <div className="text-center">Trống</div>
+                    )}
+                </div>
+            </Wrapper>
+        </>
     )
 }
 

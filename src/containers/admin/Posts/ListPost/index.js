@@ -10,6 +10,7 @@ import Confirm from '~/components/Customs/Confirm'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import SubmitPost from '../SubmitPost'
 import styles from './index.module.scss'
 
@@ -32,14 +33,14 @@ function ListPost({ data }) {
         return data.map((item) => (
             <div key={item.postId} className={cx('CardItem')}>
                 <img
-                    src={'data:image/png;base64,' + item.thumbnail}
+                    src={item.thumbnail}
                     alt="Thumbnail error"
                     className={cx('CardImg')}
                 />
                 <div className={cx('CardBody')}>
                     <NavLink
                         className={cx('CardTitle')}
-                        to={`/post/${item.postId}`}
+                        to={`/${convertToUrl(item.title)}/${item.postId}`}
                     >
                         {item.title.slice(0, 82).trim()}...
                     </NavLink>
