@@ -10,6 +10,7 @@ import Pagination from '~/components/Pagination'
 import { fetchPosts } from '~/store/posts/actions'
 import { authSelector, postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import randomColor from '~/utils/commons/randomColor'
 import defaultThumbnail from '~/utils/constants/defaultThumbnail'
 import styles from './index.module.scss'
@@ -48,17 +49,16 @@ function PostsSection() {
                 <div className={cx('Card')}>
                     <NavLink
                         className={cx('CardImg')}
-                        to={`/post/${item.postId}`}
+                        to={`/${convertToUrl(item.title)}/${item.postId}`}
                     >
                         <img
-                            src={'data:image/png;base64,' + item.thumbnail}
-                            onError={`this.src='data:image/png;base64,${defaultThumbnail};'`}
+                            src={item.thumbnail}
                             alt="Thumbnail"
                         />
                     </NavLink>
                     <div className={cx('CardBody')}>
                         <NavLink
-                            to={`/post/${item.postId}`}
+                            to={`/${convertToUrl(item.title)}/${item.postId}`}
                             className="fw-bold"
                         >
                             {' '}
@@ -73,7 +73,7 @@ function PostsSection() {
                             {moment(item.createdAt).locale('vi').fromNow()}
                         </small>
                         <br />
-                        <small class={cx('CardDescription')}>
+                        <small className={cx('CardDescription')}>
                             {item.summary.trim()}
                         </small>
                     </div>

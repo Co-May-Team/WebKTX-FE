@@ -1,7 +1,7 @@
 import moment from 'moment'
 import 'moment/locale/vi' // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from 'react'
-import { FaClock, FaCogs, FaListAlt, FaShare, FaUser } from 'react-icons/fa'
+import { FaClock, FaCogs, FaEye, FaListAlt, FaListOl, FaRegEye, FaShare, FaUser, FaUserClock } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import {
@@ -23,7 +23,8 @@ import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import randomColor from '~/utils/commons/randomColor'
 import styles from './index.module.scss'
-import MorePost from './MorePost'
+import MostViewPosts from './MostViewPosts'
+import RecentPosts from './RecentPosts'
 import ShareButtons from './ShareButtons'
 
 const cx = bindClassNames(styles)
@@ -35,23 +36,29 @@ function DetailPost(props) {
     const params = useParams()
 
     const [postInfo, setPostInfo] = useState(null)
-    const [relatedPost, setRelatedPost] = useState([])
+    const [recentPosts, setRecentPosts] = useState([])
+    const [mostViewPosts, setMostViewPosts] = useState([])
     const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
     const [visibleDeletePost, setVisibleDeletePost] = useState(false)
-    const bbCodeRef = useRef(null)
 
-    const handleBBCodeCopy = () => {
-        if (bbCodeRef.current) {
-            bbCodeRef.current.select()
-            document.execCommand('copy')
-        }
-    }
-
+    useEffect(() => {
+        postsApi.getAll({
+            params: {
+                sort: "viewed",
+                order: "desc",
+                page: "1"
+            },
+            filters: {}
+        })
+        .then((response) => {
+            setMostViewPosts(response.data.data.posts)
+        })
+    }, [])
     useEffect(() => {
         postsApi.get(params.id).then((response) => {
             document.title = response.data.data.posts.title
             setPostInfo(response.data.data.posts)
-            setRelatedPost(response.data.data.relatedPost)
+            setRecentPosts(response.data.data.recentPosts)
         })
     }, [params.id])
 
@@ -79,13 +86,16 @@ function DetailPost(props) {
                                         <FaUser /> Đăng: {postInfo?.userName}
                                     </ListGroupItem>
                                     <ListGroupItem>
+                                        <FaRegEye /> Lượt xem: {postInfo?.viewed}
+                                    </ListGroupItem>
+                                    <ListGroupItem>
                                         <FaClock /> Thời gian:{' '}
                                         {moment(postInfo?.createdAt)
                                             .locale('vi')
                                             .format('LLLL')}
                                     </ListGroupItem>
                                     <ListGroupItem>
-                                        <FaClock /> Chỉnh sửa lần cuối:{' '}
+                                        <FaUserClock /> Chỉnh sửa lần cuối:{' '}
                                         {moment(postInfo?.updatedAt)
                                             .locale('vi')
                                             .format('LLLL')}
@@ -123,6 +133,7 @@ function DetailPost(props) {
                                 </div>
                                 <hr />
                                 <InputField
+                                    readOnly
                                     label="Link"
                                     type="textarea"
                                     value={`${window.location.href}`}
@@ -130,6 +141,7 @@ function DetailPost(props) {
                                 />
                                 <hr />
                                 <InputField
+                                    readOnly
                                     label="BBCode"
                                     type="textarea"
                                     value={`[url=${window.location.href}]${postInfo?.title}[/url]`}
@@ -137,6 +149,7 @@ function DetailPost(props) {
                                 />
                                 <hr />
                                 <InputField
+                                    readOnly
                                     label="HTML"
                                     type="textarea"
                                     value={`<a href="${window.location.href}" title="${postInfo?.title}" target="_blank">${postInfo?.title}</a>`}
@@ -184,7 +197,17 @@ function DetailPost(props) {
                             </CardTitle>
                         </CardHeader>
                         <ListGroup>
-                            <MorePost listPost={relatedPost} />
+                            <RecentPosts listPost={recentPosts} />
+                        </ListGroup>
+                    </Card>
+                    <Card className="mt-3">
+                        <CardHeader>
+                            <CardTitle>
+                                <FaListOl /> Xem nhiều nhất
+                            </CardTitle>
+                        </CardHeader>
+                        <ListGroup>
+                            <MostViewPosts listPost={mostViewPosts} />
                         </ListGroup>
                     </Card>
                     <div className={cx('News')}></div>
