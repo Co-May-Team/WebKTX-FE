@@ -58,7 +58,7 @@ function DetailPost(props) {
         postsApi.get(params.id).then((response) => {
             document.title = response.data.data.posts.title
             setPostInfo(response.data.data.posts)
-            setRecentPosts(response.data.data.recentPosts)
+            setRecentPosts(response.data.data.relatedPost)
         })
     }, [params.id])
 

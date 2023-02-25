@@ -8,7 +8,7 @@ import randomColor from '~/utils/commons/randomColor'
 function MostViewPosts({ listPost }) {
     return (
         <>
-            {listPost.map((post) => (
+            {listPost?.map((post) => (
                 <ListGroupItem key={post.postId}>
                     <NavLink
                         to={`/${convertToUrl(post.title)}/${post.postId}`}
@@ -18,9 +18,9 @@ function MostViewPosts({ listPost }) {
                             {post.category.categoryName}
                         </Badge>
                         {post.title}
-                        <Badge color="secondary" className="float-end d-flex">
-                        <FaEye className="me-1" />
-                        {post.viewed}
+                        <Badge color="secondary" className="float-end d-flex aligns-item-center">
+                            <FaEye className="me-1" />
+                            {post.viewed}
                         </Badge>
                     </NavLink>
                 </ListGroupItem>
