@@ -52,7 +52,7 @@ export default function Login() {
             'userInfoGoogle',
             JSON.stringify(info));
         // window.location.href = 'http://localhost:3000/';
-        window.location.href = 'http://222.255.238.159:3800/'; 
+        window.location.href = 'https://www.kytucxacomay.tk/'; 
         
     }
     const thoat = (response) => {
