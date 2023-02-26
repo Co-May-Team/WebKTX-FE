@@ -55,7 +55,6 @@ export default function Login() {
         window.location.href = 'http://222.255.238.159:3800/'; 
         
     }
-    http://222.255.238.159:3800/
     const thoat = (response) => {
         console.log("Đã thoát", response);
     }
