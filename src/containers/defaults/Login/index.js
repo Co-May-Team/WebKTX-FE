@@ -44,14 +44,18 @@ export default function Login() {
     //
     const dangNhhapThanhCong = (response) => {
         const info = parseJwt(response.credential);
-        console.log("Đăng nhập thành công", info);
+        console.log("Đăng nhập thành công - response", response);
+        console.log("Đăng nhập thành công - info", info);
         localStorage.removeItem('userInfoGoogle');
         localStorage.removeItem('isLogin');
         localStorage.setItem(
             'userInfoGoogle',
             JSON.stringify(info));
-        window.location.href = 'http://localhost:3000/';
+        // window.location.href = 'http://localhost:3000/';
+        window.location.href = 'http://222.255.238.159:3800/'; 
+        
     }
+    http://222.255.238.159:3800/
     const thoat = (response) => {
         console.log("Đã thoát", response);
     }
@@ -167,8 +171,6 @@ export default function Login() {
                         </Button> */}
                             <GoogleLogin
                                 onSuccess={dangNhhapThanhCong} onError={dangNhapThatBai}
-                                redirect_uri="localhost:3000/"
-
                             /> &nbsp;
                         </div>
                     </div>
