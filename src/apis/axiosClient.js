@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import Swal from 'sweetalert2'
 // Thiết lập cấu hình mặc định cho http request
 const axiosClient = axios.create({
-    baseURL: 'http://222.255.238.159:8080/',
+    baseURL: 'localhost:8080/',
     headers: {
         'content-type': 'application/json',
     },
