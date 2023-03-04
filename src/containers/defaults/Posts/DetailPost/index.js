@@ -3,7 +3,7 @@ import 'moment/locale/vi' // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from 'react'
 import { FaClock, FaCogs, FaEye, FaListAlt, FaListOl, FaRegEye, FaShare, FaUser, FaUserClock } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
     Badge,
     Button,
@@ -33,6 +33,7 @@ function DetailPost(props) {
     const userInfo = useSelector(authSelector).userInfo
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const params = useParams()
 
     const [postInfo, setPostInfo] = useState(null)
@@ -43,16 +44,13 @@ function DetailPost(props) {
 
     useEffect(() => {
         postsApi.getAll({
-            params: {
-                sort: "viewed",
-                order: "desc",
-                page: "1"
-            },
-            filters: {}
-        })
-        .then((response) => {
-            setMostViewPosts(response.data.data.posts)
-        })
+            sort: "viewed",
+            order: "desc",
+            page: "1"
+        }, {})
+            .then((response) => {
+                setMostViewPosts(response.data.data.posts)
+            })
     }, [])
     useEffect(() => {
         postsApi.get(params.id).then((response) => {
@@ -64,6 +62,7 @@ function DetailPost(props) {
 
     const handleDeletePost = () => {
         dispatch(deletePost(postInfo.postId))
+        navigate(-1)
     }
 
     return (
