@@ -73,9 +73,7 @@ function Posts() {
     const renderCardList = () => {
         return listPost.map((item) => (
             <div key={item.postId} className={cx('CardItem')}>
-                <NavLink
-                    to={`/${convertToUrl(item.title)}/${item.postId}`}
-                >
+                <NavLink to={`/${convertToUrl(item.title)}/${item.postId}`}>
                     <img
                         src={item.thumbnail}
                         alt="Thumbnail error"
@@ -104,20 +102,41 @@ function Posts() {
         <>
             <Helmet>
                 <title>{`${tagInfo?.tagName} - KTX Cỏ May`}</title>
-                <meta name="description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
-                <meta name="keywords" content="ktx cỏ may, ký túc xá, cỏ may, co may dormitory" />
+                <meta
+                    name="description"
+                    content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM."
+                />
+                <meta
+                    name="keywords"
+                    content="ktx cỏ may, ký túc xá, cỏ may, co may dormitory"
+                />
                 <meta name="robots" content="index, follow" />
-                <meta property="og:title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
-                <meta property="og:description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
+                <meta
+                    property="og:title"
+                    content={`${tagInfo?.tagName} - KTX Cỏ May`}
+                />
+                <meta
+                    property="og:description"
+                    content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM."
+                />
                 <meta property="og:image" content="%PUBLIC_URL%/image.jpeg" />
                 <meta property="og:url" content="https://ktxcomay.com.vn/" />
                 <meta property="og:type" content="website" />
                 <meta name="twitter:card" content="summary" />
-                <meta name="twitter:title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
-                <meta name="twitter:description" content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM." />
+                <meta
+                    name="twitter:title"
+                    content={`${tagInfo?.tagName} - KTX Cỏ May`}
+                />
+                <meta
+                    name="twitter:description"
+                    content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM."
+                />
                 <meta name="twitter:image" content="%PUBLIC_URL%/image.jpeg" />
                 <meta name="author" content="Ký Túc Xá Cỏ May" />
-                <meta name="apple-mobile-web-app-title" content={`${tagInfo?.tagName} - KTX Cỏ May`} />
+                <meta
+                    name="apple-mobile-web-app-title"
+                    content={`${tagInfo?.tagName} - KTX Cỏ May`}
+                />
                 <meta name="application-name" content="Ký Túc Xá Cỏ May" />
                 <meta name="msapplication-TileColor" content="#ffffff" />
                 <meta name="theme-color" content="#ffffff" />

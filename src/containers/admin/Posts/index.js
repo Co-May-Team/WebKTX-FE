@@ -35,7 +35,7 @@ function Posts() {
     }
 
     useEffect(() => {
-        document.title = 'Quản lý bài đăng - Control Panel'
+        document.title = 'Quản lý bài viết - Control Panel'
         const params = queryString.parse(location.search)
         if (
             Object.keys(params).length > 1 ||

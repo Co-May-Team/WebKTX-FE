@@ -18,7 +18,10 @@ function MostViewPosts({ listPost }) {
                             {post.category.categoryName}
                         </Badge>
                         {post.title}
-                        <Badge color="secondary" className="float-end d-flex aligns-item-center">
+                        <Badge
+                            color="secondary"
+                            className="float-end d-flex aligns-item-center"
+                        >
                             <FaEye className="me-1" />
                             {post.viewed}
                         </Badge>

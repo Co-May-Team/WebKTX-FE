@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { FormDataEncoder } from 'form-data-encoder'
 import { Formik } from 'formik'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
@@ -47,12 +46,14 @@ function SubmitPost({ visible, setVisible, post }) {
 
     const handleUploadThumbnail = (event, setFieldValue) => {
         const file = event.target.files[0]
+        const formData = new FormData()
+        formData.append('image', file)
         const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend = () => {
-            setFieldValue('thumbnail', file)
-            setThumbnail(reader.result.split(",")[1])
+        reader.onload = () => {
+            setThumbnail(reader.result)
         }
+        setFieldValue("thumbnail", formData)
+        reader.readAsDataURL(file)
     }
 
     const addedDate = (originalDate) => {
@@ -107,19 +108,16 @@ function SubmitPost({ visible, setVisible, post }) {
     const validationSchema = Yup.object().shape({
         title: Yup.string()
             .required('Vui lòng nhập tiêu đề bài viết.')
-            .min(32, 'Tiêu đề bài viết phải nhiều hơn 32 ký tự.')
             .max(256, 'Tiêu đề bài viết phải ít hơn 256 ký tự.'),
-        content: Yup.string()
-            .required('Vui lòng nhập nội dung bài viết.')
-            .min(512, 'Nội dung bài viết phải nhiều hơn 512 ký tự.'),
+        content: Yup.string().required('Vui lòng nhập nội dung bài viết.'),
         summary: Yup.string(),
         publishedAt: Yup.string().required(),
-        category: Yup.object().shape({
-            categoryId: Yup.string(),
-            categoryName: Yup.string(),
-        }).required(
-            'Vui lòng chọn chuyên mục của bài viết.'
-        ),
+        category: Yup.object()
+            .shape({
+                categoryId: Yup.string(),
+                categoryName: Yup.string(),
+            })
+            .required('Vui lòng chọn chuyên mục của bài viết.'),
         tagModels: Yup.array()
             .min(1, 'Bạn phải chọn ít nhất 1 thẻ.')
             .of(
@@ -142,35 +140,14 @@ function SubmitPost({ visible, setVisible, post }) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             },
         })
-        function dataURItoBlob(dataURI) {
-            // Tách phần thông tin về kiểu dữ liệu và base64 từ chuỗi dataURI
-            const [type, base64] = dataURI.split(',');
-
-            // Chuyển đổi base64 sang đối tượng ArrayBuffer
-            const buffer = new ArrayBuffer(base64.length);
-            const view = new Uint8Array(buffer);
-            for (let i = 0; i < base64.length; i++) {
-                view[i] = base64.charCodeAt(i);
-            }
-
-            // Chuyển đổi ArrayBuffer sang đối tượng Blob với kiểu dữ liệu đã xác định từ dataURI
-            return new Blob([buffer], { type: type.split(';')[0] });
+        let nameThumbnail = ""
+        if (values.thumbnail !== '') {
+            nameThumbnail = await postsApi
+                .uploadImages(values.thumbnail)
+                .then((response) => {
+                    return response.data.data.name
+                })
         }
-        function dataURItoFormData(dataURI) {
-            // Tạo đối tượng FormData và thêm dữ liệu hình ảnh vào đó
-            const formData = new FormData();
-            formData.append('image', dataURItoBlob('data:image/jpeg;base64,' + dataURI), 'image.png');
-
-            // Trả về đối tượng FormData đã được khởi tạo với dữ liệu hình ảnh
-            return formData;
-        }
-        console.log(thumbnail)
-        console.log(dataURItoFormData(thumbnail))
-        const nameThumbnail = await postsApi
-            .uploadImages(dataURItoFormData(thumbnail))
-            .then((response) => {
-                return response.data.data.name
-            })
         const data = {
             ...values,
             thumbnail: nameThumbnail,
@@ -261,7 +238,7 @@ function SubmitPost({ visible, setVisible, post }) {
                                     errors.title &&
                                     'is-invalid'
                                 }
-                                showLengthValue
+                                autoComplete="off"
                                 value={values.title}
                                 feedback={errors.title}
                                 onChange={handleChange}
@@ -318,7 +295,10 @@ function SubmitPost({ visible, setVisible, post }) {
                                     onBlur={() => {
                                         setFieldTouched('tagModels', true)
                                         if (!values.tagModels) {
-                                            setFieldError("tagModels", "Vui lòng chọn thẻ sẽ hiển thị bài viết.")
+                                            setFieldError(
+                                                'tagModels',
+                                                'Vui lòng chọn thẻ sẽ hiển thị bài viết.'
+                                            )
                                         }
                                     }}
                                 />
@@ -349,14 +329,14 @@ function SubmitPost({ visible, setVisible, post }) {
                                                     'content',
                                                     content
                                                 )
-                                                // if (!values.content) {
-                                                //     set
-                                                // }
                                             }}
                                             onBlur={() => {
-                                                setFieldTouched("content", true)
+                                                setFieldTouched('content', true)
                                                 if (!values.content) {
-                                                    setFieldError("content", "Vui lòng nhập nội dung bài viết")
+                                                    setFieldError(
+                                                        'content',
+                                                        'Vui lòng nhập nội dung bài viết'
+                                                    )
                                                 }
                                             }}
                                         />
@@ -387,7 +367,7 @@ function SubmitPost({ visible, setVisible, post }) {
                                         type="datetime-local"
                                         name="publishedAt"
                                         label="Thời gian công bố"
-                                        value={addedDate(values.publishedAt)}
+                                        value={values.publishedAt}
                                         feedback={errors.publishedAt}
                                         note={formatDate(values.publishedAt)}
                                         onChange={handleChange}
@@ -422,10 +402,7 @@ function SubmitPost({ visible, setVisible, post }) {
                                     className="col-md-4 col-12 order-md-2 order-1"
                                     alt="Thumbnail"
                                     style={{ height: '200px', width: '200px' }}
-                                    src={
-                                        'data:image/jpeg;base64,' +
-                                        thumbnail
-                                    }
+                                    src={thumbnail}
                                 />
                             </div>
                             <div style={{ marginBottom: '4rem' }} />

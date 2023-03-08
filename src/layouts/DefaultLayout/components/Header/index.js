@@ -38,8 +38,7 @@ function Header() {
 
     useEventListener('resize', handleResize)
     useEventListener('scroll', handleScroll)
-    const userInfoGoogle = JSON.parse(localStorage.getItem('userInfoGoogle'));
-    console.log(userInfoGoogle);
+    const userInfoGoogle = JSON.parse(localStorage.getItem('userInfoGoogle'))
     return (
         <header className={cx('Container')} ref={headerRef}>
             <Wrapper className={cx('Wrapper')}>
@@ -68,10 +67,7 @@ function Header() {
                 )}
                 {/* Navbar */}
                 <Navbar isShow={isShow} setShow={setShow} />
-                {
-                    userInfoGoogle != null ? userInfoGoogle.name : ""
-                }
-                
+                {userInfoGoogle != null ? userInfoGoogle.name : ''}
             </Wrapper>
         </header>
     )

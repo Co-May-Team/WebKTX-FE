@@ -35,9 +35,7 @@ export default function DefaultRoutes() {
     }
     return (
         <DefaultLayout>
-            <Routes>
-                {renderRoutes()}
-            </Routes>
+            <Routes>{renderRoutes()}</Routes>
         </DefaultLayout>
     )
 }
