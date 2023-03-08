@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 import { Formik } from 'formik'
 import { useEffect } from 'react'
-import { FcGoogle } from 'react-icons/fc'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button, Form, Spinner } from 'reactstrap'
@@ -11,8 +11,6 @@ import { login } from '~/store/auth/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 const cx = bindClassNames(styles)
 export default function Login() {
     const dispatch = useDispatch()
@@ -43,33 +41,35 @@ export default function Login() {
     }
     //
     const dangNhhapThanhCong = (response) => {
-        const info = parseJwt(response.credential);
-        console.log("Đăng nhập thành công - response", response);
-        console.log("Đăng nhập thành công - info", info);
-        localStorage.removeItem('userInfoGoogle');
-        localStorage.removeItem('isLogin');
-        localStorage.setItem(
-            'userInfoGoogle',
-            JSON.stringify(info));
+        const info = parseJwt(response.credential)
+        console.log('Đăng nhập thành công - response', response)
+        console.log('Đăng nhập thành công - info', info)
+        localStorage.removeItem('userInfoGoogle')
+        localStorage.removeItem('isLogin')
+        localStorage.setItem('userInfoGoogle', JSON.stringify(info))
         // window.location.href = 'http://localhost:3000/';
-        window.location.href = 'https://www.kytucxacomay.tk/'; 
-        
+        window.location.href = 'https://www.kytucxacomay.tk/'
     }
     const thoat = (response) => {
-        console.log("Đã thoát", response);
+        console.log('Đã thoát', response)
     }
     const dangNhapThatBai = (response) => {
-        console.log("Đăng nhập thất bại", response);
+        console.log('Đăng nhập thất bại', response)
     }
     function parseJwt(token) {
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+        var base64Url = token.split('.')[1]
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+        var jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map(function (c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                })
+                .join('')
+        )
 
-        return JSON.parse(jsonPayload);
-    };
+        return JSON.parse(jsonPayload)
+    }
     const backgroundImage =
         'https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
 
@@ -80,7 +80,9 @@ export default function Login() {
                     <div className={cx('inner')}>
                         <div
                             className={cx('img')}
-                            style={{ backgroundImage: `url('${backgroundImage}')` }}
+                            style={{
+                                backgroundImage: `url('${backgroundImage}')`,
+                            }}
                         ></div>
                         <div className={cx('content')}>
                             <h3 className={cx('title')}>Đăng nhập</h3>
@@ -115,7 +117,8 @@ export default function Login() {
                                                     errors.username,
                                             })}
                                             invalid={
-                                                touched.username && errors.username
+                                                touched.username &&
+                                                errors.username
                                             }
                                             value={values.username}
                                             feedback={errors.username}
@@ -133,7 +136,8 @@ export default function Login() {
                                                     errors.password,
                                             })}
                                             invalid={
-                                                touched.password && errors.password
+                                                touched.password &&
+                                                errors.password
                                             }
                                             value={values.password}
                                             feedback={errors.password}
@@ -157,7 +161,9 @@ export default function Login() {
                                                     </Spinner>
                                                 )}
                                             </Button>
-                                            <div className={cx('btn-forgot-pwd')}>
+                                            <div
+                                                className={cx('btn-forgot-pwd')}
+                                            >
                                                 Quên mật khẩu
                                             </div>
                                         </div>
@@ -169,8 +175,10 @@ export default function Login() {
                             Đăng nhập với Google
                         </Button> */}
                             <GoogleLogin
-                                onSuccess={dangNhhapThanhCong} onError={dangNhapThatBai}
-                            /> &nbsp;
+                                onSuccess={dangNhhapThanhCong}
+                                onError={dangNhapThatBai}
+                            />{' '}
+                            &nbsp;
                         </div>
                     </div>
                 </div>

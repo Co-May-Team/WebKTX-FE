@@ -12,7 +12,6 @@ import { authSelector, postsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import randomColor from '~/utils/commons/randomColor'
-import defaultThumbnail from '~/utils/constants/defaultThumbnail'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
@@ -26,35 +25,31 @@ function PostsSection() {
     const location = useLocation()
     const navigation = useNavigate()
 
-    const [filters, setFilters] = useState({
+    const [params, setParams] = useState({
         page: 1,
     })
 
     const handlePageChange = (newPage) => {
-        setFilters({
-            ...filters,
+        setParams({
+            ...params,
             page: newPage,
         })
     }
     useEffect(() => {
         const requestUrl =
-            location.pathname + '?' + queryString.stringify(filters)
-        dispatch(fetchPosts(filters))
+            location.pathname + '?' + queryString.stringify(params)
+        dispatch(fetchPosts({ params, filters: {} }))
         navigation(requestUrl)
-    }, [filters])
+    }, [params])
 
     const renderCardList = () => {
         return listPost.map((item, index) => (
-            <ListGroupItem key={item.postId}>
-                <div className={cx('Card')}>
+                <div key={item.postId} className={cx('Card')}>
                     <NavLink
                         className={cx('CardImg')}
                         to={`/${convertToUrl(item.title)}/${item.postId}`}
                     >
-                        <img
-                            src={item.thumbnail}
-                            alt="Thumbnail"
-                        />
+                        <img src={item.thumbnail} alt="Thumbnail" />
                     </NavLink>
                     <div className={cx('CardBody')}>
                         <NavLink
@@ -78,15 +73,11 @@ function PostsSection() {
                         </small>
                     </div>
                 </div>
-            </ListGroupItem>
         ))
     }
     return (
         <Wrapper>
             <div className={cx('Inner')}>
-                <div className={cx('Heading')}>
-                    <h3 className={cx('Title')}>Tất cả bài viết</h3>
-                </div>
                 <div className={cx('body')}>
                     <ListGroup className="gap-3 mb-3">
                         {renderCardList()}

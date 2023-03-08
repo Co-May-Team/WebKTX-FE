@@ -1,3 +1,3 @@
 export const env = {
-    BACKEND_URL: 'http://222.255.238.159:8080',
+    BACKEND_URL: 'https://www.kytucxacomay.tk/api/',
 }

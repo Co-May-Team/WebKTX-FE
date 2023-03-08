@@ -3,6 +3,9 @@ export const path = {
     HOME: '/',
     FORMS: '/bieu-mau',
     TAGS: '/:url',
+    INTRODUCES: '/gioi-thieu',
+    NEWS: '/tin-tuc',
+    NOTIFICATIONS: '/thong-bao',
     DETAIL_POST: '/:title/:id',
 
     // Auth path

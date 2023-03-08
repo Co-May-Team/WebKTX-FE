@@ -1,7 +1,16 @@
 import moment from 'moment'
 import 'moment/locale/vi' // Import Moment locale for Vietnamese
-import { useEffect, useRef, useState } from 'react'
-import { FaClock, FaCogs, FaEye, FaListAlt, FaListOl, FaRegEye, FaShare, FaUser, FaUserClock } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
+import {
+    FaClock,
+    FaCogs,
+    FaListAlt,
+    FaListOl,
+    FaRegEye,
+    FaShare,
+    FaUser,
+    FaUserClock,
+} from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
@@ -43,11 +52,15 @@ function DetailPost(props) {
     const [visibleDeletePost, setVisibleDeletePost] = useState(false)
 
     useEffect(() => {
-        postsApi.getAll({
-            sort: "viewed",
-            order: "desc",
-            page: "1"
-        }, {})
+        postsApi
+            .getAll(
+                {
+                    sort: 'viewed',
+                    order: 'desc',
+                    page: '1',
+                },
+                {}
+            )
             .then((response) => {
                 setMostViewPosts(response.data.data.posts)
             })
@@ -85,7 +98,8 @@ function DetailPost(props) {
                                         <FaUser /> Đăng: {postInfo?.userName}
                                     </ListGroupItem>
                                     <ListGroupItem>
-                                        <FaRegEye /> Lượt xem: {postInfo?.viewed}
+                                        <FaRegEye /> Lượt xem:{' '}
+                                        {postInfo?.viewed}
                                     </ListGroupItem>
                                     <ListGroupItem>
                                         <FaClock /> Thời gian:{' '}
