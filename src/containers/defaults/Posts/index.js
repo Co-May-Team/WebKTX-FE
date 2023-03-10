@@ -7,6 +7,7 @@ import { BsCalendar4 } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Badge, Spinner } from 'reactstrap'
+import postsApi from '~/apis/postsApi'
 import { Wrapper } from '~/components/Customs'
 import Pagination from '~/components/Pagination'
 import { fetchPosts } from '~/store/posts/actions'
@@ -19,21 +20,20 @@ const cx = bindClassNames(styles)
 
 function Posts() {
     const tagList = useSelector(tagsSelector).tags
-    const status = useSelector(postsSelector).status
-    const listPost = useSelector(postsSelector).posts
-    const pagination = useSelector(postsSelector).pagination
 
-    const dispatch = useDispatch()
     const url = useParams().url
     const location = useLocation()
     const navigation = useNavigate()
 
+    const [loading, setLoading] = useState(false)
+    const [postList, setPostList] = useState([])
+    const [pagination, setPagination] = useState(null)
     const [tagInfo, setTagInfo] = useState(null)
 
     const [params, setParams] = useState({
         page: 1,
     })
-    const [filters, setFilters] = useState({})
+    const [filters, setFilters] = useState({ tag_id: tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0].tagId})
 
     const handlePageChange = (newPage) => {
         setParams({
@@ -64,14 +64,18 @@ function Posts() {
         }
     }, [])
     useEffect(() => {
-        const requestUrl =
-            location.pathname + '?' + queryString.stringify(params)
-        dispatch(fetchPosts({ params, filters }))
+        const requestUrl = location.pathname + '?' + queryString.stringify(params)
+        setLoading(true)
+        postsApi.getAll(params, filters).then((response) => {
+            setPostList(response.data.data.posts)
+            setPagination(response.data.data.pagination)
+            setLoading(false)
+        })
         navigation(requestUrl)
     }, [params, filters])
 
     const renderCardList = () => {
-        return listPost.map((item) => (
+        return postList.map((item) => (
             <div key={item.postId} className={cx('CardItem')}>
                 <NavLink to={`/${convertToUrl(item.title)}/${item.postId}`}>
                     <img
@@ -146,14 +150,13 @@ function Posts() {
                     <div className={cx('Heading')}>
                         <h3 className={cx('Title')}>{tagInfo?.tagName}</h3>
                     </div>
-                    {status === 'loading' ? (
+                    {loading ? (
                         <Spinner
                             tag="div"
                             className="text-center"
                             color="primary"
-                            size="lg"
                         />
-                    ) : listPost && listPost.length > 0 ? (
+                    ) : postList && postList.length > 0 ? (
                         <>
                             <div className={cx('GridPosts')}>
                                 {renderCardList()}
