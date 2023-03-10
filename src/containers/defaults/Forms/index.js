@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { AiOutlineFileWord } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Spinner } from 'reactstrap'
+import postsApi from '~/apis/postsApi'
 import { Wrapper } from '~/components/Customs'
 import Pagination from '~/components/Pagination'
 import { fetchPosts } from '~/store/posts/actions'
@@ -15,13 +17,13 @@ const cx = bindClassNames(styles)
 
 export default function Forms() {
     const tagList = useSelector(tagsSelector).tags
-    const status = useSelector(postsSelector).status
-    const listPost = useSelector(postsSelector).posts
-    const pagination = useSelector(postsSelector).pagination
-
-    const dispatch = useDispatch()
+    
     const location = useLocation()
     const navigation = useNavigate()
+
+    const [loading, setLoading] = useState(false)
+    const [postList, setPostList] = useState([])
+    const [pagination, setPagination] = useState(null)
 
     const [params, setParams] = useState({
         page: 1,
@@ -58,14 +60,17 @@ export default function Forms() {
     useEffect(() => {
         const requestUrl =
             location.pathname + '?' + queryString.stringify(params)
-        dispatch(
-            fetchPosts({ params, filters: { tag_id: searchTagByTagName() } })
-        )
+        setLoading(true)
+        postsApi.getAll(params, { tag_id: searchTagByTagName().tagId }).then((response) => {
+            setPostList(response.data.data.posts)
+            setPagination(response.data.data.pagination)
+            setLoading(false)
+        })
         navigation(requestUrl)
     }, [params])
 
     const renderFormList = () => {
-        return listPost.map((item) => {
+        return postList.map((item) => {
             const result = extractLinkAndTitle(item?.content)
             return (
                 <a href={result.link} className={cx('FormItem')} key={item}>
@@ -84,11 +89,25 @@ export default function Forms() {
                 <div className={cx('Heading')}>
                     <h3 className={cx('Title')}>Biểu mẫu</h3>
                 </div>
-                <div className={cx('FormContainer')}>{renderFormList()}</div>
-                <Pagination
-                    pagination={pagination}
-                    onPageChange={handlePageChange}
-                />
+
+                {loading ? (
+                    <Spinner
+                        tag="div"
+                        className="text-center"
+                        color="primary"
+                        size="lg"
+                    />
+                ) : postList && postList.length > 0 ? (
+                    <>
+                        <div className={cx('FormContainer')}>{renderFormList()}</div>
+                        <Pagination
+                            pagination={pagination}
+                            onPageChange={handlePageChange}
+                        />
+                    </>
+                ) : (
+                    <div className="text-center">Trống</div>
+                )}
             </div>
         </Wrapper>
     )
