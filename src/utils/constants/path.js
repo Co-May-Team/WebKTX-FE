@@ -7,6 +7,7 @@ export const path = {
     NEWS: '/tin-tuc',
     NOTIFICATIONS: '/thong-bao',
     DETAIL_POST: '/:title/:id',
+    DETAIL_IMAGES: '/images',
 
     // Auth path
     AUTH: '/auth',

@@ -1,39 +1,40 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { SwiperSlide } from 'swiper/react'
 import { imageUrl } from '~/assets/images'
 import { Swiper, Wrapper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
 
 const cx = bindClassNames(styles)
-const data = [
-    {
-        id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-    {
-        id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-    {
-        id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-    {
-        id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-    {
-        id: Math.random(),
-        url: imageUrl,
-        alt: '',
-    },
-]
 
 export default function ImagesSection() {
+    const [posts, setPosts] = useState([])
+    useEffect(() => {
+        const getPosts = async () => {
+            const response = await axios.get(
+                "https://www.googleapis.com/drive/v3/files?q='19rP6BezjZtNZYNYYLuW904GjkGZeI72a'%20in%20parents&fields=files(id,name,mimeType,parents)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8"
+            );
+
+            const posts = response.data.files.filter(
+                (file) => file.mimeType === "application/vnd.google-apps.folder"
+            );
+
+            const postList = await Promise.all(
+                posts.map(async (post) => {
+                    const images = await axios.get(
+                        `https://www.googleapis.com/drive/v3/files?q='${post.id}'%20in%20parents&fields=files(id,name,thumbnailLink)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8`
+                    );
+                    return { id: post.id, title: post.name, images: images.data.files };
+                })
+            );
+            setPosts(postList);
+        };
+        getPosts();
+    }, []);
+    console.log(posts)
     const breakpoints = {
         768: {
             slidesPerView: 2,
@@ -45,13 +46,16 @@ export default function ImagesSection() {
     const renderImages = () => {
         return (
             <Swiper spaceBetween={20} breakpoints={breakpoints}>
-                {data.map((item) => (
-                    <SwiperSlide key={item?.id}>
-                        <div className={cx('image-item')}>
-                            <img src={item?.url} alt={item?.alt} />
-                        </div>
-                    </SwiperSlide>
-                ))}
+                {posts.map((post) => (
+                    post.images.map((image) => (
+                        <SwiperSlide key={image?.id}>
+                            <NavLink className={cx('image-item')} to={`/images?title=${post?.title}&id=${post?.id}`}>
+                                <img src={image?.thumbnailLink} alt={post?.title} />
+                            </NavLink>
+                        </SwiperSlide>
+                    ))
+                )
+                )}
             </Swiper>
         )
     }
