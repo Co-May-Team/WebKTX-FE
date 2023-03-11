@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { DetailPost, Forms, Home, Posts } from '~/containers/defaults'
+import DetailImages from '~/containers/defaults/Home/sections/ImagesSection/DetailImages'
 import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
 
@@ -8,6 +9,7 @@ const defaultRoutes = [
     { id: Math.random(), Container: Posts, path: path.TAGS },
     { id: Math.random(), Container: Forms, path: path.FORMS },
     { id: Math.random(), Container: DetailPost, path: path.DETAIL_POST },
+    { id: Math.random(), Container: DetailImages, path: path.DETAIL_IMAGES },
     {
         id: Math.random(),
         Container: Navigate,
