@@ -47,7 +47,7 @@ export default function ImagesSection() {
         return (
             <Swiper spaceBetween={20} breakpoints={breakpoints}>
                 {posts.map((post) => (
-                    post.images.map((image) => (
+                    post.images.slice(0,1).map((image) => (
                         <SwiperSlide key={image?.id}>
                             <NavLink className={cx('image-item')} to={`/images?title=${post?.title}&id=${post?.id}`}>
                                 <img src={image?.thumbnailLink} alt={post?.title} />
