@@ -6,8 +6,8 @@ export const path = {
     INTRODUCES: '/gioi-thieu',
     NEWS: '/tin-tuc',
     NOTIFICATIONS: '/thong-bao',
-    DETAIL_POST: '/:title/:id',
-    DETAIL_IMAGES: '/images',
+    POST_DETAIL: '/:title/:id',
+    IMAGES_DETAIL: '/hinh-anh/:title',
 
     // Auth path
     AUTH: '/auth',

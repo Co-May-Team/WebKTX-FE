@@ -38,7 +38,7 @@ import ShareButtons from './ShareButtons'
 
 const cx = bindClassNames(styles)
 
-function DetailPost(props) {
+function PostDetail(props) {
     const userInfo = useSelector(authSelector).userInfo
 
     const dispatch = useDispatch()
@@ -248,6 +248,6 @@ function DetailPost(props) {
     )
 }
 
-DetailPost.propTypes = {}
+PostDetail.propTypes = {}
 
-export default DetailPost
+export default PostDetail

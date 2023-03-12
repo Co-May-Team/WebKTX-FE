@@ -2,14 +2,13 @@
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { AiOutlineFileWord } from 'react-icons/ai'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Spinner } from 'reactstrap'
 import postsApi from '~/apis/postsApi'
 import { Wrapper } from '~/components/Customs'
 import Pagination from '~/components/Pagination'
-import { fetchPosts } from '~/store/posts/actions'
-import { postsSelector, tagsSelector } from '~/store/selectors'
+import { tagsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
 
@@ -17,7 +16,7 @@ const cx = bindClassNames(styles)
 
 export default function Forms() {
     const tagList = useSelector(tagsSelector).tags
-    
+
     const location = useLocation()
     const navigation = useNavigate()
 
@@ -61,11 +60,13 @@ export default function Forms() {
         const requestUrl =
             location.pathname + '?' + queryString.stringify(params)
         setLoading(true)
-        postsApi.getAll(params, { tag_id: searchTagByTagName().tagId }).then((response) => {
-            setPostList(response.data.data.posts)
-            setPagination(response.data.data.pagination)
-            setLoading(false)
-        })
+        postsApi
+            .getAll(params, { tag_id: searchTagByTagName().tagId })
+            .then((response) => {
+                setPostList(response.data.data.posts)
+                setPagination(response.data.data.pagination)
+                setLoading(false)
+            })
         navigation(requestUrl)
     }, [params])
 
@@ -99,7 +100,9 @@ export default function Forms() {
                     />
                 ) : postList && postList.length > 0 ? (
                     <>
-                        <div className={cx('FormContainer')}>{renderFormList()}</div>
+                        <div className={cx('FormContainer')}>
+                            {renderFormList()}
+                        </div>
                         <Pagination
                             pagination={pagination}
                             onPageChange={handlePageChange}
