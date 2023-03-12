@@ -4,14 +4,17 @@ import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { BsCalendar4 } from 'react-icons/bs'
-import { useDispatch, useSelector } from 'react-redux'
+import {
+    LazyLoadImage,
+    trackWindowScroll,
+} from 'react-lazy-load-image-component'
+import { useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Badge, Spinner } from 'reactstrap'
 import postsApi from '~/apis/postsApi'
 import { Wrapper } from '~/components/Customs'
 import Pagination from '~/components/Pagination'
-import { fetchPosts } from '~/store/posts/actions'
-import { postsSelector, tagsSelector } from '~/store/selectors'
+import { tagsSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import styles from './index.module.scss'
@@ -33,7 +36,10 @@ function Posts() {
     const [params, setParams] = useState({
         page: 1,
     })
-    const [filters, setFilters] = useState({ tag_id: tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0].tagId})
+    const [filters, setFilters] = useState({
+        tag_id: tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0]
+            .tagId,
+    })
 
     const handlePageChange = (newPage) => {
         setParams({
@@ -64,7 +70,8 @@ function Posts() {
         }
     }, [])
     useEffect(() => {
-        const requestUrl = location.pathname + '?' + queryString.stringify(params)
+        const requestUrl =
+            location.pathname + '?' + queryString.stringify(params)
         setLoading(true)
         postsApi.getAll(params, filters).then((response) => {
             setPostList(response.data.data.posts)
@@ -78,7 +85,7 @@ function Posts() {
         return postList.map((item) => (
             <div key={item.postId} className={cx('CardItem')}>
                 <NavLink to={`/${convertToUrl(item.title)}/${item.postId}`}>
-                    <img
+                    <LazyLoadImage
                         src={item.thumbnail}
                         alt="Thumbnail error"
                         className={cx('CardImg')}
@@ -175,4 +182,4 @@ function Posts() {
     )
 }
 
-export default Posts
+export default trackWindowScroll(Posts)

@@ -52,7 +52,7 @@ function SubmitPost({ visible, setVisible, post }) {
         reader.onload = () => {
             setThumbnail(reader.result)
         }
-        setFieldValue("thumbnail", formData)
+        setFieldValue('thumbnail', formData)
         reader.readAsDataURL(file)
     }
 
@@ -140,7 +140,7 @@ function SubmitPost({ visible, setVisible, post }) {
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             },
         })
-        let nameThumbnail = ""
+        let nameThumbnail = ''
         if (values.thumbnail !== '') {
             nameThumbnail = await postsApi
                 .uploadImages(values.thumbnail)

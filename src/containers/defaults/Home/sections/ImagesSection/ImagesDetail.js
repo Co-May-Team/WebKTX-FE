@@ -1,55 +1,32 @@
-import axios from 'axios'
-import moment from 'moment'
 import 'moment/locale/vi' // Import Moment locale for Vietnamese
 import { useEffect, useState } from 'react'
-import {
-    FaClock,
-    FaCogs,
-    FaListAlt,
-    FaListOl,
-    FaRegEye,
-    FaShare,
-    FaUser,
-    FaUserClock,
-} from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { FaListAlt, FaListOl, FaShare } from 'react-icons/fa'
+import { trackWindowScroll } from 'react-lazy-load-image-component'
+import { useLocation } from 'react-router-dom'
 import {
     Badge,
-    Button,
     Card,
     CardBody,
     CardHeader,
     CardTitle,
     ListGroup,
-    ListGroupItem,
 } from 'reactstrap'
 import postsApi from '~/apis/postsApi'
 import { InputField, Wrapper } from '~/components/Customs'
-import Confirm from '~/components/Customs/Confirm'
-import SubmitPost from '~/containers/admin/Posts/SubmitPost'
-import MostViewPosts from '~/containers/defaults/Posts/DetailPost/MostViewPosts'
-import RecentPosts from '~/containers/defaults/Posts/DetailPost/RecentPosts'
-import ShareButtons from '~/containers/defaults/Posts/DetailPost/ShareButtons'
-import { deletePost } from '~/store/posts/actions'
-import { authSelector } from '~/store/selectors'
+import ImageWithTooltip from '~/components/Customs/ImageWithTooltip'
+import MostViewPosts from '~/containers/defaults/Posts/PostDetail/MostViewPosts'
+import RecentPosts from '~/containers/defaults/Posts/PostDetail/RecentPosts'
+import ShareButtons from '~/containers/defaults/Posts/PostDetail/ShareButtons'
 import { bindClassNames } from '~/utils'
 import randomColor from '~/utils/commons/randomColor'
-import styles from './index.module.scss'
+import styles from './ImagesDetail.module.scss'
 
 const cx = bindClassNames(styles)
 
-function DetailImages(props) {
-    const userInfo = useSelector(authSelector).userInfo
+function ImagesDetail(props) {
+    const location = useLocation()
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
-
-    const id = searchParams.get("id")
-    const title = searchParams.get("title")
-
-    const [postInfo, setPostInfo] = useState(null)
+    const [postInfo] = useState(location.state)
     const [recentPosts, setRecentPosts] = useState([])
     const [mostViewPosts, setMostViewPosts] = useState([])
 
@@ -67,20 +44,6 @@ function DetailImages(props) {
                 setMostViewPosts(response.data.data.posts)
             })
     }, [])
-    useEffect(() => {
-        const getImagesInfo = async () => {
-            const images = await axios.get(
-                `https://www.googleapis.com/drive/v3/files?q='${id}'%20in%20parents&fields=files(id,name,webContentLink)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8`
-            );
-            setPostInfo({ id, title, images: images.data.files })
-        }
-        getImagesInfo()
-    }, [id])
-
-    const handleDeletePost = () => {
-        dispatch(deletePost(postInfo.postId))
-        navigate(-1)
-    }
 
     return (
         <Wrapper>
@@ -97,8 +60,7 @@ function DetailImages(props) {
                         </CardHeader>
                         <ListGroup>
                             <CardBody>
-                                <ListGroup>
-                                </ListGroup>
+                                <ListGroup></ListGroup>
                                 <hr />
                                 <CardHeader>
                                     <CardTitle className="fw-bolder fs-2 text-center">
@@ -107,11 +69,16 @@ function DetailImages(props) {
                                 </CardHeader>
                                 <hr />
                                 <div className={cx('Content')}>
-                                <div>
-                                    {postInfo?.images.map((image) => (
-                                        <img key={id} alt={title} src={image.webContentLink } />
-                                    ))}
-                                </div>
+                                    <div>
+                                        {postInfo?.images.map((image) => (
+                                            <ImageWithTooltip
+                                                key={postInfo?.id}
+                                                alt={postInfo?.title}
+                                                title={postInfo?.title}
+                                                src={image.webContentLink}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </CardBody>
                         </ListGroup>
@@ -184,6 +151,6 @@ function DetailImages(props) {
     )
 }
 
-DetailImages.propTypes = {}
+ImagesDetail.propTypes = {}
 
-export default DetailImages
+export default trackWindowScroll(ImagesDetail)

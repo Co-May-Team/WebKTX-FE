@@ -1,6 +1,6 @@
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { SwiperSlide } from 'swiper/react'
-import axiosClient from '~/apis/axiosClient'
 import { Swiper, Wrapper } from '~/components/Customs'
 import { bindClassNames } from '~/utils'
 import styles from './index.module.scss'
@@ -8,26 +8,26 @@ import styles from './index.module.scss'
 const cx = bindClassNames(styles)
 
 export default function VideosSection() {
-    const [videos, setVideos] = useState([]);
+    const [videos, setVideos] = useState([])
 
     useEffect(() => {
         const fetchVideos = async () => {
-            const response = await axiosClient.get(
+            const response = await axios.get(
                 'https://www.googleapis.com/youtube/v3/search',
                 {
                     params: {
                         part: 'snippet',
                         channelId: 'UC2qKiLt6CGASAsL7ZmAou4g', // Thay CHANNEL_ID bằng ID của kênh YouTube bạn muốn lấy danh sách video
-                        maxResults: 50, // Số lượng video bạn muốn lấy
+                        maxResults: 10, // Số lượng video bạn muốn lấy
                         key: 'AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8', // Thay YOUR_API_KEY bằng API key bạn đã tạo
                     },
                 }
-            );
+            )
 
-            setVideos(response.data.items);
-        };
+            setVideos(response.data.items)
+        }
 
-        fetchVideos();
+        fetchVideos()
     }, [])
     const breakpoints = {
         768: {
@@ -50,7 +50,9 @@ export default function VideosSection() {
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             ></iframe>
-                            <p className={cx('video-title')}>{video.snippet.title}</p>
+                            <p className={cx('video-title')}>
+                                {video.snippet.title}
+                            </p>
                         </div>
                     </SwiperSlide>
                 ))}

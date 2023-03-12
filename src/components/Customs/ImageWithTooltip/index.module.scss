@@ -1,0 +1,37 @@
+.ImageContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.Image {
+    width: 200px;
+}
+
+.ImageContainer:hover .tooltip {
+    visibility: visible;
+}
+
+.Tooltip {
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.Tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
