@@ -200,13 +200,12 @@ const Pagination = ({ pagination, onPageChange }) => {
             {fetchListPage().map((pageItem, index) => {
                 if (pageItem === page) {
                     return (
-                        <button
-                            className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
+                        <span
+                            className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-primary-6000 text-white focus:outline-none"
                             key={index}
-                            active
                         >
                             {pageItem}
-                        </button>
+                        </span>
                     )
                 } else if (pageItem === '...') {
                     return (
