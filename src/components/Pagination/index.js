@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
-import { Button } from 'reactstrap'
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
-
-const cx = bindClassNames(styles)
 
 /*
     Truyền vào 2 props:
@@ -194,49 +189,54 @@ const Pagination = ({ pagination, onPageChange }) => {
     }
 
     return (
-        <div
-            className={cx('Container')}
-            size={width < 576 ? 'sm' : width < 992 ? '' : 'lg'}
-        >
-            <Button
-                outline
+        <div className="nc-Pagination space-x-1 text-base font-medium mt-3 flex justify-content-center">
+            <button
+                className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
                 disabled={page <= 1}
                 onClick={() => onPageChange(page - 1)}
             >
                 <FaAngleLeft />
-            </Button>
+            </button>
             {fetchListPage().map((pageItem, index) => {
                 if (pageItem === page) {
                     return (
-                        <Button key={index} outline active>
+                        <button
+                            className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
+                            key={index}
+                            active
+                        >
                             {pageItem}
-                        </Button>
+                        </button>
                     )
                 } else if (pageItem === '...') {
                     return (
-                        <Button outline disabled key={index}>
+                        <button
+                            className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
+                            disabled
+                            key={index}
+                        >
                             {pageItem}
-                        </Button>
+                        </button>
                     )
                 } else {
                     return (
-                        <Button
+                        <button
+                            className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
                             key={index}
-                            outline
                             onClick={() => onPageChange(pageItem)}
                         >
                             {pageItem}
-                        </Button>
+                        </button>
                     )
                 }
             })}
-            <Button
-                outline
+            <button
+                className="inline-flex w-11 h-11 items-center justify-center rounded-full bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-6000 dark:text-neutral-400 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 focus:outline-none"
                 disabled={page >= totalPage}
                 onClick={() => onPageChange(page + 1)}
             >
                 <FaAngleRight />
-            </Button>
+            </button>
         </div>
     )
 }
