@@ -104,7 +104,7 @@ export default function Forms() {
                             {renderFormList()}
                         </div>
                         <Pagination
-                            pagination={pagination}
+                            pagination={{ ...pagination, page: params.page }}
                             onPageChange={handlePageChange}
                         />
                     </>
