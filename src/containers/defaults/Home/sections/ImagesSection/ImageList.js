@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { Glide } from 'react-glide'
+import 'react-glide/lib/reactGlide.css'
 import { useNavigate } from 'react-router-dom'
-import { SwiperSlide } from 'swiper/react'
-import { Swiper, Wrapper } from '~/components/Customs'
+import { Wrapper } from '~/components/Customs'
 import ImageWithTooltip from '~/components/Customs/ImageWithTooltip'
 import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
@@ -59,24 +60,20 @@ export default function ImageList() {
 
     const renderImages = () => {
         return (
-            <Swiper spaceBetween={20} breakpoints={breakpoints}>
-                {posts.map((post) =>
-                    post.images.slice(0, 1).map((image) => (
-                        <SwiperSlide key={image?.id}>
-                            <div
-                                className={cx('ImageItem')}
-                                onClick={() => navigateToImagesDetailPage(post)}
-                            >
-                                <ImageWithTooltip
-                                    src={`https://drive.google.com/uc?export=view&id=${image.id}`}
-                                    alt={post?.title}
-                                    title={post?.title}
-                                />
-                            </div>
-                        </SwiperSlide>
-                    ))
-                )}
-            </Swiper>
+            <div className="d-flex">
+                {posts.map((post) => (
+                    <Glide width={288} height={320}>
+                        {post.images.slice(0, 1).map((image) => (
+                            <ImageWithTooltip
+                                key={image?.id}
+                                src={`https://drive.google.com/uc?export=view&id=${image.id}`}
+                                alt={post?.title}
+                                title={post?.title}
+                            />
+                        ))}
+                    </Glide>
+                ))}
+            </div>
         )
     }
     return (
