@@ -3,24 +3,10 @@ import { useEffect, useState } from 'react'
 import { Glide } from 'react-glide'
 import 'react-glide/lib/reactGlide.css'
 import { useNavigate } from 'react-router-dom'
-import { Wrapper } from '~/components/Customs'
 import ImageWithTooltip from '~/components/Customs/ImageWithTooltip'
-import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
-import styles from './ImageList.module.scss'
 
-const cx = bindClassNames(styles)
-
-const breakpoints = {
-    768: {
-        slidesPerView: 2,
-    },
-    1024: {
-        slidesPerView: 4,
-    },
-}
-
-export default function ImageList() {
+export default function ImagesSection() {
     const navigate = useNavigate()
 
     const [posts, setPosts] = useState([])
@@ -60,7 +46,7 @@ export default function ImageList() {
 
     const renderImages = () => {
         return (
-            <div className="d-flex">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mt-3">
                 {posts.map((post) => (
                     <Glide width={288} height={320}>
                         {post.images.slice(0, 1).map((image) => (
@@ -77,13 +63,19 @@ export default function ImageList() {
         )
     }
     return (
-        <Wrapper>
-            <div className={cx('Inner')}>
-                <div className={cx('Heading')}>
-                    <h3 className={cx('Title')}>Hình ảnh Cỏ May</h3>
+        <div className={'nc-SectionMagazine7 relative py-16 lg:py-28'}>
+            <div className="nc-Section-Heading relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
+                <div className="text-center w-full max-w-2xl mx-auto ">
+                    <h2 className="text-3xl md:text-4xl font-semibold">
+                        Khám phá thư viện ảnh
+                    </h2>
+                    <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400">
+                        Di chuột hoặc trượt qua lại đề xem ảnh khác trong cùng 1
+                        chủ đề
+                    </span>
                 </div>
-                <div className={cx('ImageList')}>{renderImages()}</div>
             </div>
-        </Wrapper>
+            {renderImages()}
+        </div>
     )
 }

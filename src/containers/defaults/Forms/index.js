@@ -86,32 +86,34 @@ export default function Forms() {
 
     return (
         <Wrapper>
-            <div className={cx('Inner')}>
-                <div className={cx('Heading')}>
-                    <h3 className={cx('Title')}>Biểu mẫu</h3>
+            <div className="nc-Section-Heading relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50 mt-5">
+                <div className="text-center w-full max-w-2xl mx-auto ">
+                    <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
+                        Biểu mẫu
+                    </h2>
                 </div>
-
-                {loading ? (
-                    <Spinner
-                        tag="div"
-                        className="text-center"
-                        color="primary"
-                        size="lg"
-                    />
-                ) : postList && postList.length > 0 ? (
-                    <>
-                        <div className={cx('FormContainer')}>
-                            {renderFormList()}
-                        </div>
-                        <Pagination
-                            pagination={{ ...pagination, page: params.page }}
-                            onPageChange={handlePageChange}
-                        />
-                    </>
-                ) : (
-                    <div className="text-center">Trống</div>
-                )}
             </div>
+
+            {loading ? (
+                <Spinner
+                    tag="div"
+                    className="text-center"
+                    color="primary"
+                    size="lg"
+                />
+            ) : postList && postList.length > 0 ? (
+                <>
+                    <div className={cx('FormContainer')}>
+                        {renderFormList()}
+                    </div>
+                    <Pagination
+                        pagination={{ ...pagination, page: params.page }}
+                        onPageChange={handlePageChange}
+                    />
+                </>
+            ) : (
+                <div className="text-center">Trống</div>
+            )}
         </Wrapper>
     )
 }

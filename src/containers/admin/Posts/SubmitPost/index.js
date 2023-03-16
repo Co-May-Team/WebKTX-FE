@@ -24,7 +24,7 @@ import { fetchCategories } from '~/store/categories/actions'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
 import { categoriesSelector, tagsSelector } from '~/store/selectors'
 import { fetchTags } from '~/store/tags/actions'
-import defaultThumbnail from '~/utils/constants/defaultThumbnail'
+import { defaultThumbnail } from '~/utils/constants/default'
 import './index.scss'
 import QuillEditor from './QuillEditor'
 

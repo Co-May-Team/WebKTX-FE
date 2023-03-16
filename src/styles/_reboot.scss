@@ -233,7 +233,7 @@ a {
     text-decoration: $link-decoration;
 
     &:hover {
-        color: var(--#{$prefix}link-hover-color);
+        // color: var(--#{$prefix}link-hover-color);
         text-decoration: $link-hover-decoration;
     }
 }
