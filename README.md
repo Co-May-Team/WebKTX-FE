@@ -4,7 +4,7 @@
 2.  Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
 3.  Gõ lệnh `npm start` để chạy project trên localhost.
 
--   Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
+- Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
 
 ### Cấu trúc thư mục
 
@@ -20,5 +20,5 @@
 
 ### Flow
 
--   src/index.js --> src/App.js --> src/routes --> src/layouts --> src/containers --> src/components
--   src/containers --> src/store/{feature name}/slice.js --> src/store/{feature name}/action.js --> src/apis
+- src/index.js --> src/App.js --> src/routes --> src/layouts --> src/containers --> src/components
+- src/containers --> src/store/{feature name}/slice.js --> src/store/{feature name}/action.js --> src/apis

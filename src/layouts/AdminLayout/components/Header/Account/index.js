@@ -14,51 +14,45 @@ import styles from './index.module.scss'
 const cx = bindClassNames(styles)
 
 function Account(props) {
-    const userInfo = useSelector(authSelector).userInfo
+  const userInfo = useSelector(authSelector).userInfo
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const [visibleAction, setVisibleAction] = useState(false)
-    const handleLogout = () => {
-        dispatch(logout())
-        navigate('/')
-    }
-    return (
-        <Dropdown
-            visible={visibleAction}
-            setVisible={(visible) => setVisibleAction(visible)}
-            toggleButton={
-                <div className={cx('container')}>
-                    {/* <div className={cx('info')}>
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [visibleAction, setVisibleAction] = useState(false)
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/')
+  }
+  return (
+    <Dropdown
+      visible={visibleAction}
+      setVisible={(visible) => setVisibleAction(visible)}
+      toggleButton={
+        <div className={cx('container')}>
+          {/* <div className={cx('info')}>
                         <div className={cx('name')}>Quản trị viên</div>
                         <div className={cx('position')}>Ban quản lý Ký Túc Xá</div>
                     </div> */}
-                    <img
-                        className={cx('avatar')}
-                        src={defaultAvatar}
-                        alt="avt"
-                    />
-                </div>
-            }
-            animationClassNames="animate__animated animate__slideInRight"
-        >
-            <NavLink
-                to="/admin"
-                className={({ isActive }) =>
-                    isActive ? 'bg-primary text-white' : ''
-                }
-            >
-                <DropdownItem>
-                    <FaCogs className="me-2" />
-                    CPanel
-                </DropdownItem>
-            </NavLink>
-            <DropdownItem onClick={handleLogout}>
-                <BiLogOut className="me-2" />
-                Đăng xuất
-            </DropdownItem>
-        </Dropdown>
-    )
+          <img className={cx('avatar')} src={defaultAvatar} alt="avt" />
+        </div>
+      }
+      animationClassNames="animate__animated animate__slideInRight"
+    >
+      <NavLink
+        to="/admin"
+        className={({ isActive }) => (isActive ? 'bg-primary text-white' : '')}
+      >
+        <DropdownItem>
+          <FaCogs className="me-2" />
+          CPanel
+        </DropdownItem>
+      </NavLink>
+      <DropdownItem onClick={handleLogout}>
+        <BiLogOut className="me-2" />
+        Đăng xuất
+      </DropdownItem>
+    </Dropdown>
+  )
 }
 
 Account.propTypes = {}

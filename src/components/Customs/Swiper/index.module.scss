@@ -2,63 +2,63 @@
 @import '/src/styles/mixins';
 
 .default {
-    position: relative;
+  position: relative;
 }
 
 .dashed {
-    width: 2rem;
-    height: 0.5rem;
-    border-radius: $border-radius;
-    background-color: $white-color;
+  width: 2rem;
+  height: 0.5rem;
+  border-radius: $border-radius;
+  background-color: $white-color;
 }
 
 .nav {
-    @include flex-center();
-    position: absolute;
-    z-index: 100;
-    top: 40%;
-    min-width: 2rem;
-    min-height: 2rem;
-    background-color: $white-color-5;
-    color: $gray-bold-color;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: $linear-tss;
-    &:hover {
-        opacity: 1;
-    }
-    &.hidden {
-        visibility: hidden;
-        opacity: 0;
-        cursor: auto;
-    }
+  @include flex-center();
+  position: absolute;
+  z-index: 100;
+  top: 40%;
+  min-width: 2rem;
+  min-height: 2rem;
+  background-color: $white-color-5;
+  color: $gray-bold-color;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: $linear-tss;
+  &:hover {
+    opacity: 1;
+  }
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+    cursor: auto;
+  }
 }
 
 .image-slide {
-    width: 100%;
-    max-height: 40rem;
-    object-fit: cover;
+  width: 100%;
+  max-height: 40rem;
+  object-fit: cover;
 }
 
 .prev {
-    left: 2rem;
+  left: 2rem;
 }
 
 .next {
-    right: 2rem;
+  right: 2rem;
 }
 
 @include tablet {
-    .image-slide {
-        max-height: 30rem;
-    }
+  .image-slide {
+    max-height: 30rem;
+  }
 }
 
 @include mobile {
-    .image-slide {
-        min-height: 35rem;
-    }
-    .nav {
-        display: none;
-    }
+  .image-slide {
+    min-height: 35rem;
+  }
+  .nav {
+    display: none;
+  }
 }

@@ -3,18 +3,18 @@
 
 // Logo
 .Container {
-    @include flex(center, center);
-    .LogoName {
-        @include flex-column();
-        font-weight: 700;
-        text-transform: uppercase;
-        & > span:last-of-type {
-            font-size: 1.25rem;
-            color: $green-light-color;
-            transition: $linear-tss;
-        }
-        & > span:last-of-type:hover {
-            color: $green-regular-color;
-        }
+  @include flex(center, center);
+  .LogoName {
+    @include flex-column();
+    font-weight: 700;
+    text-transform: uppercase;
+    & > span:last-of-type {
+      font-size: 1.25rem;
+      color: $green-light-color;
+      transition: $linear-tss;
     }
+    & > span:last-of-type:hover {
+      color: $green-regular-color;
+    }
+  }
 }

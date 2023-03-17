@@ -10,32 +10,32 @@ import PostsSection from './sections/PostsSection'
 const cx = bindClassNames(styles)
 
 export default function Home() {
-    const posts = useSelector(postsSelector).posts
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(fetchPosts())
-    }, [])
-    return (
-        <div className={cx('home-container')}>
-            {/* Hero section */}
-            <HeroSection />
+  const posts = useSelector(postsSelector).posts
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchPosts())
+  }, [])
+  return (
+    <div className={cx('home-container')}>
+      {/* Hero section */}
+      <HeroSection />
 
-            {/* Posts section */}
-            <div className={cx('space-between')}>
-                <PostsSection />
-            </div>
+      {/* Posts section */}
+      <div className={cx('space-between')}>
+        <PostsSection />
+      </div>
 
-            {/* image */}
-            <div className={cx('space-between')}>
-                <ImagesSection />
-            </div>
+      {/* image */}
+      <div className={cx('space-between')}>
+        <ImagesSection />
+      </div>
 
-            {/* Videos */}
-            <div className={cx('space-between')}>
-                <VideosSection />
-            </div>
+      {/* Videos */}
+      <div className={cx('space-between')}>
+        <VideosSection />
+      </div>
 
-            {/* Google map */}
-        </div>
-    )
+      {/* Google map */}
+    </div>
+  )
 }

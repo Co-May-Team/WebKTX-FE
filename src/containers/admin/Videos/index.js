@@ -1,5 +1,5 @@
 function Videos(props) {
-    return <div>Videos</div>
+  return <div>Videos</div>
 }
 
 Videos.propTypes = {}

@@ -1,14 +1,14 @@
 import ReactSelect from 'react-select'
 
 const styles = {
-    option: (provided, state) => ({
-        ...provided,
-        backgroundColor: state.isSelected ? '#20c997' : 'white',
-    }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? '#20c997' : 'white',
+  }),
 }
 
 function Select(props) {
-    return <ReactSelect styles={styles} {...props} />
+  return <ReactSelect styles={styles} {...props} />
 }
 
 Select.propTypes = {}

@@ -49,60 +49,60 @@
 
 // Resopnsive
 @mixin mobile {
-    @media only screen and (max-width: $mobie-width) {
-        @content;
-    }
+  @media only screen and (max-width: $mobie-width) {
+    @content;
+  }
 }
 
 @mixin tablet {
-    @media only screen and (max-width: $tablet-width) {
-        @content;
-    }
+  @media only screen and (max-width: $tablet-width) {
+    @content;
+  }
 }
 
 @mixin small-desktop {
-    @media only screen and (max-width: $small-desktop-width) {
-        @content;
-    }
+  @media only screen and (max-width: $small-desktop-width) {
+    @content;
+  }
 }
 
 // Layout flex
 @mixin flex($align-items, $justify-content, $gap: 0) {
-    display: flex;
-    align-items: $align-items;
-    justify-content: $justify-content;
-    gap: $gap;
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  gap: $gap;
 }
 
 @mixin flex-center {
-    @include flex(center, center);
-    flex-direction: column;
+  @include flex(center, center);
+  flex-direction: column;
 }
 
 @mixin flex-column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 // Grid
 @mixin grid($type, $x, $y, $gap: 0) {
-    display: grid;
-    gap: $gap;
-    @if $type == column {
-        grid-template-columns: repeat($x, $y);
-    } @else {
-        grid-template-rows: repeat($x, $y);
-    }
+  display: grid;
+  gap: $gap;
+  @if $type == column {
+    grid-template-columns: repeat($x, $y);
+  } @else {
+    grid-template-rows: repeat($x, $y);
+  }
 }
 
 // block-center
 @mixin block-center {
-    // display: block;
-    margin: 0 auto;
+  // display: block;
+  margin: 0 auto;
 }
 
 // text-justify
 @mixin text-justify {
-    text-align: justify;
-    text-justify: inter-word;
+  text-align: justify;
+  text-justify: inter-word;
 }
