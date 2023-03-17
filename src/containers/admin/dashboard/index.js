@@ -1,5 +1,5 @@
 function Dashboard(props) {
-    return <div>Dashboard</div>
+  return <div>Dashboard</div>
 }
 
 Dashboard.propTypes = {}

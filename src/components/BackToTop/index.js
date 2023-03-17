@@ -8,32 +8,32 @@ import styles from './index.module.scss'
 const cx = bindClassNames(styles)
 
 export default function BackToTop() {
-    const backToTopRef = useRef()
+  const backToTopRef = useRef()
 
-    const handleScroll = () => {
-        const headerheight = 80
-        const className = cx('visible')
-        if (
-            document.body.scrollTop > headerheight ||
-            document.documentElement.scrollTop > headerheight
-        ) {
-            handleClassName.add(backToTopRef, className)
-        } else {
-            handleClassName.remove(backToTopRef, className)
-        }
+  const handleScroll = () => {
+    const headerheight = 80
+    const className = cx('visible')
+    if (
+      document.body.scrollTop > headerheight ||
+      document.documentElement.scrollTop > headerheight
+    ) {
+      handleClassName.add(backToTopRef, className)
+    } else {
+      handleClassName.remove(backToTopRef, className)
     }
+  }
 
-    const handleScrollTo = () => window.scrollTo(0, 0)
+  const handleScrollTo = () => window.scrollTo(0, 0)
 
-    useEventListener('scroll', handleScroll)
+  useEventListener('scroll', handleScroll)
 
-    return (
-        <button
-            className={cx('back-to-top')}
-            ref={backToTopRef}
-            onClick={handleScrollTo}
-        >
-            <RxChevronUp />
-        </button>
-    )
+  return (
+    <button
+      className={cx('back-to-top')}
+      ref={backToTopRef}
+      onClick={handleScrollTo}
+    >
+      <RxChevronUp />
+    </button>
+  )
 }

@@ -2,6 +2,6 @@
 @import '/src/styles/mixins';
 
 .Container {
-    @include flex-center();
-    margin-top: 2rem;
+  @include flex-center();
+  margin-top: 2rem;
 }

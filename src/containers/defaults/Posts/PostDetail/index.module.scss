@@ -4,31 +4,31 @@
 $padding: 3rem;
 
 @include tablet {
-    $padding: 1.5rem;
+  $padding: 1.5rem;
 }
 @include mobile {
-    $padding: 0.25rem;
+  $padding: 0.25rem;
 }
 
 .Container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 3rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 3rem 0;
 }
 .Title {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 .Content > * {
-    img {
-        width: 100% !important;
-    }
-    text-align: justify;
+  img {
+    width: 100% !important;
+  }
+  text-align: justify;
 }
 .Share {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
 }

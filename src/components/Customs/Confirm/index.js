@@ -3,42 +3,42 @@ import { useEffect } from 'react'
 import Swal from 'sweetalert2'
 
 const propTypes = {
-    visible: PropTypes.bool.isRequired,
-    setVisible: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
-    content: PropTypes.node.isRequired,
-    onConfirm: PropTypes.func.isRequired,
-    showCancelButton: PropTypes.bool,
-    cancelButtonText: PropTypes.string,
+  visible: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.node.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  showCancelButton: PropTypes.bool,
+  cancelButtonText: PropTypes.string,
 }
 const defaultProps = {
-    visible: false,
-    setVisible: null,
-    title: '',
-    content: '',
-    onConfirm: null,
-    showCancelButton: true,
-    cancelButtonText: 'Hủy',
+  visible: false,
+  setVisible: null,
+  title: '',
+  content: '',
+  onConfirm: null,
+  showCancelButton: true,
+  cancelButtonText: 'Hủy',
 }
 
 const Confirm = (props) => {
-    useEffect(() => {
-        if (props.visible) {
-            Swal.fire({
-                title: props.title,
-                html: props.content,
-                showCancelButton: props.showCancelButton,
-                cancelButtonText: props.cancelButtonText,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    props.onConfirm()
-                }
-                props.setVisible(false)
-            })
+  useEffect(() => {
+    if (props.visible) {
+      Swal.fire({
+        title: props.title,
+        html: props.content,
+        showCancelButton: props.showCancelButton,
+        cancelButtonText: props.cancelButtonText,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          props.onConfirm()
         }
-    })
+        props.setVisible(false)
+      })
+    }
+  })
 
-    return null
+  return null
 }
 
 Confirm.propTypes = propTypes

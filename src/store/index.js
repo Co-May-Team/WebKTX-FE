@@ -11,24 +11,24 @@ import sidebarSlice from './sidebar/slice'
 import tagsSlice from './tags/slice'
 
 const reducers = combineReducers({
-    tags: tagsSlice.reducer,
-    categories: categoriesSlice.reducer,
-    sidebar: sidebarSlice.reducer,
-    auth: authSlice.reducer,
-    posts: postsSlice.reducer,
+  tags: tagsSlice.reducer,
+  categories: categoriesSlice.reducer,
+  sidebar: sidebarSlice.reducer,
+  auth: authSlice.reducer,
+  posts: postsSlice.reducer,
 })
 
 const persistConfig = {
-    key: 'root',
-    storage,
+  key: 'root',
+  storage,
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = configureStore({
-    reducer: persistedReducer,
-    devTools: process.env.NODE_ENV !== 'production',
-    middleware: [thunk],
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: [thunk],
 })
 
 export default store

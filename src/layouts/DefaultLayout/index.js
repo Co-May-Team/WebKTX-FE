@@ -1,41 +1,22 @@
 import PropTypes from 'prop-types'
-import { useRef } from 'react'
 import { BackToTop } from '~/components'
-import { useEventListener } from '~/hooks'
-import { bindClassNames, handleClassName } from '~/utils'
 import { Footer, Header } from './components'
-import styles from './index.module.scss'
-
-const cx = bindClassNames(styles)
 
 export default function DefaultLayout({ children }) {
-    const containerRef = useRef()
-    useEventListener('scroll', () => {
-        if (
-            document.body.scrollTop > 0 ||
-            document.documentElement.scrollTop > 0
-        ) {
-            handleClassName.add(containerRef, cx('padding-top'))
-        } else {
-            handleClassName.remove(containerRef, cx('padding-top'))
-        }
-    })
-    return (
-        <div className={cx('container')}>
-            {/* Header */}
-            <Header />
-            {/* Container */}
-            <div className={cx('content')} ref={containerRef}>
-                {children}
-            </div>
-            {/* Footer */}
-            <Footer />
-            {/* Back To Top */}
-            <BackToTop />
-        </div>
-    )
+  return (
+    <div className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
+      {/* Header */}
+      <Header />
+      {/* Container */}
+      <div>{children}</div>
+      {/* Footer */}
+      <Footer />
+      {/* Back To Top */}
+      <BackToTop />
+    </div>
+  )
 }
 
 DefaultLayout.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 }
