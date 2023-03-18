@@ -30,11 +30,12 @@ function Posts() {
   }
 
   useEffect(() => {
-    dispatch(fetchPosts({ params, filters: {} }))
-  }, [])
-
-  useEffect(() => {
-    dispatch(loadMorePosts({ params, filters: {} }))
+    if (params.page === 1) {
+      dispatch(fetchPosts({ params, filters: {} }))
+    }
+    else {
+      dispatch(loadMorePosts({ params, filters: {} }))
+    }
   }, [params])
 
   return (
@@ -91,9 +92,11 @@ function Posts() {
         </div> */}
       </div>
       <ListPost data={posts} />
-      <div className="flex mt-10 mb-10 justify-center items-center">
+      <div className="flex flex-col mt-10 mb-10 justify-center items-center gap-3">
+      {status === "loadingMore" && "Đang tải thêm bài viết..."}
         <button
           className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+          disabled={status === "loadingMore"}
           onClick={() =>
             setParams((prevParams) => {
               return { page: prevParams.page + 1 }

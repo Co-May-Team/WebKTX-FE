@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import 'react-glide/lib/reactGlide.css'
 import { useNavigate } from 'react-router-dom'
 import Slider from 'react-slick'
+import imagesApi from '~/apis/imagesApi'
 import { Wrapper } from '~/components/Customs'
 import { defaultAvatar } from '~/utils/constants/default'
 
@@ -17,9 +18,7 @@ export default function ImagesSection() {
 
   const loadMoreImages = async () => {
     setLoading(true)
-    const response = await axios.get(
-      `https://www.googleapis.com/drive/v3/files?q='19rP6BezjZtNZYNYYLuW904GjkGZeI72a'%20in%20parents&fields=files(id,name,mimeType,parents,createdTime)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8&pageSize=3&pageToken=${nextPageToken}`
-    )
+    const response = await imagesApi.getFolders({ pageSize: 3, pageToken: nextPageToken })
 
     const folders = response.data.files.filter(
       (file) => file.mimeType === 'application/vnd.google-apps.folder'
@@ -27,9 +26,7 @@ export default function ImagesSection() {
 
     const listImage = await Promise.all(
       folders.map(async (folder) => {
-        const images = await axios.get(
-          `https://www.googleapis.com/drive/v3/files?q='${folder.id}'%20in%20parents&fields=files(id,name,webContentLink,thumbnailLink)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8`
-        )
+        const images = await imagesApi.getImagesInFolder(folder.id)
         return {
           id: folder.id,
           title: folder.name,
@@ -46,9 +43,7 @@ export default function ImagesSection() {
 
   useEffect(() => {
     const loadFolders = async () => {
-      const response = await axios.get(
-        `https://www.googleapis.com/drive/v3/files?q='19rP6BezjZtNZYNYYLuW904GjkGZeI72a'%20in%20parents&fields=files(id,name,mimeType,parents,createdTime)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8&pageSize=3&pageToken=${nextPageToken}`
-      )
+      const response = await imagesApi.getFolders({ pageSize: 3, pageToken: nextPageToken })
 
       const folders = response.data.files.filter(
         (file) => file.mimeType === 'application/vnd.google-apps.folder'
@@ -56,9 +51,7 @@ export default function ImagesSection() {
 
       const listImage = await Promise.all(
         folders.map(async (folder) => {
-          const images = await axios.get(
-            `https://www.googleapis.com/drive/v3/files?q='${folder.id}'%20in%20parents&fields=files(id,name,webContentLink,thumbnailLink)&key=AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8`
-          )
+          const images = await imagesApi.getImagesInFolder(folder.id)
           return {
             id: folder.id,
             title: folder.name,
