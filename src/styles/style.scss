@@ -28,6 +28,11 @@ body {
   line-height: inherit;
 }
 
+p {
+  margin-top: inherit;
+  margin-bottom: inherit;
+}
+
 hr {
   height: 0;
   color: inherit;
@@ -47,6 +52,8 @@ h5,
 h6 {
   font-size: inherit;
   font-weight: inherit;
+  margin-top: inherit;
+  margin-bottom: inherit;
 }
 
 a {
