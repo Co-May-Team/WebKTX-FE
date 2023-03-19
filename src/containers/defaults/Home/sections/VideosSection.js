@@ -138,32 +138,26 @@ export default function VideosSection() {
     )
   }
   return (
-    <div className="dark bg-neutral-900 dark:bg-black dark:bg-opacity-20 text-neutral-100">
-      <div className="relative container">
-        <div className="relative py-16 lg:py-28">
-          <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
-            <div className="text-center w-full max-w-2xl mx-auto ">
-              <h2 className="text-3xl md:text-4xl font-semibold">
-                Khám phá Video
-              </h2>
-              <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
-            </div>
-          </div>
-          {renderVideosCard()}
-          <div className="flex flex-col mt-20 justify-center items-center gap-4">
-            {loading && 'Đang tải thêm video...'}
-            {pageToken && (
-              <button
-                className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-                onClick={loadMoreVideos}
-                disabled={loading}
-              >
-                {loading ? 'Đang tải...' : 'Xem thêm'}
-              </button>
-            )}
-          </div>
+    <section id="videos-section" className="container relative py-16 lg:py-28">
+      <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
+        <div className="text-center w-full max-w-2xl mx-auto ">
+          <h2 className="text-3xl md:text-4xl font-semibold">Khám phá Video</h2>
+          <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
         </div>
       </div>
-    </div>
+      {renderVideosCard()}
+      <div className="flex flex-col mt-20 justify-center items-center gap-4">
+        {loading && 'Đang tải thêm video...'}
+        {pageToken && (
+          <button
+            className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+            onClick={loadMoreVideos}
+            disabled={loading}
+          >
+            {loading ? 'Đang tải...' : 'Xem thêm'}
+          </button>
+        )}
+      </div>
+    </section>
   )
 }

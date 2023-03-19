@@ -11,7 +11,6 @@ import {
   tagsSelector,
 } from '~/store/selectors'
 import convertToUrl from '~/utils/commons/convertToUrl'
-import { defaultAvatar } from '~/utils/constants/default'
 import AvatarDropdown from './AvatarDropdown'
 
 function Header() {
@@ -40,7 +39,7 @@ function Header() {
     >
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-b dark:border-neutral-700 !border-transparent">
         <div className="relative z-10">
-          <div className="container py-3 relative flex justify-between items-center space-x-4 xl:space-x-8">
+          <div className="container relative flex justify-between items-center space-x-4 xl:space-x-8">
             <div className="flex justify-start flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10">
               <NavLink className="flex items-center justify-center" to="/">
                 <LogoIcon />
@@ -82,59 +81,24 @@ function Header() {
             <div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
               <div className="hidden items-center xl:flex space-x-2">
                 <ul className="hidden lg:flex lg:flex-wrap lg:items-center lg:space-x-1 relative">
-                  <li
-                    className="menu-item menu-dropdown relative"
-                    onMouseEnter={() => setVisibleTagDropdown(true)}
-                    onMouseLeave={() => setVisibleTagDropdown(false)}
-                  >
-                    <div
-                      className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
-                      rel="noopener noreferrer"
-                      id="headlessui-popover-button-:rei:"
-                      aria-expanded="false"
-                      aria-current="page"
+                  {tags.map((tag) => (
+                    <NavLink
+                      key={tag?.tagId}
+                      className="menu-item menu-dropdown relative text-opacity-90 group p-3 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative"
+                      to={`/${convertToUrl(tag?.tagName)}`}
                     >
-                      Thẻ
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        className="ml-1 -mr-1 h-4 w-4 text-neutral-400"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    {visibleTagDropdown && (
                       <div
-                        className="sub-menu absolute transform z-10 min-w-[240px] pt-3 left-0 opacity-100 translate-y-0"
-                        id="headlessui-popover-panel-:rej:"
-                        tabIndex={-1}
+                        className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
+                        rel="noopener noreferrer"
+                        id="headlessui-popover-button-:rei:"
+                        aria-expanded="false"
+                        aria-current="page"
                       >
-                        <ul className="rounded-xl shadow-lg ring-1 ring-black/5 dark:ring-white/10 text-sm relative bg-white dark:bg-neutral-800 py-3 grid space-y-1">
-                          {tags.map((tag) => (
-                            <li key={tag?.tagId} className="px-2">
-                              <NavLink
-                                aria-current="page"
-                                className="flex items-center font-normal text-neutral-6000 dark:text-neutral-300 py-2 px-4 rounded-md hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 font-semibold text-neutral-700 dark:!text-neutral-200"
-                                rel="noopener noreferrer"
-                                to={`/${convertToUrl(tag?.tagName)}`}
-                              >
-                                <span className="flex-shrink-0">
-                                  {tag?.tagName}
-                                </span>
-                              </NavLink>
-                            </li>
-                          ))}
-                        </ul>
+                        {tag?.tagName}
                       </div>
-                    )}
-                  </li>
-                  <li
+                    </NavLink>
+                  ))}
+                  {/* <li
                     className="menu-item menu-dropdown relative"
                     onMouseEnter={() => setVisibleCategoryDropdown(true)}
                     onMouseLeave={() => setVisibleCategoryDropdown(false)}
@@ -185,9 +149,9 @@ function Header() {
                         </ul>
                       </div>
                     )}
-                  </li>
+                  </li> */}
                 </ul>
-                <div className="hidden sm:block h-10 border-l border-neutral-300 dark:border-neutral-6000" />
+                <div className="hidden sm:block h-10 border-l mx-2 border-neutral-300 dark:border-neutral-6000" />
                 {/* <button className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center ">
                                     <span className="sr-only">
                                         Bật Dark mode
@@ -248,7 +212,7 @@ function Header() {
                       </svg>
                     </button>
                   </div>
-                    <AvatarDropdown />
+                  <AvatarDropdown />
                 </div>
               ) : (
                 <NavLink
@@ -281,7 +245,7 @@ function Header() {
                   {isShow && (
                     <div className="relative z-50">
                       <div className="fixed inset-0 bg-neutral-900 bg-opacity-50 opacity-100" />
-                      <div className="fixed inset-y-0 left-0 w-screen max-w-sm overflow-y-auto z-50 opacity-100 translate-x-0">
+                      <div className="fixed inset-y-0 left-0 w-screen max-w-sm overflow-y-auto z-50 opacity-100 translate-x-0 animate__animated animate__fadeInLeft ">
                         <div className="flex min-h-full">
                           <div
                             className="w-full max-w-sm overflow-hidden transition-all"
@@ -365,56 +329,21 @@ function Header() {
                                 </span>
                               </div>
                               <ul className="flex flex-col py-6 px-2 space-y-1">
-                                <li className="text-neutral-900 dark:text-white">
-                                  <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
+                                {tags?.map((tag) => (
+                                  <NavLink className="text-neutral-900 dark:text-white">
                                     <div
-                                      aria-current="page"
-                                      className="py-2.5 px-4 select-none text-secondary"
+                                      className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide"
+                                      to={`/${convertToUrl(tag.tagName)}`}
                                     >
-                                      Chuyên mục
-                                    </div>
-                                    <button
-                                      className="py-2.5 px-4 flex flex-1 justify-end select-none focus:outline-none focus:ring-0"
-                                      id="headlessui-disclosure-button-:rs2:"
-                                      type="button"
-                                      aria-expanded="false"
-                                    >
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        aria-hidden="true"
-                                        className="ml-2 h-4 w-4 text-neutral-500"
+                                      <div
+                                        aria-current="page"
+                                        className="py-2.5 px-4 select-none text-secondary"
                                       >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clipRule="evenodd"
-                                        />
-                                      </svg>
-                                    </button>
-                                  </div>
-                                  <div className="headlessui-disclosure-panel-:rsc:">
-                                    <ul className="nav-mobile-sub-menu pl-5 pb-1 text-base">
-                                      {categories?.map((category) => (
-                                        <li
-                                          key={category.categoryId}
-                                          className="text-neutral-900 dark:text-white"
-                                        >
-                                          <NavLink
-                                            aria-current="page"
-                                            class="flex w-full items-center py-2.5 px-4 font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg  text-secondary"
-                                            to={`${convertToUrl(
-                                              category.categoryName
-                                            )}`}
-                                          >
-                                            {category.categoryName}
-                                          </NavLink>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </li>
+                                        {tag.tagName}
+                                      </div>
+                                    </div>
+                                  </NavLink>
+                                ))}
                               </ul>
                             </div>
                           </div>

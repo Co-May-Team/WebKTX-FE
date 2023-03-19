@@ -7,52 +7,52 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { trackWindowScroll } from 'react-lazy-load-image-component'
 import { useSelector } from 'react-redux'
 import { NavLink, useParams } from 'react-router-dom'
-import postsApi from '~/apis/postsApi'
 import { Wrapper } from '~/components/Customs'
-import { categoriesSelector } from '~/store/selectors'
+import postsApi from '~/services/postsApi'
+import { tagsSelector } from '~/store/selectors'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
 
 function PostsHome() {
-  const categoryList = useSelector(categoriesSelector).categories
+  const tagList = useSelector(tagsSelector).tags
 
   const url = useParams().url
 
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
   const [postList, setPostList] = useState([])
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(0)
-  const [categoryInfo, setCategoryInfo] = useState(null)
+  const [tagInfo, setTagInfo] = useState(null)
 
   const [filters, setFilters] = useState({
-    category_id: categoryList.filter(
-      (category) => convertToUrl(category?.categoryName) === url
-    )[0].categoryId,
+    tag_id: tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0]
+      .tagId,
   })
   console.log(postList)
-  const searchCategoryByUrl = () => {
-    return categoryList.filter(
-      (category) => convertToUrl(category?.categoryName) === url
-    )[0]
+  const searchTagByUrl = () => {
+    return tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0]
   }
   const loadMorePosts = async () => {
+    setLoadingMore(true)
     await postsApi.getAll({ page: page + 1 }, filters).then((response) => {
       setPostList([...postList, ...response.data.data.posts])
       setPage(page + 1)
       if (response.data.data.posts.length === 0) {
         setHasMore(false)
       }
+      setLoadingMore(false)
     })
   }
-  document.title = categoryInfo?.categoryName
-    ? `${categoryInfo?.categoryName} - KTX Cỏ May`
+  document.title = tagInfo?.tagName
+    ? `${tagInfo?.tagName} - KTX Cỏ May`
     : 'KTX Cỏ May'
   useEffect(() => {
-    const category = searchCategoryByUrl()
-    setCategoryInfo(category)
+    const tag = searchTagByUrl()
+    setTagInfo(tag)
     setFilters({
-      category_id: category.categoryId,
+      tag_id: tag.tagId,
     })
   }, [url])
   useEffect(() => {
@@ -205,7 +205,7 @@ function PostsHome() {
   return (
     <>
       <Helmet>
-        <title>{`${categoryInfo?.categoryName} - KTX Cỏ May`}</title>
+        <title>{`${tagInfo?.tagName} - KTX Cỏ May`}</title>
         <meta
           name="description"
           content="KTX Cỏ May có diện tích rộng hơn 2.600 m2, thiết kế 4 tầng hiện đại, khang trang. Đó là tâm nguyện của một Doanh nhân người Nam Bộ đã viết nên nhiều câu chuyện, nhiều mảnh đời qua các thế hệ sinh viên trên cả nước, học tập và sinh sống tại TP.HCM."
@@ -217,7 +217,7 @@ function PostsHome() {
         <meta name="robots" content="index, follow" />
         <meta
           property="og:title"
-          content={`${categoryInfo?.categoryName} - KTX Cỏ May`}
+          content={`${tagInfo?.tagName} - KTX Cỏ May`}
         />
         <meta
           property="og:description"
@@ -229,7 +229,7 @@ function PostsHome() {
         <meta name="twitter:card" content="summary" />
         <meta
           name="twitter:title"
-          content={`${categoryInfo?.categoryName} - KTX Cỏ May`}
+          content={`${tagInfo?.tagName} - KTX Cỏ May`}
         />
         <meta
           name="twitter:description"
@@ -239,7 +239,7 @@ function PostsHome() {
         <meta name="author" content="Ký Túc Xá Cỏ May" />
         <meta
           name="apple-mobile-web-app-title"
-          content={`${categoryInfo?.categoryName} - KTX Cỏ May`}
+          content={`${tagInfo?.tagName} - KTX Cỏ May`}
         />
         <meta name="application-name" content="Ký Túc Xá Cỏ May" />
         <meta name="msapplication-TileColor" content="#ffffff" />
@@ -249,24 +249,32 @@ function PostsHome() {
         <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50 mt-5">
           <div className="text-center w-full max-w-2xl mx-auto ">
             <h2 className="text-3xl md:text-4xl font-semibold">
-              {categoryInfo?.categoryName.toUpperCase()}
+              {tagInfo?.tagName.toUpperCase()}
             </h2>
           </div>
         </div>
-        {postList && postList.length > 0 ? (
+        {loading ? (
+          <div className="flex mt-5 justify-center items-center">
+            <div className="text-center">Đang tải dữ liệu...</div>
+          </div>
+        ) : postList && postList.length > 0 ? (
           <>
             <InfiniteScroll
               dataLength={postList.length}
               next={loadMorePosts}
               hasMore={hasMore}
-              loader={<h4>Đang tải thêm...</h4>}
               className="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             >
               {renderCardList()}
             </InfiniteScroll>
+            {loadingMore && (
+              <div className="flex mt-5 justify-center items-center">
+                <h4 className="text-center">Đang tải thêm...</h4>
+              </div>
+            )}
           </>
         ) : (
-          <div className="flex mt-20 justify-center items-center">
+          <div className="flex mt-5 justify-center items-center">
             <div className="text-center">Trống</div>
           </div>
         )}

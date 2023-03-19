@@ -1,6 +1,6 @@
 import moment from 'moment'
 import 'moment/locale/vi' // Import Moment locale for Vietnamese
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   FaEnvelope,
   FaEye,
@@ -22,9 +22,10 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from 'react-share'
-import postsApi from '~/apis/postsApi'
 import Confirm from '~/components/Customs/Confirm'
 import SubmitPost from '~/containers/admin/Posts/SubmitPost'
+import { useClickOutside } from '~/hooks'
+import postsApi from '~/services/postsApi'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
@@ -44,12 +45,22 @@ function PostDetail(props) {
   const navigate = useNavigate()
   const params = useParams()
 
+  const shareDropdownRef = useRef()
+  const moreActionDropdownRef = useRef()
+
   const [postInfo, setPostInfo] = useState(null)
   const [relatedPosts, setRelatedPosts] = useState([])
   const [mostViewPosts, setMostViewPosts] = useState([])
   const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
   const [visibleDeletePost, setVisibleDeletePost] = useState(false)
   const [visibleShareDropdown, setVisibleShareDropdown] = useState(false)
+  const [visibleMoreActionDropdown, setVisibleMoreActionDropdown] =
+    useState(false)
+
+  useClickOutside(shareDropdownRef, () => setVisibleShareDropdown(false))
+  useClickOutside(moreActionDropdownRef, () =>
+    setVisibleMoreActionDropdown(false)
+  )
 
   useEffect(() => {
     postsApi
@@ -207,15 +218,13 @@ function PostDetail(props) {
                         />
                       </svg>
                     </button>
-                    <div className="relative inline-block text-left">
+                    <div
+                      className="relative inline-block text-left"
+                      ref={shareDropdownRef}
+                    >
                       <button
                         className="flex-shrink-0 flex items-center justify-center focus:outline-none h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-200 rounded-full"
                         title="Chia sẻ"
-                        id="headlessui-menu-button-:rl:"
-                        type="button"
-                        aria-haspopup="true"
-                        aria-expanded={visibleShareDropdown ? 'true' : 'false'}
-                        aria-controls="headlessui-menu-items-:r38:"
                         onClick={() =>
                           setVisibleShareDropdown(!visibleShareDropdown)
                         }
@@ -236,121 +245,70 @@ function PostDetail(props) {
                         </svg>
                       </button>
                       {visibleShareDropdown && (
-                        <div
-                          className="absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100"
-                          aria-labelledby="headlessui-menu-button-:rl:"
-                          id="headlessui-menu-items-:r38:"
-                          role="menu"
-                          tabIndex={0}
-                        >
+                        <div className="absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster">
                           <div
                             className="px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300"
                             role="none"
                           >
-                            <div
-                              data-menu-item-id="Facebook"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <FacebookShareButton url={window.location.href}>
-                                  <FaFacebook className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Facebook</span>
-                                </FacebookShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="Twitter"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <TwitterShareButton url={window.location.href}>
-                                  <FaTwitter className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Twitter</span>
-                                </TwitterShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="LinkedIn"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <LinkedinShareButton url={window.location.href}>
-                                  <FaLinkedin className="mr-1 w-7 text-base" />
-                                  <span className="truncate">LinkedIn</span>
-                                </LinkedinShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="Telegram"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <TelegramShareButton url={window.location.href}>
-                                  <FaTelegram className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Telegram</span>
-                                </TelegramShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="Whatsapp"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <WhatsappShareButton url={window.location.href}>
-                                  <FaWhatsapp className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Whatsapp</span>
-                                </WhatsappShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="Reddit"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <RedditShareButton url={window.location.href}>
-                                  <FaReddit className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Reddit</span>
-                                </RedditShareButton>
-                              </div>
-                            </div>
-                            <div
-                              data-menu-item-id="Email"
-                              id="headlessui-menu-item-:r39:"
-                              role="menuitem"
-                              tabIndex={-1}
-                            >
-                              <div className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
-                                <EmailShareButton url={window.location.href}>
-                                  <FaEnvelope className="mr-1 w-7 text-base" />
-                                  <span className="truncate">Email</span>
-                                </EmailShareButton>
-                              </div>
-                            </div>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <FacebookShareButton url={window.location.href}>
+                                <FaFacebook className="mr-1 w-7 text-base" />
+                                <span className="truncate">Facebook</span>
+                              </FacebookShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <TwitterShareButton url={window.location.href}>
+                                <FaTwitter className="mr-1 w-7 text-base" />
+                                <span className="truncate">Twitter</span>
+                              </TwitterShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <LinkedinShareButton url={window.location.href}>
+                                <FaLinkedin className="mr-1 w-7 text-base" />
+                                <span className="truncate">LinkedIn</span>
+                              </LinkedinShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <TelegramShareButton url={window.location.href}>
+                                <FaTelegram className="mr-1 w-7 text-base" />
+                                <span className="truncate">Telegram</span>
+                              </TelegramShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <WhatsappShareButton url={window.location.href}>
+                                <FaWhatsapp className="mr-1 w-7 text-base" />
+                                <span className="truncate">Whatsapp</span>
+                              </WhatsappShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <RedditShareButton url={window.location.href}>
+                                <FaReddit className="mr-1 w-7 text-base" />
+                                <span className="truncate">Reddit</span>
+                              </RedditShareButton>
+                            </button>
+                            <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                              <EmailShareButton url={window.location.href}>
+                                <FaEnvelope className="mr-1 w-7 text-base" />
+                                <span className="truncate">Email</span>
+                              </EmailShareButton>
+                            </button>
                           </div>
                         </div>
                       )}
                     </div>
                     <div>
-                      <div className="relative inline-block text-left">
+                      <div
+                        className="relative inline-block text-left"
+                        ref={moreActionDropdownRef}
+                      >
                         <button
                           className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center rounded-full  h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 focus:outline-none"
-                          title="Thêm"
-                          id="headlessui-menu-button-:rm:"
-                          type="button"
-                          aria-haspopup="true"
-                          aria-expanded="false"
+                          title="khác"
+                          onClick={() =>
+                            setVisibleMoreActionDropdown(
+                              !visibleMoreActionDropdown
+                            )
+                          }
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -363,6 +321,19 @@ function PostDetail(props) {
                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                           </svg>
                         </button>
+                        {visibleMoreActionDropdown && (
+                          <div className="absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster">
+                            <div
+                              className="px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300"
+                              role="none"
+                            >
+                              <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                                <i className="las la-copy mr-1 w-7 text-base" />
+                                <span className="truncate">Sao chép link</span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -384,7 +355,7 @@ function PostDetail(props) {
         <div className="w-full lg:w-3/5 xl:w-2/3 xl:pr-20">
           <div className="space-y-10">
             <div
-              className="prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert"
+              className="prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert content-wrapper"
               dangerouslySetInnerHTML={{
                 __html: postInfo?.content,
               }}

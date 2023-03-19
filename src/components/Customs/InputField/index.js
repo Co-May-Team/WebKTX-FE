@@ -20,7 +20,7 @@ export default function InputField({
   return (
     <label className="block">
       <div className="flex">
-        <span className="text-neutral-800 dark:text-neutral-200">
+        <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
           {label}
           {isRequired && <span style={{ color: 'red' }}>*</span>}:
         </span>

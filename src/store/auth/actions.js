@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import authApi from '~/apis/authApi'
+import authApi from '~/services/authApi'
 import authSlice from './slice'
 
 export const { setStatus, getUserInfo, logout } = authSlice.actions

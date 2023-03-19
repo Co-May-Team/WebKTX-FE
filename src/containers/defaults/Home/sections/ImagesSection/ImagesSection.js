@@ -1,11 +1,10 @@
-import axios from 'axios'
+/* eslint-disable react-hooks/exhaustive-deps */
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import 'react-glide/lib/reactGlide.css'
 import { useNavigate } from 'react-router-dom'
 import Slider from 'react-slick'
-import imagesApi from '~/apis/imagesApi'
-import { Wrapper } from '~/components/Customs'
+import imagesApi from '~/services/imagesApi'
 import { defaultAvatar } from '~/utils/constants/default'
 
 export default function ImagesSection() {
@@ -15,10 +14,14 @@ export default function ImagesSection() {
   const [nextPageToken, setNextPageToken] = useState('')
   const [numFolders, setNumFolders] = useState(3)
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
 
   const loadMoreImages = async () => {
-    setLoading(true)
-    const response = await imagesApi.getFolders({ pageSize: 3, pageToken: nextPageToken })
+    setLoadingMore(true)
+    const response = await imagesApi.getFolders({
+      pageSize: 3,
+      pageToken: nextPageToken,
+    })
 
     const folders = response.data.files.filter(
       (file) => file.mimeType === 'application/vnd.google-apps.folder'
@@ -38,12 +41,16 @@ export default function ImagesSection() {
     setFolders((prevFolders) => [...prevFolders, ...listImage])
     setNextPageToken(response.data.nextPageToken)
     setNumFolders(numFolders + 3)
-    setLoading(false)
+    setLoadingMore(false)
   }
 
   useEffect(() => {
+    setLoading(true)
     const loadFolders = async () => {
-      const response = await imagesApi.getFolders({ pageSize: 3, pageToken: nextPageToken })
+      const response = await imagesApi.getFolders({
+        pageSize: 3,
+        pageToken: nextPageToken,
+      })
 
       const folders = response.data.files.filter(
         (file) => file.mimeType === 'application/vnd.google-apps.folder'
@@ -62,6 +69,7 @@ export default function ImagesSection() {
       )
       setFolders(listImage)
       setNextPageToken(response.data.nextPageToken)
+      setLoading(false)
     }
     loadFolders()
   }, [])
@@ -74,7 +82,6 @@ export default function ImagesSection() {
     slidesToScroll: 1,
     initialSlide: 2,
   }
-
   const renderImages = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-3">
@@ -166,30 +173,28 @@ export default function ImagesSection() {
     )
   }
   return (
-    <Wrapper>
-      <div className="relative py-16 lg:py-28">
-        <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
-          <div className="text-center w-full max-w-2xl mx-auto ">
-            <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
-              Hình ảnh Cỏ May
-            </h2>
-            <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
-          </div>
-        </div>
-        {renderImages()}
-        <div className="flex flex-col mt-20 justify-center items-center gap-4">
-          {loading && 'Đang tải thêm hình ảnh...'}
-          {nextPageToken && (
-            <button
-              className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-              onClick={loadMoreImages}
-              disabled={loading}
-            >
-              {loading ? 'Đang tải...' : 'Xem thêm'}
-            </button>
-          )}
+    <section id="images-section" className="container relative py-16 lg:py-28">
+      <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
+        <div className="text-center w-full max-w-2xl mx-auto ">
+          <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
+            Hình ảnh Cỏ May
+          </h2>
+          <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
         </div>
       </div>
-    </Wrapper>
+      {renderImages()}
+      <div className="flex flex-col mt-20 justify-center items-center gap-4">
+        {loadingMore && 'Đang tải thêm hình ảnh...'}
+        {nextPageToken && (
+          <button
+            className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+            onClick={loadMoreImages}
+            disabled={loading}
+          >
+            {loadingMore ? 'Đang tải...' : 'Xem thêm'}
+          </button>
+        )}
+      </div>
+    </section>
   )
 }

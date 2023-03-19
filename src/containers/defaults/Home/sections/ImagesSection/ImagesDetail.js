@@ -11,12 +11,12 @@ import {
   CardTitle,
   ListGroup,
 } from 'reactstrap'
-import postsApi from '~/apis/postsApi'
 import { InputField, Wrapper } from '~/components/Customs'
 import ImageWithTooltip from '~/components/Customs/ImageWithTooltip'
 import MostViewPosts from '~/containers/defaults/Posts/PostDetail/MostViewPosts'
 import RecentPosts from '~/containers/defaults/Posts/PostDetail/RelatedPosts'
 import ShareButtons from '~/containers/defaults/Posts/PostDetail/ShareButtons'
+import postsApi from '~/services/postsApi'
 import { bindClassNames } from '~/utils'
 import randomColor from '~/utils/commons/randomColor'
 import styles from './ImagesDetail.module.scss'
