@@ -1,39 +1,32 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchPosts } from '~/store/posts/actions'
-import { postsSelector } from '~/store/selectors'
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
+import { useDispatch } from 'react-redux'
+import { fetchCategories } from '~/store/categories/actions'
+import { fetchTags } from '~/store/tags/actions'
 import { HeroSection, ImagesSection, VideosSection } from './sections'
 import PostsSection from './sections/PostsSection'
 
-const cx = bindClassNames(styles)
-
 export default function Home() {
-  const posts = useSelector(postsSelector).posts
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchPosts())
+    dispatch(fetchTags())
+    dispatch(fetchCategories())
   }, [])
   return (
-    <div className={cx('home-container')}>
+    <div className="">
       {/* Hero section */}
-      <HeroSection />
+      <div>
+        <HeroSection />
+      </div>
 
       {/* Posts section */}
-      <div className={cx('space-between')}>
-        <PostsSection />
-      </div>
+      <PostsSection />
 
       {/* image */}
-      <div className={cx('space-between')}>
-        <ImagesSection />
-      </div>
+      <ImagesSection />
 
       {/* Videos */}
-      <div className={cx('space-between')}>
-        <VideosSection />
-      </div>
+      <VideosSection />
 
       {/* Google map */}
     </div>

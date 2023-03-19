@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import postsApi from '~/apis/postsApi'
+import postsApi from '~/services/postsApi'
 import postsSlice from './slice'
 
 export const { addPostToList, updatePostList } = postsSlice.actions

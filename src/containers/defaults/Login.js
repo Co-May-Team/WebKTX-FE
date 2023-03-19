@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Formik } from 'formik'
 import { useEffect } from 'react'
+import GoogleLogin from 'react-google-login'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
@@ -36,21 +37,19 @@ export default function Login() {
     actions.setSubmitting(false)
   }
   //
-  const dangNhhapThanhCong = (response) => {
+  const onSuccess = (response) => {
     const info = parseJwt(response.credential)
     console.log('Đăng nhập thành công - response', response)
     console.log('Đăng nhập thành công - info', info)
-    localStorage.removeItem('userInfoGoogle')
-    localStorage.removeItem('isLogin')
-    localStorage.setItem('userInfoGoogle', JSON.stringify(info))
-    // window.location.href = 'http://localhost:3000/';
-    window.location.href = 'https://www.kytucxacomay.tk/'
+    // localStorage.removeItem('userInfoGoogle')
+    // localStorage.removeItem('isLogin')
+    // localStorage.setItem('userInfoGoogle', JSON.stringify(info))
+    // // window.location.href = 'http://localhost:3000/';
+    // window.location.href = 'https://www.kytucxacomay.tk/'
   }
-  const thoat = (response) => {
-    console.log('Đã thoát', response)
-  }
-  const dangNhapThatBai = (response) => {
-    console.log('Đăng nhập thất bại', response)
+
+  const onFailure = (error) => {
+    console.log('Đăng nhập thất bại', error)
   }
   function parseJwt(token) {
     var base64Url = token.split('.')[1]
@@ -86,7 +85,17 @@ export default function Login() {
         <div className="p-5 mx-auto bg-white rounded-[40px] shadow-lg sm:p-10 mt-10 lg:mt-20 lg:p-16 dark:bg-neutral-900">
           <div className="max-w-md mx-auto space-y-6">
             <div className="grid gap-3">
-              <NavLink
+              <GoogleLogin
+                clientId="864811280914-uron2hmb33ss57c3eb7jqs7ekbkm45oi.apps.googleusercontent.com"
+                className="flex items-center justify-center w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
+                disabledStyle
+                buttonText="Đăng nhập với Google"
+                onSuccess={onSuccess}
+                onFailure={onFailure}
+                cookiePolicy={'single_host_origin'}
+                isSignedIn={false}
+              />
+              {/* <NavLink
                 href="#"
                 className="flex items-center justify-center w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
               >
@@ -128,7 +137,7 @@ export default function Login() {
                 <h3 className="text-center text-sm px-3 font-medium text-neutral-700 dark:text-neutral-300 sm:text-sm">
                   Đăng nhập với Google
                 </h3>
-              </NavLink>
+              </NavLink> */}
             </div>
             <div className="relative text-center">
               <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">

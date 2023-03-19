@@ -85,7 +85,7 @@ export default function Swiper(props) {
 
 Swiper.propTypes = {
   breakpoints: PropTypes.object,
-  // data: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   className: PropTypes.string,
   spaceBetween: PropTypes.number,
   slidesPerView: PropTypes.number,

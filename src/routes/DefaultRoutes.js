@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Forms from '~/containers/defaults/Forms'
+import RegistrationForm from '~/containers/defaults/Forms/registration_form/RegistrationForm'
 import Home from '~/containers/defaults/Home'
 import ImagesDetail from '~/containers/defaults/Home/sections/ImagesSection/ImagesDetail'
 import PostDetail from '~/containers/defaults/Posts/PostDetail'
@@ -11,6 +12,11 @@ const defaultRoutes = [
   { id: Math.random(), Container: Home, path: path.HOME },
   { id: Math.random(), Container: PostsHome, path: path.TAGS },
   { id: Math.random(), Container: Forms, path: path.FORMS },
+  {
+    id: Math.random(),
+    Container: RegistrationForm,
+    path: path.REGISTRATION_FORM,
+  },
   { id: Math.random(), Container: PostDetail, path: path.POST_DETAIL },
   { id: Math.random(), Container: ImagesDetail, path: path.IMAGES_DETAIL },
   {

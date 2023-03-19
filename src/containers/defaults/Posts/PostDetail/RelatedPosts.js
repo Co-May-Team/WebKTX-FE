@@ -113,12 +113,12 @@ function RelatedPosts({ listPost }) {
                 />
                 <div className="mb-3">
                   <div className="flex flex-wrap space-x-2">
-                    <NavLink
+                    <div
                       className="transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800"
-                      to={`/${convertToUrl(post?.category.categoryName)}`}
+                      // to={`/${convertToUrl(post?.category.categoryName)}`}
                     >
                       {post?.category.categoryName}
-                    </NavLink>
+                    </div>
                   </div>
                 </div>
                 <div className="inline-flex items-center text-xs text-neutral-300">
