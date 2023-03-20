@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                sh 'npm install --force' 
+                sh 'npm install --save --legacy-peer-deps' 
 				sh 'npm run build' 
             }
         }
