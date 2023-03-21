@@ -8,7 +8,6 @@ import Swal from 'sweetalert2'
 import * as Yup from 'yup'
 import { InputField } from '~/components/Customs'
 import Modal from '~/components/Customs/Modal'
-import MultiSelect from '~/components/Customs/MultiSelect'
 import postsApi from '~/services/postsApi'
 import { fetchCategories } from '~/store/categories/actions'
 import { addPostToList, updatePostList } from '~/store/posts/actions'
@@ -84,7 +83,7 @@ function SubmitPost({ visible, setVisible, post }) {
     isPublished: true,
     publishedAt: addedDate(new Date()),
     category: {},
-    tagIds: [],
+    tagModels: [tags[0]],
     thumbnail: '',
   }
   if (post?.postId) {
@@ -128,21 +127,30 @@ function SubmitPost({ visible, setVisible, post }) {
         toast.addEventListener('mouseleave', Swal.resumeTimer)
       },
     })
-    let nameThumbnail = ''
-    if (values.thumbnail !== '') {
-      nameThumbnail = await postsApi
-        .uploadImages(values.thumbnail)
-        .then((response) => {
-          return response.data.data.name
-        })
-    }
-    const data = {
-      ...values,
-      thumbnail: nameThumbnail,
-      tagIds: values.tagModels.map((tag) => tag.tagId),
-      category: values.category.categoryId,
-    }
     if (post?.postId) {
+      let nameThumbnail = values.thumbnail
+      if (thumbnail !== values.thumbnail) {
+        nameThumbnail = await postsApi
+          .uploadImages(values.thumbnail)
+          .then((response) => {
+            return response.data.data.name
+          })
+          .catch((error) => {
+            console.log(error)
+            Toast.fire({
+              title: 'Chỉnh sửa bài viết',
+              text: error.message,
+              icon: 'success',
+            })
+            return
+          })
+      }
+      const data = {
+        ...values,
+        thumbnail: nameThumbnail,
+        tagIds: values.tagModels.map((tag) => tag.tagId),
+        category: values.category.categoryId,
+      }
       postsApi.updatePost(data).then((response) => {
         if (response.data.status === 'OK') {
           Toast.fire({
@@ -161,6 +169,29 @@ function SubmitPost({ visible, setVisible, post }) {
         }
       })
     } else {
+      let nameThumbnail = ''
+      if (thumbnail !== defaultThumbnail) {
+        nameThumbnail = await postsApi
+          .uploadImages(values.thumbnail)
+          .then((response) => {
+            return response.data.data.name
+          })
+          .catch((error) => {
+            console.log(error)
+            Toast.fire({
+              title: 'Chỉnh sửa bài viết',
+              text: error.message,
+              icon: 'success',
+            })
+            return
+          })
+      }
+      const data = {
+        ...values,
+        thumbnail: nameThumbnail,
+        tagIds: values.tagModels.map((tag) => tag.tagId),
+        category: values.category.categoryId,
+      }
       postsApi.addPost(data).then((response) => {
         if (response.data.status === 'OK') {
           Toast.fire({
@@ -262,9 +293,15 @@ function SubmitPost({ visible, setVisible, post }) {
                 <select
                   className="h-11 mt-1 block w-full text-sm rounded-lg border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900"
                   defaultValue={values.category}
+                  onChange={(e) => {
+                    setFieldValue('category', JSON.parse(e.target.value))
+                  }}
                 >
                   {categories?.map((category) => (
-                    <option key={category.categoryId} value={category}>
+                    <option
+                      key={category.categoryId}
+                      value={JSON.stringify(category)}
+                    >
                       {category.categoryName}
                     </option>
                   ))}
@@ -287,7 +324,44 @@ function SubmitPost({ visible, setVisible, post }) {
                   </div>
                 )}
               </div>
+
               <div className="mb-3">
+                <label className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
+                  Thẻ
+                  <span style={{ color: 'red' }}>*</span>:
+                </label>
+                <select
+                  className="h-11 mt-1 block w-full text-sm rounded-lg border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900"
+                  defaultValue={values.tagModels[0]}
+                  onChange={(e) => {
+                    setFieldValue('tagModels', [JSON.parse(e.target.value)])
+                  }}
+                >
+                  {tags?.map((tag) => (
+                    <option key={tag.tagId} value={JSON.stringify(tag)}>
+                      {tag.tagName}
+                    </option>
+                  ))}
+                </select>
+                {/* <MultiSelect
+                  singleSelect={true}
+                  displayValue="categoryName"
+                  key="categoryId"
+                  showArrow={false}
+                  placeholder="Chọn chuyên mục..."
+                  selectedValues={values.category ? [values.category] : [null]}
+                  options={categories}
+                  onSelect={(selectedList) => {
+                    setFieldValue('category', selectedList[0])
+                  }}
+                /> */}
+                {errors.category && (
+                  <div className="invalid-feedback block">
+                    {errors.category}
+                  </div>
+                )}
+              </div>
+              {/* <div className="mb-3">
                 <label className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
                   Thẻ<span style={{ color: 'red' }}>*</span>:
                 </label>
@@ -318,40 +392,40 @@ function SubmitPost({ visible, setVisible, post }) {
                     {errors.tagModels}
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="grid grid-cols-2 gap-10">
-              <div className="mb-3">
-                <label className="block md:col-span-2">
-                  <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
-                    {' '}
-                    Tóm tắt bài viết:
-                  </span>
-                  <textarea
-                    className="block w-full text-sm rounded-xl border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 mt-1"
-                    name="summary"
-                    rows={5}
-                    placeholder="Nhập tóm tắt bài viết..."
-                    value={values.summary}
-                    onChange={handleChange}
+                <div className="mb-3">
+                  <label className="block md:col-span-2">
+                    <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
+                      {' '}
+                      Tóm tắt bài viết:
+                    </span>
+                    <textarea
+                      className="block w-full text-sm rounded-xl border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 mt-1"
+                      name="summary"
+                      rows={5}
+                      placeholder="Nhập tóm tắt bài viết..."
+                      value={values.summary}
+                      onChange={handleChange}
+                    />
+                  </label>
+                </div>
+                <div className="mb-3 flex flex-col items-center jusitfy-between">
+                  <InputField
+                    type="file"
+                    accept="image/*"
+                    name="thumbnail"
+                    label="Thumbnail"
+                    onChange={(e) => {
+                      handleUploadThumbnail(e, setFieldValue)
+                    }}
                   />
-                </label>
-              </div>
-              <div className="mb-3 flex flex-col items-center jusitfy-between">
-                <InputField
-                  type="file"
-                  accept="image/*"
-                  name="thumbnail"
-                  label="Thumbnail"
-                  onChange={(e) => {
-                    handleUploadThumbnail(e, setFieldValue)
-                  }}
-                />
-                <img
-                  className="w-full h-full object-cover p-5"
-                  alt="Thumbnail"
-                  src={thumbnail}
-                />
-              </div>
+                  <img
+                    className="w-full h-full object-cover p-5"
+                    alt="Thumbnail"
+                    src={thumbnail}
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <InputField
@@ -400,7 +474,7 @@ function SubmitPost({ visible, setVisible, post }) {
               </div>
               <div
                 className="mb-3"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: 'pointer!important' }}
                 onClick={() =>
                   setFieldValue('isPublished', !values.isPublished)
                 }
@@ -411,9 +485,9 @@ function SubmitPost({ visible, setVisible, post }) {
                   name="isPublished"
                   checked={!values.isPublished}
                 />
-                <label className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
+                <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
                   Ẩn bài viết
-                </label>
+                </span>
               </div>
               <div style={{ marginBottom: '4rem' }} />
               <ModalFooter className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
@@ -422,7 +496,7 @@ function SubmitPost({ visible, setVisible, post }) {
                   disabled={!(dirty && isValid)}
                   type="submit"
                 >
-                  {post?.postId ? "Cập nhật" : "Đăng"}
+                  {post?.postId ? 'Cập nhật' : 'Đăng'}
                   {isSubmitting && '...'}
                 </button>
               </ModalFooter>

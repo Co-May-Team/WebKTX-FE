@@ -22,7 +22,7 @@ function Header() {
   useEventListener('resize', handleResize)
 
   return (
-    <header className="header header-sticky mb-4">
+    <header className="header header-sticky mb-4 bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
       <FaBars
         size={35}
         className="header-toggler ps-1"

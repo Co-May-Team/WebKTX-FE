@@ -1,7 +1,6 @@
 export const path = {
   // Default path
   HOME: '/',
-  FORMS: '/bieu-mau',
   REGISTRATION_FORM: '/bieu-mau/dang-ky-xet-tuyen-vao-ky-tuc-xa-co-may',
   TAGS: '/:url',
   INTRODUCES: '/gioi-thieu',

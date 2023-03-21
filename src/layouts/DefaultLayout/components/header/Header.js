@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
@@ -10,6 +11,7 @@ import {
   categoriesSelector,
   tagsSelector,
 } from '~/store/selectors'
+import { fetchTags } from '~/store/tags/actions'
 import capitalizeWords from '~/utils/commons/capitalizeWords'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import AvatarDropdown from './AvatarDropdown'
@@ -21,25 +23,50 @@ function Header() {
 
   const dispatch = useDispatch()
 
+  const [darkMode, setDarkMode] = useState(
+    JSON.parse(localStorage.getItem('isDarkMode') || false)
+  )
   const [visibleCategoryDropdown, setVisibleCategoryDropdown] = useState(false)
   const [visibleTagDropdown, setVisibleTagDropdown] = useState(false)
   const [isShow, setShow] = useState(false)
   const sidebarRef = useRef()
 
   useEffect(() => {
+    dispatch(fetchTags())
     dispatch(fetchCategories())
   }, [])
+  useEffect(() => {
+    const htmlElement = document.querySelector('html')
+    const isDarkMode = localStorage.getItem('isDarkMode')
+    const htmlClasses = htmlElement.className.split(' ')
+    const newHtmlClasses = classNames(htmlClasses, {
+      dark: isDarkMode === 'true',
+    })
+    htmlElement.className = newHtmlClasses
+  }, [])
+
+  const toggleDarkMode = () => {
+    const htmlElement = document.querySelector('html')
+    const isDarkMode = localStorage.getItem('isDarkMode') === 'true'
+    localStorage.setItem('isDarkMode', !isDarkMode)
+    setDarkMode(!darkMode)
+    if (htmlElement.classList.contains('dark') && isDarkMode) {
+      htmlElement.classList.remove('dark')
+    } else {
+      htmlElement.classList.add('dark')
+    }
+  }
 
   useClickOutside(sidebarRef, () => setShow(!isShow))
 
   const userInfoGoogle = JSON.parse(localStorage.getItem('userInfoGoogle'))
   return (
     <div
-      className="sticky top-0 w-full left-0 right-0 z-40 transition-all "
+      className="sticky top-0 w-full left-0 right-0 z-40 transition-all"
       style={{ top: '0px' }}
     >
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-b dark:border-neutral-700 !border-transparent">
-        <div className="relative z-10">
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-b dark:border-neutral-700 !border-transparent shadow-lg">
+        <div className="relative z-10 py-3">
           <div className="container relative flex justify-between items-center space-x-4 xl:space-x-8">
             <div className="flex justify-start flex-grow items-center space-x-3 sm:space-x-8 lg:space-x-10">
               <NavLink className="flex items-center justify-center" to="/">
@@ -83,7 +110,11 @@ function Header() {
               <div className="hidden items-center xl:flex space-x-2">
                 <ul className="hidden lg:flex lg:flex-wrap lg:items-center lg:space-x-1 relative">
                   <NavLink
-                    className={({ isActive }) => isActive ? "relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" : "inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"}
+                    className={({ isActive }) =>
+                      isActive
+                        ? 'relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                        : 'inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100'
+                    }
                     to="/"
                   >
                     Trang Chủ
@@ -91,7 +122,11 @@ function Header() {
                   {tags.map((tag) => (
                     <NavLink
                       key={tag?.tagId}
-                      className={({ isActive }) => isActive ? "relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" : "inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"}
+                      className={({ isActive }) =>
+                        isActive
+                          ? 'relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                          : 'inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100'
+                      }
                       to={`/${convertToUrl(tag?.tagName)}`}
                     >
                       {capitalizeWords(tag?.tagName)}
@@ -151,36 +186,50 @@ function Header() {
                   </li> */}
                 </ul>
                 <div className="hidden sm:block h-10 border-l mx-2 border-neutral-300 dark:border-neutral-6000" />
-                {/* <button className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center ">
-                                    <span className="sr-only">
-                                        Bật Dark mode
-                                    </span>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={2}
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                        className="w-7 h-7"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                                        />
-                                    </svg>
-                                </button> */}
+                {darkMode ? (
+                  <button
+                    className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center "
+                    onClick={toggleDarkMode}
+                  >
+                    <span className="sr-only">Bật Light Mode</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      className="w-7 h-7"
+                    >
+                      <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center"
+                    onClick={toggleDarkMode}
+                  >
+                    <span className="sr-only">Bật Dark mode</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      aria-hidden="true"
+                      className="w-7 h-7"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                      />
+                    </svg>
+                  </button>
+                )}
               </div>
               {userInfo?.id ? (
                 <div className="flex items-center space-x-1.5">
                   <div>
-                    <button
-                      className="text-opacity-90 group p-3 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative"
-                      id="headlessui-popover-button-:rvr:"
-                      type="button"
-                      aria-expanded="false"
-                    >
+                    <button className="text-opacity-90 group p-3 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative">
                       <span className="w-2 h-2 bg-blue-500 absolute top-2 right-2 rounded-full" />
                       <svg
                         width={24}
@@ -215,7 +264,7 @@ function Header() {
                 </div>
               ) : (
                 <NavLink
-                  className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+                  className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
                   to="/auth/login"
                 >
                   Đăng nhập
@@ -281,26 +330,49 @@ function Header() {
                                       </a>
                                     </nav>
                                     <span className="block">
-                                      <button className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center bg-neutral-100 dark:bg-neutral-800">
-                                        <span className="sr-only">
-                                          Bật Dark mode
-                                        </span>
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          fill="none"
-                                          viewBox="0 0 24 24"
-                                          strokeWidth={2}
-                                          stroke="currentColor"
-                                          aria-hidden="true"
-                                          className="w-7 h-7"
+                                      {darkMode ? (
+                                        <button
+                                          className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center bg-neutral-100 dark:bg-neutral-800"
+                                          onClick={toggleDarkMode}
                                         >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                                          />
-                                        </svg>
-                                      </button>
+                                          <span className="sr-only">
+                                            Enable dark mode
+                                          </span>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                            aria-hidden="true"
+                                            className="w-7 h-7"
+                                          >
+                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                          </svg>
+                                        </button>
+                                      ) : (
+                                        <button
+                                          className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center bg-neutral-100 dark:bg-neutral-800"
+                                          onClick={toggleDarkMode}
+                                        >
+                                          <span className="sr-only">
+                                            Bật Dark mode
+                                          </span>
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2}
+                                            stroke="currentColor"
+                                            aria-hidden="true"
+                                            className="w-7 h-7"
+                                          >
+                                            <path
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                                            />
+                                          </svg>
+                                        </button>
+                                      )}
                                     </span>
                                   </div>
                                 </div>
@@ -328,16 +400,17 @@ function Header() {
                               </div>
                               <ul className="flex flex-col py-6 px-2 space-y-1">
                                 {tags?.map((tag) => (
-                                  <NavLink className="text-neutral-900 dark:text-white">
-                                    <div
-                                      className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide"
-                                      to={`/${convertToUrl(tag.tagName)}`}
-                                    >
+                                  <NavLink
+                                    key={tag?.tagId}
+                                    className="text-neutral-900 dark:text-white"
+                                    to={`/${convertToUrl(tag?.tagName)}`}
+                                  >
+                                    <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
                                       <div
                                         aria-current="page"
                                         className="py-2.5 px-4 select-none text-secondary"
                                       >
-                                        {tag.tagName}
+                                        {tag?.tagName}
                                       </div>
                                     </div>
                                   </NavLink>

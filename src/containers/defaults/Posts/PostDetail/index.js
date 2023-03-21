@@ -7,12 +7,14 @@ import {
   FaFacebook,
   FaLinkedin,
   FaReddit,
+  FaRegEdit,
+  FaRegTrashAlt,
   FaTelegram,
   FaTwitter,
   FaWhatsapp,
 } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   EmailShareButton,
   FacebookShareButton,
@@ -29,7 +31,6 @@ import postsApi from '~/services/postsApi'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
-import convertToUrl from '~/utils/commons/convertToUrl'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
 import Comments from './Comments'
@@ -87,11 +88,21 @@ function PostDetail(props) {
       })
   }, [])
   useEffect(() => {
-    postsApi.get(params.id).then((response) => {
-      document.title = response.data.data.posts.title
-      setPostInfo(response.data.data.posts)
-      setRelatedPosts(response.data.data.relatedPost)
-    })
+    postsApi
+      .get(params.id)
+      .then((response) => {
+        document.title = response.data.data.posts.title
+        setPostInfo(response.data.data.posts)
+        setRelatedPosts(response.data.data.relatedPost)
+      })
+      .finally(() => {
+        if (window.location.hash === '#binh-luan') {
+          const element = document.getElementById('binh-luan')
+          if (element) {
+            element.scrollIntoView()
+          }
+        }
+      })
   }, [params.id])
 
   const handleDeletePost = () => {
@@ -106,12 +117,12 @@ function PostDetail(props) {
           <div className="max-w-screen-md">
             <div className="space-y-5">
               <div className="flex flex-wrap space-x-2">
-                <NavLink
+                <div
                   className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs !px-3 text-pink-800 bg-pink-100 hover:bg-pink-800"
-                  to={`/${convertToUrl(postInfo?.category.categoryName)}`}
+                  // to={`/${convertToUrl(postInfo?.category.categoryName)}`}
                 >
                   {postInfo?.category.categoryName}
-                </NavLink>
+                </div>
               </div>
               <h1
                 className=" text-neutral-900 font-semibold text-3xl md:text-4xl md:!leading-[120%] lg:text-5xl dark:text-neutral-100 max-w-4xl "
@@ -333,15 +344,31 @@ function PostDetail(props) {
                         </button>
                         {visibleMoreActionDropdown && (
                           <div className="absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster">
-                            <div
-                              className="px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300"
-                              onClick={handleCopyClick}
-                            >
-                              <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
+                            <div className="px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300">
+                              <button
+                                className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none"
+                                onClick={handleCopyClick}
+                              >
                                 <i className="las la-copy mr-1 w-7 text-base" />
                                 <span className="truncate">
                                   {copied ? 'Đã sao chép' : 'Sao chép link'}
                                 </span>
+                              </button>
+                              <button
+                                className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none"
+                                onClick={() => setVisibleFormEditPost(true)}
+                              >
+                                <FaRegEdit className="mr-1 w-7 text-base" />
+                                <span className="truncate">
+                                  Chỉnh sửa bài viết
+                                </span>
+                              </button>
+                              <button
+                                className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none"
+                                onClick={() => setVisibleDeletePost(true)}
+                              >
+                                <FaRegTrashAlt className="mr-1 w-7 text-base" />
+                                <span className="truncate">Xóa bài viết</span>
                               </button>
                             </div>
                           </div>

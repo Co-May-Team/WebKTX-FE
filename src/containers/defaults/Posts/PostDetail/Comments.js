@@ -1,11 +1,11 @@
-import moment from "moment";
-import { NavLink } from "react-router-dom";
-import { defaultAvatar } from "~/utils/constants/default";
+import moment from 'moment'
+import { NavLink } from 'react-router-dom'
+import { defaultAvatar } from '~/utils/constants/default'
 
 export default function Comments() {
   return (
-    <div>
-      <div id="binh-luan" className="max-w-screen-md mx-auto pt-5">
+    <div id="binh-luan">
+      <div className="max-w-screen-md mx-auto mt-20 mb-10">
         <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
           Thảo luận (4)
         </h3>
@@ -52,7 +52,7 @@ export default function Comments() {
                     <div className="relative inline-block text-left">
                       <button
                         className="p-2 text-neutral-500 flex items-center justify-center rounded-lg hover:text-neutral-800 dark:hover:text-neutral-200 sm:hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none"
-                        title="More"
+                        title="Thêm"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -75,11 +75,13 @@ export default function Comments() {
                   </NavLink>
                   <span className="mx-2">·</span>
                   <span className="text-neutral-500 dark:text-neutral-400 text-xs line-clamp-1 sm:text-sm">
-                    {moment(new Date()).format("lll")}
+                    {moment(new Date()).format('lll')}
                   </span>
                 </div>
                 <span className="block text-neutral-700 mt-2 mb-3 sm:mt-3 sm:mb-4 dark:text-neutral-300">
-                  KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh, sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa có Tâm
+                  KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh,
+                  sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa
+                  có Tâm
                 </span>
                 <div className="flex items-center space-x-2">
                   <button
@@ -129,9 +131,7 @@ export default function Comments() {
             </div>
             <ul className="pl-4 mt-5 space-y-5 md:pl-11">
               <li>
-                <div
-                  className="flex"
-                >
+                <div className="flex">
                   <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-6 w-6 text-base  mt-4">
                     <img
                       className="absolute inset-0 w-full h-full object-cover"
@@ -147,7 +147,7 @@ export default function Comments() {
                         <div className="relative inline-block text-left">
                           <button
                             className="p-2 text-neutral-500 flex items-center justify-center rounded-lg hover:text-neutral-800 dark:hover:text-neutral-200 sm:hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none"
-                            title="More"
+                            title="Thêm"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -170,15 +170,15 @@ export default function Comments() {
                       </NavLink>
                       <span className="mx-2">·</span>
                       <span className="text-neutral-500 dark:text-neutral-400 text-xs line-clamp-1 sm:text-sm">
-                        {moment(new Date()).format("lll")}
+                        {moment(new Date()).format('lll')}
                       </span>
                     </div>
                     <span className="block text-neutral-700 mt-2 mb-3 sm:mt-3 sm:mb-4 dark:text-neutral-300">
-                      KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh, sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa có Tâm
+                      KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh,
+                      sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài,
+                      vừa có Tâm
                     </span>
-                    <div
-                      className="flex items-center space-x-2"
-                    >
+                    <div className="flex items-center space-x-2">
                       <button
                         className="min-w-[68px] flex items-center rounded-full leading-none px-3 h-8 text-xs focus:outline-none text-rose-600 bg-rose-50"
                         title="Thích"
@@ -224,9 +224,7 @@ export default function Comments() {
                 </div>
                 <ul className="pl-4 mt-5 space-y-5 md:pl-9">
                   <li>
-                    <div
-                      className="flex"
-                    >
+                    <div className="flex">
                       <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-6 w-6 text-base  mt-4">
                         <img
                           className="absolute inset-0 w-full h-full object-cover"
@@ -234,7 +232,9 @@ export default function Comments() {
                           alt="Bác Phạm Văn Bên"
                           title="Bác Phạm Văn Bên"
                         />
-                        <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+                        <span className="wil-avatar__name">
+                          Bác Phạm Văn Bên
+                        </span>
                       </div>
                       <div className="flex-grow flex flex-col p-4 ml-2 text-sm border border-neutral-200 rounded-xl sm:ml-3 sm:text-base dark:border-neutral-700">
                         <div className="relative flex items-center pr-6">
@@ -265,15 +265,15 @@ export default function Comments() {
                           </NavLink>
                           <span className="mx-2">·</span>
                           <span className="text-neutral-500 dark:text-neutral-400 text-xs line-clamp-1 sm:text-sm">
-                            {moment(new Date()).format("lll")}
+                            {moment(new Date()).format('lll')}
                           </span>
                         </div>
                         <span className="block text-neutral-700 mt-2 mb-3 sm:mt-3 sm:mb-4 dark:text-neutral-300">
-                          KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh, sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa có Tâm
+                          KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học
+                          sinh, sinh viên nghèo học giỏi, xây dựng một thế hệ
+                          vừa có tài, vừa có Tâm
                         </span>
-                        <div
-                          className="flex items-center space-x-2"
-                        >
+                        <div className="flex items-center space-x-2">
                           <button
                             className="min-w-[68px] flex items-center rounded-full leading-none px-3 h-8 text-xs focus:outline-none text-neutral-700 bg-neutral-100 dark:text-neutral-200 dark:bg-neutral-800 hover:bg-rose-50 hover:text-rose-600 dark:hover:text-rose-500"
                             title="Thích"
@@ -326,9 +326,7 @@ export default function Comments() {
             </ul>
           </li>
           <li>
-            <div
-              className="flex"
-            >
+            <div className="flex">
               <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-6 w-6 text-base sm:text-lg sm:h-8 sm:w-8 mt-4">
                 <img
                   className="absolute inset-0 w-full h-full object-cover"
@@ -371,11 +369,13 @@ export default function Comments() {
                   </NavLink>
                   <span className="mx-2">·</span>
                   <span className="text-neutral-500 dark:text-neutral-400 text-xs line-clamp-1 sm:text-sm">
-                    {moment(new Date()).format("lll")}
+                    {moment(new Date()).format('lll')}
                   </span>
                 </div>
                 <span className="block text-neutral-700 mt-2 mb-3 sm:mt-3 sm:mb-4 dark:text-neutral-300">
-                  KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh, sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa có Tâm
+                  KTX Cỏ May cố gắng thực hiện giấc mơ đại học cho học sinh,
+                  sinh viên nghèo học giỏi, xây dựng một thế hệ vừa có tài, vừa
+                  có Tâm
                 </span>
               </div>
             </div>

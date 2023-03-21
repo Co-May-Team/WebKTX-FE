@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchCategories } from '~/store/categories/actions'
 import { fetchTags } from '~/store/tags/actions'
-import { HeroSection, ImagesSection, VideosSection } from './sections'
+import { ImagesSection, VideosSection } from './sections'
 import PostsSection from './sections/PostsSection'
 
 export default function Home() {

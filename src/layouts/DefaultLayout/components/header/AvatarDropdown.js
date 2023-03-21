@@ -18,10 +18,8 @@ export default function AvatarDropdown() {
   return (
     <div className="relative" ref={avatarDropdownRef}>
       <button
-        className="inline-flex items-center p-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        id="headlessui-popover-button-:rvu:"
-        type="button"
-        aria-expanded={visibleAvatarDropdown ? 'true' : 'false'}
+        className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        style={{ transform: 'translateY(-25%)' }}
         onClick={() => setVisibleAvatarDropdown(!visibleAvatarDropdown)}
       >
         <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 sm:w-9 sm:h-9 ring-1 ring-white dark:ring-neutral-900">
