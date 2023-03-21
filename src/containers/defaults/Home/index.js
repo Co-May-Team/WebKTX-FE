@@ -15,9 +15,9 @@ export default function Home() {
   return (
     <div className="">
       {/* Hero section */}
-      <div>
+      {/* <div>
         <HeroSection />
-      </div>
+      </div> */}
 
       {/* Posts section */}
       <PostsSection />

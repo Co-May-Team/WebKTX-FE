@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { Form, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import Swal from 'sweetalert2'
 import * as Yup from 'yup'
 import { InputField } from '~/components/Customs'
@@ -179,7 +179,6 @@ function SubmitPost({ visible, setVisible, post }) {
         }
       })
     }
-    setVisible()
     actions.setSubmitting(false)
   }
 
@@ -238,7 +237,7 @@ function SubmitPost({ visible, setVisible, post }) {
             dirty,
             isSubmitting,
           }) => (
-            <form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <InputField
                   type="text"
@@ -283,7 +282,7 @@ function SubmitPost({ visible, setVisible, post }) {
                   }}
                 /> */}
                 {errors.category && (
-                  <div className="invalid-feedback d-block">
+                  <div className="invalid-feedback block">
                     {errors.category}
                   </div>
                 )}
@@ -315,11 +314,12 @@ function SubmitPost({ visible, setVisible, post }) {
                   }}
                 />
                 {errors.tagModels && (
-                  <div className="invalid-feedback d-block">
+                  <div className="invalid-feedback block">
                     {errors.tagModels}
                   </div>
                 )}
               </div>
+              <div className="grid grid-cols-2 gap-10">
               <div className="mb-3">
                 <label className="block md:col-span-2">
                   <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
@@ -336,15 +336,23 @@ function SubmitPost({ visible, setVisible, post }) {
                   />
                 </label>
               </div>
-              {/* <InputField
-                type="textarea"
-                name="summary"
-                rows="5"
-                placeholder="Nhập tóm tắt bài viết..."
-                label="Tóm tắt"
-                value={values.summary}
-                onChange={handleChange}
-              /> */}
+              <div className="mb-3 flex flex-col items-center jusitfy-between">
+                <InputField
+                  type="file"
+                  accept="image/*"
+                  name="thumbnail"
+                  label="Thumbnail"
+                  onChange={(e) => {
+                    handleUploadThumbnail(e, setFieldValue)
+                  }}
+                />
+                <img
+                  className="w-full h-full object-cover p-5"
+                  alt="Thumbnail"
+                  src={thumbnail}
+                />
+              </div>
+              </div>
               <div className="mb-3">
                 <InputField
                   label="Nội dung"
@@ -376,21 +384,6 @@ function SubmitPost({ visible, setVisible, post }) {
                   isRequired
                 />
               </div>
-              <InputField
-                type="file"
-                accept="image/*"
-                name="thumbnail"
-                label="Thumbnail"
-                onChange={(e) => {
-                  handleUploadThumbnail(e, setFieldValue)
-                }}
-              />
-              <img
-                className="col-md-4 col-12 order-md-2 order-1"
-                alt="Thumbnail"
-                style={{ height: '200px', width: '200px' }}
-                src={thumbnail}
-              />
               <div className="mb-3">
                 <InputField
                   type="datetime-local"
@@ -426,15 +419,14 @@ function SubmitPost({ visible, setVisible, post }) {
               <ModalFooter className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
                 <button
                   className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-                  onClick={() => setVisible(true)}
                   disabled={!(dirty && isValid)}
                   type="submit"
                 >
-                  Đăng bài mới
+                  {post?.postId ? "Cập nhật" : "Đăng"}
                   {isSubmitting && '...'}
                 </button>
               </ModalFooter>
-            </form>
+            </Form>
           )}
         </Formik>
       </ModalBody>

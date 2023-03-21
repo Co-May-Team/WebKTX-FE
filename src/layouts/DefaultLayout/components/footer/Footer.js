@@ -2,16 +2,17 @@ import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { LogoIcon } from '~/components/Icons'
 import { tagsSelector } from '~/store/selectors'
+import capitalizeWords from '~/utils/commons/capitalizeWords'
 import convertToUrl from '~/utils/commons/convertToUrl'
 
 function Footer() {
   const tags = useSelector(tagsSelector).tags
   return (
-    <div className="relative py-16 lg:py-28 border-t border-neutral-200 dark:border-neutral-700">
+    <div className="relative mt-10 py-10 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
       <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
         <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
           <div className="col-span-2 md:col-span-1">
-            <NavLink className="inline-block text-primary-6000" to="/ncmaz/">
+            <NavLink className="inline-block text-primary-6000" to="/">
               <LogoIcon />
             </NavLink>
           </div>
@@ -51,7 +52,7 @@ function Footer() {
                   className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
                   to={`/${convertToUrl(tag.tagName)}`}
                 >
-                  {tag.tagName}
+                  {capitalizeWords(tag.tagName)}
                 </NavLink>
               </li>
             ))}
@@ -95,7 +96,7 @@ function Footer() {
           <ul className="mt-5 space-y-4">
             <li>
               <div className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white">
-                Địa chỉ: KTX Cỏ May, Tổ 1, Khu phố 6, phường Linh trung, TP Thủ
+                Địa chỉ: KTX Cỏ May, Tổ 1, Khu phố 6, Phường Linh Trung, TP Thủ
                 Đức, TP Hồ Chí Minh (trong khuôn viên trường Đại học Nông Lâm
                 TPHCM)
               </div>

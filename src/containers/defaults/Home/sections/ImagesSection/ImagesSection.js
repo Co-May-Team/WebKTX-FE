@@ -173,7 +173,7 @@ export default function ImagesSection() {
     )
   }
   return (
-    <section id="images-section" className="container relative py-16 lg:py-28">
+    <section id="images-section" className="container py-10 lg:py-16">
       <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
         <div className="text-center w-full max-w-2xl mx-auto ">
           <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
@@ -183,7 +183,7 @@ export default function ImagesSection() {
         </div>
       </div>
       {renderImages()}
-      <div className="flex flex-col mt-20 justify-center items-center gap-4">
+      <div className="flex flex-col mt-10 justify-center items-center gap-4">
         {loadingMore && 'Đang tải thêm hình ảnh...'}
         {nextPageToken && (
           <button

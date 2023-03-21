@@ -29,19 +29,21 @@ function PostsSection() {
   }, [params])
 
   return (
-    <div id="posts-section" className="container py-16 lg:py-28">
+    <div id="posts-section" className="container py-10 lg:py-16">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 md:gap-8">
         {status === 'loading' ? (
-          'Đang tải dữ liệu...'
+          <div className="flex flex-col mt-10 mb-10 justify-center items-center gap-3">
+            Đang tải dữ liệu...
+          </div>
         ) : (
           <>
             <div className="relative flex flex-col-reverse md:flex-row justify-end ">
               <div className="md:absolute z-10 md:left-0 md:top-1/2 md:-translate-y-1/2 w-full -mt-8 md:mt-0 px-3 sm:px-6 md:px-0 md:w-3/5 lg:w-1/2 xl:w-2/5">
-                <div className="p-4 sm:p-8 xl:py-14 md:px-10 bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg shadow-lg rounded-3xl space-y-3 sm:space-y-5 !border-opacity-0 -- nc-dark-box-bg">
+                <div className="p-4 sm:p-8 xl:py-14 md:px-10 bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg shadow-lg rounded-3xl space-y-3 sm:space-y-5 !border-opacity-0 -- nc-dark-box-bg animate__animated animate__zoomIn animate__faster">
                   <div className="flex flex-wrap space-x-2">
                     <div
                       className="transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800"
-                      // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
+                    // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                     >
                       {posts[0]?.category.categoryName}
                     </div>
@@ -50,9 +52,8 @@ function PostsSection() {
                     <NavLink
                       className="line-clamp-2"
                       title={posts[0]?.title}
-                      to={`/${convertToUrl(posts[0]?.title)}/${
-                        posts[0]?.postId
-                      }`}
+                      to={`/${convertToUrl(posts[0]?.title)}/${posts[0]?.postId
+                        }`}
                     >
                       {posts[0]?.title}
                     </NavLink>
@@ -171,7 +172,7 @@ function PostsSection() {
                   className="block relative"
                   to={`/${convertToUrl(posts[0]?.title)}/${posts[0]?.postId}`}
                 >
-                  <div className="aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative">
+                  <div className="aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative animate__animated animate__zoomIn animate__faster">
                     <img
                       src={posts[0]?.thumbnail}
                       className="absolute inset-0 object-cover rounded-3xl"
@@ -200,7 +201,7 @@ function PostsSection() {
                     >
                       <div
                         className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800"
-                        // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
+                      // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                       >
                         {post?.category.categoryName}
                       </div>
@@ -323,7 +324,7 @@ function PostsSection() {
           </>
         )}
       </div>
-      <div className="flex flex-col mt-20 justify-center items-center gap-3">
+      <div className="flex flex-col mt-10  justify-center items-center gap-3">
         {status === 'loadingMore' && 'Đang tải thêm bài viết...'}
         <button
           className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"

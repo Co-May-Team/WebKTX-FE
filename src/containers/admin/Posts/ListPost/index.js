@@ -89,12 +89,12 @@ function ListPost({ data }) {
           />
           <div className="mb-3">
             <div className="flex flex-wrap space-x-2">
-              <NavLink
+              <div
                 className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-pink-800 bg-pink-100 hover:bg-pink-800"
-                to={`/${convertToUrl(post?.category.categoryName)}`}
+                // to={`/${convertToUrl(post?.category.categoryName)}`}
               >
                 {post?.category.categoryName}
-              </NavLink>
+              </div>
             </div>
           </div>
           <div className="inline-flex items-center text-xs text-neutral-300">

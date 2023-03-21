@@ -10,6 +10,7 @@ import {
   categoriesSelector,
   tagsSelector,
 } from '~/store/selectors'
+import capitalizeWords from '~/utils/commons/capitalizeWords'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import AvatarDropdown from './AvatarDropdown'
 
@@ -81,21 +82,19 @@ function Header() {
             <div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
               <div className="hidden items-center xl:flex space-x-2">
                 <ul className="hidden lg:flex lg:flex-wrap lg:items-center lg:space-x-1 relative">
+                  <NavLink
+                    className={({ isActive }) => isActive ? "relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" : "inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"}
+                    to="/"
+                  >
+                    Trang Chủ
+                  </NavLink>
                   {tags.map((tag) => (
                     <NavLink
                       key={tag?.tagId}
-                      className="menu-item menu-dropdown relative text-opacity-90 group p-3 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full inline-flex items-center text-base font-medium hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 relative"
+                      className={({ isActive }) => isActive ? "relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0" : "inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-300 hover:bg-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"}
                       to={`/${convertToUrl(tag?.tagName)}`}
                     >
-                      <div
-                        className="inline-flex items-center text-sm xl:text-base font-normal text-neutral-700 dark:text-neutral-300 py-2 px-4 xl:px-5 rounded-full hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 !font-semibold !text-neutral-900 bg-neutral-100 dark:bg-neutral-800 dark:!text-neutral-100"
-                        rel="noopener noreferrer"
-                        id="headlessui-popover-button-:rei:"
-                        aria-expanded="false"
-                        aria-current="page"
-                      >
-                        {tag?.tagName}
-                      </div>
+                      {capitalizeWords(tag?.tagName)}
                     </NavLink>
                   ))}
                   {/* <li
@@ -216,8 +215,7 @@ function Header() {
                 </div>
               ) : (
                 <NavLink
-                  className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 "
-                  rel="noopener noreferrer"
+                  className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
                   to="/auth/login"
                 >
                   Đăng nhập

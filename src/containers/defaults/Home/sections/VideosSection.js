@@ -138,7 +138,7 @@ export default function VideosSection() {
     )
   }
   return (
-    <section id="videos-section" className="container relative py-16 lg:py-28">
+    <section id="videos-section" className="container py-10 lg:py-16">
       <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
         <div className="text-center w-full max-w-2xl mx-auto ">
           <h2 className="text-3xl md:text-4xl font-semibold">Khám phá Video</h2>
@@ -146,7 +146,7 @@ export default function VideosSection() {
         </div>
       </div>
       {renderVideosCard()}
-      <div className="flex flex-col mt-20 justify-center items-center gap-4">
+      <div className="flex flex-col mt-10 justify-center items-center gap-4">
         {loading && 'Đang tải thêm video...'}
         {pageToken && (
           <button

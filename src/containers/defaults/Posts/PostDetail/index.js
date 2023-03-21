@@ -32,6 +32,7 @@ import { bindClassNames } from '~/utils'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
+import Comments from './Comments'
 import styles from './index.module.scss'
 import MostViewPosts from './MostViewPosts'
 import RelatedPosts from './RelatedPosts'
@@ -56,11 +57,20 @@ function PostDetail(props) {
   const [visibleShareDropdown, setVisibleShareDropdown] = useState(false)
   const [visibleMoreActionDropdown, setVisibleMoreActionDropdown] =
     useState(false)
+  const [copied, setCopied] = useState(false)
 
   useClickOutside(shareDropdownRef, () => setVisibleShareDropdown(false))
   useClickOutside(moreActionDropdownRef, () =>
     setVisibleMoreActionDropdown(false)
   )
+
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 1500)
+  }
 
   useEffect(() => {
     postsApi
@@ -105,7 +115,7 @@ function PostDetail(props) {
               </div>
               <h1
                 className=" text-neutral-900 font-semibold text-3xl md:text-4xl md:!leading-[120%] lg:text-5xl dark:text-neutral-100 max-w-4xl "
-                title="Quiet ingenuity: 120,000 lunches and counting"
+                title={postInfo?.title}
               >
                 {postInfo?.title}
               </h1>
@@ -325,11 +335,13 @@ function PostDetail(props) {
                           <div className="absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster">
                             <div
                               className="px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300"
-                              role="none"
+                              onClick={handleCopyClick}
                             >
                               <button className="flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none">
                                 <i className="las la-copy mr-1 w-7 text-base" />
-                                <span className="truncate">Sao chép link</span>
+                                <span className="truncate">
+                                  {copied ? 'Đã sao chép' : 'Sao chép link'}
+                                </span>
                               </button>
                             </div>
                           </div>
@@ -404,7 +416,7 @@ function PostDetail(props) {
                 </div>
               </div>
             </div>
-            {/* <Comments /> */}
+            <Comments />
           </div>
         </div>
         <div className="w-full mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3">
