@@ -13,7 +13,7 @@ export default function Home() {
     dispatch(fetchCategories())
   }, [])
   return (
-    <div className="">
+    <>
       {/* Hero section */}
       {/* <div>
         <HeroSection />
@@ -29,6 +29,6 @@ export default function Home() {
       <VideosSection />
 
       {/* Google map */}
-    </div>
+    </>
   )
 }

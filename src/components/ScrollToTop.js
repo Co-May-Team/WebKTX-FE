@@ -28,14 +28,14 @@ function ScrollToTop() {
 
   return (
     <button
-      className={`fixed right-2 bottom-2 h-auto inline-flex items-center justify-center rounded-2xl transition-colors text-sm sm:text-base font-medium px-3 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 opacity-50 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 ${
+      className={`fixed right-2 bottom-2 h-auto inline-flex items-center justify-center rounded-2xl transition-colors text-sm sm:text-base font-medium px-3 py-3 sm:px-5 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 opacity-50 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 ${
         isVisible ? '' : 'hidden'
       }`}
       onClick={scrollToTop}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
+        className="h-6 w-5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
