@@ -110,7 +110,7 @@ function MostViewPosts({ listPost }) {
               <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col flex-grow">
                 <NavLink
                   className="absolute inset-0"
-                  to={`/${convertToUrl(post?.title)}/${post?.postId}#binh-luan`}
+                  to={`/${convertToUrl(post?.title)}/${post?.postId}`}
                 />
                 <div className="mb-3">
                   <div className="flex flex-wrap space-x-2">

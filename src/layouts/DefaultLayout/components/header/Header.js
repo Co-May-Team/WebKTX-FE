@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { LogoIcon } from '~/components/Icons'
 
 import { useClickOutside } from '~/hooks'
@@ -12,6 +12,7 @@ import {
   tagsSelector,
 } from '~/store/selectors'
 import { fetchTags } from '~/store/tags/actions'
+import { path } from '~/utils'
 import capitalizeWords from '~/utils/commons/capitalizeWords'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import AvatarDropdown from './AvatarDropdown'
@@ -22,10 +23,11 @@ function Header() {
   const tags = useSelector(tagsSelector).tags
 
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem('isDarkMode') || false)
   )
+  const [searchTerm, setSearchTerm] = useState('')
   const [visibleCategoryDropdown, setVisibleCategoryDropdown] = useState(false)
   const [visibleTagDropdown, setVisibleTagDropdown] = useState(false)
   const [isShow, setShow] = useState(false)
@@ -62,8 +64,9 @@ function Header() {
   const userInfoGoogle = JSON.parse(localStorage.getItem('userInfoGoogle'))
   return (
     <div
+      id="header-sticky"
       className="sticky top-0 w-full left-0 right-0 z-40 transition-all"
-      style={{ top: '0px' }}
+      style={{ top: '-72px' }}
     >
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-b dark:border-neutral-700 !border-transparent shadow-lg">
         <div className="relative z-10 py-3">
@@ -72,39 +75,56 @@ function Header() {
               <NavLink className="flex items-center justify-center" to="/">
                 <LogoIcon />
               </NavLink>
-              <div className="hidden sm:block flex-grow max-w-xs">
-                <div className="relative">
-                  <input
-                    type="search"
-                    className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 pr-10 w-full"
-                    placeholder="Tìm kiếm..."
-                  />
-                  <span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400">
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+              {window.location.pathname !== "/tim-kiem" && (
+                <div className="hidden sm:block flex-grow max-w-xs">
+                  <div className="relative">
+                    <form onSubmit={(e) => {
+                      e.preventDefault()
+                      navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
+                    }}>
+                      <input
+                        type="search"
+                        className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 pr-10 w-full"
+                        placeholder="Tìm kiếm..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                       />
-                      <path
-                        d="M22 22L20 20"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      <span className="absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400">
+                        <svg
+                          className="h-5 w-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M22 22L20 20"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <input
+                        type="submit"
+                        onSubmit={(e) => {
+                          e.preventDefault()
+                          navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
+                        }}
+                        hidden
+                        defaultValue
                       />
-                    </svg>
-                  </span>
-                  <input type="submit" hidden defaultValue />
+                    </form>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="flex-shrink-0 flex items-center justify-end text-neutral-700 dark:text-neutral-100 space-x-1">
               <div className="hidden items-center xl:flex space-x-2">
@@ -399,6 +419,18 @@ function Header() {
                                 </span>
                               </div>
                               <ul className="flex flex-col py-6 px-2 space-y-1">
+                                <NavLink
+                                  className="text-neutral-900 dark:text-white"
+                                  to="/"
+                                >
+                                  <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
+                                    <div
+                                      className="py-2.5 px-4 select-none text-secondary"
+                                    >
+                                      Trang chủ
+                                    </div>
+                                  </div>
+                                </NavLink>
                                 {tags?.map((tag) => (
                                   <NavLink
                                     key={tag?.tagId}
@@ -407,7 +439,6 @@ function Header() {
                                   >
                                     <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
                                       <div
-                                        aria-current="page"
                                         className="py-2.5 px-4 select-none text-secondary"
                                       >
                                         {tag?.tagName}
@@ -428,6 +459,7 @@ function Header() {
           </div>
         </div>
       </div>
+      <div id="header-post" className="dark relative bg-neutral-900 dark:bg-neutral-900"></div>
     </div>
   )
 }

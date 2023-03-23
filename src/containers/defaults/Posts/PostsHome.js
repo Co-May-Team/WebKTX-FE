@@ -26,7 +26,6 @@ function PostsHome() {
   const [hasMore, setHasMore] = useState(true)
   const [page, setPage] = useState(0)
   const [tagInfo, setTagInfo] = useState(null)
-
   const [filters, setFilters] = useState({
     tag_id: tagList.filter((tag) => convertToUrl(tag?.tagName) === url)[0]
       .tagId,
