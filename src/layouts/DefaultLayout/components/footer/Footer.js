@@ -87,6 +87,14 @@ function Footer() {
                 Video
               </a>
             </li>
+            <li>
+              <NavLink
+                className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
+                to="/bai-viet-da-luu"
+              >
+                Bài viết đã lưu
+              </NavLink>
+            </li>
           </ul>
         </div>
         <div className="col-span-2 text-sm">

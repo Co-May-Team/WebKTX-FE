@@ -2,6 +2,7 @@ export const path = {
   // Default path
   HOME: '/',
   SEARCH: '/tim-kiem',
+  POSTSAVED: '/bai-viet-da-luu',
   REGISTRATION_FORM: '/bieu-mau/dang-ky-xet-tuyen-vao-ky-tuc-xa-co-may',
   TAGS: '/:url',
   INTRODUCES: '/gioi-thieu',

@@ -75,13 +75,15 @@ function Header() {
               <NavLink className="flex items-center justify-center" to="/">
                 <LogoIcon />
               </NavLink>
-              {window.location.pathname !== "/tim-kiem" && (
+              {window.location.pathname !== '/tim-kiem' && (
                 <div className="hidden sm:block flex-grow max-w-xs">
                   <div className="relative">
-                    <form onSubmit={(e) => {
-                      e.preventDefault()
-                      navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
-                    }}>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
+                      }}
+                    >
                       <input
                         type="search"
                         className="block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 pr-10 w-full"
@@ -245,6 +247,28 @@ function Header() {
                     </svg>
                   </button>
                 )}
+                <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative">
+                  {' '}
+                  <button
+                    className="text-2xl md:text-3xl w-12 h-12 rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none flex items-center justify-center"
+                    title="Xem danh sách bài viết đã lưu"
+                    onClick={() => {
+                      navigate('/bai-viet-da-luu')
+                    }}
+                  >
+                    <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
+                      <path
+                        stroke="currentColor"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1}
+                        d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
               {userInfo?.id ? (
                 <div className="flex items-center space-x-1.5">
@@ -395,6 +419,16 @@ function Header() {
                                       )}
                                     </span>
                                   </div>
+                                  <NavLink
+                                    className="text-neutral-900 dark:text-white"
+                                    to="/bai-viet-da-luu"
+                                  >
+                                    <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
+                                      <div className="py-2.5 px-4 select-none text-secondary">
+                                        Bài viết đã lưu
+                                      </div>
+                                    </div>
+                                  </NavLink>
                                 </div>
                                 <span className="absolute right-2 top-2 p-1">
                                   <button
@@ -424,9 +458,7 @@ function Header() {
                                   to="/"
                                 >
                                   <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
-                                    <div
-                                      className="py-2.5 px-4 select-none text-secondary"
-                                    >
+                                    <div className="py-2.5 px-4 select-none text-secondary">
                                       Trang chủ
                                     </div>
                                   </div>
@@ -438,9 +470,7 @@ function Header() {
                                     to={`/${convertToUrl(tag?.tagName)}`}
                                   >
                                     <div className="flex justify-between font-medium text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg uppercase tracking-wide">
-                                      <div
-                                        className="py-2.5 px-4 select-none text-secondary"
-                                      >
+                                      <div className="py-2.5 px-4 select-none text-secondary">
                                         {tag?.tagName}
                                       </div>
                                     </div>
@@ -459,7 +489,10 @@ function Header() {
           </div>
         </div>
       </div>
-      <div id="header-post" className="dark relative bg-neutral-900 dark:bg-neutral-900"></div>
+      <div
+        id="header-post"
+        className="dark relative bg-neutral-900 dark:bg-neutral-900"
+      ></div>
     </div>
   )
 }

@@ -86,7 +86,7 @@ export default function Login() {
           <div className="max-w-md mx-auto space-y-6">
             <div className="grid gap-3">
               <GoogleLogin
-                clientId="864811280914-uron2hmb33ss57c3eb7jqs7ekbkm45oi.apps.googleusercontent.com"
+                clientId="460241620335-vf4titur6s1c48u124l1kmhnjj6ceasf.apps.googleusercontent.com"
                 className="flex items-center justify-center w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
                 disabledStyle
                 buttonText="Đăng nhập với Google"
@@ -187,12 +187,12 @@ export default function Login() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                  <NavLink
+                  {/* <NavLink
                     className="text-primary-6000 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-6000 text-sm"
                     to="/auth/forgot-password"
                   >
                     Quên mật khẩu?
-                  </NavLink>
+                  </NavLink> */}
                   <button
                     type="submit"
                     disabled={!(dirty && isValid)}
