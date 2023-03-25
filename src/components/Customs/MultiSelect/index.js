@@ -19,7 +19,6 @@ export default function MultiSelect({ ...props }) {
       color: '#212529',
     },
     searchBox: {
-      padding: '0.375rem 0.75rem',
       fontWeight: '400',
       lineHeight: '1.5',
       color: '#212529',
@@ -30,6 +29,9 @@ export default function MultiSelect({ ...props }) {
       borderRadius: '0.375rem',
       transition:
         'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
+    },
+    searchInput: {
+      padding: 0,
     },
   }
   return (

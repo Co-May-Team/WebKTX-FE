@@ -1,17 +1,19 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Forms from '~/containers/defaults/Forms'
-import RegistrationForm from '~/containers/defaults/Forms/registration_form/RegistrationForm'
 import Home from '~/containers/defaults/Home'
 import ImagesDetail from '~/containers/defaults/Home/sections/ImagesSection/ImagesDetail'
 import PostDetail from '~/containers/defaults/Posts/PostDetail'
 import PostsHome from '~/containers/defaults/Posts/PostsHome'
+import PostSaved from '~/containers/defaults/PostSaved'
+import RegistrationForm from '~/containers/defaults/registration_form/RegistrationForm'
+import Search from '~/containers/defaults/Search'
 import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
 
 const defaultRoutes = [
   { id: Math.random(), Container: Home, path: path.HOME },
+  { id: Math.random(), Container: PostSaved, path: path.POSTSAVED },
+  { id: Math.random(), Container: Search, path: path.SEARCH },
   { id: Math.random(), Container: PostsHome, path: path.TAGS },
-  { id: Math.random(), Container: Forms, path: path.FORMS },
   {
     id: Math.random(),
     Container: RegistrationForm,

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
+import { Fade } from 'react-reveal'
 import { defaultAvatar } from '~/utils/constants/default'
 
 export default function VideosSection() {
@@ -52,8 +53,9 @@ export default function VideosSection() {
     return (
       <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
         {videos?.map((video) => (
+          <Fade
+            key={video?.snippet.title} bottom>
           <div
-            key={video?.snippet.title}
             className="relative flex flex-col h-full"
           >
             <div className="block group rounded-3xl flex-shrink-0 relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 overflow-hidden z-0">
@@ -132,21 +134,21 @@ export default function VideosSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </div></Fade>
         ))}
       </div>
     )
   }
   return (
-    <section id="videos-section" className="container relative py-16 lg:py-28">
+    <section id="videos-section" className="container py-10 lg:py-16">
       <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
         <div className="text-center w-full max-w-2xl mx-auto ">
-          <h2 className="text-3xl md:text-4xl font-semibold">Khám phá Video</h2>
+          <h2 className="text-3xl md:text-4xl font-semibold">VIDEO</h2>
           <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
         </div>
       </div>
       {renderVideosCard()}
-      <div className="flex flex-col mt-20 justify-center items-center gap-4">
+      <div className="flex flex-col mt-10 justify-center items-center gap-4">
         {loading && 'Đang tải thêm video...'}
         {pageToken && (
           <button

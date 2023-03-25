@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 
 import authSlice from './auth/slice'
 import categoriesSlice from './categories/slice'
+import moreSlice from './more/slice'
 import postsSlice from './posts/slice'
 import sidebarSlice from './sidebar/slice'
 import tagsSlice from './tags/slice'
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   sidebar: sidebarSlice.reducer,
   auth: authSlice.reducer,
   posts: postsSlice.reducer,
+  more: moreSlice.reducer,
 })
 
 const persistConfig = {

@@ -6,6 +6,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import Confirm from '~/components/Customs/Confirm'
+import SavePostButton from '~/components/SavePostButton'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
 import { bindClassNames } from '~/utils'
@@ -58,12 +59,7 @@ function ListPost({ data }) {
             </button>
           </div>
           <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative">
-            <button
-              className="relative rounded-full flex items-center justify-center focus:outline-none h-8 w-8 bg-neutral-50 hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-              title="Ghim"
-            >
-              <AiFillPushpin size={15} />
-            </button>
+            <SavePostButton savedPost={post} />
           </div>
         </div>
         <div className="flex items-start relative w-full aspect-w-4 aspect-h-3 " />
@@ -89,12 +85,12 @@ function ListPost({ data }) {
           />
           <div className="mb-3">
             <div className="flex flex-wrap space-x-2">
-              <NavLink
+              <div
                 className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-pink-800 bg-pink-100 hover:bg-pink-800"
-                to={`/${convertToUrl(post?.category.categoryName)}`}
+              // to={`/${convertToUrl(post?.category.categoryName)}`}
               >
                 {post?.category.categoryName}
-              </NavLink>
+              </div>
             </div>
           </div>
           <div className="inline-flex items-center text-xs text-neutral-300">
