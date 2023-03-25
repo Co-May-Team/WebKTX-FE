@@ -5,6 +5,7 @@ import { FaEye } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Fade } from 'react-reveal'
 import { NavLink, useSearchParams } from 'react-router-dom'
+import SavePostButton from '~/components/SavePostButton'
 import { useClickOutside } from '~/hooks'
 import postsApi from '~/services/postsApi'
 import convertToUrl from '~/utils/commons/convertToUrl'
@@ -446,27 +447,7 @@ export default function Search() {
                             </NavLink>
                           </div>
                           <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative">
-                            <button
-                              className="relative rounded-full flex items-center justify-center focus:outline-none h-8 w-8 bg-neutral-50 hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-                              title="Lưu vào danh sách đang đọc"
-                            >
-                              <svg
-                                width={24}
-                                height={24}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  aria-hidden="true"
-                                  fill="none"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={1}
-                                  d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"
-                                />
-                              </svg>
-                            </button>
+                            <SavePostButton savedPost={result} />
                           </div>
                         </div>
                       </div>
