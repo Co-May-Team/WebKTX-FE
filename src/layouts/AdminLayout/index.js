@@ -1,36 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { BackToTop } from '~/components'
-import { authSelector } from '~/store/selectors'
-import { Header, Sidebar } from './components'
-import './index.scss'
+import { Footer, Header } from './components'
 
 export default function AdminLayout({ children }) {
-  const userInfo = useSelector(authSelector).userInfo
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!userInfo?.id) {
-      navigate('/auth/login')
-    }
-  }, [])
-
   return (
-    <div>
-      {/* Sidebar */}
-      <Sidebar />
-      <div className="wrapper d-flex flex-column min-vh-100 bg-light">
-        {/* Header */}
-        <Header />
-        <div className="body flex-grow-1 px-3">
-          {children}
-          {/* Back To Top */}
-          <BackToTop />
-        </div>
-      </div>
+    <div className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
+      {/* Header */}
+      <Header />
+      {/* Container */}
+      <div className="container py-10 lg:py-16">{children}</div>
+      {/* Footer */}
+      <Footer />
+      {/* Back To Top */}
+      <BackToTop />
     </div>
   )
 }

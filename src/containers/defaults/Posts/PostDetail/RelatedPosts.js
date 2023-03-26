@@ -1,7 +1,7 @@
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { NavLink } from 'react-router-dom'
 import { Fade } from 'react-reveal'
+import { NavLink } from 'react-router-dom'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import { defaultAvatar } from '~/utils/constants/default'
 
@@ -22,68 +22,63 @@ function RelatedPosts({ listPost }) {
       </div>
       <div className="flex flex-col divide-y divide-neutral-200 dark:divide-neutral-700">
         {listPost?.map((post) => (
-          <Fade 
-            key={post?.postId}
-            bottom
-            >
-          <div
-            className="relative flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center p-4 xl:px-5 xl:py-4 hover:bg-neutral-200 dark:hover:bg-neutral-700"
-          >
-            <NavLink
-              className="absolute inset-0"
-              title={post?.title}
-              to={`/${convertToUrl(post?.title)}/${post?.postId}`}
-            />
-            <div className="relative space-y-3">
-              <div className="inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 text-xs leading-none">
-                <div className="relative flex items-center space-x-2">
-                  <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-7 w-7 text-sm ring-1 ring-white dark:ring-neutral-900">
-                    <img
-                      className="absolute inset-0 w-full h-full object-cover"
-                      src={defaultAvatar}
-                      alt="Bác Phạm Văn Bên"
-                      title="Bác Phạm Văn Bên"
-                    />
-                    <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+          <Fade key={post?.postId} bottom>
+            <div className="relative flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center p-4 xl:px-5 xl:py-4 hover:bg-neutral-200 dark:hover:bg-neutral-700">
+              <NavLink
+                className="absolute inset-0"
+                title={post?.title}
+                to={`/${convertToUrl(post?.title)}/${post?.postId}`}
+              />
+              <div className="relative space-y-3">
+                <div className="inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 text-xs leading-none">
+                  <div className="relative flex items-center space-x-2">
+                    <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-7 w-7 text-sm ring-1 ring-white dark:ring-neutral-900">
+                      <img
+                        className="absolute inset-0 w-full h-full object-cover"
+                        src={defaultAvatar}
+                        alt="Bác Phạm Văn Bên"
+                        title="Bác Phạm Văn Bên"
+                      />
+                      <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+                    </div>
+                    <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
+                      KTX Cỏ May
+                    </span>
                   </div>
-                  <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
-                    KTX Cỏ May
+                  <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
+                    ·
+                  </span>
+                  <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+                    {moment(post?.publishedAt).format('ll')}
                   </span>
                 </div>
-                <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
-                  ·
-                </span>
-                <span className="text-neutral-500 dark:text-neutral-400 font-normal">
-                  {moment(post?.publishedAt).format('ll')}
-                </span>
-              </div>
-              <h2 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
-                <NavLink
-                  className="line-clamp-2"
-                  title={post?.title}
-                  to={`/${convertToUrl(post?.title)}/${post?.postId}`}
-                >
-                  {post?.title}
-                </NavLink>
-              </h2>
-            </div>
-            <NavLink
-              className="block sm:w-20 flex-shrink-0 relative rounded-lg overflow-hidden z-0 mb-3 sm:ml-4 sm:mb-0 group"
-              title={post?.title}
-              to={`/${convertToUrl(post?.title)}/${post?.postId}`}
-            >
-              <div className="w-full h-0 aspect-w-16 aspect-h-9 sm:aspect-h-16">
-                <div className="absolute inset-0">
-                  <img
-                    src={post?.thumbnail}
-                    className="z-0 object-cover w-full h-full group-hover:scale-110 transform transition-transform duration-300"
-                    alt={post?.title}
+                <h2 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100">
+                  <NavLink
+                    className="line-clamp-2"
                     title={post?.title}
-                  />
-                </div>
+                    to={`/${convertToUrl(post?.title)}/${post?.postId}`}
+                  >
+                    {post?.title}
+                  </NavLink>
+                </h2>
               </div>
-            </NavLink>
-          </div>
+              <NavLink
+                className="block sm:w-20 flex-shrink-0 relative rounded-lg overflow-hidden z-0 mb-3 sm:ml-4 sm:mb-0 group"
+                title={post?.title}
+                to={`/${convertToUrl(post?.title)}/${post?.postId}`}
+              >
+                <div className="w-full h-0 aspect-w-16 aspect-h-9 sm:aspect-h-16">
+                  <div className="absolute inset-0">
+                    <img
+                      src={post?.thumbnail}
+                      className="z-0 object-cover w-full h-full group-hover:scale-110 transform transition-transform duration-300"
+                      alt={post?.title}
+                      title={post?.title}
+                    />
+                  </div>
+                </div>
+              </NavLink>
+            </div>
           </Fade>
         ))}
       </div>

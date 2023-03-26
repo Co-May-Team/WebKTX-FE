@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Home, Images, Posts, Videos } from '~/containers/admin'
+import { Posts } from '~/containers/admin'
 import { AdminLayout } from '~/layouts'
 import { path } from '~/utils'
 
@@ -11,25 +11,15 @@ const adminRoutes = [
     replace: true,
     to: '/404',
   },
-  {
-    id: Math.random(),
-    Container: Home,
-    path: path.HOME,
-  },
+  // {
+  //   id: Math.random(),
+  //   Container: Dashboard,
+  //   path: path.DASHBOARD,
+  // },
   {
     id: Math.random(),
     Container: Posts,
     path: path.POSTS,
-  },
-  {
-    id: Math.random(),
-    Container: Images,
-    path: path.IMAGES,
-  },
-  {
-    id: Math.random(),
-    Container: Videos,
-    path: path.VIDEOS,
   },
 ]
 

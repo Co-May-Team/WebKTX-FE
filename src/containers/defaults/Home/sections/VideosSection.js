@@ -53,88 +53,86 @@ export default function VideosSection() {
     return (
       <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
         {videos?.map((video) => (
-          <Fade
-            key={video?.snippet.title} bottom>
-          <div
-            className="relative flex flex-col h-full"
-          >
-            <div className="block group rounded-3xl flex-shrink-0 relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 overflow-hidden z-0">
-              <div>
-                <div className="relative  w-full h-full">
-                  <div
-                    className="nc-NcImage absolute inset-0"
-                    data-nc-id="NcImage"
+          <Fade key={video?.snippet.title} bottom>
+            <div className="relative flex flex-col h-full">
+              <div className="block group rounded-3xl flex-shrink-0 relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 overflow-hidden z-0">
+                <div>
+                  <div className="relative  w-full h-full">
+                    <div
+                      className="nc-NcImage absolute inset-0"
+                      data-nc-id="NcImage"
+                    >
+                      <iframe
+                        className="object-cover w-full h-full"
+                        src={`https://www.youtube.com/embed/${video?.id.videoId}`}
+                        title={video?.snippet.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4">
+                <div className="flex flex-wrap space-x-2">
+                  <div className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800">
+                    Video
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300">
+                  <button
+                    className="relative rounded-full flex items-center justify-center focus:outline-none h-8 w-8 bg-neutral-50 hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700"
+                    title="Lưu vào danh sách đang đọc"
                   >
-                    <iframe
-                      className="object-cover w-full h-full"
-                      src={`https://www.youtube.com/embed/${video?.id.videoId}`}
-                      title={video?.snippet.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                    <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
+                      <path
+                        stroke="currentColor"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1}
+                        d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"
+                      />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </div>
-            <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4">
-              <div className="flex flex-wrap space-x-2">
-                <div className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800">
-                  Video
-                </div>
-              </div>
-              <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300">
-                <button
-                  className="relative rounded-full flex items-center justify-center focus:outline-none h-8 w-8 bg-neutral-50 hover:bg-neutral-100 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-                  title="Lưu vào danh sách đang đọc"
-                >
-                  <svg width={24} height={24} fill="none" viewBox="0 0 24 24">
-                    <path
-                      stroke="currentColor"
-                      aria-hidden="true"
-                      fill="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M6.75 6.75C6.75 5.64543 7.64543 4.75 8.75 4.75H15.25C16.3546 4.75 17.25 5.64543 17.25 6.75V19.25L12 14.75L6.75 19.25V6.75Z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div className="space-y-2.5 mt-4 px-4">
-              <div className="inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 text-xs leading-none">
-                <div className="relative flex items-center space-x-2">
-                  <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-9 w-9 text-base ring-1 ring-white dark:ring-neutral-900">
-                    <img
-                      className="absolute inset-0 w-full h-full object-cover"
-                      src={defaultAvatar}
-                      alt="Bác Phạm Văn Bên"
-                      title="Bác Phạm Văn Bên"
-                    />
-                    <span className="wil-avatar__name">B</span>
-                  </div>
-                  <div>
-                    <h2 className="block font-semibold text-base">
-                      <span className="line-clamp-1">
-                        {video.snippet.title}
-                      </span>
-                    </h2>
-                    <div className="flex mt-1.5">
-                      <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
-                        KTX Cỏ May
-                      </span>
-                      <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
-                        ·
-                      </span>
-                      <span className="text-neutral-500 dark:text-neutral-400 font-normal">
-                        {moment(video.snippet.publishedAt).format('ll')}
-                      </span>
+              <div className="space-y-2.5 mt-4 px-4">
+                <div className="inline-flex items-center flex-wrap text-neutral-800 dark:text-neutral-200 text-xs leading-none">
+                  <div className="relative flex items-center space-x-2">
+                    <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-9 w-9 text-base ring-1 ring-white dark:ring-neutral-900">
+                      <img
+                        className="absolute inset-0 w-full h-full object-cover"
+                        src={defaultAvatar}
+                        alt="Bác Phạm Văn Bên"
+                        title="Bác Phạm Văn Bên"
+                      />
+                      <span className="wil-avatar__name">B</span>
+                    </div>
+                    <div>
+                      <h2 className="block font-semibold text-base">
+                        <span className="line-clamp-1">
+                          {video.snippet.title}
+                        </span>
+                      </h2>
+                      <div className="flex mt-1.5">
+                        <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
+                          KTX Cỏ May
+                        </span>
+                        <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
+                          ·
+                        </span>
+                        <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+                          {moment(video.snippet.publishedAt).format('ll')}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div></Fade>
+          </Fade>
         ))}
       </div>
     )

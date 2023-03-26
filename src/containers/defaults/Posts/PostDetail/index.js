@@ -8,13 +8,11 @@ import {
   FaEye,
   FaFacebook,
   FaLinkedin,
-  FaLinkedinIn,
   FaReddit,
   FaRegEdit,
   FaRegTrashAlt,
   FaTelegram,
   FaTwitter,
-  FaWarehouse,
   FaWhatsapp,
 } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
@@ -143,9 +141,7 @@ function PostDetail(props) {
               </button>
               <SavePostButton savedPost={postInfo} dark />
               <div className="border-l border-neutral-300 dark:border-neutral-700 h-6" />
-              <div
-                className="flex space-x-2"
-              >
+              <div className="flex space-x-2">
                 <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
                   <FacebookShareButton url={window.location.href}>
                     <span className="lab la-facebook-f" />
@@ -214,7 +210,7 @@ function PostDetail(props) {
                     <Slide left>
                       <div
                         className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs !px-3 text-pink-800 bg-pink-100 hover:bg-pink-800"
-                      // to={`/${convertToUrl(postInfo?.category.categoryName)}`}
+                        // to={`/${convertToUrl(postInfo?.category.categoryName)}`}
                       >
                         {postInfo?.category.categoryName}
                       </div>
