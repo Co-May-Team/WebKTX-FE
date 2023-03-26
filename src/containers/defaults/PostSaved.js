@@ -5,11 +5,12 @@ import { Fade } from 'react-reveal'
 import { NavLink } from 'react-router-dom'
 import SavePostButton from '~/components/SavePostButton'
 import convertToUrl from '~/utils/commons/convertToUrl'
-import { isSaved, toggleSavePost } from '~/utils/commons/savedPosts'
 import { defaultAvatar } from '~/utils/constants/default'
 
 export default function PostSaved() {
-  const [savedPosts, setSavedPosts] = useState(JSON.parse(localStorage.getItem('savedPosts')))
+  const [savedPosts, setSavedPosts] = useState(
+    JSON.parse(localStorage.getItem('savedPosts'))
+  )
   return (
     <div className="container py-10 lg:py-16">
       <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
@@ -39,8 +40,9 @@ export default function PostSaved() {
                       </div>
                       <NavLink
                         className="block absolute inset-0"
-                        to={`/${convertToUrl(savedPost?.title)}/${savedPost?.postId
-                          }`}
+                        to={`/${convertToUrl(savedPost?.title)}/${
+                          savedPost?.postId
+                        }`}
                       />
                     </div>
                   </div>
@@ -85,8 +87,9 @@ export default function PostSaved() {
                     <NavLink
                       className="line-clamp-2"
                       title={savedPost?.title}
-                      to={`/${convertToUrl(savedPost?.title)}/${savedPost?.postId
-                        }`}
+                      to={`/${convertToUrl(savedPost?.title)}/${
+                        savedPost?.postId
+                      }`}
                     >
                       {savedPost.title}
                     </NavLink>
@@ -105,8 +108,9 @@ export default function PostSaved() {
                       <NavLink
                         className="nc-PostCardCommentBtn relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
                         title="Bình luận"
-                        to={`/${convertToUrl(savedPost?.title)}/${savedPost?.postId
-                          }#binh-luan`}
+                        to={`/${convertToUrl(savedPost?.title)}/${
+                          savedPost?.postId
+                        }#binh-luan`}
                       >
                         <svg
                           width={24}
@@ -146,7 +150,10 @@ export default function PostSaved() {
                       </NavLink>
                     </div>
                     <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative">
-                        <SavePostButton onClick={(newSavedPost) => setSavedPosts(newSavedPost)} savedPost={savedPost} />
+                      <SavePostButton
+                        onClick={(newSavedPost) => setSavedPosts(newSavedPost)}
+                        savedPost={savedPost}
+                      />
                     </div>
                   </div>
                 </div>

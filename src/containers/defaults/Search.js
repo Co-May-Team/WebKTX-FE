@@ -32,9 +32,12 @@ export default function Search() {
 
   const loadMorePosts = async () => {
     setLoadingMore(true)
-    if (filters.filterBy === "q") {
+    if (filters.filterBy === 'q') {
       await postsApi
-        .getAll({ page: page + 1, sort: filters.sort, order: "desc" }, { title: keyword, content: keyword })
+        .getAll(
+          { page: page + 1, sort: filters.sort, order: 'desc' },
+          { title: keyword, content: keyword }
+        )
         .then((response) => {
           setResults([...results, ...response.data.data.posts])
           setTotalResult(response.data.data.pagination.totalItem)
@@ -44,10 +47,12 @@ export default function Search() {
           }
           setLoadingMore(false)
         })
-    }
-    else {
+    } else {
       await postsApi
-        .getAll({ page: page + 1, sort: filters.sort, order: "desc" }, { [filters.filterBy]: keyword })
+        .getAll(
+          { page: page + 1, sort: filters.sort, order: 'desc' },
+          { [filters.filterBy]: keyword }
+        )
         .then((response) => {
           setResults([...results, ...response.data.data.posts])
           setTotalResult(response.data.data.pagination.totalItem)
@@ -67,21 +72,30 @@ export default function Search() {
         : `Kết quả cho "${searchParams.get('tu-khoa')}" | KTX Cỏ May`
     setSearchParams({ 'tu-khoa': keyword })
     setLoading(true)
-    if (filters.filterBy === "q") {
-      postsApi.getAll({ page: 1, sort: filters.sort, order: "desc" }, { title: keyword, content: keyword }).then((response) => {
-        setResults(response.data.data.posts)
-        setTotalResult(response.data.data.pagination.totalItem)
-        setPage(1)
-        setLoading(false)
-      })
-    }
-    else {
-      postsApi.getAll({ page: 1, sort: filters.sort, order: "desc" }, { [filters.filterBy]: keyword }).then((response) => {
-        setResults(response.data.data.posts)
-        setTotalResult(response.data.data.pagination.totalItem)
-        setPage(1)
-        setLoading(false)
-      })
+    if (filters.filterBy === 'q') {
+      postsApi
+        .getAll(
+          { page: 1, sort: filters.sort, order: 'desc' },
+          { title: keyword, content: keyword }
+        )
+        .then((response) => {
+          setResults(response.data.data.posts)
+          setTotalResult(response.data.data.pagination.totalItem)
+          setPage(1)
+          setLoading(false)
+        })
+    } else {
+      postsApi
+        .getAll(
+          { page: 1, sort: filters.sort, order: 'desc' },
+          { [filters.filterBy]: keyword }
+        )
+        .then((response) => {
+          setResults(response.data.data.posts)
+          setTotalResult(response.data.data.pagination.totalItem)
+          setPage(1)
+          setLoading(false)
+        })
     }
   }, [filters])
 
@@ -217,8 +231,8 @@ export default function Search() {
                   {filters.sort === 'publishedAt'
                     ? 'Gần đây nhất'
                     : filters.sort === 'viewed'
-                      ? 'Xem nhiều nhất'
-                      : 'Thảo luận nhiều nhất'}
+                    ? 'Xem nhiều nhất'
+                    : 'Thảo luận nhiều nhất'}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -235,8 +249,11 @@ export default function Search() {
                 </button>
                 {visibleFilterDropdown && (
                   <ul className="absolute right-0 w-52 py-1 mt-2 overflow-auto text-sm text-neutral-900 dark:text-neutral-200 bg-white rounded-xl shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-neutral-900 dark:ring-neutral-700 z-50">
-                    <li className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
-                      onClick={() => setFilters({ ...filters, sort: "publishedAt" })}
+                    <li
+                      className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
+                      onClick={() =>
+                        setFilters({ ...filters, sort: 'publishedAt' })
+                      }
                     >
                       <span className="font-medium block truncate">
                         Gần đây nhất
@@ -259,8 +276,9 @@ export default function Search() {
                         </span>
                       )}
                     </li>
-                    <li className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
-                      onClick={() => setFilters({ ...filters, sort: "viewed" })}
+                    <li
+                      className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
+                      onClick={() => setFilters({ ...filters, sort: 'viewed' })}
                     >
                       <span className="font-normal block truncate">
                         Lượt xem nhiều nhất
@@ -283,8 +301,11 @@ export default function Search() {
                         </span>
                       )}
                     </li>
-                    <li className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
-                      onClick={() => setFilters({ ...filters, sort: "totalComment" })}
+                    <li
+                      className="hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4"
+                      onClick={() =>
+                        setFilters({ ...filters, sort: 'totalComment' })
+                      }
                     >
                       <span className="font-normal block truncate">
                         Thảo luận nhiều nhất
@@ -340,8 +361,9 @@ export default function Search() {
                             </div>
                             <NavLink
                               className="block absolute inset-0"
-                              to={`/${convertToUrl(result.title)}/${result.postId
-                                }`}
+                              to={`/${convertToUrl(result.title)}/${
+                                result.postId
+                              }`}
                             />
                           </div>
                         </div>
@@ -386,8 +408,9 @@ export default function Search() {
                           <NavLink
                             className="line-clamp-2"
                             title={result.title}
-                            to={`/${convertToUrl(result.title)}/${result.postId
-                              }`}
+                            to={`/${convertToUrl(result.title)}/${
+                              result.postId
+                            }`}
                           >
                             {result.title}
                           </NavLink>
@@ -406,8 +429,9 @@ export default function Search() {
                             <NavLink
                               className="nc-PostCardCommentBtn relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
                               title="Bình luận"
-                              to={`/${convertToUrl(result.title)}/${result.postId
-                                }#binh-luan`}
+                              to={`/${convertToUrl(result.title)}/${
+                                result.postId
+                              }#binh-luan`}
                             >
                               <svg
                                 width={24}

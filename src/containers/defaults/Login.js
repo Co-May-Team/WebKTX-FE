@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 import { Formik } from 'formik'
 import { useEffect } from 'react'
-import GoogleLogin from 'react-google-login'
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { InputField } from '~/components/Customs'
 import { login } from '~/store/auth/actions'
@@ -39,12 +39,10 @@ export default function Login() {
   //
   const onSuccess = (response) => {
     const info = parseJwt(response.credential)
-    console.log('Đăng nhập thành công - response', response)
     console.log('Đăng nhập thành công - info', info)
-    // localStorage.removeItem('userInfoGoogle')
-    // localStorage.removeItem('isLogin')
-    // localStorage.setItem('userInfoGoogle', JSON.stringify(info))
-    // // window.location.href = 'http://localhost:3000/';
+    localStorage.removeItem('userInfo')
+    localStorage.setItem('userInfo', JSON.stringify(info))
+    window.location.href = 'http://localhost:3000/'
     // window.location.href = 'https://www.kytucxacomay.tk/'
   }
 
@@ -66,7 +64,7 @@ export default function Login() {
     return JSON.parse(jsonPayload)
   }
   return (
-    <div className="relative " data-nc-id="LayoutPage">
+    <div className="relative">
       <div
         className="absolute h-[400px] top-0 left-0 right-0 w-full bg-primary-100 dark:bg-neutral-800 bg-opacity-25 dark:bg-opacity-40"
         // src={defaultThumbnail}
@@ -84,9 +82,11 @@ export default function Login() {
         </header>
         <div className="p-5 mx-auto bg-white rounded-[40px] shadow-lg sm:p-10 mt-10 lg:mt-20 lg:p-16 dark:bg-neutral-900">
           <div className="max-w-md mx-auto space-y-6">
-            <div className="grid gap-3">
+            <GoogleOAuthProvider
+              clientId="864811280914-uron2hmb33ss57c3eb7jqs7ekbkm45oi.apps.googleusercontent.com"
+              className="grid gap-3"
+            >
               <GoogleLogin
-                clientId="460241620335-vf4titur6s1c48u124l1kmhnjj6ceasf.apps.googleusercontent.com"
                 className="flex items-center justify-center w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
                 disabledStyle
                 buttonText="Đăng nhập với Google"
@@ -138,7 +138,7 @@ export default function Login() {
                   Đăng nhập với Google
                 </h3>
               </NavLink> */}
-            </div>
+            </GoogleOAuthProvider>
             <div className="relative text-center">
               <span className="relative z-10 inline-block px-4 font-medium text-sm bg-white dark:text-neutral-400 dark:bg-neutral-900">
                 HOẶC

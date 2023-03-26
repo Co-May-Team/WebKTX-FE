@@ -1,12 +1,15 @@
 import { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { useClickOutside } from '~/hooks'
 import { logout } from '~/store/auth/actions'
+import { authSelector } from '~/store/selectors'
 import { path } from '~/utils'
 import { defaultAvatar } from '~/utils/constants/default'
 
 export default function AvatarDropdown() {
+  const userInfo = useSelector(authSelector).userInfo
+
   const dispatch = useDispatch()
 
   const avatarDropdownRef = useRef()

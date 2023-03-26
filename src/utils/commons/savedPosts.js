@@ -1,9 +1,6 @@
 function isSaved(postInfo) {
   const savedPosts = JSON.parse(localStorage.getItem('savedPosts'))
-  return (
-    savedPosts
-      ?.find((savedPost) => savedPost?.postId === postInfo?.postId)
-  )
+  return savedPosts?.find((savedPost) => savedPost?.postId === postInfo?.postId)
 }
 function toggleSavePost(postInfo) {
   if (isSaved(postInfo)) {

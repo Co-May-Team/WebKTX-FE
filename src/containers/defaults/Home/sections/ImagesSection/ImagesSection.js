@@ -2,9 +2,9 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import 'react-glide/lib/reactGlide.css'
+import { Fade } from 'react-reveal'
 import { useNavigate } from 'react-router-dom'
 import Slider from 'react-slick'
-import { Fade } from 'react-reveal'
 import imagesApi from '~/services/imagesApi'
 import { defaultAvatar } from '~/utils/constants/default'
 
@@ -178,12 +178,12 @@ export default function ImagesSection() {
   return (
     <section id="images-section" className="container py-10 lg:py-16">
       <div className="relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50">
-          <div className="text-center w-full max-w-2xl mx-auto ">
-            <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
-              HÌNH ẢNH
-            </h2>
-            <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
-          </div>
+        <div className="text-center w-full max-w-2xl mx-auto ">
+          <h2 className="text-3xl md:text-4xl font-semibold text-uppercase">
+            HÌNH ẢNH
+          </h2>
+          <span className="mt-2 md:mt-3 font-normal block text-base sm:text-xl text-neutral-500 dark:text-neutral-400"></span>
+        </div>
       </div>
       {renderImages()}
       <div className="flex flex-col mt-10 justify-center items-center gap-4">

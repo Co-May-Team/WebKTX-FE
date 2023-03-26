@@ -17,8 +17,7 @@ export const path = {
 
   // Admin path
   ADMIN: '/admin',
-  POSTS: '/posts',
-  POSTSCREATEDBYME: '/posts/created-by-me',
-  IMAGES: '/media/images',
-  VIDEOS: '/media/videos',
+  ADMIN_HOME: '/quan-ly-bai-viet',
+  DASHBOARD: '/bang-dieu-khien',
+  POSTS: '/quan-ly-bai-viet',
 }

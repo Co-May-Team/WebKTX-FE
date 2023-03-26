@@ -58,9 +58,14 @@ const postsSlice = createSlice({
         state.status = 'loadingMore'
       })
       .addCase(loadMorePosts.fulfilled, (state, action) => {
-        state.posts = [...state.posts, ...action.payload.posts]
-        state.pagination = action.payload.pagination
-        state.status = 'success'
+        if (action.payload.posts?.length === 0) {
+          state.status = 'loadingFull'
+        }
+        else {
+          state.posts = [...state.posts, ...action.payload.posts]
+          state.pagination = action.payload.pagination
+          state.status = 'success'
+        }
       })
       .addCase(loadMorePosts.rejected, (state, action) => {
         state.status = 'error'

@@ -46,7 +46,7 @@ function PostsSection() {
                     <div className="flex flex-wrap space-x-2">
                       <div
                         className="transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800"
-                      // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
+                        // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                       >
                         {posts[0]?.category.categoryName}
                       </div>
@@ -55,8 +55,9 @@ function PostsSection() {
                       <NavLink
                         className="line-clamp-2"
                         title={posts[0]?.title}
-                        to={`/${convertToUrl(posts[0]?.title)}/${posts[0]?.postId
-                          }`}
+                        to={`/${convertToUrl(posts[0]?.title)}/${
+                          posts[0]?.postId
+                        }`}
                       >
                         {posts[0]?.title}
                       </NavLink>
@@ -68,7 +69,9 @@ function PostsSection() {
                     </div>
                     <NavLink
                       className="relative inline-flex items-center relative"
-                      to={`/${convertToUrl(posts[0]?.title)}/${posts[0]?.postId}`}
+                      to={`/${convertToUrl(posts[0]?.title)}/${
+                        posts[0]?.postId
+                      }`}
                     >
                       <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-10 w-10 text-base flex-shrink-0 mr-3">
                         <img
@@ -77,7 +80,9 @@ function PostsSection() {
                           alt="Bác Phạm Văn Bên"
                           title="Bác Phạm Văn Bên"
                         />
-                        <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+                        <span className="wil-avatar__name">
+                          Bác Phạm Văn Bên
+                        </span>
                       </div>
                       <div>
                         <h2 className="text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
@@ -104,8 +109,9 @@ function PostsSection() {
                         <NavLink
                           className="relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
                           title="Bình luận"
-                          to={`/${convertToUrl(posts[0]?.title)}/${posts[0]?.postId
-                            }#binh-luan`}
+                          to={`/${convertToUrl(posts[0]?.title)}/${
+                            posts[0]?.postId
+                          }#binh-luan`}
                         >
                           <svg
                             width={24}
@@ -172,24 +178,18 @@ function PostsSection() {
               </div>
             </div>
             {posts?.slice(1, posts?.length).map((post) => (
-              <Fade
-                bottom
-                key={post?.postId}>
-                <div
-                  className="relative flex group flex-col-reverse sm:flex-row sm:items-center p-4 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full"
-                >
+              <Fade bottom key={post?.postId}>
+                <div className="relative flex group flex-col-reverse sm:flex-row sm:items-center p-4 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full">
                   <NavLink
                     className="absolute inset-0 z-0"
                     to={`/${convertToUrl(post?.title)}/${post?.postId}`}
                   ></NavLink>
                   <div className="flex flex-col flex-grow">
                     <div className="space-y-3 mb-4">
-                      <div
-                        className="flex flex-wrap space-x-2"
-                      >
+                      <div className="flex flex-wrap space-x-2">
                         <div
                           className="transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800"
-                        // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
+                          // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                         >
                           {post?.category.categoryName}
                         </div>
@@ -223,8 +223,9 @@ function PostsSection() {
                         <NavLink
                           className="relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex px-3 h-8 text-xs focus:outline-none"
                           title="Bình luận"
-                          to={`/${convertToUrl(post?.title)}/${post?.postId
-                            }#binh-luan`}
+                          to={`/${convertToUrl(post?.title)}/${
+                            post?.postId
+                          }#binh-luan`}
                         >
                           <svg
                             width="24"
@@ -296,17 +297,17 @@ function PostsSection() {
       </div>
       <div className="flex flex-col mt-10  justify-center items-center gap-3">
         {status === 'loadingMore' && 'Đang tải thêm bài viết...'}
-          <button
-            className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-            disabled={status === 'loadingMore'}
-            onClick={() =>
-              setParams((prevParams) => {
-                return { page: prevParams.page + 1 }
-              })
-            }
-          >
-            Xem thêm
-          </button>
+        <button
+          className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+          disabled={status === 'loadingMore'}
+          onClick={() =>
+            setParams((prevParams) => {
+              return { page: prevParams.page + 1 }
+            })
+          }
+        >
+          Xem thêm
+        </button>
       </div>
     </div>
   )
