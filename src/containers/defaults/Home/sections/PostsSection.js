@@ -5,6 +5,7 @@ import { FaEye } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { Fade } from 'react-reveal'
 import { NavLink } from 'react-router-dom'
+import Loading from '~/components/Loading'
 import SavePostButton from '~/components/SavePostButton'
 import { fetchPosts, loadMorePosts } from '~/store/posts/actions'
 import { postsSelector } from '~/store/selectors'
@@ -12,7 +13,7 @@ import convertToUrl from '~/utils/commons/convertToUrl'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
 
-function PostsSection() {
+export default function PostsSection() {
   const posts = useSelector(postsSelector).posts
   const status = useSelector(postsSelector).status
 
@@ -34,9 +35,7 @@ function PostsSection() {
     <div id="posts-section" className="container py-10 lg:py-16">
       <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 md:gap-8">
         {status === 'loading' ? (
-          <div className="flex flex-col mt-10 mb-10 justify-center items-center gap-3">
-            Đang tải dữ liệu...
-          </div>
+          <Loading />
         ) : (
           <>
             <div className="relative flex flex-col-reverse md:flex-row justify-end ">
@@ -296,7 +295,7 @@ function PostsSection() {
         )}
       </div>
       <div className="flex flex-col mt-10  justify-center items-center gap-3">
-        {status === 'loadingMore' && 'Đang tải thêm bài viết...'}
+        {status === 'loadingMore' && <Loading />}
         <button
           className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
           disabled={status === 'loadingMore'}
@@ -312,5 +311,3 @@ function PostsSection() {
     </div>
   )
 }
-
-export default PostsSection

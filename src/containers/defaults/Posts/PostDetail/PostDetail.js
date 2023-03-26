@@ -28,24 +28,21 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 import Confirm from '~/components/Customs/Confirm'
+import Loading from '~/components/Loading'
 import SavePostButton from '~/components/SavePostButton'
 import SubmitPost from '~/containers/admin/Posts/SubmitPost'
 import { useClickOutside } from '~/hooks'
 import postsApi from '~/services/postsApi'
 import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
-import { bindClassNames } from '~/utils'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
 import Comments from './Comments'
-import styles from './index.module.scss'
 import MostViewPosts from './MostViewPosts'
 import ProgressBar from './ProgressBar'
 import RelatedPosts from './RelatedPosts'
 
-const cx = bindClassNames(styles)
-
-function PostDetail(props) {
+export default function PostDetail(props) {
   const userInfo = useSelector(authSelector).userInfo
 
   const dispatch = useDispatch()
@@ -196,11 +193,7 @@ function PostDetail(props) {
 
   return (
     <>
-      {loading ? (
-        <div className="flex flex-col mt-10  justify-center items-center gap-3">
-          Đang tải dữ liệu bài viết...
-        </div>
-      ) : (
+      {loading ? <Loading /> : (
         <>
           <header className="relative pt-16 z-10 md:py-20 lg:py-28 bg-neutral-900 dark:bg-black">
             <div className="dark container relative z-10">
@@ -587,7 +580,3 @@ function PostDetail(props) {
     </>
   )
 }
-
-PostDetail.propTypes = {}
-
-export default PostDetail

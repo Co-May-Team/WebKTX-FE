@@ -8,6 +8,7 @@ import * as Yup from 'yup'
 import { InputField } from '~/components/Customs'
 import { login } from '~/store/auth/actions'
 import { authSelector } from '~/store/selectors'
+import { path } from '~/utils'
 
 export default function Login() {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ export default function Login() {
 
   useEffect(() => {
     if (userInfo?.id) {
-      navigate('/admin')
+      navigate(`${path.ADMIN + path.ADMIN_HOME}`)
     }
   }, [status])
 
@@ -42,8 +43,7 @@ export default function Login() {
     console.log('Đăng nhập thành công - info', info)
     localStorage.removeItem('userInfo')
     localStorage.setItem('userInfo', JSON.stringify(info))
-    window.location.href = 'http://localhost:3000/'
-    // window.location.href = 'https://www.kytucxacomay.tk/'
+    navigate(`${path.ADMIN + path.ADMIN_HOME}`)
   }
 
   const onFailure = (error) => {

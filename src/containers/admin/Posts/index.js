@@ -2,22 +2,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import moment from 'moment'
 import { useEffect, useRef, useState } from 'react'
-import { FaEdit, FaEye, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useDispatch, useSelector } from 'react-redux'
 import { Fade } from 'react-reveal'
 import { NavLink } from 'react-router-dom'
 import Confirm from '~/components/Customs/Confirm'
+import Loading from '~/components/Loading'
 import SavePostButton from '~/components/SavePostButton'
 import { useClickOutside } from '~/hooks'
-import useDebounce from '~/hooks/useEventListener'
 import { deletePost, fetchPosts, loadMorePosts } from '~/store/posts/actions'
 import { postsSelector } from '~/store/selectors'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import { defaultAvatar } from '~/utils/constants/default'
 import SubmitPost from './SubmitPost'
 
-function Posts() {
+export default function Posts() {
   const posts = useSelector(postsSelector).posts
   const pagination = useSelector(postsSelector).pagination
   const status = useSelector(postsSelector).status
@@ -49,7 +49,9 @@ function Posts() {
     } else if (filters.content !== undefined && filters.title === undefined) {
       dispatch(fetchPosts({ params, filters: { content: value } }))
     } else {
-      dispatch(fetchPosts({ params, filters: { title: value, content: value } }))
+      dispatch(
+        fetchPosts({ params, filters: { title: value, content: value } })
+      )
     }
   }
 
@@ -274,11 +276,7 @@ function Posts() {
             </div>
           </div>
         </div>
-        {status === 'loading' ? (
-          <div className="flex mt-5 justify-center items-center">
-            <div className="text-center">Đang tải dữ liệu...</div>
-          </div>
-        ) : posts && posts.length > 0 ? (
+        {status === 'loading' ? <Loading /> : posts && posts.length > 0 ? (
           <>
             <InfiniteScroll
               dataLength={posts.length}
@@ -391,11 +389,7 @@ function Posts() {
                 </Fade>
               ))}
             </InfiniteScroll>
-            {status === 'loadingMore' && (
-              <div className="flex mt-5 justify-center items-center">
-                <h4 className="text-center">Đang tải thêm...</h4>
-              </div>
-            )}
+            {status === 'loadingMore' && <Loading />}
           </>
         ) : (
           <div className="flex mt-5 justify-center items-center">
@@ -428,5 +422,3 @@ function Posts() {
     </div>
   )
 }
-
-export default Posts

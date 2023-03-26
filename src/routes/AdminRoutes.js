@@ -1,7 +1,9 @@
+import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Posts } from '~/containers/admin'
 import { AdminLayout } from '~/layouts'
 import { path } from '~/utils'
+
+const Posts = React.lazy(() => import('~/containers/admin/Posts'))
 
 const adminRoutes = [
   {

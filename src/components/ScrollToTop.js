@@ -28,7 +28,7 @@ function ScrollToTop() {
 
   return (
     <button
-      className={`fixed right-2 bottom-2 h-auto inline-flex items-center justify-center rounded-2xl transition-colors text-sm sm:text-base font-medium px-3 py-3 sm:px-5 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 opacity-50 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 ${
+      className={`fixed right-2 bottom-2 h-auto inline-flex items-center justify-center rounded-xl transition-colors text-sm sm:text-base font-medium px-3 py-2 sm:px-4 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 opacity-50 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 ${
         isVisible ? '' : 'hidden'
       }`}
       onClick={scrollToTop}

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LogoIcon } from '~/components/Icons'
@@ -28,8 +28,6 @@ function Header() {
     JSON.parse(localStorage.getItem('isDarkMode') || false)
   )
   const [searchTerm, setSearchTerm] = useState('')
-  const [visibleCategoryDropdown, setVisibleCategoryDropdown] = useState(false)
-  const [visibleTagDropdown, setVisibleTagDropdown] = useState(false)
   const [isShow, setShow] = useState(false)
   const sidebarRef = useRef()
 
@@ -60,8 +58,6 @@ function Header() {
   }
 
   useClickOutside(sidebarRef, () => setShow(!isShow))
-
-  const userInfoGoogle = JSON.parse(localStorage.getItem('userInfoGoogle'))
   return (
     <div
       id="header-sticky"
@@ -309,7 +305,7 @@ function Header() {
               ) : (
                 <NavLink
                   className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-                  to="/auth/login"
+                  to="/dang-nhap"
                 >
                   Đăng nhập
                 </NavLink>
@@ -497,4 +493,4 @@ function Header() {
   )
 }
 
-export default Header
+export default React.memo(Header)

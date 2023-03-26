@@ -5,6 +5,7 @@ import { FaEye } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Fade } from 'react-reveal'
 import { NavLink, useSearchParams } from 'react-router-dom'
+import Loading from '~/components/Loading'
 import SavePostButton from '~/components/SavePostButton'
 import { useClickOutside } from '~/hooks'
 import postsApi from '~/services/postsApi'
@@ -97,7 +98,7 @@ export default function Search() {
           setLoading(false)
         })
     }
-  }, [filters])
+  }, [filters, keyword])
 
   useClickOutside(filterDropdownRef, () => setVisibleFilterDropdown(false))
 
@@ -334,9 +335,7 @@ export default function Search() {
             </div>
           </div>
           {loading ? (
-            <div className="flex mt-5 justify-center items-center">
-              <div className="text-center">Đang tải dữ liệu...</div>
-            </div>
+            <Loading />
           ) : results && results.length > 0 ? (
             <>
               <InfiniteScroll
@@ -479,11 +478,7 @@ export default function Search() {
                   </Fade>
                 ))}
               </InfiniteScroll>
-              {loadingMore && (
-                <div className="flex mt-5 justify-center items-center">
-                  <h4 className="text-center">Đang tải thêm...</h4>
-                </div>
-              )}
+              {loadingMore && <Loading />}
             </>
           ) : (
             <div className="flex mt-5 justify-center items-center">
