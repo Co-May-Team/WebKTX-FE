@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchCategories } from '~/store/categories/actions'
 import { fetchTags } from '~/store/tags/actions'
-import { ImagesSection, VideosSection } from './sections'
-import PostsSection from './sections/PostsSection'
+
+const PostsSection = React.lazy(() => import('./sections/PostsSection'))
+const ImagesSection = React.lazy(() => import('./sections/ImagesSection'))
+const VideosSection = React.lazy(() => import('./sections/VideosSection'))
 
 export default function Home() {
   const dispatch = useDispatch()
