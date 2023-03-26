@@ -1,3 +1,4 @@
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { LogoIcon } from '~/components/Icons'
@@ -126,4 +127,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default React.memo(Footer)

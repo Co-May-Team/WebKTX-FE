@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { FaEye } from 'react-icons/fa'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { trackWindowScroll } from 'react-lazy-load-image-component'
 import { useSelector } from 'react-redux'
 import { Fade } from 'react-reveal'
 import { NavLink, useParams } from 'react-router-dom'
+import Loading from '~/components/Loading'
 import SavePostButton from '~/components/SavePostButton'
 import postsApi from '~/services/postsApi'
 import { tagsSelector } from '~/store/selectors'
@@ -15,7 +15,7 @@ import convertToUrl from '~/utils/commons/convertToUrl'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
 
-function PostsHome() {
+export default function PostsHome() {
   const tagList = useSelector(tagsSelector).tags
 
   const url = useParams().url
@@ -115,9 +115,7 @@ function PostsHome() {
         </div>
       </div>
       {loading ? (
-        <div className="flex justify-center items-center">
-          <div className="text-center">Đang tải dữ liệu...</div>
-        </div>
+        <Loading />
       ) : postList && postList.length > 0 ? (
         <>
           <InfiniteScroll
@@ -257,11 +255,7 @@ function PostsHome() {
               </Fade>
             ))}
           </InfiniteScroll>
-          {loadingMore && (
-            <div className="flex mt-5 justify-center items-center">
-              <h4 className="text-center">Đang tải thêm...</h4>
-            </div>
-          )}
+          {loadingMore && <Loading />}
         </>
       ) : (
         <div className="flex mt-5 justify-center items-center">
@@ -271,5 +265,3 @@ function PostsHome() {
     </div>
   )
 }
-
-export default trackWindowScroll(PostsHome)

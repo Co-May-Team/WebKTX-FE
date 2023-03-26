@@ -1,11 +1,10 @@
 import moment from 'moment'
-import PropTypes from 'prop-types'
 import { Fade } from 'react-reveal'
 import { NavLink } from 'react-router-dom'
 import convertToUrl from '~/utils/commons/convertToUrl'
 import { defaultAvatar } from '~/utils/constants/default'
 
-function RelatedPosts({ listPost }) {
+export default function RelatedPosts({ listPost }) {
   return (
     <div className="rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-800">
       <div className="flex items-center justify-between p-4 xl:p-5 border-b border-neutral-200 dark:border-neutral-700 ">
@@ -85,9 +84,3 @@ function RelatedPosts({ listPost }) {
     </div>
   )
 }
-
-RelatedPosts.propTypes = {
-  listPost: PropTypes.array.isRequired,
-}
-
-export default RelatedPosts

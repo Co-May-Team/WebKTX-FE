@@ -1,4 +1,5 @@
 // Import các thư viện cần thiết
+import { Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -7,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import App from '~/App'
 import { GlobalStyles } from '~/components'
+import Loading from './components/Loading'
 import store from './store'
 
 // Tạo persist store
@@ -18,15 +20,17 @@ function renderApp() {
   const root = ReactDOM.createRoot(document.getElementById('root'))
   // Render ứng dụng vào thẻ root với các thư viện đã được wrap bởi Provider, PersistGate, Router
   root.render(
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={pStore}>
-        <Router>
-          <GlobalStyles>
-            <App />
-          </GlobalStyles>
-        </Router>
-      </PersistGate>
-    </Provider>
+    <Suspense fallback={<Loading />}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={pStore}>
+          <Router>
+            <GlobalStyles>
+              <App />
+            </GlobalStyles>
+          </Router>
+        </PersistGate>
+      </Provider>
+    </Suspense>
   )
 }
 

@@ -7,28 +7,18 @@ import { navList } from '~/data'
 
 import { useClickOutside } from '~/hooks'
 import { fetchCategories } from '~/store/categories/actions'
-import {
-  authSelector,
-  categoriesSelector,
-  tagsSelector,
-} from '~/store/selectors'
+import { authSelector } from '~/store/selectors'
 import { fetchTags } from '~/store/tags/actions'
-import convertToUrl from '~/utils/commons/convertToUrl'
 import AvatarDropdown from './AvatarDropdown'
 
 function Header() {
   const userInfo = useSelector(authSelector).userInfo
-  const categories = useSelector(categoriesSelector).categories
-  const tags = useSelector(tagsSelector).tags
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem('isDarkMode') || false)
   )
-  const [searchTerm, setSearchTerm] = useState('')
-  const [visibleCategoryDropdown, setVisibleCategoryDropdown] = useState(false)
-  const [visibleTagDropdown, setVisibleTagDropdown] = useState(false)
   const [isShow, setShow] = useState(false)
   const sidebarRef = useRef()
 

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { useClickOutside } from '~/hooks'
@@ -6,7 +6,7 @@ import { logout } from '~/store/auth/actions'
 import { path } from '~/utils'
 import { defaultAvatar } from '~/utils/constants/default'
 
-export default function AvatarDropdown() {
+function AvatarDropdown() {
   const dispatch = useDispatch()
 
   const avatarDropdownRef = useRef()
@@ -131,3 +131,5 @@ export default function AvatarDropdown() {
     </div>
   )
 }
+
+export default React.memo(AvatarDropdown)

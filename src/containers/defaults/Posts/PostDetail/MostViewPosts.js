@@ -1,12 +1,11 @@
 import moment from 'moment'
-import PropTypes from 'prop-types'
 import { FaEye } from 'react-icons/fa'
 import { Fade } from 'react-reveal'
 import { NavLink } from 'react-router-dom'
 import SavePostButton from '~/components/SavePostButton'
 import convertToUrl from '~/utils/commons/convertToUrl'
 
-function MostViewPosts({ listPost }) {
+export default function MostViewPosts({ listPost }) {
   return (
     <div className="container">
       <div>
@@ -138,9 +137,3 @@ function MostViewPosts({ listPost }) {
     </div>
   )
 }
-
-MostViewPosts.propTypes = {
-  listPost: PropTypes.array.isRequired,
-}
-
-export default MostViewPosts
