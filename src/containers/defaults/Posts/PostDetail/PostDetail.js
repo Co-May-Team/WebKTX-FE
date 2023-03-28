@@ -193,7 +193,9 @@ export default function PostDetail(props) {
 
   return (
     <>
-      {loading ? <Loading /> : (
+      {loading ? (
+        <Loading />
+      ) : (
         <>
           <header className="relative pt-16 z-10 md:py-20 lg:py-28 bg-neutral-900 dark:bg-black">
             <div className="dark container relative z-10">

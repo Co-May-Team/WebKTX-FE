@@ -174,8 +174,8 @@ export default function Posts() {
                 {params.sort === 'publishedAt'
                   ? 'Gần đây nhất'
                   : params.sort === 'viewed'
-                    ? 'Xem nhiều nhất'
-                    : 'Thảo luận nhiều nhất'}
+                  ? 'Xem nhiều nhất'
+                  : 'Thảo luận nhiều nhất'}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
@@ -276,7 +276,9 @@ export default function Posts() {
             </div>
           </div>
         </div>
-        {status === 'loading' ? <Loading /> : posts && posts.length > 0 ? (
+        {status === 'loading' ? (
+          <Loading />
+        ) : posts && posts.length > 0 ? (
           <>
             <InfiniteScroll
               dataLength={posts.length}

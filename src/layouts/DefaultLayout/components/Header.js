@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { LogoIcon } from '~/components/Icons'
+import ProgressBar from '~/containers/defaults/Posts/PostDetail/ProgressBar'
 
 import { useClickOutside } from '~/hooks'
 import { fetchCategories } from '~/store/categories/actions'
@@ -62,8 +63,11 @@ function Header() {
     <div
       id="header-sticky"
       className="sticky top-0 w-full left-0 right-0 z-40 transition-all"
-      style={{ top: '-72px' }}
+      style={{ top: '0' }}
     >
+      <div className="absolute top-full left-0 w-full progress-container h-[5px] bg-neutral-300 overflow-hidden">
+        <ProgressBar />
+      </div>
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-b dark:border-neutral-700 !border-transparent shadow-lg">
         <div className="relative z-10 py-3">
           <div className="container relative flex justify-between items-center space-x-4 xl:space-x-8">

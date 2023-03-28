@@ -1,9 +1,9 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import PostDetail from '~/containers/defaults/Posts/PostDetail/PostDetail'
+import RegistrationForm from '~/containers/defaults/RegistrationForm/RegistrationForm'
 import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
-import PostDetail from '~/containers/defaults/Posts/PostDetail/PostDetail'
-import RegistrationForm from '~/containers/defaults/registration_form/RegistrationForm'
 
 const Home = React.lazy(() => import('~/containers/defaults/Home'))
 const Login = React.lazy(() => import('~/containers/defaults/Login'))
@@ -13,7 +13,7 @@ const PostsHome = React.lazy(() =>
   import('~/containers/defaults/Posts/PostsHome')
 )
 // const RegistrationForm = React.lazy(() =>
-//   import('~/containers/defaults/registration_form/RegistrationForm')
+//   import('~/containers/defaults/RegistrationForm')
 // )
 // const PostDetail = React.lazy(() =>
 //   import('~/containers/defaults/Posts/PostDetail/PostDetail')
