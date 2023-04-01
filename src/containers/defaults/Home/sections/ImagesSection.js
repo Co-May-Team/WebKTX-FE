@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import 'react-glide/lib/reactGlide.css'
 import { Fade } from 'react-reveal'
 import { useNavigate } from 'react-router-dom'
-import Slider from 'react-slick'
 import Loading from '~/components/Loading'
 import imagesApi from '~/services/imagesApi'
+import convertToUrl from '~/utils/commons/convertToUrl'
 import { defaultAvatar } from '~/utils/constants/default'
 
 export default function ImagesSection() {
@@ -75,21 +75,19 @@ export default function ImagesSection() {
     }
     loadFolders()
   }, [])
-  const settings = {
-    dots: true,
-    lazyLoad: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    initialSlide: 2,
-  }
   const renderImages = () => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-3">
         {folders.slice(0, numFolders).map((folder) => (
           <Fade key={folder.id} bottom>
-            <div className="relative flex flex-col h-full">
+            <div
+              className="relative flex flex-col h-full cursor-pointer"
+              onClick={() =>
+                navigate(`/hinh-anh/${convertToUrl(folder.title)}`, {
+                  state: folder,
+                })
+              }
+            >
               <div className="block group rounded-3xl flex-shrink-0 relative w-full aspect-w-9 aspect-h-7 sm:aspect-h-10 overflow-hidden z-0">
                 <div>
                   <div className="relative w-full h-full">
@@ -101,16 +99,6 @@ export default function ImagesSection() {
                       />
                     </div>
                   </div>
-                  <Slider {...settings}>
-                    {folder.images.map((image) => (
-                      <img
-                        key={image.id}
-                        src={image.webContentLink}
-                        alt={folder.name}
-                        className="object-cover w-full h-full"
-                      />
-                    ))}
-                  </Slider>
                 </div>
                 <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>

@@ -184,10 +184,10 @@ export default function StudentInfoForm() {
       <div className="p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900">
         <header className=" my-5 text-center mx-auto">
           <h2 className="flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-            III. THÔNG TIN SINH VIÊN
+            III. THÔNG TIN XÉT TUYỂN
           </h2>
           <span className="block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200">
-            Các bạn vui lòng điền đúng thông tin sinh viên của mình ở bên dưới
+            Các bạn vui lòng điền đúng thông tin xét tuyển của mình ở bên dưới
             để tránh sai sót nhé!
           </span>
         </header>
@@ -212,309 +212,274 @@ export default function StudentInfoForm() {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className="grid gap-6">
-                <div className="mb-5">
-                  <InputField
-                    type="select"
-                    name="studentType"
-                    label="Đối tượng (có thể chọn nhiều đối tượng)"
-                    placeholder="Chọn loại đối tượng của bạn."
-                    isMulti
-                    value={values.studentType}
-                    onChange={(selectedOption) => {
-                      setFieldValue('studentType', selectedOption)
-                      handleSaveOption('studentType', selectedOption)
-                    }}
-                    clearValue={() => {
-                      setFieldValue('studentType', '')
-                    }}
-                    onBlur={handleBlur}
-                    feedback={errors.studentType}
-                    invalid={touched.studentType && errors.studentType}
-                    options={[
-                      { value: 'Nhóm ưu tiên 1', label: 'Nhóm ưu tiên 1' },
-                      { value: 'Nhóm ưu tiên 2', label: 'Nhóm ưu tiên 2' },
-                      { value: 'Khu vực 1', label: 'Khu vực 1' },
-                      { value: 'Khu vực 2 - NT', label: 'Khu vực 2 - NT' },
-                      { value: 'Khu vực 2', label: 'Khu vực 2' },
-                      { value: 'Khu vực 3', label: 'Khu vực 3' },
-                    ]}
-                    isRequired
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="select"
-                    name="universityName"
-                    label="Là sinh viên trường"
-                    placeholder="Chọn trường đại học của bạn..."
-                    value={values.universityName}
-                    onChange={(selectedOption) => {
-                      setFieldValue('universityName', selectedOption)
-                      handleSaveOption('universityName', selectedOption)
-                    }}
-                    clearValue={() => {
-                      setFieldValue('universityName', '')
-                    }}
-                    onBlur={handleBlur}
-                    feedback={errors.universityName}
-                    invalid={touched.universityName && errors.universityName}
-                    options={universities.map((university) => ({
-                      value: university,
-                      label: university,
-                    }))}
-                    isRequired
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="major"
-                    placeholder="Nhập ngành học..."
-                    label="Ngành học"
-                    value={values.major}
-                    feedback={errors.major}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.major && errors.major}
-                    isRequired
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="classCode"
-                    placeholder="Nhập mã lớp..."
-                    label="Mã lớp"
-                    value={values.classCode}
-                    feedback={errors.classCode}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.classCode && errors.classCode}
-                    isRequired
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="studentCode"
-                    placeholder="Nhập mã số sinh viên..."
-                    label="Mã số sinh viên"
-                    value={values.studentCode}
-                    feedback={errors.studentCode}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.studentCode && errors.studentCode}
-                    isRequired
-                  />
-                </div>
+                <InputField
+                  type="select"
+                  name="studentType"
+                  label="Đối tượng (có thể chọn nhiều đối tượng)"
+                  placeholder="Chọn loại đối tượng của bạn."
+                  isMulti
+                  value={values.studentType}
+                  onChange={(selectedOption) => {
+                    setFieldValue('studentType', selectedOption)
+                    handleSaveOption('studentType', selectedOption)
+                  }}
+                  clearValue={() => {
+                    setFieldValue('studentType', '')
+                  }}
+                  feedback={errors.studentType}
+                  invalid={touched.studentType && errors.studentType}
+                  options={[
+                    { value: 'Nhóm ưu tiên 1', label: 'Nhóm ưu tiên 1' },
+                    { value: 'Nhóm ưu tiên 2', label: 'Nhóm ưu tiên 2' },
+                    { value: 'Khu vực 1', label: 'Khu vực 1' },
+                    { value: 'Khu vực 2 - NT', label: 'Khu vực 2 - NT' },
+                    { value: 'Khu vực 2', label: 'Khu vực 2' },
+                    { value: 'Khu vực 3', label: 'Khu vực 3' },
+                  ]}
+                  isRequired
+                />
+                <InputField
+                  type="select"
+                  name="universityName"
+                  label="Là sinh viên trường"
+                  placeholder="Chọn trường đại học của bạn..."
+                  value={values.universityName}
+                  onChange={(selectedOption) => {
+                    setFieldValue('universityName', selectedOption)
+                    handleSaveOption('universityName', selectedOption)
+                  }}
+                  clearValue={() => {
+                    setFieldValue('universityName', '')
+                  }}
+                  feedback={errors.universityName}
+                  invalid={touched.universityName && errors.universityName}
+                  options={universities.map((university) => ({
+                    value: university,
+                    label: university,
+                  }))}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="major"
+                  placeholder="Nhập ngành học..."
+                  label="Ngành học"
+                  value={values.major}
+                  feedback={errors.major}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.major && errors.major}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="classCode"
+                  placeholder="Nhập mã lớp..."
+                  label="Mã lớp"
+                  value={values.classCode}
+                  feedback={errors.classCode}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.classCode && errors.classCode}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="studentCode"
+                  placeholder="Nhập mã số sinh viên..."
+                  label="Mã số sinh viên"
+                  value={values.studentCode}
+                  feedback={errors.studentCode}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.studentCode && errors.studentCode}
+                  isRequired
+                />
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade10Semester1"
-                      placeholder="Nhập điểm trung bình HK1 lớp 10..."
-                      label="Điểm trung bình HK1 lớp 10"
-                      value={values.grade10Semester1}
-                      feedback={errors.grade10Semester1}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade10Semester1 && errors.grade10Semester1
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade10Semester2"
-                      placeholder="Nhập điểm trung bình HK2 lớp 10..."
-                      label="Điểm trung bình HK2 lớp 10"
-                      value={values.grade10Semester2}
-                      feedback={errors.grade10Semester2}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade10Semester2 && errors.grade10Semester2
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade11Semester1"
-                      placeholder="Nhập điểm trung bình HK1 lớp 11..."
-                      label="Điểm trung bình HK1 lớp 11"
-                      value={values.grade11Semester1}
-                      feedback={errors.grade11Semester1}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade11Semester1 && errors.grade11Semester1
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade11Semester2"
-                      placeholder="Nhập điểm trung bình HK2 lớp 10..."
-                      label="Điểm trung bình HK2 lớp 10"
-                      value={values.grade11Semester2}
-                      feedback={errors.grade11Semester2}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade11Semester2 && errors.grade11Semester2
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade12Semester1"
-                      placeholder="Nhập điểm trung bình HK1 lớp 12..."
-                      label="Điểm trung bình HK1 lớp 12"
-                      value={values.grade12Semester1}
-                      feedback={errors.grade12Semester1}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade12Semester1 && errors.grade12Semester1
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="grade12Semester2"
-                      placeholder="Nhập điểm trung bình HK2 lớp 12..."
-                      label="Điểm trung bình HK2 lớp 12"
-                      value={values.grade12Semester2}
-                      feedback={errors.grade12Semester2}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.grade12Semester2 && errors.grade12Semester2
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="highSchoolGraduationExamScore"
-                      placeholder="Nhập điểm trúng tuyển..."
-                      label="Điểm trúng tuyển"
-                      value={values.highSchoolGraduationExamScore}
-                      feedback={errors.highSchoolGraduationExamScore}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={
-                        touched.highSchoolGraduationExamScore &&
-                        errors.highSchoolGraduationExamScore
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className="mb-5">
-                    <InputField
-                      type="text"
-                      name="dgnlScore"
-                      placeholder="Nhập điểm thi ĐGNL..."
-                      label="Điểm thi ĐGNL (nếu có)"
-                      value={values.dgnlScore}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="textarea"
-                    name="achievements"
-                    rows={10}
-                    placeholder="Nhập thành tích đã đạt được..."
-                    label="Thành tích đã đạt được"
-                    value={values.achievements}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                  />
-                </div>
-                <div className="mb-5">
                   <InputField
                     type="text"
-                    name="admissionViaDirectMethod"
-                    placeholder="Nhập hình thức được tuyển thẳng..."
-                    label="Tuyển thẳng (nếu có): "
-                    value={values.admissionViaDirectMethod}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="textarea"
-                    name="dream"
-                    rows={10}
-                    placeholder="Nhập định hướng và ước mơ trong tương lai..."
-                    label="Định hướng và ước mơ trong tương lai"
-                    value={values.dream}
-                    feedback={errors.dream}
+                    name="grade10Semester1"
+                    placeholder="Nhập điểm trung bình HK1 lớp 10..."
+                    label="Điểm trung bình HK1 lớp 10"
+                    value={values.grade10Semester1}
+                    feedback={errors.grade10Semester1}
                     onChange={(e) => {
                       handleChange(e)
                       handleSaveInput(e)
                     }}
                     onBlur={handleBlur}
-                    invalid={touched.dream && errors.dream}
+                    invalid={
+                      touched.grade10Semester1 && errors.grade10Semester1
+                    }
                     isRequired
                   />
+                  <InputField
+                    type="text"
+                    name="grade10Semester2"
+                    placeholder="Nhập điểm trung bình HK2 lớp 10..."
+                    label="Điểm trung bình HK2 lớp 10"
+                    value={values.grade10Semester2}
+                    feedback={errors.grade10Semester2}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.grade10Semester2 && errors.grade10Semester2
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="grade11Semester1"
+                    placeholder="Nhập điểm trung bình HK1 lớp 11..."
+                    label="Điểm trung bình HK1 lớp 11"
+                    value={values.grade11Semester1}
+                    feedback={errors.grade11Semester1}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.grade11Semester1 && errors.grade11Semester1
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="grade11Semester2"
+                    placeholder="Nhập điểm trung bình HK2 lớp 11..."
+                    label="Điểm trung bình HK2 lớp 10"
+                    value={values.grade11Semester2}
+                    feedback={errors.grade11Semester2}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.grade11Semester2 && errors.grade11Semester2
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="grade12Semester1"
+                    placeholder="Nhập điểm trung bình HK1 lớp 12..."
+                    label="Điểm trung bình HK1 lớp 12"
+                    value={values.grade12Semester1}
+                    feedback={errors.grade12Semester1}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.grade12Semester1 && errors.grade12Semester1
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="grade12Semester2"
+                    placeholder="Nhập điểm trung bình HK2 lớp 12..."
+                    label="Điểm trung bình HK2 lớp 12"
+                    value={values.grade12Semester2}
+                    feedback={errors.grade12Semester2}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.grade12Semester2 && errors.grade12Semester2
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="highSchoolGraduationExamScore"
+                    placeholder="Nhập điểm trúng tuyển..."
+                    label="Điểm trúng tuyển"
+                    value={values.highSchoolGraduationExamScore}
+                    feedback={errors.highSchoolGraduationExamScore}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                    onBlur={handleBlur}
+                    invalid={
+                      touched.highSchoolGraduationExamScore &&
+                      errors.highSchoolGraduationExamScore
+                    }
+                    isRequired
+                  />
+                  <InputField
+                    type="text"
+                    name="dgnlScore"
+                    placeholder="Nhập điểm thi ĐGNL..."
+                    label="Điểm thi ĐGNL (nếu có)"
+                    value={values.dgnlScore}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
+                    }}
+                  />
                 </div>
+                <InputField
+                  type="textarea"
+                  name="achievements"
+                  rows={10}
+                  placeholder="Ghi ngắn gọn các giải thưởng đã đạt được. Không trình bày dài dòng..."
+                  label="Thành tích học tập"
+                  value={values.achievements}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                />
+                <InputField
+                  type="text"
+                  name="admissionViaDirectMethod"
+                  placeholder="Nhập hình thức được tuyển thẳng (HSG Tỉnh, IELTS,...)..."
+                  label="Tuyển thẳng (nếu có): "
+                  value={values.admissionViaDirectMethod}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                />
+                <InputField
+                  type="textarea"
+                  name="dream"
+                  rows={10}
+                  placeholder="Bạn hãy trình bày định hướng và ước mơ cụ thể của mình trong tương lai nếu bạn nhận được học bổng...."
+                  label="Định hướng và ước mơ trong tương lai"
+                  value={values.dream}
+                  feedback={errors.dream}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.dream && errors.dream}
+                  isRequired
+                />
+                <button
+                  className="relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+                  type="submit"
+                >
+                  Lưu
+                  {isSubmitting && '...'}
+                </button>
               </div>
-              <button
-                className="relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
-                type="submit"
-              >
-                Lưu
-                {isSubmitting && '...'}
-              </button>
             </Form>
           )}
         </Formik>
