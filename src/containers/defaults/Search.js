@@ -421,9 +421,7 @@ export default function Search() {
                               title="Lượt xem"
                             >
                               <FaEye size={15} />
-                              <span className="ml-1 text-rose-600">
-                                {result.viewed}
-                              </span>
+                              <span className="ml-1">{result.viewed}</span>
                             </button>
                             <NavLink
                               className="nc-PostCardCommentBtn relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
@@ -464,9 +462,7 @@ export default function Search() {
                                   d="M15.5 11C15.5 11.2761 15.2761 11.5 15 11.5C14.7239 11.5 14.5 11.2761 14.5 11C14.5 10.7239 14.7239 10.5 15 10.5C15.2761 10.5 15.5 10.7239 15.5 11Z"
                                 />
                               </svg>
-                              <span className="ml-1 text-neutral-900 dark:text-neutral-200">
-                                0
-                              </span>
+                              <span className="ml-1">0</span>
                             </NavLink>
                           </div>
                           <div className="flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative">

@@ -16,7 +16,7 @@ export default function Login() {
 
   const userInfo = useSelector(authSelector).userInfo
 
-  if (userInfo.username === 'admin') {
+  if (userInfo?.username === 'admin') {
     return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
   }
 

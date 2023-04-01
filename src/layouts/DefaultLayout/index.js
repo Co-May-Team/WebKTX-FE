@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { Outlet } from 'react-router-dom'
 import { BackToTop } from '~/components'
 import { Footer, Header } from './components'
 
@@ -13,6 +14,7 @@ export default function DefaultLayout({ children }) {
       <Footer />
       {/* Back To Top */}
       <BackToTop />
+      <Outlet />
     </div>
   )
 }

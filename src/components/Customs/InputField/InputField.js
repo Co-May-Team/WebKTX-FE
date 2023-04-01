@@ -22,8 +22,14 @@ export default function InputField({
         <>
           <div className="flex">
             <span className="text-neutral-800 font-medium text-sm dark:text-neutral-300">
-              {label}
-              {isRequired && <span style={{ color: 'red' }}>*</span>}:
+              {label ? (
+                <>
+                  {label}
+                  {isRequired && <span style={{ color: 'red' }}>*</span>}:
+                </>
+              ) : (
+                ''
+              )}
             </span>
             {showLengthValue && (
               <small className="col-auto">{props?.value?.length}</small>
@@ -31,8 +37,7 @@ export default function InputField({
           </div>
           <textarea
             className={
-              'block w-full text-sm rounded-xl border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 mt-1 ' +
-              (invalid && 'is-invalid')
+              'block w-full text-sm rounded-xl border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900 mt-1'
             }
             {...props}
           />
@@ -56,9 +61,6 @@ export default function InputField({
             isSearchable
             blurInputOnSelect
           />
-          <div className="invalid-feedback" style={{ display: 'block' }}>
-            {feedback}
-          </div>
         </>
       ) : (
         <>
@@ -76,22 +78,25 @@ export default function InputField({
           ) : (
             <input
               className={
-                'form-control block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-11 px-4 py-3 mt-1 ' +
-                (invalid && 'is-invalid')
+                'form-control block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-11 px-4 py-3 mt-1 '
               }
               {...props}
             />
           )}
         </>
       )}
-      <small> {note}</small>
-      <div className="invalid-feedback">{feedback}</div>
+      <small>{note}</small>
+      {invalid && (
+        <div className="invalid-feedback" style={{ display: 'block' }}>
+          {feedback}
+        </div>
+      )}
     </label>
   )
 }
 
 InputField.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   feedback: PropTypes.string,
   note: PropTypes.string,
   formFeedbackClassName: PropTypes.string,

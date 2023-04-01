@@ -1,18 +1,22 @@
 // import các module và file cần thiết
-import { Route, Routes } from 'react-router-dom'
-import { AdminRoutes, DefaultRoutes } from '~/routes'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import './App.css'
 import useScrollToTop from './hooks/useScrollToTop'
+import AdminRoutes from './routes/AdminRoutes'
+import DefaultRoutes from './routes/DefaultRoutes'
 
-// component App chính của ứng dụng
 export default function App() {
-  // sử dụng custom hook để scroll về đầu trang khi chuyển đổi giữa các route
+  const location = useLocation()
   useScrollToTop()
   return (
-    // sử dụng Routes và Route của react-router-dom để quản lý các route của ứng dụng
+    // <TransitionGroup>
+    //   <CSSTransition key={location.key} classNames="slide" timeout={300}>
     <Routes>
       <Route path="/admin/*" element={<AdminRoutes />} />
       <Route path="/404" element={<div>NotFound</div>} />
       <Route path="/*" element={<DefaultRoutes />} />
     </Routes>
+    //   </CSSTransition>
+    // </TransitionGroup>
   )
 }

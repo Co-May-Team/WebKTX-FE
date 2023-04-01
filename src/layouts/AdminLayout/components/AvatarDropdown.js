@@ -1,13 +1,12 @@
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { useClickOutside } from '~/hooks'
 import { logout } from '~/store/auth/actions'
 import { authSelector } from '~/store/selectors'
 import { path } from '~/utils'
-import { defaultAvatar } from '~/utils/constants/default'
 
-export default function AvatarDropdown() {
+function AvatarDropdown() {
   const userInfo = useSelector(authSelector).userInfo
 
   const dispatch = useDispatch()
@@ -28,10 +27,11 @@ export default function AvatarDropdown() {
         <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 sm:w-9 sm:h-9 ring-1 ring-white dark:ring-neutral-900">
           <img
             className="absolute inset-0 w-full h-full object-cover"
-            src={defaultAvatar}
-            alt="Bác Phạm Văn Bên"
+            src={userInfo.avatar}
+            alt={userInfo.fullName}
+            title={userInfo.fullName}
           />
-          <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+          <span className="wil-avatar__name">{userInfo.fullName}</span>
         </div>
       </button>
       {visibleAvatarDropdown && (
@@ -42,15 +42,16 @@ export default function AvatarDropdown() {
                 <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-12 h-12 ring-1 ring-white dark:ring-neutral-900">
                   <img
                     className="absolute inset-0 w-full h-full object-cover"
-                    src={defaultAvatar}
-                    alt="Bác Phạm Văn Bên"
+                    src={userInfo.avatar}
+                    alt={userInfo.fullName}
+                    title={userInfo.fullName}
                   />
-                  <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+                  <span className="wil-avatar__name">{userInfo.fullName}</span>
                 </div>
                 <div className="flex-grow">
                   <h4 className="font-semibold">KTX Cỏ May</h4>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    Ban Quản Lý
+                    {userInfo.googleAccount ? 'Sinh Viên' : 'Ban Quản Lý'}
                   </p>
                 </div>
               </div>
@@ -134,3 +135,5 @@ export default function AvatarDropdown() {
     </div>
   )
 }
+
+export default React.memo(AvatarDropdown)

@@ -146,7 +146,7 @@ export default function PersonalInfoForm() {
   const validationSchemaPersonalInfo = Yup.object({
     fullName: Yup.string().required('Họ và tên không được để trống'),
     dateOfBirth: Yup.string().required('Ngày sinh không được để trống'),
-    gender: Yup.string().required('Giới tính không được để trống'),
+    gender: Yup.object().nullable().required('Giới tính không được để trống'),
     phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
     email: Yup.string().required('Email không được để trống'),
     ethnic: Yup.string().required('Dân tộc không được để trống'),
@@ -226,130 +226,111 @@ export default function PersonalInfoForm() {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className="grid gap-6">
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="fullName"
-                    placeholder="Nhập họ và tên..."
-                    label="Họ và tên"
-                    value={values.fullName}
-                    feedback={errors.fullName}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.fullName && errors.fullName}
-                    isRequired
-                  />
-                </div>
-                <div className="mb-5">
-                  <InputField
-                    type="date"
-                    name="dateOfBirth"
-                    placeholder="Nhập ngày sinh..."
-                    label="Ngày sinh"
-                    value={values.dateOfBirth}
-                    feedback={errors.dateOfBirth}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.dateOfBirth && errors.dateOfBirth}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="gender"
-                    placeholder="Nhập giới tính..."
-                    label="Giới tính"
-                    value={values.gender}
-                    feedback={errors.gender}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.gender && errors.gender}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Nhập số điện thoại..."
-                    label="Số điện thoại"
-                    value={values.phoneNumber}
-                    feedback={errors.phoneNumber}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.phoneNumber && errors.phoneNumber}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="email"
-                    placeholder="Nhập email..."
-                    label="Email"
-                    value={values.email}
-                    feedback={errors.email}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.email && errors.email}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="ethnic"
-                    placeholder="Nhập dân tộc..."
-                    label="Dân tộc"
-                    value={values.ethnic}
-                    feedback={errors.ethnic}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.ethnic && errors.ethnic}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="religion"
-                    placeholder="Nhập tôn giáo..."
-                    label="Tôn giáo"
-                    value={values.religion}
-                    feedback={errors.religion}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.religion && errors.religion}
-                    isRequired
-                  />
-                </div>
+                <InputField
+                  type="text"
+                  name="fullName"
+                  placeholder="Nhập họ và tên..."
+                  label="Họ và tên"
+                  value={values.fullName}
+                  feedback={errors.fullName}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.fullName && errors.fullName}
+                  isRequired
+                />
+                <InputField
+                  type="date"
+                  name="dateOfBirth"
+                  placeholder="Nhập ngày sinh..."
+                  label="Ngày sinh"
+                  value={values.dateOfBirth}
+                  feedback={errors.dateOfBirth}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.dateOfBirth && errors.dateOfBirth}
+                  isRequired
+                />
+                <InputField
+                  type="select"
+                  name="gender"
+                  label="Giới tính"
+                  placeholder="Chọn giới tính của bạn."
+                  value={values.gender}
+                  onChange={(selectedOption) => {
+                    setFieldValue('gender', selectedOption)
+                    handleSaveOption('gender', selectedOption)
+                  }}
+                  clearValue={() => {
+                    setFieldValue('gender', '')
+                  }}
+                  feedback={errors.gender}
+                  invalid={touched.gender && errors.gender}
+                  options={[
+                    { value: 'Nam', label: 'Nam' },
+                    { value: 'Nữ', label: 'Nữ' },
+                  ]}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Nhập số điện thoại..."
+                  label="Số điện thoại"
+                  value={values.phoneNumber}
+                  feedback={errors.phoneNumber}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.phoneNumber && errors.phoneNumber}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="email"
+                  placeholder="Nhập email..."
+                  label="Email"
+                  value={values.email}
+                  feedback={errors.email}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.email && errors.email}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="ethnic"
+                  placeholder="Nhập dân tộc..."
+                  label="Dân tộc"
+                  value={values.ethnic}
+                  feedback={errors.ethnic}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.ethnic && errors.ethnic}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="religion"
+                  placeholder="Nhập tôn giáo..."
+                  label="Tôn giáo"
+                  value={values.religion}
+                  feedback={errors.religion}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.religion && errors.religion}
+                  isRequired
+                />
 
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className="mb-5 text-center mx-auto">
@@ -358,274 +339,244 @@ export default function PersonalInfoForm() {
                     </h2>
                   </header>
                   <div className="grid md:grid-cols-2 gap-6">
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Tỉnh/thành phố"
-                        placeholder="Chọn tỉnh/thành phố..."
-                        value={values.provinceHometown}
-                        onChange={(selectedOption) => {
-                          setFieldValue('provinceHometown', selectedOption)
-                          setFieldValue('districtHometown', '')
-                          setFieldValue('wardHometown', '')
-                          handleSaveOption('provinceHometown', selectedOption)
-                          handleSaveOption('districtHometown', '')
-                          handleSaveOption('wardHometown', '')
-                          setWards([])
-                          handleProvinceChange(selectedOption)
-                        }}
-                        clearValue={() => {
-                          setFieldValue('provinceHometown', '')
-                          setFieldValue('districtHometown', '')
-                          setFieldValue('wardHometown', '')
-                          handleSaveOption('provinceHometown', '')
-                          handleSaveOption('districtHometown', '')
-                          handleSaveOption('wardHometown', '')
-                        }}
-                        isLoading={loadingProvinces}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        onBlur={handleBlur}
-                        feedback={errors.provinceHometown}
-                        invalid={
-                          touched.provinceHometown && errors.provinceHometown
-                        }
-                        options={provinces}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Quận/huyện"
-                        placeholder="Chọn quận/huyện..."
-                        value={values.districtHometown}
-                        onChange={(selectedOption) => {
-                          setFieldValue('districtHometown', selectedOption)
-                          setFieldValue('wardHometown', '')
-                          handleSaveOption('districtHometown', selectedOption)
-                          handleSaveOption('wardHometown', '')
-                          handleDistrictChange(selectedOption)
-                        }}
-                        isLoading={loadingDistricts}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        loadingMessage={() => 'Vui lòng chọn tỉnh/thành phố'}
-                        onBlur={handleBlur}
-                        feedback={errors.districtHometown}
-                        invalid={
-                          touched.districtHometown && errors.districtHometown
-                        }
-                        options={districts}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Xã/phường/thị trấn"
-                        placeholder="Chọn xã/phường/thị trấn..."
-                        value={values.wardHometown}
-                        onChange={(selectedOption) => {
-                          setFieldValue('wardHometown', selectedOption)
-                          handleSaveOption('wardHometown', selectedOption)
-                        }}
-                        loadingMessage={() => 'Vui lòng chọn quận/huyện'}
-                        isLoading={loadingWards}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        onBlur={handleBlur}
-                        feedback={errors.wardHometown}
-                        invalid={touched.wardHometown && errors.wardHometown}
-                        options={wards}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="text"
-                        name="detailHometown"
-                        placeholder="Nhập số nhà, tên đường, khu phố..."
-                        label="Số nhà, tên đường, khu phố"
-                        value={values.detailHometown}
-                        feedback={errors.detailHometown}
-                        onChange={(e) => {
-                          handleChange(e)
-                          handleSaveInput(e)
-                        }}
-                        onBlur={handleBlur}
-                        invalid={
-                          touched.detailHometown && errors.detailHometown
-                        }
-                        isRequired
-                      />
-                    </div>
+                    <InputField
+                      type="select"
+                      label="Tỉnh/thành phố"
+                      placeholder="Chọn tỉnh/thành phố..."
+                      value={values.provinceHometown}
+                      onChange={(selectedOption) => {
+                        setFieldValue('provinceHometown', selectedOption)
+                        setFieldValue('districtHometown', '')
+                        setFieldValue('wardHometown', '')
+                        handleSaveOption('provinceHometown', selectedOption)
+                        handleSaveOption('districtHometown', '')
+                        handleSaveOption('wardHometown', '')
+                        setWards([])
+                        handleProvinceChange(selectedOption)
+                      }}
+                      clearValue={() => {
+                        setFieldValue('provinceHometown', '')
+                        setFieldValue('districtHometown', '')
+                        setFieldValue('wardHometown', '')
+                        handleSaveOption('provinceHometown', '')
+                        handleSaveOption('districtHometown', '')
+                        handleSaveOption('wardHometown', '')
+                      }}
+                      isLoading={loadingProvinces}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      onBlur={handleBlur}
+                      feedback={errors.provinceHometown}
+                      invalid={
+                        touched.provinceHometown && errors.provinceHometown
+                      }
+                      options={provinces}
+                      isRequired
+                    />
+                    <InputField
+                      type="select"
+                      label="Quận/huyện"
+                      placeholder="Chọn quận/huyện..."
+                      value={values.districtHometown}
+                      onChange={(selectedOption) => {
+                        setFieldValue('districtHometown', selectedOption)
+                        setFieldValue('wardHometown', '')
+                        handleSaveOption('districtHometown', selectedOption)
+                        handleSaveOption('wardHometown', '')
+                        handleDistrictChange(selectedOption)
+                      }}
+                      isLoading={loadingDistricts}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      loadingMessage={() => 'Vui lòng chọn tỉnh/thành phố'}
+                      onBlur={handleBlur}
+                      feedback={errors.districtHometown}
+                      invalid={
+                        touched.districtHometown && errors.districtHometown
+                      }
+                      options={districts}
+                      isRequired
+                    />
+                    <InputField
+                      type="select"
+                      label="Xã/phường/thị trấn"
+                      placeholder="Chọn xã/phường/thị trấn..."
+                      value={values.wardHometown}
+                      onChange={(selectedOption) => {
+                        setFieldValue('wardHometown', selectedOption)
+                        handleSaveOption('wardHometown', selectedOption)
+                      }}
+                      loadingMessage={() => 'Vui lòng chọn quận/huyện'}
+                      isLoading={loadingWards}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      onBlur={handleBlur}
+                      feedback={errors.wardHometown}
+                      invalid={touched.wardHometown && errors.wardHometown}
+                      options={wards}
+                      isRequired
+                    />
+                    <InputField
+                      type="text"
+                      name="detailHometown"
+                      placeholder="Nhập số nhà, tên đường, khu phố..."
+                      label="Số nhà, tên đường, khu phố"
+                      value={values.detailHometown}
+                      feedback={errors.detailHometown}
+                      onChange={(e) => {
+                        handleChange(e)
+                        handleSaveInput(e)
+                      }}
+                      onBlur={handleBlur}
+                      invalid={touched.detailHometown && errors.detailHometown}
+                      isRequired
+                    />
                   </div>
                 </div>
 
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className="mb-5 text-center mx-auto">
                     <h2 className="flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-                      Địa chỉ thường trú (ghi như trong hộ khẩu)
+                      Địa chỉ thường trú (xem trong hộ khẩu)
                     </h2>
                   </header>
                   <div className="grid md:grid-cols-2 gap-6">
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Tỉnh/thành phố"
-                        placeholder="Chọn tỉnh/thành phố..."
-                        value={values.provinceAddress}
-                        onChange={(selectedOption) => {
-                          setFieldValue('provinceAddress', selectedOption)
-                          setFieldValue('districtAddress', '')
-                          setFieldValue('wardAddress', '')
-                          handleSaveOption('provinceAddress', selectedOption)
-                          handleSaveOption('districtAddress', '')
-                          handleSaveOption('wardAddress', '')
-                          setWards([])
-                          handleProvinceChange(selectedOption)
-                        }}
-                        clearValue={() => {
-                          setFieldValue('provinceAddress', '')
-                          setFieldValue('districtAddress', '')
-                          setFieldValue('wardAddress', '')
-                          handleSaveOption('provinceAddress', '')
-                          handleSaveOption('districtAddress', '')
-                          handleSaveOption('wardAddress', '')
-                        }}
-                        isLoading={loadingProvinces}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        onBlur={handleBlur}
-                        feedback={errors.provinceAddress}
-                        invalid={
-                          touched.provinceAddress && errors.provinceAddress
-                        }
-                        options={provinces}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Quận/huyện"
-                        placeholder="Chọn quận/huyện..."
-                        value={values.districtAddress}
-                        onChange={(selectedOption) => {
-                          setFieldValue('districtAddress', selectedOption)
-                          setFieldValue('wardAddress', '')
-                          handleSaveOption('districtAddress', selectedOption)
-                          handleSaveOption('wardAddress', '')
-                          handleDistrictChange(selectedOption)
-                        }}
-                        isLoading={loadingDistricts}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        loadingMessage={() => 'Vui lòng chọn tỉnh/thành phố'}
-                        onBlur={handleBlur}
-                        feedback={errors.districtAddress}
-                        invalid={
-                          touched.districtAddress && errors.districtAddress
-                        }
-                        options={districts}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="select"
-                        label="Xã/phường/thị trấn"
-                        placeholder="Chọn xã/phường/thị trấn..."
-                        value={values.wardAddress}
-                        onChange={(selectedOption) => {
-                          setFieldValue('wardAddress', selectedOption)
-                          handleSaveOption('wardAddress', selectedOption)
-                        }}
-                        loadingMessage={() => 'Vui lòng chọn quận/huyện'}
-                        isLoading={loadingWards}
-                        getOptionValue={(option) => option._id}
-                        getOptionLabel={(option) => option.name}
-                        onBlur={handleBlur}
-                        feedback={errors.wardAddress}
-                        invalid={touched.wardAddress && errors.wardAddress}
-                        options={wards}
-                        isRequired
-                      />
-                    </div>
-                    <div className="mb-5">
-                      <InputField
-                        type="text"
-                        name="detailAddress"
-                        placeholder="Nhập số nhà, tên đường, khu phố..."
-                        label="Số nhà, tên đường, khu phố"
-                        value={values.detailAddress}
-                        feedback={errors.detailAddress}
-                        onChange={(e) => {
-                          handleChange(e)
-                          handleSaveInput(e)
-                        }}
-                        onBlur={handleBlur}
-                        invalid={touched.detailAddress && errors.detailAddress}
-                        isRequired
-                      />
-                    </div>
+                    <InputField
+                      type="select"
+                      label="Tỉnh/thành phố"
+                      placeholder="Chọn tỉnh/thành phố..."
+                      value={values.provinceAddress}
+                      onChange={(selectedOption) => {
+                        setFieldValue('provinceAddress', selectedOption)
+                        setFieldValue('districtAddress', '')
+                        setFieldValue('wardAddress', '')
+                        handleSaveOption('provinceAddress', selectedOption)
+                        handleSaveOption('districtAddress', '')
+                        handleSaveOption('wardAddress', '')
+                        setWards([])
+                        handleProvinceChange(selectedOption)
+                      }}
+                      clearValue={() => {
+                        setFieldValue('provinceAddress', '')
+                        setFieldValue('districtAddress', '')
+                        setFieldValue('wardAddress', '')
+                        handleSaveOption('provinceAddress', '')
+                        handleSaveOption('districtAddress', '')
+                        handleSaveOption('wardAddress', '')
+                      }}
+                      isLoading={loadingProvinces}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      onBlur={handleBlur}
+                      feedback={errors.provinceAddress}
+                      invalid={
+                        touched.provinceAddress && errors.provinceAddress
+                      }
+                      options={provinces}
+                      isRequired
+                    />
+                    <InputField
+                      type="select"
+                      label="Quận/huyện"
+                      placeholder="Chọn quận/huyện..."
+                      value={values.districtAddress}
+                      onChange={(selectedOption) => {
+                        setFieldValue('districtAddress', selectedOption)
+                        setFieldValue('wardAddress', '')
+                        handleSaveOption('districtAddress', selectedOption)
+                        handleSaveOption('wardAddress', '')
+                        handleDistrictChange(selectedOption)
+                      }}
+                      isLoading={loadingDistricts}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      loadingMessage={() => 'Vui lòng chọn tỉnh/thành phố'}
+                      onBlur={handleBlur}
+                      feedback={errors.districtAddress}
+                      invalid={
+                        touched.districtAddress && errors.districtAddress
+                      }
+                      options={districts}
+                      isRequired
+                    />
+                    <InputField
+                      type="select"
+                      label="Xã/phường/thị trấn"
+                      placeholder="Chọn xã/phường/thị trấn..."
+                      value={values.wardAddress}
+                      onChange={(selectedOption) => {
+                        setFieldValue('wardAddress', selectedOption)
+                        handleSaveOption('wardAddress', selectedOption)
+                      }}
+                      loadingMessage={() => 'Vui lòng chọn quận/huyện'}
+                      isLoading={loadingWards}
+                      getOptionValue={(option) => option._id}
+                      getOptionLabel={(option) => option.name}
+                      onBlur={handleBlur}
+                      feedback={errors.wardAddress}
+                      invalid={touched.wardAddress && errors.wardAddress}
+                      options={wards}
+                      isRequired
+                    />
+                    <InputField
+                      type="text"
+                      name="detailAddress"
+                      placeholder="Nhập số nhà, tên đường, khu phố..."
+                      label="Số nhà, tên đường, khu phố"
+                      value={values.detailAddress}
+                      feedback={errors.detailAddress}
+                      onChange={(e) => {
+                        handleChange(e)
+                        handleSaveInput(e)
+                      }}
+                      onBlur={handleBlur}
+                      invalid={touched.detailAddress && errors.detailAddress}
+                      isRequired
+                    />
                   </div>
                 </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="idNumber"
-                    placeholder="Nhập số CMND/CCCD..."
-                    label="Số CMND/CCCD"
-                    value={values.idNumber}
-                    feedback={errors.idNumber}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.idNumber && errors.idNumber}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="date"
-                    name="idIssueDate"
-                    placeholder="Nhập ngày cấo CMND/CCCD..."
-                    label="Ngày cấp CMND/CCCD"
-                    value={values.idIssueDate}
-                    feedback={errors.idIssueDate}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.idIssueDate && errors.idIssueDate}
-                    isRequired
-                  />
-                </div>
-
-                <div className="mb-5">
-                  <InputField
-                    type="text"
-                    name="idIssuePlace"
-                    placeholder="Nhập ngày cấp CMND/CCCD..."
-                    label="Nơi cấp CMND/CCCD"
-                    value={values.idIssuePlace}
-                    feedback={errors.idIssuePlace}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={touched.idIssuePlace && errors.idIssuePlace}
-                    isRequired
-                  />
-                </div>
+                <InputField
+                  type="text"
+                  name="idNumber"
+                  placeholder="Nhập số CMND/CCCD..."
+                  label="Số CMND/CCCD"
+                  value={values.idNumber}
+                  feedback={errors.idNumber}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.idNumber && errors.idNumber}
+                  isRequired
+                />
+                <InputField
+                  type="date"
+                  name="idIssueDate"
+                  placeholder="Nhập ngày cấo CMND/CCCD..."
+                  label="Ngày cấp CMND/CCCD"
+                  value={values.idIssueDate}
+                  feedback={errors.idIssueDate}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.idIssueDate && errors.idIssueDate}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="idIssuePlace"
+                  placeholder="Nhập ngày cấp CMND/CCCD..."
+                  label="Nơi cấp CMND/CCCD"
+                  value={values.idIssuePlace}
+                  feedback={errors.idIssuePlace}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  invalid={touched.idIssuePlace && errors.idIssuePlace}
+                  isRequired
+                />
               </div>
               <button
                 className="relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"

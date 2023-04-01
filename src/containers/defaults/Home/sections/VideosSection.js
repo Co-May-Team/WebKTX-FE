@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Fade } from 'react-reveal'
 import Loading from '~/components/Loading'
 import { defaultAvatar } from '~/utils/constants/default'
+import youtubeAPI from '~/utils/constants/youtubeAPI'
 
 export default function VideosSection() {
   const [videos, setVideos] = useState([])
@@ -16,10 +17,10 @@ export default function VideosSection() {
       .get('https://www.googleapis.com/youtube/v3/search', {
         params: {
           part: 'snippet',
-          channelId: 'UC2qKiLt6CGASAsL7ZmAou4g',
-          maxResults: 3,
+          channelId: youtubeAPI.CHANNEL_ID,
+          maxResults: youtubeAPI.MAX_RESULTS,
           pageToken: pageToken,
-          key: 'AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8',
+          key: youtubeAPI.API_KEY,
         },
       })
       .finally(() => setLoading(false))
@@ -38,9 +39,9 @@ export default function VideosSection() {
         {
           params: {
             part: 'snippet',
-            channelId: 'UC2qKiLt6CGASAsL7ZmAou4g',
-            maxResults: 3,
-            key: 'AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8',
+            channelId: youtubeAPI.CHANNEL_ID,
+            maxResults: youtubeAPI.MAX_RESULTS,
+            key: youtubeAPI.API_KEY,
           },
         }
       )
