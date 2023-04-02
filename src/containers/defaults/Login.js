@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 import { Formik } from 'formik'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import * as Yup from 'yup'
 import { InputField } from '~/components/Customs'
 import { login } from '~/store/auth/actions'
@@ -15,13 +15,10 @@ export default function Login() {
   const navigate = useNavigate()
 
   const userInfo = useSelector(authSelector).userInfo
-  const status = useSelector(authSelector).status
 
-  useEffect(() => {
-    if (userInfo?.id) {
-      navigate(`${path.ADMIN + path.ADMIN_HOME}`)
-    }
-  }, [status])
+  if (userInfo?.username === 'admin') {
+    return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
+  }
 
   /* Xử lý form */
   const initialValues = {
@@ -47,6 +44,10 @@ export default function Login() {
   }
 
   const onFailure = (error) => {
+    Swal.fire({
+      title: 'Lỗi',
+      text: error?.message || 'Vui lòng liên hệ nhà phát triển trang Web',
+    })
     console.log('Đăng nhập thất bại', error)
   }
   function parseJwt(token) {
@@ -196,7 +197,7 @@ export default function Login() {
                   <button
                     type="submit"
                     disabled={!(dirty && isValid)}
-                    className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
+                    className="relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0"
                   >
                     Đăng nhập
                     {isSubmitting && '...'}

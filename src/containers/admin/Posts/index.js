@@ -174,8 +174,8 @@ export default function Posts() {
                 {params.sort === 'publishedAt'
                   ? 'Gần đây nhất'
                   : params.sort === 'viewed'
-                    ? 'Xem nhiều nhất'
-                    : 'Thảo luận nhiều nhất'}
+                  ? 'Xem nhiều nhất'
+                  : 'Thảo luận nhiều nhất'}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
@@ -276,7 +276,9 @@ export default function Posts() {
             </div>
           </div>
         </div>
-        {status === 'loading' ? <Loading /> : posts && posts.length > 0 ? (
+        {status === 'loading' ? (
+          <Loading />
+        ) : posts && posts.length > 0 ? (
           <>
             <InfiniteScroll
               dataLength={posts.length}
@@ -360,7 +362,7 @@ export default function Posts() {
                       <div className="flex items-end justify-between mt-auto">
                         <div className="flex items-center space-x-2 relative">
                           <button
-                            className="relative flex items-center justify-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-yellow-600 bg-yellow-50 dark:bg-rose-100"
+                            className="relative flex items-center justify-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-yellow-600 bg-yellow-50 hover:bg-rose-50 dark:bg-rose-100"
                             title="Chỉnh sửa bài viết"
                             onClick={() => {
                               setVisibleFormEditPost(true)
@@ -370,7 +372,7 @@ export default function Posts() {
                             <FaEdit size={15} />
                           </button>
                           <button
-                            className="relative items-center rounded-full text-rose-600 bg-rose-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-rose-50 dark:hover:bg-rose-100 hover:text-rose-600 dark:hover:text-rose-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
+                            className="relative items-center rounded-full text-rose-600 transition-colors  dark:bg-neutral-800 hover:bg-rose-50 dark:bg-rose-100 hover:text-rose-600 dark:text-rose-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none"
                             title="Xóa"
                             onClick={() => {
                               setVisibleDeletePost(true)

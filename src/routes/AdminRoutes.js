@@ -1,6 +1,8 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AdminLayout } from '~/layouts'
+import { authSelector } from '~/store/selectors'
 import { path } from '~/utils'
 
 const Posts = React.lazy(() => import('~/containers/admin/Posts'))
@@ -26,6 +28,11 @@ const adminRoutes = [
 ]
 
 export default function AdminRoutes() {
+  const userInfo = useSelector(authSelector).userInfo
+  // Kiểm tra username của userInfo, nếu không phải "admin" thì chuyển hướng về trang chủ
+  if (userInfo.username !== 'admin') {
+    return <Navigate to="/" replace />
+  }
   const renderRoutes = () => {
     return adminRoutes.map((item) => {
       const Container = item.Container

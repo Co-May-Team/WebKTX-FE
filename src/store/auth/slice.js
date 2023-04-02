@@ -20,7 +20,7 @@ const authSlice = createSlice({
   initialState: {
     status: 'idle',
     accessToken: '',
-    userInfo: {},
+    userInfo: null,
     userId: null,
   },
   reducers: {
@@ -37,11 +37,8 @@ const authSlice = createSlice({
         text: 'Đăng xuất thành công',
         icon: 'success',
       })
-      state.userInfo = {}
+      state.userInfo = null
       state.accessToken = ''
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('userInfo')
-      localStorage.removeItem('userInfoGoogle')
     },
   },
   extraReducers: (builder) => {
@@ -66,14 +63,6 @@ const authSlice = createSlice({
           state.status = 'user'
           state.userInfo = action.payload.data.userInfo
           state.accessToken = 'Bearer ' + action.payload.data.accessToken
-          localStorage.setItem(
-            'accessToken',
-            'Bearer ' + action.payload.data.accessToken
-          )
-          localStorage.setItem(
-            'userInfo',
-            JSON.stringify(action.payload.data.userInfo)
-          )
         } else {
           state.status = 'idle'
           Toast.fire({

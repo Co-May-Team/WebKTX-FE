@@ -89,7 +89,8 @@ export default function PostsSection() {
                         </h2>
                         <span className="flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400">
                           <span>
-                            {'Vào ' + moment(posts[0]?.publishedAt).fromNow()}
+                            {'Vào ' +
+                              moment(posts[0]?.publishedAt).format('LLLL')}
                           </span>
                         </span>
                       </div>
@@ -264,7 +265,7 @@ export default function PostsSection() {
                         </NavLink>
                         <span className="flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400">
                           <span>
-                            {'Vào ' + moment(post?.publishedAt).fromNow()}
+                            {'Vào ' + moment(post?.publishedAt).format('LLLL')}
                           </span>
                         </span>
                       </div>

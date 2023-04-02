@@ -1,9 +1,9 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import ImagesDetail from '~/containers/defaults/Posts/PostDetail/ImagesDetail'
+import PostDetail from '~/containers/defaults/Posts/PostDetail/PostDetail'
 import { DefaultLayout } from '~/layouts'
 import { path } from '~/utils'
-import PostDetail from '~/containers/defaults/Posts/PostDetail/PostDetail'
-import RegistrationForm from '~/containers/defaults/registration_form/RegistrationForm'
 
 const Home = React.lazy(() => import('~/containers/defaults/Home'))
 const Login = React.lazy(() => import('~/containers/defaults/Login'))
@@ -12,9 +12,9 @@ const Search = React.lazy(() => import('~/containers/defaults/Search'))
 const PostsHome = React.lazy(() =>
   import('~/containers/defaults/Posts/PostsHome')
 )
-// const RegistrationForm = React.lazy(() =>
-//   import('~/containers/defaults/registration_form/RegistrationForm')
-// )
+const RegistrationForm = React.lazy(() =>
+  import('~/containers/defaults/RegistrationForm/RegistrationForm')
+)
 // const PostDetail = React.lazy(() =>
 //   import('~/containers/defaults/Posts/PostDetail/PostDetail')
 // )
@@ -31,6 +31,7 @@ const defaultRoutes = [
     path: path.REGISTRATION_FORM,
   },
   { id: Math.random(), Container: PostDetail, path: path.POST_DETAIL },
+  { id: Math.random(), Container: ImagesDetail, path: path.IMAGES_DETAIL },
   {
     id: Math.random(),
     Container: Navigate,
@@ -50,7 +51,6 @@ export default function DefaultRoutes() {
           key={item.id}
           path={item.path}
           element={<Container replace={item?.replace} to={item?.to} />}
-          vvv
         />
       )
     })

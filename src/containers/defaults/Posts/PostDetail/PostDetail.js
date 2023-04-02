@@ -2,7 +2,6 @@
 import moment from 'moment'
 import 'moment/locale/vi' // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom/client'
 import {
   FaEnvelope,
   FaEye,
@@ -37,9 +36,8 @@ import { deletePost } from '~/store/posts/actions'
 import { authSelector } from '~/store/selectors'
 import readingTime from '~/utils/commons/readingTime'
 import { defaultAvatar } from '~/utils/constants/default'
-import Comments from './Comments'
+import Comments from './comments/Comments'
 import MostViewPosts from './MostViewPosts'
-import ProgressBar from './ProgressBar'
 import RelatedPosts from './RelatedPosts'
 
 export default function PostDetail(props) {
@@ -109,82 +107,82 @@ export default function PostDetail(props) {
         setLoading(false)
       })
   }, [params.id])
-  useEffect(() => {
-    const headerPostElement = (
-      <div className="py-4">
-        <div className="container">
-          <div className="flex justify-end lg:justify-between">
-            <div className="hidden lg:flex items-center mr-3">
-              <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 text-lg ring-1 ring-white dark:ring-neutral-900">
-                <img
-                  className="absolute inset-0 w-full h-full object-cover"
-                  src={defaultAvatar}
-                  alt="Bác Phạm Văn Bên"
-                  title="Bác Phạm Văn Bên"
-                />
-                <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
-              </div>
-              <h3 className="ml-4 text-lg line-clamp-1 text-neutral-100">
-                {postInfo?.title}
-              </h3>
-            </div>
-            <div className="flex items-center space-x-2 text-neutral-800 sm:space-x-3 dark:text-neutral-100">
-              <button
-                className="relative min-w-[68px] flex items-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-rose-600 bg-rose-50 dark:bg-rose-100"
-                title="Lượt xem"
-              >
-                <FaEye size={15} />
-                <span className="ml-1 text-rose-600">{postInfo?.viewed}</span>
-              </button>
-              <SavePostButton savedPost={postInfo} dark />
-              <div className="border-l border-neutral-300 dark:border-neutral-700 h-6" />
-              <div className="flex space-x-2">
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <FacebookShareButton url={window.location.href}>
-                    <span className="lab la-facebook-f" />
-                  </FacebookShareButton>
-                </div>
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <TwitterShareButton url={window.location.href}>
-                    <span className="lab la-twitter" />
-                  </TwitterShareButton>
-                </div>
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <LinkedinShareButton url={window.location.href}>
-                    <span className="lab la-linkedin-in" />
-                  </LinkedinShareButton>
-                </div>
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <RedditShareButton url={window.location.href}>
-                    <span className="lab la-reddit" />
-                  </RedditShareButton>
-                </div>
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <WhatsappShareButton url={window.location.href}>
-                    <span className="lab la-whatsapp" />
-                  </WhatsappShareButton>
-                </div>
-                <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
-                  <EmailShareButton url={window.location.href}>
-                    <span className="las la-warehouse" />
-                  </EmailShareButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="absolute top-full left-0 w-full progress-container h-[5px] bg-neutral-300 overflow-hidden">
-          <ProgressBar />
-        </div>
-      </div>
-    )
-    const headerPostNode = document.getElementById('header-post')
-    const root = ReactDOM.createRoot(headerPostNode)
-    root.render(headerPostElement)
-    return () => {
-      root.unmount()
-    }
-  }, [postInfo])
+  // useEffect(() => {
+  //   const headerPostElement = (
+  //     <div className="py-4">
+  //       <div className="container">
+  //         <div className="flex justify-end lg:justify-between">
+  //           <div className="hidden lg:flex items-center mr-3">
+  //             <div className="wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 text-lg ring-1 ring-white dark:ring-neutral-900">
+  //               <img
+  //                 className="absolute inset-0 w-full h-full object-cover"
+  //                 src={defaultAvatar}
+  //                 alt="Bác Phạm Văn Bên"
+  //                 title="Bác Phạm Văn Bên"
+  //               />
+  //               <span className="wil-avatar__name">Bác Phạm Văn Bên</span>
+  //             </div>
+  //             <h3 className="ml-4 text-lg line-clamp-1 text-neutral-100">
+  //               {postInfo?.title}
+  //             </h3>
+  //           </div>
+  //           <div className="flex items-center space-x-2 text-neutral-800 sm:space-x-3 dark:text-neutral-100">
+  //             <button
+  //               className="relative flex items-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-rose-600 bg-rose-50 dark:bg-rose-100"
+  //               title="Lượt xem"
+  //             >
+  //               <FaEye size={15} />
+  //               <span className="ml-1 text-rose-600">{postInfo?.viewed}</span>
+  //             </button>
+  //             <SavePostButton savedPost={postInfo} dark />
+  //             <div className="border-l border-neutral-300 dark:border-neutral-700 h-6" />
+  //             <div className="flex space-x-2">
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <FacebookShareButton url={window.location.href}>
+  //                   <span className="lab la-facebook-f" />
+  //                 </FacebookShareButton>
+  //               </div>
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <TwitterShareButton url={window.location.href}>
+  //                   <span className="lab la-twitter" />
+  //                 </TwitterShareButton>
+  //               </div>
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <LinkedinShareButton url={window.location.href}>
+  //                   <span className="lab la-linkedin-in" />
+  //                 </LinkedinShareButton>
+  //               </div>
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <RedditShareButton url={window.location.href}>
+  //                   <span className="lab la-reddit" />
+  //                 </RedditShareButton>
+  //               </div>
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <WhatsappShareButton url={window.location.href}>
+  //                   <span className="lab la-whatsapp" />
+  //                 </WhatsappShareButton>
+  //               </div>
+  //               <div className="rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300">
+  //                 <EmailShareButton url={window.location.href}>
+  //                   <span className="las la-warehouse" />
+  //                 </EmailShareButton>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className="absolute top-full left-0 w-full progress-container h-[5px] bg-neutral-300 overflow-hidden">
+  //         <ProgressBar />
+  //       </div>
+  //     </div>
+  //   )
+  //   const headerPostNode = document.getElementById('header-post')
+  //   const root = ReactDOM.createRoot(headerPostNode)
+  //   root.render(headerPostElement)
+  //   return () => {
+  //     root.unmount()
+  //   }
+  // }, [postInfo])
 
   const handleDeletePost = () => {
     dispatch(deletePost(postInfo.postId))
@@ -193,7 +191,9 @@ export default function PostDetail(props) {
 
   return (
     <>
-      {loading ? <Loading /> : (
+      {loading ? (
+        <Loading />
+      ) : (
         <>
           <header className="relative pt-16 z-10 md:py-20 lg:py-28 bg-neutral-900 dark:bg-black">
             <div className="dark container relative z-10">
@@ -303,9 +303,7 @@ export default function PostDetail(props) {
                                   d="M15.5 11C15.5 11.2761 15.2761 11.5 15 11.5C14.7239 11.5 14.5 11.2761 14.5 11C14.5 10.7239 14.7239 10.5 15 10.5C15.2761 10.5 15.5 10.7239 15.5 11Z"
                                 />
                               </svg>
-                              <span className="ml-1 text-neutral-900 dark:text-neutral-200">
-                                0
-                              </span>
+                              <span className="ml-1">0</span>
                             </button>
                           </Fade>
                         </div>
@@ -414,7 +412,7 @@ export default function PostDetail(props) {
                           >
                             <Fade right>
                               <button
-                                className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center rounded-full  h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 focus:outline-none"
+                                className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center rounded-full h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 focus:outline-none"
                                 title="khác"
                                 onClick={() =>
                                   setVisibleMoreActionDropdown(
@@ -547,7 +545,7 @@ export default function PostDetail(props) {
                     </div>
                   </div>
                 </div>
-                <Comments />
+                <Comments postId={postInfo?.postId} />
               </div>
             </div>
             <div className="w-full mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3">
