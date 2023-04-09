@@ -139,7 +139,7 @@ function Header() {
                     }
                     to="/"
                   >
-                    Trang Chủ aa
+                    Trang Chủ
                   </NavLink>
                   {tags.map((tag) => (
                     <NavLink
