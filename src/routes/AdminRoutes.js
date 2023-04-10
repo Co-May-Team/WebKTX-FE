@@ -28,11 +28,13 @@ const adminRoutes = [
 ]
 
 export default function AdminRoutes() {
+  const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
-  // Kiểm tra username của userInfo, nếu không phải "admin" thì chuyển hướng về trang chủ
-  if (userInfo.username !== 'admin') {
-    return <Navigate to="/" replace />
+
+  if (!(status === "user") || userInfo?.googleAccount === true) {
+    return <Navigate to="/" />
   }
+
   const renderRoutes = () => {
     return adminRoutes.map((item) => {
       const Container = item.Container

@@ -14,10 +14,16 @@ export default function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (userInfo?.username === 'admin') {
-    return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
+  if (status === "user") {
+    if (userInfo?.googleAccount) {
+      return <Navigate to="/" />
+    }
+    else {
+      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
+    }
   }
 
   /* Xử lý form */
