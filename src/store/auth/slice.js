@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Swal from 'sweetalert2'
 import { checkToken, forgotPassword, login, resetPassword } from './actions'
+import { Navigate } from 'react-router-dom'
 
 const Toast = Swal.mixin({
   toast: true,
@@ -37,7 +38,7 @@ const authSlice = createSlice({
         text: 'Đăng xuất thành công',
         icon: 'success',
       })
-      state.userInfo = null
+      state.userInfo = {}
       state.accessToken = ''
     },
   },

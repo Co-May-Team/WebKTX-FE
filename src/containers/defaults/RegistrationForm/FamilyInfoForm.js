@@ -205,8 +205,14 @@ export default function FamilyInfoForm() {
   const validationSchemaFamilyInfo = Yup.object().shape({
     father: Yup.object()
       .shape({
-        fullName: Yup.string().required('Họ tên cha không được để trống'),
-        yearOfBirth: Yup.string().required('Ngày sinh không được để trống'),
+        fullName: Yup.string().when('father', {
+          is: (father) => notFather === false,
+          then: Yup.string().required('Họ tên cha không được để trống')
+        }),
+        yearOfBirth: Yup.string().when('father', {
+          is: (father) => notFather === false,
+          then: Yup.string().required('Năm sinh cha không được để trống')
+        }),
         phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
         provinceAddress: Yup.object()
           .nullable()
