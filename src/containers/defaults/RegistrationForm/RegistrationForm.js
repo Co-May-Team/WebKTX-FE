@@ -4,6 +4,88 @@ import PersonalInfoForm from './PersonalInfoForm'
 import StudentInfoForm from './StudentInfoForm'
 
 export default function RegistrationForm() {
+  const object = {
+    personalInfo: {
+      fullName: '',
+      dateOfBirth: '',
+      gender: '',
+      phoneNumber: '',
+      email: '',
+      ethnic: '',
+      religion: '',
+      provinceHometown: '',
+      districtHometown: '',
+      wardHometown: '',
+      detailHometown: '',
+      provinceAddress: '',
+      districtAddress: '',
+      wardAddress: '',
+      detailAddress: '',
+      idNumber: '',
+      idIssueDate: '',
+      idIssuePlace: '',
+    },
+    familyInfo: {
+      father: {
+        fullName: '',
+        yearOfBirth: '',
+        phoneNumber: '',
+        provinceAddress: '',
+        districtAddress: '',
+        wardAddress: '',
+        detailAddress: '',
+        currentJob: '',
+        income: '',
+        healthStatus: '',
+      },
+      mother: {
+        fullName: '',
+        yearOfBirth: '',
+        phoneNumber: '',
+        provinceAddress: '',
+        districtAddress: '',
+        wardAddress: '',
+        detailAddress: '',
+        currentJob: '',
+        income: '',
+        healthStatus: '',
+      },
+      relatives: [
+        {
+          relationship: '',
+          fullName: '',
+          yearOfBirth: '',
+          phoneNumber: '',
+          provinceAddress: '',
+          districtAddress: '',
+          wardAddress: '',
+          detailAddress: '',
+          currentJob: '',
+          income: '',
+          healthStatus: '',
+        },
+      ],
+      familyBackground: '',
+    },
+    studentInfo: {
+      studentType: '',
+      universityName: '',
+      major: '',
+      classCode: '',
+      studentCode: '',
+      grade10Semester1: '',
+      grade10Semester2: '',
+      grade11Semester1: '',
+      grade11Semester2: '',
+      grade12Semester1: '',
+      grade12Semester2: '',
+      highSchoolGraduationExamScore: '',
+      dgnlScore: '',
+      admissionViaDirectMethod: '',
+      achievements: '',
+      dream: '',
+    }
+  }
   document.title =
     'Biểu mẫu đăng ký vào Ký Túc Xá Cỏ May năm học 2023 - 2024 | KTX Cỏ May'
   return (

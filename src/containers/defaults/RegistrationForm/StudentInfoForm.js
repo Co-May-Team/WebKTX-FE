@@ -211,6 +211,7 @@ export default function StudentInfoForm() {
             isSubmitting,
           }) => (
             <Form onSubmit={handleSubmit}>
+            <div className="grid gap-6">
               <div className="grid gap-6">
                 <InputField
                   type="select"
@@ -229,15 +230,18 @@ export default function StudentInfoForm() {
                   feedback={errors.studentType}
                   invalid={touched.studentType && errors.studentType}
                   options={[
-                    { value: 'Nhóm ưu tiên 1', label: 'Nhóm ưu tiên 1' },
-                    { value: 'Nhóm ưu tiên 2', label: 'Nhóm ưu tiên 2' },
-                    { value: 'Khu vực 1', label: 'Khu vực 1' },
-                    { value: 'Khu vực 2 - NT', label: 'Khu vực 2 - NT' },
-                    { value: 'Khu vực 2', label: 'Khu vực 2' },
-                    { value: 'Khu vực 3', label: 'Khu vực 3' },
+                    { value: 'Hộ nghèo', label: 'Hộ nghèo' },
+                    { value: 'Hộ cận nghèo', label: 'Hộ cận nghèo' },
+                    { value: 'Gia đình có hoàn cảnh khó khăn (Có xác nhận của địa phương)', label: 'Gia đình có hoàn cảnh khó khăn (Có xác nhận của địa phương)' },
+                    { value: 'Mồ côi', label: 'Mồ côi' },
+                    { value: 'Con của thương binh, liệt sĩ', label: 'Con của thương binh, liệt sĩ' },
+                    { value: 'Dân tộc thiểu số', label: 'Dân tộc thiểu số' },
+                    { value: 'Khuyết tật', label: 'Khuyết tật' },
                   ]}
                   isRequired
                 />
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
                 <InputField
                   type="select"
                   name="universityName"
@@ -273,6 +277,8 @@ export default function StudentInfoForm() {
                   invalid={touched.major && errors.major}
                   isRequired
                 />
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
                 <InputField
                   type="text"
                   name="classCode"
@@ -301,139 +307,129 @@ export default function StudentInfoForm() {
                   invalid={touched.studentCode && errors.studentCode}
                   isRequired
                 />
-                <div className="grid md:grid-cols-2 gap-6">
-                  <InputField
-                    type="text"
-                    name="grade10Semester1"
-                    placeholder="Nhập điểm trung bình HK1 lớp 10..."
-                    label="Điểm trung bình HK1 lớp 10"
-                    value={values.grade10Semester1}
-                    feedback={errors.grade10Semester1}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade10Semester1 && errors.grade10Semester1
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="grade10Semester2"
-                    placeholder="Nhập điểm trung bình HK2 lớp 10..."
-                    label="Điểm trung bình HK2 lớp 10"
-                    value={values.grade10Semester2}
-                    feedback={errors.grade10Semester2}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade10Semester2 && errors.grade10Semester2
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="grade11Semester1"
-                    placeholder="Nhập điểm trung bình HK1 lớp 11..."
-                    label="Điểm trung bình HK1 lớp 11"
-                    value={values.grade11Semester1}
-                    feedback={errors.grade11Semester1}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade11Semester1 && errors.grade11Semester1
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="grade11Semester2"
-                    placeholder="Nhập điểm trung bình HK2 lớp 11..."
-                    label="Điểm trung bình HK2 lớp 10"
-                    value={values.grade11Semester2}
-                    feedback={errors.grade11Semester2}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade11Semester2 && errors.grade11Semester2
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="grade12Semester1"
-                    placeholder="Nhập điểm trung bình HK1 lớp 12..."
-                    label="Điểm trung bình HK1 lớp 12"
-                    value={values.grade12Semester1}
-                    feedback={errors.grade12Semester1}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade12Semester1 && errors.grade12Semester1
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="grade12Semester2"
-                    placeholder="Nhập điểm trung bình HK2 lớp 12..."
-                    label="Điểm trung bình HK2 lớp 12"
-                    value={values.grade12Semester2}
-                    feedback={errors.grade12Semester2}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade12Semester2 && errors.grade12Semester2
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="highSchoolGraduationExamScore"
-                    placeholder="Nhập điểm trúng tuyển..."
-                    label="Điểm trúng tuyển"
-                    value={values.highSchoolGraduationExamScore}
-                    feedback={errors.highSchoolGraduationExamScore}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.highSchoolGraduationExamScore &&
-                      errors.highSchoolGraduationExamScore
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type="text"
-                    name="dgnlScore"
-                    placeholder="Nhập điểm thi ĐGNL..."
-                    label="Điểm thi ĐGNL (nếu có)"
-                    value={values.dgnlScore}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                  />
-                </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <InputField
+                  type="text"
+                  name="grade10Semester1"
+                  placeholder="Nhập điểm trung bình HK1 lớp 10..."
+                  label="Điểm trung bình HK1 lớp 10"
+                  value={values.grade10Semester1}
+                  feedback={errors.grade10Semester1}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade10Semester1 && errors.grade10Semester1}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="grade10Semester2"
+                  placeholder="Nhập điểm trung bình HK2 lớp 10..."
+                  label="Điểm trung bình HK2 lớp 10"
+                  value={values.grade10Semester2}
+                  feedback={errors.grade10Semester2}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade10Semester2 && errors.grade10Semester2}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="grade11Semester1"
+                  placeholder="Nhập điểm trung bình HK1 lớp 11..."
+                  label="Điểm trung bình HK1 lớp 11"
+                  value={values.grade11Semester1}
+                  feedback={errors.grade11Semester1}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade11Semester1 && errors.grade11Semester1}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="grade11Semester2"
+                  placeholder="Nhập điểm trung bình HK2 lớp 11..."
+                  label="Điểm trung bình HK2 lớp 10"
+                  value={values.grade11Semester2}
+                  feedback={errors.grade11Semester2}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade11Semester2 && errors.grade11Semester2}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="grade12Semester1"
+                  placeholder="Nhập điểm trung bình HK1 lớp 12..."
+                  label="Điểm trung bình HK1 lớp 12"
+                  value={values.grade12Semester1}
+                  feedback={errors.grade12Semester1}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade12Semester1 && errors.grade12Semester1}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="grade12Semester2"
+                  placeholder="Nhập điểm trung bình HK2 lớp 12..."
+                  label="Điểm trung bình HK2 lớp 12"
+                  value={values.grade12Semester2}
+                  feedback={errors.grade12Semester2}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={touched.grade12Semester2 && errors.grade12Semester2}
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="highSchoolGraduationExamScore"
+                  placeholder="Nhập điểm trúng tuyển..."
+                  label="Điểm trúng tuyển"
+                  value={values.highSchoolGraduationExamScore}
+                  feedback={errors.highSchoolGraduationExamScore}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                  onBlur={handleBlur}
+                  invalid={
+                    touched.highSchoolGraduationExamScore &&
+                    errors.highSchoolGraduationExamScore
+                  }
+                  isRequired
+                />
+                <InputField
+                  type="text"
+                  name="dgnlScore"
+                  placeholder="Nhập điểm thi ĐGNL..."
+                  label="Điểm thi ĐGNL (nếu có)"
+                  value={values.dgnlScore}
+                  onChange={(e) => {
+                    handleChange(e)
+                    handleSaveInput(e)
+                  }}
+                />
+              </div>
+              <div className="grid gap-6">
                 <InputField
                   type="textarea"
                   name="achievements"
@@ -479,6 +475,7 @@ export default function StudentInfoForm() {
                   Lưu
                   {isSubmitting && '...'}
                 </button>
+              </div>
               </div>
             </Form>
           )}
