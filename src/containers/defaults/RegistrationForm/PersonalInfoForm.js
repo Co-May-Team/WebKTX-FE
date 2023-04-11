@@ -41,10 +41,7 @@ export default function PersonalInfoForm() {
           email: '',
           ethnic: '',
           religion: '',
-          provinceHometown: '',
-          districtHometown: '',
-          wardHometown: '',
-          detailHometown: '',
+          hometown: '',
           provinceAddress: '',
           districtAddress: '',
           wardAddress: '',
@@ -130,10 +127,7 @@ export default function PersonalInfoForm() {
     email: '',
     ethnic: '',
     religion: '',
-    provinceHometown: '',
-    districtHometown: '',
-    wardHometown: '',
-    detailHometown: '',
+    hometown: '',
     provinceAddress: '',
     districtAddress: '',
     wardAddress: '',
@@ -151,18 +145,7 @@ export default function PersonalInfoForm() {
     email: Yup.string().required('Email không được để trống'),
     ethnic: Yup.string().required('Dân tộc không được để trống'),
     religion: Yup.string().required('Tôn giáo không được để trống'),
-    provinceHometown: Yup.object()
-      .nullable()
-      .required('Tỉnh/thành phố không được để trống'),
-    districtHometown: Yup.object()
-      .nullable()
-      .required('Quận/huyện không được để trống'),
-    wardHometown: Yup.object()
-      .nullable()
-      .required('Xã/phường/thị trấn không được để trống'),
-    detailHometown: Yup.string().required(
-      'Số nhà, tên đường không được để trống'
-    ),
+    hometown: Yup.object().nullable().required('Quê quán không được để trống'),
     provinceAddress: Yup.object()
       .nullable()
       .required('Tỉnh/thành phố không được để trống'),
@@ -332,107 +315,28 @@ export default function PersonalInfoForm() {
                   isRequired
                 />
 
-                <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
-                  <header className="mb-5 text-center mx-auto">
-                    <h2 className="flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
-                      Quê quán
-                    </h2>
-                  </header>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <InputField
-                      type="select"
-                      label="Tỉnh/thành phố"
-                      placeholder="Chọn tỉnh/thành phố..."
-                      value={values.provinceHometown}
-                      onChange={(selectedOption) => {
-                        setFieldValue('provinceHometown', selectedOption)
-                        setFieldValue('districtHometown', '')
-                        setFieldValue('wardHometown', '')
-                        handleSaveOption('provinceHometown', selectedOption)
-                        handleSaveOption('districtHometown', '')
-                        handleSaveOption('wardHometown', '')
-                        setWards([])
-                        handleProvinceChange(selectedOption)
-                      }}
-                      clearValue={() => {
-                        setFieldValue('provinceHometown', '')
-                        setFieldValue('districtHometown', '')
-                        setFieldValue('wardHometown', '')
-                        handleSaveOption('provinceHometown', '')
-                        handleSaveOption('districtHometown', '')
-                        handleSaveOption('wardHometown', '')
-                      }}
-                      isLoading={loadingProvinces}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
-                      onBlur={handleBlur}
-                      feedback={errors.provinceHometown}
-                      invalid={
-                        touched.provinceHometown && errors.provinceHometown
-                      }
-                      options={provinces}
-                      isRequired
-                    />
-                    <InputField
-                      type="select"
-                      label="Quận/huyện"
-                      placeholder="Chọn quận/huyện..."
-                      value={values.districtHometown}
-                      onChange={(selectedOption) => {
-                        setFieldValue('districtHometown', selectedOption)
-                        setFieldValue('wardHometown', '')
-                        handleSaveOption('districtHometown', selectedOption)
-                        handleSaveOption('wardHometown', '')
-                        handleDistrictChange(selectedOption)
-                      }}
-                      isLoading={loadingDistricts}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
-                      loadingMessage={() => 'Vui lòng chọn tỉnh/thành phố'}
-                      onBlur={handleBlur}
-                      feedback={errors.districtHometown}
-                      invalid={
-                        touched.districtHometown && errors.districtHometown
-                      }
-                      options={districts}
-                      isRequired
-                    />
-                    <InputField
-                      type="select"
-                      label="Xã/phường/thị trấn"
-                      placeholder="Chọn xã/phường/thị trấn..."
-                      value={values.wardHometown}
-                      onChange={(selectedOption) => {
-                        setFieldValue('wardHometown', selectedOption)
-                        handleSaveOption('wardHometown', selectedOption)
-                      }}
-                      loadingMessage={() => 'Vui lòng chọn quận/huyện'}
-                      isLoading={loadingWards}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
-                      onBlur={handleBlur}
-                      feedback={errors.wardHometown}
-                      invalid={touched.wardHometown && errors.wardHometown}
-                      options={wards}
-                      isRequired
-                    />
-                    <InputField
-                      type="text"
-                      name="detailHometown"
-                      placeholder="Nhập số nhà, tên đường, khu phố..."
-                      label="Số nhà, tên đường, khu phố"
-                      value={values.detailHometown}
-                      feedback={errors.detailHometown}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
-                      }}
-                      onBlur={handleBlur}
-                      invalid={touched.detailHometown && errors.detailHometown}
-                      isRequired
-                    />
-                  </div>
-                </div>
+                <InputField
+                  type="select"
+                  label="Quê quán"
+                  placeholder="Chọn quê quán..."
+                  value={values.hometown}
+                  onChange={(selectedOption) => {
+                    setFieldValue('hometown', selectedOption)
+                    handleSaveOption('hometown', selectedOption)
+                  }}
+                  clearValue={() => {
+                    setFieldValue('hometown', '')
+                    handleSaveOption('hometown', '')
+                  }}
+                  isLoading={loadingProvinces}
+                  getOptionValue={(option) => option._id}
+                  getOptionLabel={(option) => option.name}
+                  onBlur={handleBlur}
+                  feedback={errors.hometown}
+                  invalid={touched.hometown && errors.hometown}
+                  options={provinces}
+                  isRequired
+                />
 
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className="mb-5 text-center mx-auto">

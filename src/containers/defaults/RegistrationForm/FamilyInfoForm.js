@@ -12,8 +12,6 @@ export default function FamilyInfoForm() {
   const [loadingDistricts, setLoadingDistricts] = useState(true)
   const [wards, setWards] = useState([])
   const [loadingWards, setLoadingWards] = useState(true)
-  const [notFather, setNotFather] = useState(false)
-  const [notMother, setNotMother] = useState(false)
 
   const handleSaveInput = (e) => {
     const { name, value } = e.target
@@ -34,6 +32,30 @@ export default function FamilyInfoForm() {
     currentFamilyInfo[parent][fieldName] = value
     localStorage.setItem('familyInfo', JSON.stringify(currentFamilyInfo))
   }
+  const handleChangeFatherInfo = (name, value, setFieldValue) => {
+    let currentFamilyInfo = JSON.parse(localStorage.getItem('familyInfo'))
+    currentFamilyInfo = {
+      ...currentFamilyInfo,
+      father: {
+        ...currentFamilyInfo?.father,
+        [name]: value,
+      },
+    }
+    setFieldValue('father', currentFamilyInfo.father)
+    localStorage.setItem('familyInfo', JSON.stringify(currentFamilyInfo))
+  }
+  const handleChangeMotherInfo = (name, value, setFieldValue) => {
+    let currentFamilyInfo = JSON.parse(localStorage.getItem('familyInfo'))
+    currentFamilyInfo = {
+      ...currentFamilyInfo,
+      mother: {
+        ...currentFamilyInfo?.mother,
+        [name]: value,
+      },
+    }
+    setFieldValue('mother', currentFamilyInfo.mother)
+    localStorage.setItem('familyInfo', JSON.stringify(currentFamilyInfo))
+  }
   const handleChangeRelativesInfo = (name, value, index, setFieldValue) => {
     let currentFamilyInfo = JSON.parse(localStorage.getItem('familyInfo'))
     currentFamilyInfo.relatives?.splice(index, 1, {
@@ -50,6 +72,7 @@ export default function FamilyInfoForm() {
         'familyInfo',
         JSON.stringify({
           father: {
+            status: '',
             fullName: '',
             yearOfBirth: '',
             phoneNumber: '',
@@ -62,6 +85,7 @@ export default function FamilyInfoForm() {
             healthStatus: '',
           },
           mother: {
+            status: '',
             fullName: '',
             yearOfBirth: '',
             phoneNumber: '',
@@ -161,6 +185,7 @@ export default function FamilyInfoForm() {
     localStorage.getItem('familyInfo')
   ) || {
     father: {
+      status: '',
       fullName: '',
       yearOfBirth: '',
       phoneNumber: '',
@@ -173,6 +198,7 @@ export default function FamilyInfoForm() {
       healthStatus: '',
     },
     mother: {
+      status: '',
       fullName: '',
       yearOfBirth: '',
       phoneNumber: '',
@@ -203,64 +229,118 @@ export default function FamilyInfoForm() {
   }
 
   const validationSchemaFamilyInfo = Yup.object().shape({
-    father: Yup.object()
-      .shape({
-        fullName: Yup.string().when('father', {
-          is: (father) => notFather === false,
-          then: Yup.string().required('Họ tên cha không được để trống')
-        }),
-        yearOfBirth: Yup.string().when('father', {
-          is: (father) => notFather === false,
-          then: Yup.string().required('Năm sinh cha không được để trống')
-        }),
-        phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
-        provinceAddress: Yup.object()
+    father: Yup.object().shape({
+      status: Yup.object().required('Trạng thái thông tin của cha là bắt buộc'),
+      fullName: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Họ tên của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      yearOfBirth: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Năm sinh của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      phoneNumber: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Số điện thoại của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      provinceAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object()
           .nullable()
-          .required('Tỉnh/thành phố không được để trống'),
-        districtAddress: Yup.object()
+          .required('Tỉnh/Thành phố của cha là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      districtAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object()
           .nullable()
-          .required('Quận/huyện không được để trống'),
-        wardAddress: Yup.object()
+          .required('Quận/Huyện của cha là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      wardAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object().nullable().required('Phường/Xã của cha là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      detailAddress: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Địa chỉ của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      currentJob: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Nghề nghiệp hiện tại của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      income: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Thu nhập của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      healthStatus: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Tình trạng sức khỏe của cha là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+    }),
+    mother: Yup.object().shape({
+      status: Yup.object().required('Trạng thái thông tin của mẹ là bắt buộc'),
+      fullName: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Họ tên của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      yearOfBirth: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Năm sinh của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      phoneNumber: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Số điện thoại của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      provinceAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object()
           .nullable()
-          .required('Xã/phường/thị trấn không được để trống'),
-        detailAddress: Yup.string().required(
-          'Số nhà, tên đường không được để trống'
-        ),
-        currentJob: Yup.string().required(
-          'Công việc hiện tại của cha không được để trống'
-        ),
-        income: Yup.string().required('Thu nhập của cha không được để trống'),
-        healthStatus: Yup.string().required(
-          'Tình trạng sức khỏe của cha không được để trống'
-        ),
-      })
-      .nullable(),
-    mother: Yup.object()
-      .shape({
-        fullName: Yup.string().required('Họ tên mẹ không được để trống'),
-        yearOfBirth: Yup.string().required('Ngày sinh không được để trống'),
-        phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
-        provinceAddress: Yup.object()
-          .nullable()
-          .required('Tỉnh/thành phố không được để trống'),
-        districtAddress: Yup.object()
-          .nullable()
-          .required('Quận/huyện không được để trống'),
-        wardAddress: Yup.object()
-          .nullable()
-          .required('Xã/phường/thị trấn không được để trống'),
-        detailAddress: Yup.string().required(
-          'Số nhà, tên đường không được để trống'
-        ),
-        currentJob: Yup.string().required(
-          'Công việc hiện tại của mẹ không được để trống'
-        ),
-        income: Yup.string().required('Thu nhập của mẹ không được để trống'),
-        healthStatus: Yup.string().required(
-          'Tình trạng sức khỏe của mẹ không được để trống'
-        ),
-      })
-      .nullable(),
+          .required('Tỉnh/Thành phố của mẹ là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      districtAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object().nullable().required('Quận/Huyện của mẹ là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      wardAddress: Yup.object().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.object().nullable().required('Phường/Xã của mẹ là bắt buộc'),
+        otherwise: Yup.object(),
+      }),
+      detailAddress: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Địa chỉ của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      currentJob: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Nghề nghiệp hiện tại của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      income: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Thu nhập của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+      healthStatus: Yup.string().when('status', {
+        is: (val) => val?.value === 'Có thông tin',
+        then: Yup.string().required('Tình trạng sức khỏe của mẹ là bắt buộc'),
+        otherwise: Yup.string(),
+      }),
+    }),
     relatives: Yup.array().of(
       Yup.object().shape({
         relationship: Yup.string().required(
@@ -269,7 +349,7 @@ export default function FamilyInfoForm() {
         fullName: Yup.string().required(
           'Họ tên người thân không được để trống'
         ),
-        yearOfBirth: Yup.string().required('Ngày sinh không được để trống'),
+        yearOfBirth: Yup.string().required('Nơi sinh không được để trống'),
         phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
         provinceAddress: Yup.object()
           .nullable()
@@ -301,12 +381,6 @@ export default function FamilyInfoForm() {
 
   const handleSubmitFamilyInfo = async (values, actions) => {
     actions.setSubmitting(true)
-    if (notFather) {
-      actions.setFieldValue('father', null)
-    }
-    if (notMother) {
-      actions.setFieldValue('mother', null)
-    }
     console.log(values)
     actions.setSubmitting(false)
   }
@@ -344,76 +418,99 @@ export default function FamilyInfoForm() {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className="grid gap-6">
+                {/* Phần nhập thông tin cha */}
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className=" my-5 text-center mx-auto">
                     <h2 className="flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
                       1. Thông tin cha
                     </h2>
-                    <div className="flex items-center mb-4">
-                      <input
-                        type="checkbox"
-                        checked={notFather}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        onChange={() => setNotFather(!notFather)}
-                      />
-                      <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        Đã qua đời
-                      </label>
-                    </div>
                   </header>
                   <div className="grid gap-6">
                     <InputField
-                      type="text"
-                      disabled={notFather}
-                      name="father.fullName"
-                      placeholder="Nhập họ tên cha..."
-                      label="Họ tên"
-                      value={values.father?.fullName}
-                      feedback={errors.father?.fullName}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                      type="select"
+                      label="Trạng thái thông tin"
+                      placeholder="Chọn trạng thái thông tin của cha..."
+                      value={values.father?.status}
+                      onChange={(selectedOption) => {
+                        handleChangeFatherInfo(
+                          'status',
+                          selectedOption,
+                          setFieldValue
+                        )
                       }}
-                      invalid={
-                        touched.father?.fullName && errors.father?.fullName
-                      }
+                      feedback={errors.father?.status}
+                      invalid={touched.father?.status && errors.father?.status}
+                      options={[
+                        { value: 'Có thông tin', label: 'Có thông tin' },
+                        { value: 'Không rõ', label: 'Không rõ' },
+                        { value: 'Đã qua đời', label: 'Đã qua đời' },
+                      ]}
                       isRequired
                     />
                     <InputField
                       type="text"
-                      disabled={notFather}
+                      name="father.fullName"
+                      placeholder="Nhập họ tên của cha..."
+                      label="Họ tên"
+                      value={values.father?.fullName}
+                      feedback={errors.father?.fullName}
+                      onChange={(e) => {
+                        handleChangeFatherInfo(
+                          'fullName',
+                          e.target.value,
+                          setFieldValue
+                        )
+                      }}
+                      invalid={
+                        touched.father?.fullName && errors.father?.fullName
+                      }
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
+                    />
+                    <InputField
+                      type="text"
                       name="father.yearOfBirth"
                       placeholder="Nhập năm sinh của cha..."
                       label="Năm sinh"
                       value={values.father?.yearOfBirth}
                       feedback={errors.father?.yearOfBirth}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeFatherInfo(
+                          'yearOfBirth',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.father?.yearOfBirth &&
                         errors.father?.yearOfBirth
                       }
-                      isRequired
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notFather}
                       name="father.phoneNumber"
                       placeholder="Nhập số điện thoại của cha..."
                       label="Số điện thoại"
                       value={values.father?.phoneNumber}
                       feedback={errors.father?.phoneNumber}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeFatherInfo(
+                          'phoneNumber',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.father?.phoneNumber &&
                         errors.father?.phoneNumber
                       }
-                      isRequired
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
                     />
                     <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900">
                       <header className="mb-5 text-center mx-auto">
@@ -424,42 +521,45 @@ export default function FamilyInfoForm() {
                       <div className="grid md:grid-cols-2 gap-6">
                         <InputField
                           type="select"
-                          isDisabled={notFather}
-                          label="Tỉnh/thành phố"
-                          placeholder="Chọn tỉnh/thành phố..."
+                          label="Tỉnh/Thành phố"
+                          placeholder="Chọn tỉnh/thành phố của cha..."
                           value={values.father?.provinceAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue(
-                              'father.provinceAddress',
-                              selectedOption
+                            handleChangeFatherInfo(
+                              'provinceAddress',
+                              selectedOption,
+                              setFieldValue
                             )
-                            setFieldValue('father.districtAddress', '')
-                            setFieldValue('father.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'father.provinceAddress',
-                              selectedOption
+                            handleChangeFatherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption(
-                              'father.districtAddress',
-                              ''
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('father.wardAddress', '')
+                            setDistricts([])
                             setWards([])
                             handleProvinceChange(selectedOption)
                           }}
                           clearValue={() => {
-                            setFieldValue('father.provinceAddress', '')
-                            setFieldValue('father.districtAddress', '')
-                            setFieldValue('father.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'father.provinceAddress',
-                              ''
+                            handleChangeFatherInfo(
+                              'provinceAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption(
-                              'father.districtAddress',
-                              ''
+                            handleChangeFatherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('father.wardAddress', '')
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
+                            )
                           }}
                           isLoading={loadingProvinces}
                           getOptionValue={(option) => option._id}
@@ -470,26 +570,39 @@ export default function FamilyInfoForm() {
                             errors.father?.provinceAddress
                           }
                           options={provinces}
-                          isRequired
+                          isRequired={
+                            values.father?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="select"
-                          isDisabled={notFather}
-                          label="Quận/huyện"
-                          placeholder="Chọn quận/huyện..."
+                          label="Quận/Huyện"
+                          placeholder="Chọn quận/huyện của cha..."
                           value={values.father?.districtAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue(
-                              'father.districtAddress',
-                              selectedOption
+                            handleChangeFatherInfo(
+                              'districtAddress',
+                              selectedOption,
+                              setFieldValue
                             )
-                            setFieldValue('father.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'father.districtAddress',
-                              selectedOption
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('father.wardAddress', '')
                             handleDistrictChange(selectedOption)
+                          }}
+                          clearValue={() => {
+                            handleChangeFatherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
+                            )
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
+                            )
                           }}
                           isLoading={loadingDistricts}
                           getOptionValue={(option) => option._id}
@@ -501,19 +614,27 @@ export default function FamilyInfoForm() {
                             errors.father?.districtAddress
                           }
                           options={districts}
-                          isRequired
+                          isRequired={
+                            values.father?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="select"
-                          isDisabled={notFather}
-                          label="Xã/phường/thị trấn"
-                          placeholder="Chọn xã/phường/thị trấn..."
+                          label="Xã/Phường"
+                          placeholder="Chọn xã/phường của cha..."
                           value={values.father?.wardAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue('father.wardAddress', selectedOption)
-                            handleSaveChildrenOption(
-                              'father.wardAddress',
-                              selectedOption
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              selectedOption,
+                              setFieldValue
+                            )
+                          }}
+                          clearValue={() => {
+                            handleChangeFatherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
                           }}
                           loadingMessage={() => 'Vui lòng chọn quận/huyện'}
@@ -526,48 +647,57 @@ export default function FamilyInfoForm() {
                             errors.father?.wardAddress
                           }
                           options={wards}
-                          isRequired
+                          isRequired={
+                            values.father?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="text"
-                          disabled={notFather}
                           name="father.detailAddress"
-                          placeholder="Nhập số nhà, tên đường, khu phố..."
+                          placeholder="Nhập số nhà, tên đường, khu phố của cha..."
                           label="Số nhà, tên đường, khu phố"
                           value={values.father?.detailAddress}
                           feedback={errors.father?.detailAddress}
                           onChange={(e) => {
-                            handleChange(e)
-                            handleSaveChildrenInput(e)
+                            handleChangeFatherInfo(
+                              'detailAddress',
+                              e.target.value,
+                              setFieldValue
+                            )
                           }}
                           invalid={
                             touched.father?.detailAddress &&
                             errors.father?.detailAddress
                           }
-                          isRequired
+                          isRequired={
+                            values.father?.status.value === 'Có thông tin'
+                          }
                         />
                       </div>
                     </div>
                     <InputField
                       type="text"
-                      disabled={notFather}
                       name="father.currentJob"
                       placeholder="Nhập nghề nghiệp hiện tại của cha..."
                       label="Nghề nghiệp hiện tại"
                       value={values.father?.currentJob}
                       feedback={errors.father?.currentJob}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeFatherInfo(
+                          'currentJob',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.father?.currentJob && errors.father?.currentJob
                       }
-                      isRequired
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notFather}
                       name="father.income"
                       placeholder="Nhập thu nhập của cha..."
                       label="Thu nhập"
@@ -575,102 +705,134 @@ export default function FamilyInfoForm() {
                       feedback={errors.father?.income}
                       note="Ví dụ: 3000000"
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeFatherInfo(
+                          'income',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={touched.father?.income && errors.father?.income}
-                      isRequired
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notFather}
                       name="father.healthStatus"
                       placeholder="Nhập tình trạng sức khỏe của cha..."
                       label="Tình trạng sức khỏe"
                       value={values.father?.healthStatus}
                       feedback={errors.father?.healthStatus}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeFatherInfo(
+                          'healthStatus',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.father?.healthStatus &&
                         errors.father?.healthStatus
                       }
-                      isRequired
+                      isRequired={
+                        values.father?.status.value === 'Có thông tin'
+                      }
                     />
                   </div>
                 </div>
+                {/* Phần nhập thông tin mẹ */}
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className=" my-5 text-center mx-auto">
                     <h2 className="flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
                       2. Thông tin mẹ
                     </h2>
-                    <div className="flex items-center mb-4">
-                      <input
-                        type="checkbox"
-                        checked={notMother}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        onChange={() => setNotMother(!notMother)}
-                      />
-                      <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        Đã qua đời
-                      </label>
-                    </div>
                   </header>
                   <div className="grid gap-6">
                     <InputField
-                      type="text"
-                      disabled={notMother}
-                      name="mother.fullName"
-                      placeholder="Nhập họ tên mẹ..."
-                      label="Họ tên"
-                      value={values.mother?.fullName}
-                      feedback={errors.mother?.fullName}
-                      onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                      type="select"
+                      label="Trạng thái thông tin"
+                      placeholder="Chọn trạng thái thông tin của mẹ..."
+                      value={values.mother?.status}
+                      onChange={(selectedOption) => {
+                        handleChangeMotherInfo(
+                          'status',
+                          selectedOption,
+                          setFieldValue
+                        )
                       }}
-                      invalid={
-                        touched.mother?.fullName && errors.mother?.fullName
-                      }
+                      feedback={errors.mother?.status}
+                      invalid={touched.mother?.status && errors.mother?.status}
+                      options={[
+                        { value: 'Có thông tin', label: 'Có thông tin' },
+                        { value: 'Không rõ', label: 'Không rõ' },
+                        { value: 'Đã qua đời', label: 'Đã qua đời' },
+                      ]}
                       isRequired
                     />
                     <InputField
                       type="text"
-                      disabled={notMother}
+                      name="mother.fullName"
+                      placeholder="Nhập họ tên của mẹ..."
+                      label="Họ tên"
+                      value={values.mother?.fullName}
+                      feedback={errors.mother?.fullName}
+                      onChange={(e) => {
+                        handleChangeMotherInfo(
+                          'fullName',
+                          e.target.value,
+                          setFieldValue
+                        )
+                      }}
+                      invalid={
+                        touched.mother?.fullName && errors.mother?.fullName
+                      }
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
+                    />
+                    <InputField
+                      type="text"
                       name="mother.yearOfBirth"
                       placeholder="Nhập năm sinh của mẹ..."
                       label="Năm sinh"
                       value={values.mother?.yearOfBirth}
                       feedback={errors.mother?.yearOfBirth}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeMotherInfo(
+                          'yearOfBirth',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.mother?.yearOfBirth &&
                         errors.mother?.yearOfBirth
                       }
-                      isRequired
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notMother}
                       name="mother.phoneNumber"
                       placeholder="Nhập số điện thoại của mẹ..."
                       label="Số điện thoại"
                       value={values.mother?.phoneNumber}
                       feedback={errors.mother?.phoneNumber}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeMotherInfo(
+                          'phoneNumber',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.mother?.phoneNumber &&
                         errors.mother?.phoneNumber
                       }
-                      isRequired
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
                     />
                     <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900">
                       <header className="mb-5 text-center mx-auto">
@@ -681,42 +843,45 @@ export default function FamilyInfoForm() {
                       <div className="grid md:grid-cols-2 gap-6">
                         <InputField
                           type="select"
-                          isDisabled={notMother}
-                          label="Tỉnh/thành phố"
-                          placeholder="Chọn tỉnh/thành phố..."
+                          label="Tỉnh/Thành phố"
+                          placeholder="Chọn tỉnh/thành phố của mẹ..."
                           value={values.mother?.provinceAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue(
-                              'mother.provinceAddress',
-                              selectedOption
+                            handleChangeMotherInfo(
+                              'provinceAddress',
+                              selectedOption,
+                              setFieldValue
                             )
-                            setFieldValue('mother.districtAddress', '')
-                            setFieldValue('mother.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'mother.provinceAddress',
-                              selectedOption
+                            handleChangeMotherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption(
-                              'mother.districtAddress',
-                              ''
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('mother.wardAddress', '')
+                            setDistricts([])
                             setWards([])
                             handleProvinceChange(selectedOption)
                           }}
                           clearValue={() => {
-                            setFieldValue('mother.provinceAddress', '')
-                            setFieldValue('mother.districtAddress', '')
-                            setFieldValue('mother.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'mother.provinceAddress',
-                              ''
+                            handleChangeMotherInfo(
+                              'provinceAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption(
-                              'mother.districtAddress',
-                              ''
+                            handleChangeMotherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('mother.wardAddress', '')
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
+                            )
                           }}
                           isLoading={loadingProvinces}
                           getOptionValue={(option) => option._id}
@@ -727,26 +892,39 @@ export default function FamilyInfoForm() {
                             errors.mother?.provinceAddress
                           }
                           options={provinces}
-                          isRequired
+                          isRequired={
+                            values.mother?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="select"
-                          isDisabled={notMother}
-                          label="Quận/huyện"
-                          placeholder="Chọn quận/huyện..."
+                          label="Quận/Huyện"
+                          placeholder="Chọn quận/huyện của mẹ..."
                           value={values.mother?.districtAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue(
-                              'mother.districtAddress',
-                              selectedOption
+                            handleChangeMotherInfo(
+                              'districtAddress',
+                              selectedOption,
+                              setFieldValue
                             )
-                            setFieldValue('mother.wardAddress', '')
-                            handleSaveChildrenOption(
-                              'mother.districtAddress',
-                              selectedOption
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
-                            handleSaveChildrenOption('mother.wardAddress', '')
                             handleDistrictChange(selectedOption)
+                          }}
+                          clearValue={() => {
+                            handleChangeMotherInfo(
+                              'districtAddress',
+                              '',
+                              setFieldValue
+                            )
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
+                            )
                           }}
                           isLoading={loadingDistricts}
                           getOptionValue={(option) => option._id}
@@ -758,19 +936,27 @@ export default function FamilyInfoForm() {
                             errors.mother?.districtAddress
                           }
                           options={districts}
-                          isRequired
+                          isRequired={
+                            values.mother?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="select"
-                          isDisabled={notMother}
-                          label="Xã/phường/thị trấn"
-                          placeholder="Chọn xã/phường/thị trấn..."
+                          label="Xã/Phường"
+                          placeholder="Chọn xã/phường của mẹ..."
                           value={values.mother?.wardAddress}
                           onChange={(selectedOption) => {
-                            setFieldValue('mother.wardAddress', selectedOption)
-                            handleSaveChildrenOption(
-                              'mother.wardAddress',
-                              selectedOption
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              selectedOption,
+                              setFieldValue
+                            )
+                          }}
+                          clearValue={() => {
+                            handleChangeMotherInfo(
+                              'wardAddress',
+                              '',
+                              setFieldValue
                             )
                           }}
                           loadingMessage={() => 'Vui lòng chọn quận/huyện'}
@@ -783,48 +969,57 @@ export default function FamilyInfoForm() {
                             errors.mother?.wardAddress
                           }
                           options={wards}
-                          isRequired
+                          isRequired={
+                            values.mother?.status.value === 'Có thông tin'
+                          }
                         />
                         <InputField
                           type="text"
-                          disabled={notMother}
                           name="mother.detailAddress"
-                          placeholder="Nhập số nhà, tên đường, khu phố..."
+                          placeholder="Nhập số nhà, tên đường, khu phố của mẹ..."
                           label="Số nhà, tên đường, khu phố"
                           value={values.mother?.detailAddress}
                           feedback={errors.mother?.detailAddress}
                           onChange={(e) => {
-                            handleChange(e)
-                            handleSaveChildrenInput(e)
+                            handleChangeMotherInfo(
+                              'detailAddress',
+                              e.target.value,
+                              setFieldValue
+                            )
                           }}
                           invalid={
                             touched.mother?.detailAddress &&
                             errors.mother?.detailAddress
                           }
-                          isRequired
+                          isRequired={
+                            values.mother?.status.value === 'Có thông tin'
+                          }
                         />
                       </div>
                     </div>
                     <InputField
                       type="text"
-                      disabled={notMother}
                       name="mother.currentJob"
                       placeholder="Nhập nghề nghiệp hiện tại của mẹ..."
                       label="Nghề nghiệp hiện tại"
                       value={values.mother?.currentJob}
                       feedback={errors.mother?.currentJob}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeMotherInfo(
+                          'currentJob',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.mother?.currentJob && errors.mother?.currentJob
                       }
-                      isRequired
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notMother}
                       name="mother.income"
                       placeholder="Nhập thu nhập của mẹ..."
                       label="Thu nhập"
@@ -832,32 +1027,42 @@ export default function FamilyInfoForm() {
                       feedback={errors.mother?.income}
                       note="Ví dụ: 3000000"
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeMotherInfo(
+                          'income',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={touched.mother?.income && errors.mother?.income}
-                      isRequired
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
                     />
                     <InputField
                       type="text"
-                      disabled={notMother}
                       name="mother.healthStatus"
                       placeholder="Nhập tình trạng sức khỏe của mẹ..."
                       label="Tình trạng sức khỏe"
                       value={values.mother?.healthStatus}
                       feedback={errors.mother?.healthStatus}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveChildrenInput(e)
+                        handleChangeMotherInfo(
+                          'healthStatus',
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
                       invalid={
                         touched.mother?.healthStatus &&
                         errors.mother?.healthStatus
                       }
-                      isRequired
+                      isRequired={
+                        values.mother?.status.value === 'Có thông tin'
+                      }
                     />
                   </div>
                 </div>
+                {/* Phần nhập thông tin người thân */}
                 <div className="p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900">
                   <header className="text-center mx-auto">
                     <h2 className="flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
@@ -1089,6 +1294,20 @@ export default function FamilyInfoForm() {
                                   )
                                   handleDistrictChange(selectedOption)
                                 }}
+                                clearValue={() => {
+                                  handleChangeRelativesInfo(
+                                    'districtAddress',
+                                    '',
+                                    index,
+                                    setFieldValue
+                                  )
+                                  handleChangeRelativesInfo(
+                                    'wardAddress',
+                                    '',
+                                    index,
+                                    setFieldValue
+                                  )
+                                }}
                                 isLoading={loadingDistricts}
                                 getOptionValue={(option) => option._id}
                                 getOptionLabel={(option) => option.name}
@@ -1114,6 +1333,14 @@ export default function FamilyInfoForm() {
                                   handleChangeRelativesInfo(
                                     'wardAddress',
                                     selectedOption,
+                                    index,
+                                    setFieldValue
+                                  )
+                                }}
+                                clearValue={() => {
+                                  handleChangeRelativesInfo(
+                                    'wardAddress',
+                                    '',
                                     index,
                                     setFieldValue
                                   )
