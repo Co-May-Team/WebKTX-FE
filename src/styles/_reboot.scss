@@ -173,7 +173,7 @@ dt {
 
 dd {
   margin-bottom: 0.5rem;
-  @include ltr-rtl('margin-left', 0); // 1
+  @include ltr-rtl("margin-left", 0); // 1
 }
 
 // Blockquote
@@ -404,7 +404,7 @@ select {
 // Set the cursor for non-`<button>` buttons
 //
 // Details at https://github.com/twbs/bootstrap/pull/30562
-[role='button'] {
+[role="button"] {
   cursor: pointer;
 }
 
@@ -422,9 +422,9 @@ select {
 // Remove the dropdown arrow only from text type inputs built with datalists in Chrome.
 // See https://stackoverflow.com/a/54997118
 
-[list]:not([type='date']):not([type='datetime-local']):not([type='month']):not(
-    [type='week']
-  ):not([type='time'])::-webkit-calendar-picker-indicator {
+[list]:not([type="date"]):not([type="datetime-local"]):not([type="month"]):not(
+    [type="week"]
+  ):not([type="time"])::-webkit-calendar-picker-indicator {
   display: none !important;
 }
 
@@ -479,7 +479,7 @@ fieldset {
 //    See https://github.com/twbs/bootstrap/issues/29712
 
 legend {
-  @include ltr-rtl('float', left); // 1
+  @include ltr-rtl("float", left); // 1
   width: 100%;
   padding: 0;
   margin-bottom: $legend-margin-bottom;
@@ -515,7 +515,7 @@ legend {
 //    be added to `.form-control` as it's not specific enough. For details, see
 //    https://github.com/twbs/bootstrap/issues/11586.
 
-[type='search'] {
+[type="search"] {
   outline-offset: -2px; // 1
   -webkit-appearance: textfield; // 2
 }
@@ -523,11 +523,11 @@ legend {
 // 1. A few input types should stay LTR
 // See https://rtlstyling.com/posts/rtl-styling#form-inputs
 
-*[dir='rtl'] {
-  [type='tel'],
-  [type='url'],
-  [type='email'],
-  [type='number'] {
+*[dir="rtl"] {
+  [type="tel"],
+  [type="url"],
+  [type="email"],
+  [type="number"] {
     direction: ltr;
   }
 }

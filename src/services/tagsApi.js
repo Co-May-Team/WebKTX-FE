@@ -1,6 +1,6 @@
-import axiosClient from './axiosClient'
+import axiosClient from "./axiosClient"
 
-const baseUrl = '/tags'
+const baseUrl = "/tags"
 const tagsApi = {
   getAll: () => {
     const requestUrl = `${baseUrl}`

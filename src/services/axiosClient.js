@@ -1,20 +1,20 @@
 // Import các thư viện cần thiết
-import axios from 'axios'
-import queryString from 'query-string'
-import { env } from '~/utils/constants/env'
+import axios from "axios"
+import queryString from "query-string"
+import { env } from "~/utils/constants/env"
 
 // Thiết lập cấu hình mặc định cho http request
 const axiosClient = axios.create({
   baseURL: env.BACKEND_URL, // Đường dẫn backend API
   headers: {
-    'content-type': 'application/json', // Thiết lập header để truyền dữ liệu dạng JSON
+    "content-type": "application/json", // Thiết lập header để truyền dữ liệu dạng JSON
   },
   paramsSerializer: (params) => queryString.stringify(params), // Thiết lập query params dạng chuỗi để gửi đi
 })
 
 axiosClient.interceptors.request.use(async (config) => {
   // Xử lý token, thêm vào header của request
-  config.headers.Authorization = localStorage.getItem('accessToken')
+  config.headers.Authorization = localStorage.getItem("accessToken")
   return config
 })
 

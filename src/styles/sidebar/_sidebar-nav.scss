@@ -97,7 +97,7 @@
 
     &:first-child {
       @include ltr-rtl(
-        'margin-left',
+        "margin-left",
         calc(var(--#{$prefix}sidebar-nav-link-padding-x) * -1)
       );
     }
@@ -149,8 +149,8 @@
       display: block;
       flex: 0 12px;
       height: 12px;
-      @include ltr-rtl('margin-left', auto);
-      content: '';
+      @include ltr-rtl("margin-left", auto);
+      content: "";
       background-image: var(--#{$prefix}sidebar-nav-group-indicator);
       background-repeat: no-repeat;
       background-position: center;
@@ -163,11 +163,11 @@
     list-style: none;
 
     .nav-link {
-      @include ltr-rtl('padding-left', var(--#{$prefix}sidebar-nav-icon-width));
+      @include ltr-rtl("padding-left", var(--#{$prefix}sidebar-nav-icon-width));
 
       .nav-icon {
         @include ltr-rtl(
-          'margin-left',
+          "margin-left",
           calc(var(--#{$prefix}sidebar-nav-icon-width) * -1)
         );
       }

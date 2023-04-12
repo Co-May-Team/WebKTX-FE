@@ -1,7 +1,7 @@
-import queryString from 'query-string'
-import axiosClient from './axiosClient'
+import queryString from "query-string"
+import axiosClient from "./axiosClient"
 
-const baseUrl = '/posts'
+const baseUrl = "/posts"
 const postsApi = {
   getAll: (params, filters) => {
     const requestUrl = `${baseUrl}?${queryString.stringify(params)}`
@@ -28,15 +28,15 @@ const postsApi = {
     return axiosClient.get(requestUrl)
   },
   uploadImages: (data) => {
-    const url = 'api/upload-images'
+    const url = "api/upload-images"
     return axiosClient.post(url, data)
   },
   getAllCategory: () => {
-    const requestUrl = '/category'
+    const requestUrl = "/category"
     return axiosClient.get(requestUrl)
   },
   getAllTag: () => {
-    const requestUrl = '/tags'
+    const requestUrl = "/tags"
     return axiosClient.get(requestUrl)
   },
 }

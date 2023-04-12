@@ -1,9 +1,9 @@
-import { fetchCategories } from './actions'
+import { fetchCategories } from "./actions"
 
-const { createSlice } = require('@reduxjs/toolkit')
+const { createSlice } = require("@reduxjs/toolkit")
 
 const categoriesSlice = createSlice({
-  name: 'categories',
+  name: "categories",
   initialState: {
     categories: [],
   },

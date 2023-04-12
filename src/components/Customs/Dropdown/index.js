@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types'
-import { useRef } from 'react'
-import { useClickOutside } from '~/hooks'
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
+import PropTypes from "prop-types"
+import { useRef } from "react"
+import { useClickOutside } from "~/hooks"
+import { bindClassNames } from "~/utils"
+import styles from "./index.module.scss"
 
 const cx = bindClassNames(styles)
 
@@ -16,12 +16,12 @@ function Dropdown({
   const dropdownRef = useRef()
   useClickOutside(dropdownRef, () => setVisible(false))
   return (
-    <div ref={dropdownRef} className={cx('container')}>
-      <div className={cx('toggle')} onClick={() => setVisible(!visible)}>
+    <div ref={dropdownRef} className={cx("container")}>
+      <div className={cx("toggle")} onClick={() => setVisible(!visible)}>
         {toggleButton}
       </div>
       <div
-        className={cx('menu', { visible }) + ' ' + animationClassNames}
+        className={cx("menu", { visible }) + " " + animationClassNames}
         onClick={() => setVisible(false)}
       >
         {children}

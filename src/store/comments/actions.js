@@ -1,46 +1,46 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import commentsApi from '~/services/commentsApi'
-import commentsSlice from './slice'
+import { createAsyncThunk } from "@reduxjs/toolkit"
+import commentsApi from "~/services/commentsApi"
+import commentsSlice from "./slice"
 
 export const { addCommentToList, updateCommentList } = commentsSlice.actions
 
 export const fetchComments = createAsyncThunk(
-  'comments/fetchComments',
+  "comments/fetchComments",
   async (params) => {
     const response = await commentsApi.getCommentList(params)
     return { comments: response.data.data, postId: params.postId }
   }
 )
 export const loadMoreComments = createAsyncThunk(
-  'comments/loadMoreComments',
+  "comments/loadMoreComments",
   async (params) => {
     const response = await commentsApi.getAll(params)
     return response.data.data
   }
 )
 export const addComment = createAsyncThunk(
-  'comments/addComment',
+  "comments/addComment",
   async (commentInfo) => {
     const response = await commentsApi.addComment(commentInfo)
     return response.data
   }
 )
 export const updateComment = createAsyncThunk(
-  'comments/updateComment',
+  "comments/updateComment",
   async (commentInfo) => {
     const response = await commentsApi.updateComment(commentInfo)
     return response.data
   }
 )
 export const deleteComment = createAsyncThunk(
-  'comments/deleteComment',
+  "comments/deleteComment",
   async (commentId) => {
     const response = await commentsApi.deleteComment(commentId)
     return { ...response.data, commentId: commentId }
   }
 )
 export const likeComment = createAsyncThunk(
-  'comments/likeComment',
+  "comments/likeComment",
   async ({ commentId, like }) => {
     // const response = await commentsApi.likeComment(commentId)
     // return response.data.data

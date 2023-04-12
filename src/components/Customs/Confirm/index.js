@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types'
-import { useEffect } from 'react'
-import Swal from 'sweetalert2'
+import PropTypes from "prop-types"
+import { useEffect } from "react"
+import Swal from "sweetalert2"
 
 const propTypes = {
   visible: PropTypes.bool.isRequired,
@@ -14,11 +14,11 @@ const propTypes = {
 const defaultProps = {
   visible: false,
   setVisible: null,
-  title: '',
-  content: '',
+  title: "",
+  content: "",
   onConfirm: null,
   showCancelButton: true,
-  cancelButtonText: 'Hủy',
+  cancelButtonText: "Hủy",
 }
 
 const Confirm = (props) => {

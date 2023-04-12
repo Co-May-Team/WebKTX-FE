@@ -1,20 +1,22 @@
-$dark-color: #D1D5D8;
+$dark-color: #d1d5d8;
 $dark-bg: rgba(var(--c-neutral-900), var(--comay-bg-opacity));
 $dark-border-color: #6b7280;
 $dark-placeholder-color: #6b7280;
 .dark {
-  font-family: 'Montserrat', sans-serif!important;
-  input,textarea {
+  font-family: "Montserrat", sans-serif !important;
+  input,
+  textarea {
     color: $dark-color;
   }
-  input:focus,textarea:focus {
+  input:focus,
+  textarea:focus {
     color: $dark-color;
   }
   .css-13cymwt-control {
-    background-color: $dark-bg!important;
+    background-color: $dark-bg !important;
     border-color: $dark-border-color;
     :focus {
-      background-color: $dark-bg!important;
+      background-color: $dark-bg !important;
       border-color: $dark-border-color;
     }
   }
@@ -22,7 +24,8 @@ $dark-placeholder-color: #6b7280;
     font-family: inherit;
     color: $dark-placeholder-color;
   }
-  .css-qbdosj-Input, .css-1dimb5e-singleValue {
+  .css-qbdosj-Input,
+  .css-1dimb5e-singleValue {
     font-family: inherit;
     color: $dark-color;
   }

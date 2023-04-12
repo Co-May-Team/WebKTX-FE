@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import * as actions from '~/store/comments/actions'
-import { authSelector, commentsSelector } from '~/store/selectors'
-import CommentItem from './CommentItem'
-import AddComment from './FormSubmitComment'
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import * as actions from "~/store/comments/actions"
+import { authSelector, commentsSelector } from "~/store/selectors"
+import CommentItem from "./CommentItem"
+import AddComment from "./FormSubmitComment"
 
 export default function Comments({ postId = null }) {
   const userInfo = useSelector(authSelector).userInfo
@@ -58,7 +58,7 @@ export default function Comments({ postId = null }) {
 
   const renderAllChilds = (childs) => {
     return (
-      <ul className="pl-4 mt-5 space-y-5 md:pl-11">
+      <ul className='pl-4 mt-5 space-y-5 md:pl-11'>
         {childs.map((comment) => (
           <li key={comment.id}>
             <CommentItem comment={comment} postId={postId} />
@@ -78,21 +78,21 @@ export default function Comments({ postId = null }) {
   }, [postId])
 
   return (
-    <div id="binh-luan">
-      <div className="max-w-screen-md mx-auto mt-20 mb-10 ">
-        <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
+    <div id='binh-luan'>
+      <div className='max-w-screen-md mx-auto mt-20 mb-10 '>
+        <h3 className='text-xl font-semibold text-neutral-800 dark:text-neutral-200'>
           Thảo luận ({comments?.length || 0})
         </h3>
         {userInfo?.id ? (
           <AddComment postId={postId} />
         ) : (
-          <div className="flex mt-5 justify-center items-center">
-            <h4 className="text-center">Vui lòng đăng nhập để bình luận...</h4>
+          <div className='flex mt-5 justify-center items-center'>
+            <h4 className='text-center'>Vui lòng đăng nhập để bình luận...</h4>
           </div>
         )}
       </div>
-      <div className="max-w-screen-md mx-auto my-4">
-        <ul className="space-y-5">
+      <div className='max-w-screen-md mx-auto my-4'>
+        <ul className='space-y-5'>
           {comments.map((comment) => (
             <li key={comment.id}>
               <CommentItem comment={comment} postId={postId} />
