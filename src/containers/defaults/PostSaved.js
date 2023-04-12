@@ -3,6 +3,7 @@ import { useState } from "react"
 import { FaEye } from "react-icons/fa"
 import { Fade } from "react-reveal"
 import { NavLink } from "react-router-dom"
+import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import convertToUrl from "~/utils/commons/convertToUrl"
@@ -13,7 +14,7 @@ export default function PostSaved() {
     JSON.parse(localStorage.getItem("savedPosts"))
   )
   return (
-    <>
+    <Motion>
       <SeoHelmet title='Bài viết đã lưu' />
       <div className='container py-10 lg:py-16'>
         <div className='relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50'>
@@ -174,6 +175,6 @@ export default function PostSaved() {
           </div>
         )}
       </div>
-    </>
+    </Motion>
   )
 }

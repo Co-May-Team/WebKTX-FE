@@ -6,6 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { Fade } from "react-reveal"
 import { NavLink, useSearchParams } from "react-router-dom"
 import Loading from "~/components/Loading"
+import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import { useClickOutside } from "~/hooks"
@@ -100,7 +101,7 @@ export default function Search() {
   useClickOutside(filterDropdownRef, () => setVisibleFilterDropdown(false))
 
   return (
-    <>
+    <Motion>
       <SeoHelmet
         title={
           searchParams.get("tu-khoa") === ""
@@ -489,6 +490,6 @@ export default function Search() {
           )}
         </main>
       </div>
-    </>
+    </Motion>
   )
 }

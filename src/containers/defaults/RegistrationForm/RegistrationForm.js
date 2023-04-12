@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux"
+import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { authSelector } from "~/store/selectors"
 import FamilyInfoForm from "./FamilyInfoForm"
@@ -93,7 +94,7 @@ export default function RegistrationForm() {
   document.title =
     "Biểu mẫu đăng ký vào Ký Túc Xá Cỏ May năm học 2023 - 2024 | KTX Cỏ May"
   return (
-    <>
+    <Motion>
       <SeoHelmet title='Biểu mẫu đăng ký xét tuyển vào KTX Cỏ May năm học 2023 - 2024' />
       {userInfo?.id ? (
         <>
@@ -153,6 +154,6 @@ export default function RegistrationForm() {
           <div className='text-center'>Vui lòng đăng nhập...</div>
         </div>
       )}
-    </>
+    </Motion>
   )
 }
