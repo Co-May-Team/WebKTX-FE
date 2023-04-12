@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import { Fade } from "react-reveal"
 import { NavLink, useParams } from "react-router-dom"
 import Loading from "~/components/Loading"
+import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import postsApi from "~/services/postsApi"
@@ -62,7 +63,7 @@ export default function PostsHome() {
   }, [filters])
 
   return (
-    <div className='container py-10 lg:py-16'>
+    <Motion className='container py-10 lg:py-16'>
       <SeoHelmet title={tagInfo?.tagName} />
       <div className='relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50'>
         <div className='text-center w-full max-w-2xl mx-auto '>
@@ -215,6 +216,6 @@ export default function PostsHome() {
           <div className='text-center'>Trống</div>
         </div>
       )}
-    </div>
+    </Motion>
   )
 }

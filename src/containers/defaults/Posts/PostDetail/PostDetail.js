@@ -28,6 +28,7 @@ import {
 } from "react-share"
 import Confirm from "~/components/Customs/Confirm"
 import Loading from "~/components/Loading"
+import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SubmitPost from "~/containers/admin/Posts/SubmitPost"
 import { useClickOutside } from "~/hooks"
@@ -190,7 +191,7 @@ export default function PostDetail(props) {
   }
 
   return (
-    <>
+    <Motion>
       {loading ? (
         <Loading />
       ) : (
@@ -575,6 +576,6 @@ export default function PostDetail(props) {
           )}
         </>
       )}
-    </>
+    </Motion>
   )
 }

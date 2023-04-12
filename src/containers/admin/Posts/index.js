@@ -9,6 +9,7 @@ import { Fade } from "react-reveal"
 import { NavLink } from "react-router-dom"
 import Confirm from "~/components/Customs/Confirm"
 import Loading from "~/components/Loading"
+import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import { useClickOutside } from "~/hooks"
 import { deletePost, fetchPosts, loadMorePosts } from "~/store/posts/actions"
@@ -71,7 +72,7 @@ export default function Posts() {
   useClickOutside(filterDropdownRef, () => setVisibleFilterDropdown(false))
 
   return (
-    <div className='relative'>
+    <Motion className='relative'>
       <div className='flex flex-col mb-8 relative'>
         <div className='relative flex flex-col items-center sm:flex-row justify-between mb-6 md:mb-8 text-neutral-900 dark:text-neutral-50'>
           <div className='max-w-2xl'>
@@ -421,6 +422,6 @@ export default function Posts() {
           onConfirm={handleDeletePost}
         />
       )}
-    </div>
+    </Motion>
   )
 }

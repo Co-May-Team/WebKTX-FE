@@ -6,6 +6,7 @@ import { Navigate, NavLink, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
+import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { login } from "~/store/auth/actions"
 import { authSelector } from "~/store/selectors"
@@ -71,7 +72,7 @@ export default function Login() {
     return JSON.parse(jsonPayload)
   }
   return (
-    <>
+    <Motion>
       <SeoHelmet title='Đăng nhập' />
       <div className='relative'>
         <div
@@ -172,6 +173,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </Motion>
   )
 }

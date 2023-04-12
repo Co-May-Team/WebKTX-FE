@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
+import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { fetchCategories } from "~/store/categories/actions"
 import { fetchTags } from "~/store/tags/actions"
@@ -16,7 +17,7 @@ export default function Home() {
     dispatch(fetchCategories())
   }, [])
   return (
-    <>
+    <Motion>
       <SeoHelmet title='Trang chủ' />
       {/* Hero section */}
       {/* <div>
@@ -33,6 +34,6 @@ export default function Home() {
       <VideosSection />
 
       {/* Google map */}
-    </>
+    </Motion>
   )
 }

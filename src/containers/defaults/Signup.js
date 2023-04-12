@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { NavLink } from "react-router-dom"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
+import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { signup } from "~/store/auth/actions"
 import { path } from "~/utils"
@@ -44,7 +45,7 @@ export default function Signup() {
   }
   //
   return (
-    <>
+    <Motion>
       <SeoHelmet title='Đăng ký' />
       <div className='relative'>
         <div
@@ -190,6 +191,6 @@ export default function Signup() {
           </div>
         </div>
       </div>
-    </>
+    </Motion>
   )
 }
