@@ -1,9 +1,13 @@
-import axiosClient from './axiosClient'
+import axiosClient from "./axiosClient"
 
-const baseUrl = '/api/auth'
+const baseUrl = "/api/auth"
 const authApi = {
   login: (userInfo) => {
     const requestUrl = `${baseUrl}/signin`
+    return axiosClient.post(requestUrl, userInfo)
+  },
+  signup: (userInfo) => {
+    const requestUrl = `${baseUrl}/signup`
     return axiosClient.post(requestUrl, userInfo)
   },
   changePassword: (data) => {

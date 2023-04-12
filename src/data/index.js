@@ -1,1 +1,1 @@
-export { default as navList } from './navLisk'
+export { default as navList } from "./navLisk"

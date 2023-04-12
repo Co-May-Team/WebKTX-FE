@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import Swal from 'sweetalert2'
+import { createSlice } from "@reduxjs/toolkit"
+import Swal from "sweetalert2"
 import {
   addComment,
   deleteComment,
@@ -7,17 +7,17 @@ import {
   likeComment,
   loadMoreComments,
   updateComment,
-} from './actions'
+} from "./actions"
 
 const Toast = Swal.mixin({
   toast: true,
-  position: 'bottom-end',
+  position: "bottom-end",
   showConfirmButton: false,
   timer: 10000,
   timerProgressBar: true,
   didOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
+    toast.addEventListener("mouseenter", Swal.stopTimer)
+    toast.addEventListener("mouseleave", Swal.resumeTimer)
   },
 })
 
@@ -39,11 +39,11 @@ const getAllComments = (comments) => {
 }
 
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState: {
-    status: 'idle',
+    status: "idle",
     comments: [],
-    postId: '',
+    postId: "",
   },
   reducers: {
     addCommentToList: (state, action) => {
@@ -60,64 +60,64 @@ const commentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchComments.pending, (state, action) => {
-        state.status = 'loading'
+        state.status = "loading"
       })
       .addCase(fetchComments.fulfilled, (state, action) => {
         state.comments = action.payload.comments
         state.postId = action.payload.postId
-        state.status = 'success'
+        state.status = "success"
       })
       .addCase(fetchComments.rejected, (state, action) => {
-        state.status = 'error'
+        state.status = "error"
         Toast.fire({
-          title: 'Thêm bình luận',
+          title: "Thêm bình luận",
           text: action.error.message,
-          icon: 'warning',
+          icon: "warning",
         })
       })
       .addCase(loadMoreComments.pending, (state, action) => {
-        state.status = 'loadingMore'
+        state.status = "loadingMore"
       })
       .addCase(loadMoreComments.fulfilled, (state, action) => {
         if (action.payload.comments?.length === 0) {
-          state.status = 'loadingFull'
+          state.status = "loadingFull"
         } else {
           state.comments = [...state.comments, ...action.payload.comments]
           state.pagination = action.payload.pagination
-          state.status = 'success'
+          state.status = "success"
         }
       })
       .addCase(loadMoreComments.rejected, (state, action) => {
-        state.status = 'error'
+        state.status = "error"
       })
       .addCase(addComment.pending, (state, action) => {
-        state.status = 'isSubmitting'
+        state.status = "isSubmitting"
       })
       .addCase(addComment.fulfilled, (state, action) => {
-        if (action.payload.status === 'OK') {
+        if (action.payload.status === "OK") {
           state.comments.unshift(action.payload.data)
           Toast.fire({
-            title: 'Thêm bình luận',
+            title: "Thêm bình luận",
             text: action.payload.message,
-            icon: 'success',
+            icon: "success",
           })
         } else {
           Toast.fire({
-            title: 'Thêm bình luận',
+            title: "Thêm bình luận",
             text: action.payload.message,
-            icon: 'warning',
+            icon: "warning",
           })
         }
       })
       .addCase(addComment.rejected, (state, action) => {
         Toast.fire({
-          title: 'Thêm bình luận',
+          title: "Thêm bình luận",
           text: action.error.message,
-          icon: 'error',
+          icon: "error",
         })
       })
       .addCase(updateComment.pending, (state, action) => {
-        state.status = 'isSubmitting'
+        state.status = "isSubmitting"
       })
       .addCase(updateComment.fulfilled, (state, action) => {
         function updateOrDeleteComment(comments, id, newData) {
@@ -143,7 +143,7 @@ const commentsSlice = createSlice({
             }
           })
         }
-        if (action.payload.status === 'OK') {
+        if (action.payload.status === "OK") {
           updateOrDeleteComment(
             state.comments,
             action.payload.data.id,
@@ -155,23 +155,23 @@ const commentsSlice = createSlice({
           //   }
           // })
           Toast.fire({
-            title: 'Chỉnh sửa bình luận',
+            title: "Chỉnh sửa bình luận",
             text: action.payload.message,
-            icon: 'success',
+            icon: "success",
           })
         } else {
           Toast.fire({
-            title: 'Chỉnh sửa bình luận',
+            title: "Chỉnh sửa bình luận",
             text: action.payload.message,
-            icon: 'warning',
+            icon: "warning",
           })
         }
       })
       .addCase(updateComment.rejected, (state, action) => {
         Toast.fire({
-          title: 'Chỉnh sửa bình luận',
+          title: "Chỉnh sửa bình luận",
           text: action.error.message,
-          icon: 'error',
+          icon: "error",
         })
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
@@ -198,7 +198,7 @@ const commentsSlice = createSlice({
             }
           })
         }
-        if (action.payload.status === 'OK') {
+        if (action.payload.status === "OK") {
           updateOrDeleteComment(
             state.comments,
             action.payload.data.id,
@@ -208,23 +208,23 @@ const commentsSlice = createSlice({
           //   (comment) => comment.commentId !== action.payload.commentId
           // )
           Toast.fire({
-            title: 'Xóa bình luận',
+            title: "Xóa bình luận",
             text: action.payload.message,
-            icon: 'success',
+            icon: "success",
           })
         } else {
           Toast.fire({
-            title: 'Xóa bình luận',
+            title: "Xóa bình luận",
             text: action.payload.message,
-            icon: 'warning',
+            icon: "warning",
           })
         }
       })
       .addCase(deleteComment.rejected, (state, action) => {
         Toast.fire({
-          title: 'Xóa bình luận',
+          title: "Xóa bình luận",
           text: action.error.message,
-          icon: 'error',
+          icon: "error",
         })
       })
       .addCase(likeComment.fulfilled, (state, action) => {

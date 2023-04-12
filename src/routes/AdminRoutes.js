@@ -1,19 +1,19 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { AdminLayout } from '~/layouts'
-import { authSelector } from '~/store/selectors'
-import { path } from '~/utils'
+import React from "react"
+import { useSelector } from "react-redux"
+import { Navigate, Route, Routes } from "react-router-dom"
+import { AdminLayout } from "~/layouts"
+import { authSelector } from "~/store/selectors"
+import { path } from "~/utils"
 
-const Posts = React.lazy(() => import('~/containers/admin/Posts'))
+const Posts = React.lazy(() => import("~/containers/admin/Posts"))
 
 const adminRoutes = [
   {
     id: Math.random(),
     Container: Navigate,
-    path: '*',
+    path: "*",
     replace: true,
-    to: '/404',
+    to: "/404",
   },
   // {
   //   id: Math.random(),
@@ -32,7 +32,7 @@ export default function AdminRoutes() {
   const userInfo = useSelector(authSelector).userInfo
 
   if (!(status === "user") || userInfo?.googleAccount === true) {
-    return <Navigate to="/" />
+    return <Navigate to='/' />
   }
 
   const renderRoutes = () => {

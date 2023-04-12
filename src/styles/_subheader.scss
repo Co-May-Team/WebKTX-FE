@@ -27,7 +27,7 @@
 .subheader-nav {
   display: flex;
   flex-direction: row; // cannot use `inherit` to get the `.header`s value
-  @include ltr-rtl('padding-left', 0);
+  @include ltr-rtl("padding-left", 0);
   margin-bottom: 0;
   list-style: none;
 

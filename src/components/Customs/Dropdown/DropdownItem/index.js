@@ -1,11 +1,11 @@
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
+import { bindClassNames } from "~/utils"
+import styles from "./index.module.scss"
 
 const cx = bindClassNames(styles)
 
 function DropdownItem({ children, ...props }) {
   return (
-    <div className={cx('container')} {...props}>
+    <div className={cx("container")} {...props}>
       {children}
     </div>
   )

@@ -1,9 +1,9 @@
-import { fetchTags } from './actions'
+import { fetchTags } from "./actions"
 
-const { createSlice } = require('@reduxjs/toolkit')
+const { createSlice } = require("@reduxjs/toolkit")
 
 const tagsSlice = createSlice({
-  name: 'tags',
+  name: "tags",
   initialState: {
     tags: [],
   },

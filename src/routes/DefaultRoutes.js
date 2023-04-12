@@ -1,19 +1,20 @@
-import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import ImagesDetail from '~/containers/defaults/Posts/PostDetail/ImagesDetail'
-import PostDetail from '~/containers/defaults/Posts/PostDetail/PostDetail'
-import { DefaultLayout } from '~/layouts'
-import { path } from '~/utils'
+import React from "react"
+import { Navigate, Route, Routes } from "react-router-dom"
+import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetail"
+import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetail"
+import { DefaultLayout } from "~/layouts"
+import { path } from "~/utils"
 
-const Home = React.lazy(() => import('~/containers/defaults/Home'))
-const Login = React.lazy(() => import('~/containers/defaults/Login'))
-const PostSaved = React.lazy(() => import('~/containers/defaults/PostSaved'))
-const Search = React.lazy(() => import('~/containers/defaults/Search'))
+const Home = React.lazy(() => import("~/containers/defaults/Home"))
+const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
+const Login = React.lazy(() => import("~/containers/defaults/Login"))
+const PostSaved = React.lazy(() => import("~/containers/defaults/PostSaved"))
+const Search = React.lazy(() => import("~/containers/defaults/Search"))
 const PostsHome = React.lazy(() =>
-  import('~/containers/defaults/Posts/PostsHome')
+  import("~/containers/defaults/Posts/PostsHome")
 )
 const RegistrationForm = React.lazy(() =>
-  import('~/containers/defaults/RegistrationForm/RegistrationForm')
+  import("~/containers/defaults/RegistrationForm/RegistrationForm")
 )
 // const PostDetail = React.lazy(() =>
 //   import('~/containers/defaults/Posts/PostDetail/PostDetail')
@@ -21,6 +22,7 @@ const RegistrationForm = React.lazy(() =>
 
 const defaultRoutes = [
   { id: Math.random(), Container: Home, path: path.HOME },
+  { id: Math.random(), Container: Signup, path: path.SIGNUP },
   { id: Math.random(), Container: Login, path: path.LOGIN },
   { id: Math.random(), Container: PostSaved, path: path.POSTSAVED },
   { id: Math.random(), Container: Search, path: path.SEARCH },
@@ -35,9 +37,9 @@ const defaultRoutes = [
   {
     id: Math.random(),
     Container: Navigate,
-    path: '*',
+    path: "*",
     replace: true,
-    to: '/404',
+    to: "/404",
   },
 ]
 

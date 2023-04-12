@@ -1,7 +1,7 @@
-const { createSlice } = require('@reduxjs/toolkit')
+const { createSlice } = require("@reduxjs/toolkit")
 
 const sidebarSlice = createSlice({
-  name: 'sidebar',
+  name: "sidebar",
   initialState: {
     sidebarShow: true,
     sidebarBackdropShow: true,

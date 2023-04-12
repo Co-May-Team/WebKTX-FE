@@ -1,4 +1,4 @@
-import { path } from '~/utils'
+import { path } from "~/utils"
 
 const navList = [
   // {
@@ -7,7 +7,7 @@ const navList = [
   // },
   {
     id: 2,
-    name: 'Quản lý bài viết',
+    name: "Quản lý bài viết",
     to: `${path.ADMIN + path.POSTS}`,
   },
 ]
