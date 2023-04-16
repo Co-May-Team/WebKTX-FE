@@ -332,16 +332,16 @@ export default function Posts() {
                           <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-7 w-7 text-sm ring-1 ring-white dark:ring-neutral-900'>
                             <img
                               className='absolute inset-0 w-full h-full object-cover'
-                              src={defaultAvatar}
-                              alt='Bác Phạm Văn Bên'
-                              title='Bác Phạm Văn Bên'
+                              src={post?.userInfo.avatar}
+                              alt={post?.userInfo.fullName}
+                              title={post?.userInfo.fullName}
                             />
                             <span className='wil-avatar__name'>
-                              Bác Phạm Văn Bên
+                            {post?.userInfo.fullName}
                             </span>
                           </div>
                           <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                            KTX Cỏ May
+                          {post?.userInfo.fullName}
                           </span>
                         </div>
                         <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>

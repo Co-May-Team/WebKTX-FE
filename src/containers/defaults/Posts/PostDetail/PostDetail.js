@@ -226,19 +226,19 @@ export default function PostDetail(props) {
                           <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full shadow-inner h-10 w-10 sm:h-11 sm:w-11 text-xl ring-1 ring-white dark:ring-neutral-900'>
                             <img
                               className='absolute inset-0 w-full h-full object-cover'
-                              src={defaultAvatar}
-                              alt='Bác Phạm Văn Bên'
-                              title='Bác Phạm Văn Bên'
+                              src={postInfo?.userInfo.avatar}
+                              alt={postInfo?.userInfo.fullName}
+                              title={postInfo?.userInfo.fullName}
                             />
                             <span className='wil-avatar__name'>
-                              Bác Phạm Văn Bên
+                            {postInfo?.userInfo.fullName}
                             </span>
                           </div>
                         </div>
                         <div className='ml-3'>
                           <div className='flex items-center'>
                             <div className='block font-semibold'>
-                              KTX Cỏ May
+                            {postInfo?.userInfo.fullName}
                             </div>
                           </div>
                           <div className='text-xs mt-[6px]'>

@@ -75,27 +75,12 @@ const commentsSlice = createSlice({
           icon: "warning",
         })
       })
-      .addCase(loadMoreComments.pending, (state, action) => {
-        state.status = "loadingMore"
-      })
-      .addCase(loadMoreComments.fulfilled, (state, action) => {
-        if (action.payload.comments?.length === 0) {
-          state.status = "loadingFull"
-        } else {
-          state.comments = [...state.comments, ...action.payload.comments]
-          state.pagination = action.payload.pagination
-          state.status = "success"
-        }
-      })
-      .addCase(loadMoreComments.rejected, (state, action) => {
-        state.status = "error"
-      })
       .addCase(addComment.pending, (state, action) => {
         state.status = "isSubmitting"
       })
       .addCase(addComment.fulfilled, (state, action) => {
         if (action.payload.status === "OK") {
-          state.comments.unshift(action.payload.data)
+          state.comments = action.payload.data
           Toast.fire({
             title: "Thêm bình luận",
             text: action.payload.message,
@@ -120,40 +105,8 @@ const commentsSlice = createSlice({
         state.status = "isSubmitting"
       })
       .addCase(updateComment.fulfilled, (state, action) => {
-        function updateOrDeleteComment(comments, id, newData) {
-          comments.forEach((comment, index, parent) => {
-            // Nếu id của comment hiện tại trùng với id được truyền vào
-            if (comment.id === id) {
-              // Nếu newData khác undefined, thực hiện update dữ liệu mới cho comment hiện tại
-              if (newData !== undefined) {
-                parent[index] = { ...comment, ...newData }
-              } else {
-                // Nếu newData là undefined, xóa comment hiện tại khỏi mảng parent
-                parent.splice(index, 1)
-              }
-            } else {
-              // Nếu comment hiện tại có các comment con, thực hiện đệ quy để duyệt qua các comment con
-              if (comment.childs.length > 0) {
-                updateOrDeleteComment(
-                  comment.childs,
-                  action.payload.id,
-                  action.payload
-                )
-              }
-            }
-          })
-        }
         if (action.payload.status === "OK") {
-          updateOrDeleteComment(
-            state.comments,
-            action.payload.data.id,
-            action.payload.data
-          )
-          // state.comments.forEach((comment, index, array) => {
-          //   if (comment.commentId === action.payload.data.commentId) {
-          //     array[index] = action.payload.data
-          //   }
-          // })
+          state.comments = action.payload.data
           Toast.fire({
             title: "Chỉnh sửa bình luận",
             text: action.payload.message,
@@ -175,38 +128,8 @@ const commentsSlice = createSlice({
         })
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
-        function updateOrDeleteComment(comments, id, newData) {
-          comments.forEach((comment, index, parent) => {
-            // Nếu id của comment hiện tại trùng với id được truyền vào
-            if (comment.id === id) {
-              // Nếu newData khác undefined, thực hiện update dữ liệu mới cho comment hiện tại
-              if (newData !== undefined) {
-                parent[index] = { ...comment, ...newData }
-              } else {
-                // Nếu newData là undefined, xóa comment hiện tại khỏi mảng parent
-                parent.splice(index, 1)
-              }
-            } else {
-              // Nếu comment hiện tại có các comment con, thực hiện đệ quy để duyệt qua các comment con
-              if (comment.childs.length > 0) {
-                updateOrDeleteComment(
-                  comment.childs,
-                  action.payload.id,
-                  action.payload
-                )
-              }
-            }
-          })
-        }
         if (action.payload.status === "OK") {
-          updateOrDeleteComment(
-            state.comments,
-            action.payload.data.id,
-            undefined
-          )
-          // state.comments = state.comments.filter(
-          //   (comment) => comment.commentId !== action.payload.commentId
-          // )
+          state.comments = action.payload.data
           Toast.fire({
             title: "Xóa bình luận",
             text: action.payload.message,

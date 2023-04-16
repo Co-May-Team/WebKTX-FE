@@ -7,16 +7,23 @@ import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
+import { useState } from "react"
 
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
 
-  const steps = [
-    { label: "Personal Info", component: PersonalInfoForm },
-    { label: "Family Info", component: FamilyInfoForm },
-    { label: "Student Info", component: StudentInfoForm },
-    { label: "Files Upload", component: FilesUploadForm },
-  ]
+  const [formStatus, setFormStatus] = useState({
+    personalInfo: false,
+    familyInfo: false,
+    studentInfo: false,
+    filesUpload: false,
+  })
+  const handleFormStatus = (formName, status) => {
+    setFormStatus({
+      ...formStatus,
+      [formName]: status
+    });
+  }
 
   const handleGenerateFiles = () => {
     const info = {
@@ -435,10 +442,10 @@ export default function RegistrationForm() {
               </a>
             </div>
           </header>
-          <PersonalInfoForm />
-          <FamilyInfoForm />
-          <StudentInfoForm />
-          <FilesUploadForm>
+          <PersonalInfoForm handleFormStatus />
+          <FamilyInfoForm handleFormStatus />
+          <StudentInfoForm handleFormStatus />
+          <FilesUploadForm handleFormStatus>
             <div className='flex mt-5 justify-center items-center'>
               <button
                 className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'

@@ -42,16 +42,13 @@ export default function Login() {
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(true)
     await dispatch(login(values))
-    if (status === "user") {
-      navigate(-1)
-    }
     actions.setSubmitting(false)
   }
   //
-  const onSuccess = (response) => {
+  const onSuccess = async (response) => {
     const info = parseJwt(response.credential)
     localStorage.setItem("accessToken", "Bearer " + response.credential)
-    dispatch(getUserInfo(info.email))
+    await dispatch(getUserInfo(info.email))
     navigate(-1)
   }
 

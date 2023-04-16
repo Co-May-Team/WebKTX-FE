@@ -14,7 +14,6 @@ import postsApi from "~/services/postsApi"
 import { tagsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import readingTime from "~/utils/commons/readingTime"
-import { defaultAvatar } from "~/utils/constants/default"
 
 export default function PostsHome() {
   const tagList = useSelector(tagsSelector).tags
@@ -181,17 +180,17 @@ export default function PostsHome() {
                       <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-10 w-10 text-base flex-shrink-0 mr-3'>
                         <img
                           className='absolute inset-0 w-full h-full object-cover'
-                          src={defaultAvatar}
-                          alt='Bác Phạm Văn Bên'
-                          title='Bác Phạm Văn Bên'
+                          src={post?.userInfo.avatar}
+                          alt={post?.userInfo.fullName}
+                          title={post?.userInfo.fullName}
                         />
                         <span className='wil-avatar__name'>
-                          Bác Phạm Văn Bên
+                          {post?.userInfo.fullName}
                         </span>
                       </div>
                       <div>
                         <h2 className='text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                          KTX Cỏ May
+                          {post?.userInfo.fullName}
                         </h2>
                         <span className='flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400'>
                           <span>{moment(post?.publishedAt).format("lll")}</span>

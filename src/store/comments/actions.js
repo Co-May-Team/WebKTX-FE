@@ -11,13 +11,6 @@ export const fetchComments = createAsyncThunk(
     return { comments: response.data.data, postId: params.postId }
   }
 )
-export const loadMoreComments = createAsyncThunk(
-  "comments/loadMoreComments",
-  async (params) => {
-    const response = await commentsApi.getAll(params)
-    return response.data.data
-  }
-)
 export const addComment = createAsyncThunk(
   "comments/addComment",
   async (commentInfo) => {

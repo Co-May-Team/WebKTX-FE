@@ -19,7 +19,7 @@ function AvatarDropdown() {
   useClickOutside(avatarDropdownRef, () => setVisibleAvatarDropdown(false))
 
   return (
-    <div className='relative' ref={avatarDropdownRef}>
+    <div className='relative flex' ref={avatarDropdownRef}>
       <button
         className='inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
         onClick={() => setVisibleAvatarDropdown(!visibleAvatarDropdown)}
@@ -35,7 +35,7 @@ function AvatarDropdown() {
         </div>
       </button>
       {visibleAvatarDropdown && (
-        <div className='absolute z-10 w-screen max-w-[260px] px-4 -right-10 sm:right-0 sm:px-0 opacity-100 translate-y-0 transition animate__animated animate__fadeInRight animate__faster'>
+        <div className='absolute z-10 w-screen max-w-xs px-4 -right-10 sm:right-0 sm:px-0 opacity-100 translate-y-0 transition animate__animated animate__fadeInRight animate__faster'>
           <div className='overflow-hidden rounded-3xl shadow-lg ring-1 ring-black ring-opacity-5'>
             <div className='relative grid grid-cols-1 gap-6 bg-white dark:bg-neutral-800 py-7 px-6'>
               <div className='flex items-center space-x-3'>
@@ -55,41 +55,43 @@ function AvatarDropdown() {
                   </p>
                 </div>
               </div>
-              <div className='w-full border-b border-neutral-200 dark:border-neutral-700' />
-              <NavLink
-                className='flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50'
-                to={path.ADMIN + path.ADMIN_HOME}
-              >
-                <div className='flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300'>
-                  <svg
-                    width={24}
-                    height={24}
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
+              {userInfo?.admin && (
+                <>
+                  <div className='w-full border-b border-neutral-200 dark:border-neutral-700' />
+                  <NavLink
+                    className='flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50'
+                    to={path.ADMIN + path.ADMIN_HOME}
                   >
-                    <path
-                      d='M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                    <path
-                      d='M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                    />
-                  </svg>
-                </div>
-                {userInfo?.admin && (
-                  <div className='ml-4'>
-                    <p className='text-sm font-medium '>Trình quản lý</p>
-                  </div>
-                )}
-              </NavLink>
+                    <div className='flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300'>
+                      <svg
+                        width={24}
+                        height={24}
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        xmlns='http://www.w3.org/2000/svg'
+                      >
+                        <path
+                          d='M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                        <path
+                          d='M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z'
+                          stroke='currentColor'
+                          strokeWidth='1.5'
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                        />
+                      </svg>
+                    </div>
+                    <div className='ml-4'>
+                      <p className='text-sm font-medium '>Trình quản lý</p>
+                    </div>
+                  </NavLink>
+                </>
+              )}
               <div className='w-full border-b border-neutral-200 dark:border-neutral-700' />
               <button
                 className='flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50'
