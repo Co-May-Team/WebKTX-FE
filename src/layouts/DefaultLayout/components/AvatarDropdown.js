@@ -27,11 +27,11 @@ function AvatarDropdown() {
         <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 sm:w-9 sm:h-9 ring-1 ring-white dark:ring-neutral-900'>
           <img
             className='absolute inset-0 w-full h-full object-cover'
-            src={userInfo.avatar || defaultAvatar}
-            alt={userInfo.fullName}
-            title={userInfo.fullName}
+            src={userInfo?.avatar || defaultAvatar}
+            alt={userInfo?.fullName}
+            title={userInfo?.fullName}
           />
-          <span className='wil-avatar__name'>{userInfo.fullName}</span>
+          <span className='wil-avatar__name'>{userInfo?.fullName}</span>
         </div>
       </button>
       {visibleAvatarDropdown && (
@@ -42,16 +42,16 @@ function AvatarDropdown() {
                 <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-12 h-12 ring-1 ring-white dark:ring-neutral-900'>
                   <img
                     className='absolute inset-0 w-full h-full object-cover'
-                    src={userInfo.avatar || defaultAvatar}
-                    alt={userInfo.fullName}
-                    title={userInfo.fullName}
+                    src={userInfo?.avatar || defaultAvatar}
+                    alt={userInfo?.fullName}
+                    title={userInfo?.fullName}
                   />
-                  <span className='wil-avatar__name'>{userInfo.fullName}</span>
+                  <span className='wil-avatar__name'>{userInfo?.fullName}</span>
                 </div>
                 <div className='flex-grow'>
-                  <h4 className='font-semibold'>{userInfo.fullName}</h4>
+                  <h4 className='font-semibold'>{userInfo?.fullName}</h4>
                   <p className='text-sm text-neutral-500 dark:text-neutral-400'>
-                    {userInfo.googleAccount ? "Sinh Viên" : "Ban Quản Lý"}
+                    {userInfo?.admin ? "Ban Quản Lý" : "Sinh Viên"}
                   </p>
                 </div>
               </div>
@@ -84,9 +84,11 @@ function AvatarDropdown() {
                     />
                   </svg>
                 </div>
-                <div className='ml-4'>
-                  <p className='text-sm font-medium '>Trình quản lý</p>
-                </div>
+                {userInfo?.admin && (
+                  <div className='ml-4'>
+                    <p className='text-sm font-medium '>Trình quản lý</p>
+                  </div>
+                )}
               </NavLink>
               <div className='w-full border-b border-neutral-200 dark:border-neutral-700' />
               <button

@@ -1,15 +1,26 @@
 import { Formik } from "formik"
-import { useDispatch } from "react-redux"
-import { NavLink } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Navigate, NavLink } from "react-router-dom"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { signup } from "~/store/auth/actions"
+import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
 export default function Signup() {
   const dispatch = useDispatch()
+  const status = useSelector(authSelector).status
+  const userInfo = useSelector(authSelector).userInfo
+
+  if (status === "user") {
+    if (!userInfo?.admin) {
+      return <Navigate to='/' />
+    } else {
+      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
+    }
+  }
 
   /* Xử lý form */
   const initialValues = {

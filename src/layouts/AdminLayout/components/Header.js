@@ -49,8 +49,6 @@ function Header() {
   }
 
   useClickOutside(sidebarRef, () => setShow(!isShow))
-
-  const userInfoGoogle = JSON.parse(localStorage.getItem("userInfoGoogle"))
   return (
     <div
       id='header-sticky'

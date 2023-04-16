@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { Formik } from "formik"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
-import { login } from "~/store/auth/actions"
+import { getUserInfo, login } from "~/store/auth/actions"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
@@ -19,13 +20,15 @@ export default function Login() {
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (status === "user") {
-    if (userInfo?.googleAccount) {
-      return <Navigate to='/' />
-    } else {
-      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} replace />
+  useEffect(() => {
+    if (status === "user") {
+      if (!userInfo?.admin) {
+        navigate("/")
+      } else {
+        navigate(`${path.ADMIN + path.ADMIN_HOME}`)
+      }
     }
-  }
+  }, [])
 
   /* Xử lý form */
   const initialValues = {
@@ -39,15 +42,17 @@ export default function Login() {
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(true)
     await dispatch(login(values))
+    if (status === "user") {
+      navigate(-1)
+    }
     actions.setSubmitting(false)
   }
   //
   const onSuccess = (response) => {
     const info = parseJwt(response.credential)
-    console.log("Đăng nhập thành công - info", info)
-    localStorage.removeItem("userInfo")
-    localStorage.setItem("userInfo", JSON.stringify(info))
-    navigate(`${path.ADMIN + path.ADMIN_HOME}`)
+    localStorage.setItem("accessToken", "Bearer " + response.credential)
+    dispatch(getUserInfo(info.email))
+    navigate(-1)
   }
 
   const onFailure = (error) => {

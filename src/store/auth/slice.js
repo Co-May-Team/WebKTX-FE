@@ -4,6 +4,7 @@ import Swal from "sweetalert2"
 import {
   checkToken,
   forgotPassword,
+  getUserInfo,
   login,
   resetPassword,
   signup,
@@ -32,9 +33,6 @@ const authSlice = createSlice({
   reducers: {
     setStatus: (state, action) => {
       state.status = action.payload
-    },
-    getUserInfo: (state, action) => {
-      return state.userInfo
     },
     logout: (state, action) => {
       state.status = "idle"
@@ -105,6 +103,12 @@ const authSlice = createSlice({
           text: action.error.message,
           icon: "error",
         })
+      })
+      .addCase(getUserInfo.fulfilled, (state, action) => {
+        state.status = "user"
+        state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+        state.userInfo = action.payload
+        console.log(action.payload)
       })
       .addCase(forgotPassword.pending, (state, action) => {
         state.status = "loading"

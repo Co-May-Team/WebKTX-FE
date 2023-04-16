@@ -5,7 +5,7 @@ import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 
-export default function FamilyInfoForm() {
+export default function FamilyInfoForm({ setFinish }) {
   const [provinces, setProvinces] = useState([])
   const [loadingProvinces, setLoadingProvinces] = useState(true)
   const [districts, setDistricts] = useState([])
@@ -19,21 +19,15 @@ export default function FamilyInfoForm() {
     currentFamilyInfo[name] = value
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
   }
-  const handleSaveChildrenInput = (e) => {
-    const { name, value } = e.target
-    const currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    const [parent, fieldName] = name.split(".")
-    currentFamilyInfo[parent][fieldName] = value
-    localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
-  }
-  const handleSaveChildrenOption = (name, value) => {
-    const [parent, fieldName] = name.split(".")
-    const currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    currentFamilyInfo[parent][fieldName] = value
-    localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
-  }
-  const handleChangeFatherInfo = (name, value, setFieldValue) => {
+  const handleChangeFatherInfo = (name, value, setFieldValue, values) => {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
+    if (name === "fullName") {
+      value = value
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    }
     currentFamilyInfo = {
       ...currentFamilyInfo,
       father: {
@@ -44,8 +38,15 @@ export default function FamilyInfoForm() {
     setFieldValue("father", currentFamilyInfo.father)
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
   }
-  const handleChangeMotherInfo = (name, value, setFieldValue) => {
+  const handleChangeMotherInfo = (name, value, setFieldValue, values) => {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
+    if (name === "fullName") {
+      value = value
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    }
     currentFamilyInfo = {
       ...currentFamilyInfo,
       mother: {
@@ -56,8 +57,21 @@ export default function FamilyInfoForm() {
     setFieldValue("mother", currentFamilyInfo.mother)
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
   }
-  const handleChangeRelativesInfo = (name, value, index, setFieldValue) => {
+  const handleChangeRelativesInfo = (
+    name,
+    value,
+    index,
+    setFieldValue,
+    values
+  ) => {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
+    if (name === "fullName") {
+      value = value
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    }
     currentFamilyInfo.relatives?.splice(index, 1, {
       ...currentFamilyInfo.relatives[index],
       [name]: value,
@@ -81,6 +95,8 @@ export default function FamilyInfoForm() {
             wardAddress: "",
             detailAddress: "",
             currentJob: "",
+            placeOfWork: "",
+            phoneNumberOfCompany: "",
             income: "",
             healthStatus: "",
           },
@@ -94,6 +110,8 @@ export default function FamilyInfoForm() {
             wardAddress: "",
             detailAddress: "",
             currentJob: "",
+            placeOfWork: "",
+            phoneNumberOfCompany: "",
             income: "",
             healthStatus: "",
           },
@@ -108,6 +126,7 @@ export default function FamilyInfoForm() {
               wardAddress: "",
               detailAddress: "",
               currentJob: "",
+              placeOfWorkORStudy: "",
               income: "",
               healthStatus: "",
             },
@@ -194,6 +213,8 @@ export default function FamilyInfoForm() {
       wardAddress: "",
       detailAddress: "",
       currentJob: "",
+      placeOfWork: "",
+      phoneNumberOfCompany: "",
       income: "",
       healthStatus: "",
     },
@@ -207,6 +228,8 @@ export default function FamilyInfoForm() {
       wardAddress: "",
       detailAddress: "",
       currentJob: "",
+      placeOfWork: "",
+      phoneNumberOfCompany: "",
       income: "",
       healthStatus: "",
     },
@@ -221,6 +244,7 @@ export default function FamilyInfoForm() {
         wardAddress: "",
         detailAddress: "",
         currentJob: "",
+        placeOfWorkORStudy: "",
         income: "",
         healthStatus: "",
       },
@@ -236,19 +260,14 @@ export default function FamilyInfoForm() {
         then: Yup.string().required("Họ tên của cha là bắt buộc"),
         otherwise: Yup.string(),
       }),
-      yearOfBirth: Yup.string().when("status", {
+      yearOfBirth: Yup.number().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Năm sinh của cha là bắt buộc"),
-        otherwise: Yup.string(),
+        then: Yup.number().required("Năm sinh của cha là bắt buộc"),
+        otherwise: Yup.number(),
       }),
       phoneNumber: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string()
-          .matches(
-            /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
-            "Số điện thoại không hợp lệ"
-          )
-          .required("Số điện thoại của cha là bắt buộc"),
+        then: Yup.string().required("Số điện thoại của cha là bắt buộc"),
         otherwise: Yup.string(),
       }),
       provinceAddress: Yup.object().when("status", {
@@ -280,10 +299,24 @@ export default function FamilyInfoForm() {
         then: Yup.string().required("Nghề nghiệp hiện tại của cha là bắt buộc"),
         otherwise: Yup.string(),
       }),
-      income: Yup.string().when("status", {
+      placeOfWork: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Thu nhập của cha là bắt buộc"),
+        then: Yup.string().required("Nơi làm việc của cha là bắt buộc"),
         otherwise: Yup.string(),
+      }),
+      phoneNumberOfCompany: Yup.string().when("status", {
+        is: (val) => val?.value === "Có thông tin",
+        then: Yup.string().required(
+          "Số điện thoại nơi làm việc của cha là bắt buộc"
+        ),
+        otherwise: Yup.string(),
+      }),
+      income: Yup.number().when("status", {
+        is: (val) => val?.value === "Có thông tin",
+        then: Yup.number()
+          .min(0, "Thu nhập phải là một số lớn hơn 0")
+          .required("Thu nhập của cha là bắt buộc"),
+        otherwise: Yup.number(),
       }),
       healthStatus: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
@@ -298,19 +331,14 @@ export default function FamilyInfoForm() {
         then: Yup.string().required("Họ tên của mẹ là bắt buộc"),
         otherwise: Yup.string(),
       }),
-      yearOfBirth: Yup.string().when("status", {
+      yearOfBirth: Yup.number().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Năm sinh của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
+        then: Yup.number().required("Năm sinh của mẹ là bắt buộc"),
+        otherwise: Yup.number(),
       }),
       phoneNumber: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string()
-          .matches(
-            /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
-            "Số điện thoại không hợp lệ"
-          )
-          .required("Số điện thoại của mẹ là bắt buộc"),
+        then: Yup.string().required("Số điện thoại của mẹ là bắt buộc"),
         otherwise: Yup.string(),
       }),
       provinceAddress: Yup.object().when("status", {
@@ -340,10 +368,24 @@ export default function FamilyInfoForm() {
         then: Yup.string().required("Nghề nghiệp hiện tại của mẹ là bắt buộc"),
         otherwise: Yup.string(),
       }),
-      income: Yup.string().when("status", {
+      placeOfWork: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Thu nhập của mẹ là bắt buộc"),
+        then: Yup.string().required("Nơi làm việc của mẹ là bắt buộc"),
         otherwise: Yup.string(),
+      }),
+      phoneNumberOfCompany: Yup.string().when("status", {
+        is: (val) => val?.value === "Có thông tin",
+        then: Yup.string().required(
+          "Số điện thoại nơi làm việc của mẹ là bắt buộc"
+        ),
+        otherwise: Yup.string(),
+      }),
+      income: Yup.number().when("status", {
+        is: (val) => val?.value === "Có thông tin",
+        then: Yup.number()
+          .min(0, "Thu nhập phải là một số lớn hơn 0")
+          .required("Thu nhập của mẹ là bắt buộc"),
+        otherwise: Yup.number(),
       }),
       healthStatus: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
@@ -360,12 +402,7 @@ export default function FamilyInfoForm() {
           "Họ tên người thân không được để trống"
         ),
         yearOfBirth: Yup.string().required("Nơi sinh không được để trống"),
-        phoneNumber: Yup.string()
-          .matches(
-            /^(0|\+84)[3|5|7|8|9][0-9]{8}$/,
-            "Số điện thoại không hợp lệ"
-          )
-          .required("Số điện thoại không được để trống"),
+        phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
         provinceAddress: Yup.object()
           .nullable()
           .required("Tỉnh/thành phố không được để trống"),
@@ -381,9 +418,12 @@ export default function FamilyInfoForm() {
         currentJob: Yup.string().required(
           "Công việc hiện tại của người thân không được để trống"
         ),
-        income: Yup.string().required(
-          "Thu nhập của người thân không được để trống"
+        placeOfWorkORStudy: Yup.string().required(
+          "Nơi làm việc/học tập của người thân không được để trống"
         ),
+        income: Yup.number()
+          .min(0, "Thu nhập phải là một số lớn hơn 0")
+          .required("Thu nhập của người thân không được để trống"),
         healthStatus: Yup.string().required(
           "Tình trạng sức khỏe của người thân không được để trống"
         ),
@@ -393,6 +433,21 @@ export default function FamilyInfoForm() {
       "Hoàn cảnh gia đình không được để trống"
     ),
   })
+
+  const validateForm = async (values) => {
+    // try {
+    //   await localStorage.setItem(
+    //     "familyInfo",
+    //     JSON.stringify({ ...values, finished: true })
+    //   )
+    //   await validationSchemaFamilyInfo.validate(values, { abortEarly: false })
+    // } catch (err) {
+    //   localStorage.setItem(
+    //     "familyInfo",
+    //     JSON.stringify({ ...values, finished: false })
+    //   )
+    // }
+  }
 
   const handleSubmitFamilyInfo = async (values, actions) => {
     actions.setSubmitting(true)
@@ -407,10 +462,6 @@ export default function FamilyInfoForm() {
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
             II. HOÀN CẢNH GIA ĐÌNH
           </h2>
-          <span className='block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200'>
-            Các bạn vui lòng điền đúng thông tin để tránh sai sót nhé. Những mục
-            nào không có thì bạn tích vào không có!
-          </span>
         </header>
         <Formik
           initialValues={initialValuesFamilyInfo}
@@ -431,7 +482,7 @@ export default function FamilyInfoForm() {
             dirty,
             isSubmitting,
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onChange={() => validateForm(values)} onSubmit={handleSubmit}>
               <div className='grid gap-6'>
                 {/* Phần nhập thông tin cha */}
                 <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
@@ -484,7 +535,7 @@ export default function FamilyInfoForm() {
                       }
                     />
                     <InputField
-                      type='text'
+                      type='number'
                       name='father.yearOfBirth'
                       placeholder='Nhập năm sinh của cha...'
                       label='Năm sinh'
@@ -690,47 +741,96 @@ export default function FamilyInfoForm() {
                         />
                       </div>
                     </div>
-                    <InputField
-                      type='text'
-                      name='father.currentJob'
-                      placeholder='Nhập nghề nghiệp hiện tại của cha...'
-                      label='Nghề nghiệp hiện tại'
-                      value={values.father?.currentJob}
-                      feedback={errors.father?.currentJob}
-                      onChange={(e) => {
-                        handleChangeFatherInfo(
-                          "currentJob",
-                          e.target.value,
-                          setFieldValue
-                        )
-                      }}
-                      invalid={
-                        touched.father?.currentJob && errors.father?.currentJob
-                      }
-                      isRequired={
-                        values.father?.status.value === "Có thông tin"
-                      }
-                    />
-                    <InputField
-                      type='text'
-                      name='father.income'
-                      placeholder='Nhập thu nhập của cha...'
-                      label='Thu nhập'
-                      value={values.father?.income}
-                      feedback={errors.father?.income}
-                      note='Ví dụ: 3000000'
-                      onChange={(e) => {
-                        handleChangeFatherInfo(
-                          "income",
-                          e.target.value,
-                          setFieldValue
-                        )
-                      }}
-                      invalid={touched.father?.income && errors.father?.income}
-                      isRequired={
-                        values.father?.status.value === "Có thông tin"
-                      }
-                    />
+                    <div className='grid lg:grid-cols-2 gap-6'>
+                      <InputField
+                        type='text'
+                        name='father.currentJob'
+                        placeholder='Nhập nghề nghiệp hiện tại của cha...'
+                        label='Nghề nghiệp hiện tại'
+                        value={values.father?.currentJob}
+                        feedback={errors.father?.currentJob}
+                        onChange={(e) => {
+                          handleChangeFatherInfo(
+                            "currentJob",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.father?.currentJob &&
+                          errors.father?.currentJob
+                        }
+                        isRequired={
+                          values.father?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='text'
+                        name='father.placeOfWork'
+                        placeholder='Nhập nơi làm việc của cha...'
+                        label='Nơi làm việc'
+                        value={values.father?.placeOfWork}
+                        feedback={errors.father?.placeOfWork}
+                        onChange={(e) => {
+                          handleChangeFatherInfo(
+                            "placeOfWork",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.father?.placeOfWork &&
+                          errors.father?.placeOfWork
+                        }
+                        isRequired={
+                          values.father?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='text'
+                        name='father.phoneNumberOfCompany'
+                        placeholder='Nhập SĐT nơi làm việc của cha...'
+                        label='SĐT nơi làm việc'
+                        value={values.father?.phoneNumberOfCompany}
+                        feedback={errors.father?.phoneNumberOfCompany}
+                        onChange={(e) => {
+                          handleChangeFatherInfo(
+                            "phoneNumberOfCompany",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.father?.phoneNumberOfCompany &&
+                          errors.father?.phoneNumberOfCompany
+                        }
+                        isRequired={
+                          values.father?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='number'
+                        name='father.income'
+                        placeholder='Nhập thu nhập của cha...'
+                        label='Thu nhập'
+                        value={values.father?.income}
+                        feedback={errors.father?.income}
+                        note='Nhập chính xác số tiền (đơn vị: VNĐ).'
+                        onChange={(e) => {
+                          handleChangeFatherInfo(
+                            "income",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.father?.income && errors.father?.income
+                        }
+                        isRequired={
+                          values.father?.status.value === "Có thông tin"
+                        }
+                      />
+                    </div>
                     <InputField
                       type='text'
                       name='father.healthStatus'
@@ -806,7 +906,7 @@ export default function FamilyInfoForm() {
                       }
                     />
                     <InputField
-                      type='text'
+                      type='number'
                       name='mother.yearOfBirth'
                       placeholder='Nhập năm sinh của mẹ...'
                       label='Năm sinh'
@@ -1012,47 +1112,96 @@ export default function FamilyInfoForm() {
                         />
                       </div>
                     </div>
-                    <InputField
-                      type='text'
-                      name='mother.currentJob'
-                      placeholder='Nhập nghề nghiệp hiện tại của mẹ...'
-                      label='Nghề nghiệp hiện tại'
-                      value={values.mother?.currentJob}
-                      feedback={errors.mother?.currentJob}
-                      onChange={(e) => {
-                        handleChangeMotherInfo(
-                          "currentJob",
-                          e.target.value,
-                          setFieldValue
-                        )
-                      }}
-                      invalid={
-                        touched.mother?.currentJob && errors.mother?.currentJob
-                      }
-                      isRequired={
-                        values.mother?.status.value === "Có thông tin"
-                      }
-                    />
-                    <InputField
-                      type='text'
-                      name='mother.income'
-                      placeholder='Nhập thu nhập của mẹ...'
-                      label='Thu nhập'
-                      value={values.mother?.income}
-                      feedback={errors.mother?.income}
-                      note='Ví dụ: 3000000'
-                      onChange={(e) => {
-                        handleChangeMotherInfo(
-                          "income",
-                          e.target.value,
-                          setFieldValue
-                        )
-                      }}
-                      invalid={touched.mother?.income && errors.mother?.income}
-                      isRequired={
-                        values.mother?.status.value === "Có thông tin"
-                      }
-                    />
+                    <div className='grid lg:grid-cols-2 gap-6'>
+                      <InputField
+                        type='text'
+                        name='mother.currentJob'
+                        placeholder='Nhập nghề nghiệp hiện tại của mẹ...'
+                        label='Nghề nghiệp hiện tại'
+                        value={values.mother?.currentJob}
+                        feedback={errors.mother?.currentJob}
+                        onChange={(e) => {
+                          handleChangeMotherInfo(
+                            "currentJob",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.mother?.currentJob &&
+                          errors.mother?.currentJob
+                        }
+                        isRequired={
+                          values.mother?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='text'
+                        name='mother.placeOfWork'
+                        placeholder='Nhập nơi làm việc của mẹ...'
+                        label='Nơi làm việc'
+                        value={values.mother?.placeOfWork}
+                        feedback={errors.mother?.placeOfWork}
+                        onChange={(e) => {
+                          handleChangeMotherInfo(
+                            "placeOfWork",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.mother?.placeOfWork &&
+                          errors.mother?.placeOfWork
+                        }
+                        isRequired={
+                          values.mother?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='text'
+                        name='mother.phoneNumberOfCompany'
+                        placeholder='Nhập SĐT nơi làm việc của mẹ...'
+                        label='SĐT nơi làm việc'
+                        value={values.mother?.phoneNumberOfCompany}
+                        feedback={errors.mother?.phoneNumberOfCompany}
+                        onChange={(e) => {
+                          handleChangeMotherInfo(
+                            "phoneNumberOfCompany",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.mother?.phoneNumberOfCompany &&
+                          errors.mother?.phoneNumberOfCompany
+                        }
+                        isRequired={
+                          values.mother?.status.value === "Có thông tin"
+                        }
+                      />
+                      <InputField
+                        type='number'
+                        name='mother.income'
+                        placeholder='Nhập thu nhập của mẹ...'
+                        label='Thu nhập'
+                        value={values.mother?.income}
+                        feedback={errors.mother?.income}
+                        note='Nhập chính xác số tiền (đơn vị: VNĐ).'
+                        onChange={(e) => {
+                          handleChangeMotherInfo(
+                            "income",
+                            e.target.value,
+                            setFieldValue
+                          )
+                        }}
+                        invalid={
+                          touched.mother?.income && errors.mother?.income
+                        }
+                        isRequired={
+                          values.mother?.status.value === "Có thông tin"
+                        }
+                      />
+                    </div>
                     <InputField
                       type='text'
                       name='mother.healthStatus'
@@ -1083,9 +1232,6 @@ export default function FamilyInfoForm() {
                     <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
                       3. Thông tin người thân
                     </h2>
-                    <span className='block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200'>
-                      Các bạn vui lòng điền đúng thông tin để tránh sai sót nhé!
-                    </span>
                   </header>
                   <div className='grid gap-6'>
                     {values.relatives?.map((relative, index) => (
@@ -1093,34 +1239,6 @@ export default function FamilyInfoForm() {
                         key={index}
                         className='relative p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'
                       >
-                        <span
-                          className='absolute right-2 top-2 p-1'
-                          onClick={() => {
-                            let temp = values.relatives
-                            temp.splice(index, 1)
-                            setFieldValue("relatives", temp)
-                          }}
-                        >
-                          <button
-                            className='w-8 h-8 flex items-center justify-center rounded-full text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none'
-                            title='Xóa người thân'
-                          >
-                            <span className='sr-only'>Xóa người thân</span>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              viewBox='0 0 20 20'
-                              fill='currentColor'
-                              aria-hidden='true'
-                              className='w-5 h-5'
-                            >
-                              <path
-                                fillRule='evenodd'
-                                d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                                clipRule='evenodd'
-                              />
-                            </svg>
-                          </button>
-                        </span>
                         <header className='text-center mx-auto'>
                           <h2 className='flex items-center text-2xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
                             Thông tin người thân thứ {" " + (index + 1)}
@@ -1175,7 +1293,7 @@ export default function FamilyInfoForm() {
                             isRequired
                           />
                           <InputField
-                            type='text'
+                            type='number'
                             name={`yearOfBirth`}
                             placeholder={`Nhập năm sinh của người thân thứ ${
                               index + 1
@@ -1226,7 +1344,7 @@ export default function FamilyInfoForm() {
                                 Chỗ ở hiện tại
                               </h2>
                             </header>
-                            <div className='grid md:grid-cols-2 gap-6'>
+                            <div className='grid gap-6'>
                               <InputField
                                 type='select'
                                 label='Tỉnh/thành phố'
@@ -1426,14 +1544,41 @@ export default function FamilyInfoForm() {
                           />
                           <InputField
                             type='text'
+                            name={`placeOfWorkORStudy`}
+                            placeholder={`Nhập nơi làm việc/học tập của người thân thứ ${
+                              index + 1
+                            }...`}
+                            label={`Nơi làm việc/học tập`}
+                            value={
+                              values.relatives?.[index]?.placeOfWorkORStudy
+                            }
+                            feedback={
+                              errors.relatives?.[index]?.placeOfWorkORStudy
+                            }
+                            onChange={(e) => {
+                              handleChangeRelativesInfo(
+                                "placeOfWorkORStudy",
+                                e.target.value,
+                                index,
+                                setFieldValue
+                              )
+                            }}
+                            invalid={
+                              touched.relatives?.[index]?.placeOfWorkORStudy &&
+                              errors.relatives?.[index]?.placeOfWorkORStudy
+                            }
+                            isRequired
+                          />
+                          <InputField
+                            type='number'
                             name={`income`}
                             placeholder={`Nhập thu nhập của người thân thứ ${
                               index + 1
                             }...`}
-                            label={`Thu nhập (VNĐ)`}
+                            label={`Thu nhập`}
                             value={relative.income}
                             feedback={errors.relatives?.[index]?.income}
-                            note='Ví dụ: 3000000'
+                            note='Nhập chính xác số tiền (đơn vị: VNĐ).'
                             onChange={(e) => {
                               handleChangeRelativesInfo(
                                 "income",
@@ -1474,30 +1619,53 @@ export default function FamilyInfoForm() {
                             isRequired
                           />
                         </div>
+                        <button
+                          className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-red-500 hover:bg-red-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-0'
+                          onClick={() => {
+                            let temp = values.relatives
+                            temp.splice(index, 1)
+                            setFieldValue("relatives", temp)
+                            localStorage.setItem(
+                              "familyInfo",
+                              JSON.stringify({
+                                ...values,
+                                relatives: temp,
+                              })
+                            )
+                          }}
+                        >
+                          Xóa người thân
+                        </button>
                       </div>
                     ))}
                   </div>
                   <button
-                    className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                    className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     type='button'
-                    onClick={() =>
-                      setFieldValue("relatives", [
-                        ...values.relatives,
-                        {
-                          relationship: "",
-                          fullName: "",
-                          yearOfBirth: "",
-                          phoneNumber: "",
-                          provinceAddress: "",
-                          districtAddress: "",
-                          wardAddress: "",
-                          detailAddress: "",
-                          currentJob: "",
-                          income: "",
-                          healthStatus: "",
-                        },
-                      ])
-                    }
+                    onClick={() => {
+                      let temp = values.relatives
+                      temp.splice(temp.length, 0, {
+                        relationship: "",
+                        fullName: "",
+                        yearOfBirth: "",
+                        phoneNumber: "",
+                        provinceAddress: "",
+                        districtAddress: "",
+                        wardAddress: "",
+                        detailAddress: "",
+                        currentJob: "",
+                        income: "",
+                        healthStatus: "",
+                      })
+                      setFieldValue("relatives", temp)
+                      localStorage.setItem(
+                        "familyInfo",
+                        JSON.stringify({
+                          ...values,
+                          relatives: temp,
+                        })
+                      )
+                    }}
                   >
                     Thêm người thân
                   </button>
