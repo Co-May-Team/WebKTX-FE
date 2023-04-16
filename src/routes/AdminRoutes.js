@@ -31,7 +31,7 @@ export default function AdminRoutes() {
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (!(status === "user") || userInfo?.googleAccount === true) {
+  if (!(status === "user") || userInfo?.admin === false) {
     return <Navigate to='/' />
   }
 

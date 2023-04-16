@@ -4,8 +4,11 @@ import { useEffect, useState } from "react"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
+import religions from "~/utils/mockData/religions"
 
-export default function PersonalInfoForm() {
+export default function PersonalInfoForm({ setFinish }) {
+  const [ethnics, setEthincs] = useState([])
+  const [loadingEthincs, setLoadingEthincs] = useState(true)
   const [provinces, setProvinces] = useState([])
   const [loadingProvinces, setLoadingProvinces] = useState(true)
   const [districts, setDistricts] = useState([])
@@ -13,20 +16,23 @@ export default function PersonalInfoForm() {
   const [wards, setWards] = useState([])
   const [loadingWards, setLoadingWards] = useState(true)
 
-  const handleSaveInput = (e) => {
-    const { name, value } = e.target
-    const currentPersonalInfo = JSON.parse(localStorage.getItem("personalInfo"))
-    currentPersonalInfo[name] = value
-    localStorage.setItem("personalInfo", JSON.stringify(currentPersonalInfo))
-  }
-  const handleSaveOption = (name, value) => {
-    if (localStorage.getItem("personalInfo")) {
-      const currentPersonalInfo = JSON.parse(
-        localStorage.getItem("personalInfo")
-      )
-      currentPersonalInfo[name] = value
-      localStorage.setItem("personalInfo", JSON.stringify(currentPersonalInfo))
+  const handleChangePersonalInfo = (name, value, setFieldValue) => {
+    let currentPersonalInfo = JSON.parse(localStorage.getItem("personalInfo"))
+    if (name === "fullName") {
+      value = value
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    } else if (name === "email") {
+      value = value.toLowerCase()
     }
+    currentPersonalInfo = {
+      ...currentPersonalInfo,
+      [name]: value,
+    }
+    setFieldValue(name, value)
+    localStorage.setItem("personalInfo", JSON.stringify(currentPersonalInfo))
   }
 
   useEffect(() => {
@@ -52,6 +58,18 @@ export default function PersonalInfoForm() {
         })
       )
     }
+  }, [])
+
+  useEffect(() => {
+    setLoadingEthincs(true)
+    axios
+      .get("http://api.nosomovo.xyz/ethnic/getalllist")
+      .then((response) => {
+        setEthincs(response.data)
+      })
+      .finally(() => {
+        setLoadingEthincs(false)
+      })
   }, [])
 
   useEffect(() => {
@@ -147,8 +165,8 @@ export default function PersonalInfoForm() {
     email: Yup.string()
       .email("Email không hợp lệ")
       .required("Email không được để trống"),
-    ethnic: Yup.string().required("Dân tộc không được để trống"),
-    religion: Yup.string().required("Tôn giáo không được để trống"),
+    ethnic: Yup.object().nullable().required("Dân tộc không được để trống"),
+    religion: Yup.object().nullable().required("Tôn giáo không được để trống"),
     hometown: Yup.object().nullable().required("Quê quán không được để trống"),
     provinceAddress: Yup.object()
       .nullable()
@@ -170,6 +188,21 @@ export default function PersonalInfoForm() {
       "Nơi cấp CMND/CCCD không được để trống"
     ),
   })
+
+  const validateForm = async (values) => {
+    // try {
+    //   await validationSchemaPersonalInfo.validate(values, { abortEarly: false })
+    //   localStorage.setItem(
+    //     "personalInfo",
+    //     JSON.stringify({ ...values, finished: true })
+    //   )
+    // } catch (err) {
+    //   localStorage.setItem(
+    //     "personalInfo",
+    //     JSON.stringify({ ...values, finished: false })
+    //   )
+    // }
+  }
 
   const handleSubmitPersonalInfo = async (values, actions) => {
     actions.setSubmitting(true)
@@ -211,7 +244,7 @@ export default function PersonalInfoForm() {
             dirty,
             isSubmitting,
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onChange={() => validateForm(values)} onSubmit={handleSubmit}>
               <div className='grid gap-6'>
                 <InputField
                   type='text'
@@ -221,8 +254,11 @@ export default function PersonalInfoForm() {
                   value={values.fullName}
                   feedback={errors.fullName}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "fullName",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.fullName && errors.fullName}
                   isRequired
@@ -235,8 +271,11 @@ export default function PersonalInfoForm() {
                   value={values.dateOfBirth}
                   feedback={errors.dateOfBirth}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "dateOfBirth",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.dateOfBirth && errors.dateOfBirth}
                   isRequired
@@ -248,11 +287,14 @@ export default function PersonalInfoForm() {
                   placeholder='Chọn giới tính của bạn.'
                   value={values.gender}
                   onChange={(selectedOption) => {
-                    setFieldValue("gender", selectedOption)
-                    handleSaveOption("gender", selectedOption)
+                    handleChangePersonalInfo(
+                      "gender",
+                      selectedOption,
+                      setFieldValue
+                    )
                   }}
                   clearValue={() => {
-                    setFieldValue("gender", "")
+                    handleChangePersonalInfo("gender", "", setFieldValue)
                   }}
                   feedback={errors.gender}
                   invalid={touched.gender && errors.gender}
@@ -270,8 +312,11 @@ export default function PersonalInfoForm() {
                   value={values.phoneNumber}
                   feedback={errors.phoneNumber}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "phoneNumber",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.phoneNumber && errors.phoneNumber}
                   isRequired
@@ -284,58 +329,80 @@ export default function PersonalInfoForm() {
                   value={values.email}
                   feedback={errors.email}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "email",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.email && errors.email}
                   isRequired
                 />
-                <InputField
-                  type='text'
-                  name='ethnic'
-                  placeholder='Nhập dân tộc...'
-                  label='Dân tộc'
-                  value={values.ethnic}
-                  feedback={errors.ethnic}
-                  onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
-                  }}
-                  invalid={touched.ethnic && errors.ethnic}
-                  isRequired
-                />
-                <InputField
-                  type='text'
-                  name='religion'
-                  placeholder='Nhập tôn giáo...'
-                  label='Tôn giáo'
-                  value={values.religion}
-                  feedback={errors.religion}
-                  onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
-                  }}
-                  invalid={touched.religion && errors.religion}
-                  isRequired
-                />
-
+                <div className='grid md:grid-cols-2 gap-6'>
+                  <InputField
+                    type='select'
+                    name='ethnic'
+                    label='Dân tộc'
+                    placeholder='Chọn dân tộc của bạn...'
+                    value={values.ethnic}
+                    onChange={(selectedOption) => {
+                      handleChangePersonalInfo(
+                        "ethnic",
+                        selectedOption,
+                        setFieldValue
+                      )
+                    }}
+                    clearValue={() => {
+                      handleChangePersonalInfo("ethnic", "", setFieldValue)
+                    }}
+                    isLoading={loadingEthincs}
+                    getOptionValue={(option) => option.id}
+                    getOptionLabel={(option) => option.name}
+                    loadingMessage={() => "Đang tải dữ liệu"}
+                    feedback={errors.ethnic}
+                    invalid={touched.ethnic && errors.ethnic}
+                    options={ethnics}
+                    isRequired
+                  />
+                  <InputField
+                    type='select'
+                    name='religion'
+                    label='Tôn giáo'
+                    placeholder='Chọn tôn giáo của bạn...'
+                    value={values.religion}
+                    onChange={(selectedOption) => {
+                      handleChangePersonalInfo(
+                        "religion",
+                        selectedOption,
+                        setFieldValue
+                      )
+                    }}
+                    clearValue={() => {
+                      handleChangePersonalInfo("religion", "", setFieldValue)
+                    }}
+                    getOptionValue={(option) => option.id}
+                    getOptionLabel={(option) => option.name}
+                    feedback={errors.religion}
+                    invalid={touched.religion && errors.religion}
+                    options={religions}
+                    isRequired
+                  />
+                </div>
                 <InputField
                   type='select'
                   label='Quê quán'
                   placeholder='Chọn quê quán...'
                   value={values.hometown}
                   onChange={(selectedOption) => {
-                    setFieldValue("hometown", selectedOption)
-                    handleSaveOption("hometown", selectedOption)
-                  }}
-                  clearValue={() => {
-                    setFieldValue("hometown", "")
-                    handleSaveOption("hometown", "")
+                    handleChangePersonalInfo(
+                      "hometown",
+                      selectedOption,
+                      setFieldValue
+                    )
                   }}
                   isLoading={loadingProvinces}
                   getOptionValue={(option) => option._id}
                   getOptionLabel={(option) => option.name}
-                  onBlur={handleBlur}
                   feedback={errors.hometown}
                   invalid={touched.hometown && errors.hometown}
                   options={provinces}
@@ -355,22 +422,35 @@ export default function PersonalInfoForm() {
                       placeholder='Chọn tỉnh/thành phố...'
                       value={values.provinceAddress}
                       onChange={(selectedOption) => {
-                        setFieldValue("provinceAddress", selectedOption)
-                        setFieldValue("districtAddress", "")
-                        setFieldValue("wardAddress", "")
-                        handleSaveOption("provinceAddress", selectedOption)
-                        handleSaveOption("districtAddress", "")
-                        handleSaveOption("wardAddress", "")
+                        handleChangePersonalInfo(
+                          "provinceAddress",
+                          selectedOption,
+                          setFieldValue
+                        )
+                        handleChangePersonalInfo(
+                          "districtAddress",
+                          "",
+                          setFieldValue
+                        )
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          "",
+                          setFieldValue
+                        )
                         setWards([])
                         handleProvinceChange(selectedOption)
                       }}
                       clearValue={() => {
-                        setFieldValue("provinceAddress", "")
-                        setFieldValue("districtAddress", "")
-                        setFieldValue("wardAddress", "")
-                        handleSaveOption("provinceAddress", "")
-                        handleSaveOption("districtAddress", "")
-                        handleSaveOption("wardAddress", "")
+                        handleChangePersonalInfo(
+                          "districtAddress",
+                          "",
+                          setFieldValue
+                        )
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          "",
+                          setFieldValue
+                        )
                       }}
                       isLoading={loadingProvinces}
                       getOptionValue={(option) => option._id}
@@ -389,17 +469,34 @@ export default function PersonalInfoForm() {
                       placeholder='Chọn quận/huyện...'
                       value={values.districtAddress}
                       onChange={(selectedOption) => {
-                        setFieldValue("districtAddress", selectedOption)
-                        setFieldValue("wardAddress", "")
-                        handleSaveOption("districtAddress", selectedOption)
-                        handleSaveOption("wardAddress", "")
+                        handleChangePersonalInfo(
+                          "districtAddress",
+                          selectedOption,
+                          setFieldValue
+                        )
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          "",
+                          setFieldValue
+                        )
                         handleDistrictChange(selectedOption)
+                      }}
+                      clearValue={() => {
+                        handleChangePersonalInfo(
+                          "districtAddress",
+                          "",
+                          setFieldValue
+                        )
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          "",
+                          setFieldValue
+                        )
                       }}
                       isLoading={loadingDistricts}
                       getOptionValue={(option) => option._id}
                       getOptionLabel={(option) => option.name}
                       loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
-                      onBlur={handleBlur}
                       feedback={errors.districtAddress}
                       invalid={
                         touched.districtAddress && errors.districtAddress
@@ -413,14 +510,23 @@ export default function PersonalInfoForm() {
                       placeholder='Chọn xã/phường/thị trấn...'
                       value={values.wardAddress}
                       onChange={(selectedOption) => {
-                        setFieldValue("wardAddress", selectedOption)
-                        handleSaveOption("wardAddress", selectedOption)
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          selectedOption,
+                          setFieldValue
+                        )
+                      }}
+                      clearValue={() => {
+                        handleChangePersonalInfo(
+                          "wardAddress",
+                          "",
+                          setFieldValue
+                        )
                       }}
                       loadingMessage={() => "Vui lòng chọn quận/huyện"}
                       isLoading={loadingWards}
                       getOptionValue={(option) => option._id}
                       getOptionLabel={(option) => option.name}
-                      onBlur={handleBlur}
                       feedback={errors.wardAddress}
                       invalid={touched.wardAddress && errors.wardAddress}
                       options={wards}
@@ -434,10 +540,12 @@ export default function PersonalInfoForm() {
                       value={values.detailAddress}
                       feedback={errors.detailAddress}
                       onChange={(e) => {
-                        handleChange(e)
-                        handleSaveInput(e)
+                        handleChangePersonalInfo(
+                          "detailAddress",
+                          e.target.value,
+                          setFieldValue
+                        )
                       }}
-                      onBlur={handleBlur}
                       invalid={touched.detailAddress && errors.detailAddress}
                       isRequired
                     />
@@ -451,8 +559,11 @@ export default function PersonalInfoForm() {
                   value={values.idNumber}
                   feedback={errors.idNumber}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "idNumber",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.idNumber && errors.idNumber}
                   isRequired
@@ -465,8 +576,11 @@ export default function PersonalInfoForm() {
                   value={values.idIssueDate}
                   feedback={errors.idIssueDate}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "idIssueDate",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.idIssueDate && errors.idIssueDate}
                   isRequired
@@ -479,8 +593,11 @@ export default function PersonalInfoForm() {
                   value={values.idIssuePlace}
                   feedback={errors.idIssuePlace}
                   onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
+                    handleChangePersonalInfo(
+                      "idIssuePlace",
+                      e.target.value,
+                      setFieldValue
+                    )
                   }}
                   invalid={touched.idIssuePlace && errors.idIssuePlace}
                   isRequired

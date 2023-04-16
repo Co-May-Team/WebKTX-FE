@@ -68,19 +68,15 @@ const universities = [
   "Đại học Y khoa Phạm Ngọc Thạch",
 ]
 
-export default function StudentInfoForm() {
-  const handleSaveInput = (e) => {
-    const { name, value } = e.target
-    const currentStudentInfo = JSON.parse(localStorage.getItem("studentInfo"))
-    currentStudentInfo[name] = value
-    localStorage.setItem("studentInfo", JSON.stringify(currentStudentInfo))
-  }
-  const handleSaveOption = (name, value) => {
-    if (localStorage.getItem("studentInfo")) {
-      const currentStudentInfo = JSON.parse(localStorage.getItem("studentInfo"))
-      currentStudentInfo[name] = value
-      localStorage.setItem("studentInfo", JSON.stringify(currentStudentInfo))
+export default function StudentInfoForm({ setFinish }) {
+  const handleChangeStudentInfo = (name, value, setFieldValue) => {
+    let currentStudentInfo = JSON.parse(localStorage.getItem("studentInfo"))
+    currentStudentInfo = {
+      ...currentStudentInfo,
+      [name]: value,
     }
+    setFieldValue(name, value)
+    localStorage.setItem("studentInfo", JSON.stringify(currentStudentInfo))
   }
 
   useEffect(() => {
@@ -93,12 +89,9 @@ export default function StudentInfoForm() {
           major: "",
           classCode: "",
           studentCode: "",
-          grade10Semester1: "",
-          grade10Semester2: "",
-          grade11Semester1: "",
-          grade11Semester2: "",
-          grade12Semester1: "",
-          grade12Semester2: "",
+          averageGrade10: 0,
+          averageGrade11: 0,
+          averageGrade12: 0,
           highSchoolGraduationExamScore: "",
           dgnlScore: "",
           admissionViaDirectMethod: "",
@@ -118,12 +111,9 @@ export default function StudentInfoForm() {
     major: "",
     classCode: "",
     studentCode: "",
-    grade10Semester1: "",
-    grade10Semester2: "",
-    grade11Semester1: "",
-    grade11Semester2: "",
-    grade12Semester1: "",
-    grade12Semester2: "",
+    averageGrade10: 0,
+    averageGrade11: 0,
+    averageGrade12: 0,
     highSchoolGraduationExamScore: "",
     dgnlScore: "",
     admissionViaDirectMethod: "",
@@ -137,38 +127,49 @@ export default function StudentInfoForm() {
       .min(1, "Bạn phải chọn ít nhất 1 đối tượng"),
     universityName: Yup.object()
       .nullable()
-      .required("Vui lòng chọn trường đại học của bạn"),
+      .required("Vui lòng chọn trường của bạn"),
     major: Yup.string().required("Vui lòng nhập ngành của bạn"),
     classCode: Yup.string().required("Vui lòng nhập mã lớp"),
     studentCode: Yup.string().required("Vui lòng nhập mã số sinh viên"),
-    grade10Semester1: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK1 lớp 10"
-    ),
-    grade10Semester2: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK2 lớp 10"
-    ),
-    grade11Semester1: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK1 lớp 11"
-    ),
-    grade11Semester2: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK2 lớp 11"
-    ),
-    grade12Semester1: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK1 lớp 12"
-    ),
-    grade12Semester2: Yup.string().required(
-      "Vui lòng nhập điểm trung bình HK2 lớp 12"
-    ),
-    highSchoolGraduationExamScore: Yup.string().required(
+    averageGrade10: Yup.number("Điểm phải là số")
+      .min(0, "Điểm phải lớn hơn hoặc bằng 0")
+      .max(10, "Điểm phải nhỏ hơn hoặc bằng 10")
+      .required("Vui lòng nhập điểm trung bình lớp 10"),
+    averageGrade11: Yup.number("Điểm phải là số")
+      .min(0, "Điểm phải lớn hơn hoặc bằng 0")
+      .max(10, "Điểm phải nhỏ hơn hoặc bằng 10")
+      .required("Vui lòng nhập điểm trung bình lớp 11"),
+    averageGrade12: Yup.number("Điểm phải là số")
+      .min(0, "Điểm phải lớn hơn hoặc bằng 0")
+      .max(10, "Điểm phải nhỏ hơn hoặc bằng 10")
+      .required("Vui lòng nhập điểm trung bình lớp 12"),
+    highSchoolGraduationExamScore: Yup.number().required(
       "Vui lòng nhập điểm thi tốt nghiệp"
     ),
-    dgnlScore: Yup.string(),
+    dgnlScore: Yup.number("Điểm đánh giá năng lực phải là một số hợp lệ"),
     admissionViaDirectMethod: Yup.string(),
-    achievements: Yup.string(),
+    achievements: Yup.string().required(
+      "Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được"
+    ),
     dream: Yup.string().required(
-      "Vui lòng trình bày ước mơ và định hướng của bạn trong tương lai."
+      "Vui lòng trình bày ước mơ và định hướng của bạn trong tương lai"
     ),
   })
+
+  const validateForm = async (values) => {
+    // try {
+    //   await validationSchemaStudentInfo.validate(values, { abortEarly: false })
+    //   localStorage.setItem(
+    //     "studentInfo",
+    //     JSON.stringify({ ...values, finished: true })
+    //   )
+    // } catch (err) {
+    //   localStorage.setItem(
+    //     "studentInfo",
+    //     JSON.stringify({ ...values, finished: false })
+    //   )
+    // }
+  }
 
   const handleSubmitStudentInfo = async (values, actions) => {
     actions.setSubmitting(true)
@@ -210,22 +211,25 @@ export default function StudentInfoForm() {
             dirty,
             isSubmitting,
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onChange={() => validateForm(values)} onSubmit={handleSubmit}>
               <div className='grid gap-6'>
                 <div className='grid gap-6'>
                   <InputField
                     type='select'
                     name='studentType'
                     label='Đối tượng (có thể chọn nhiều đối tượng)'
-                    placeholder='Chọn loại đối tượng của bạn.'
+                    placeholder='Chọn loại đối tượng của bạn...'
                     isMulti
                     value={values.studentType}
                     onChange={(selectedOption) => {
-                      setFieldValue("studentType", selectedOption)
-                      handleSaveOption("studentType", selectedOption)
+                      handleChangeStudentInfo(
+                        "studentType",
+                        selectedOption,
+                        setFieldValue
+                      )
                     }}
                     clearValue={() => {
-                      setFieldValue("studentType", "")
+                      handleChangeStudentInfo("studentType", "", setFieldValue)
                     }}
                     feedback={errors.studentType}
                     invalid={touched.studentType && errors.studentType}
@@ -248,8 +252,6 @@ export default function StudentInfoForm() {
                     ]}
                     isRequired
                   />
-                </div>
-                <div className='grid md:grid-cols-2 gap-6'>
                   <InputField
                     type='select'
                     name='universityName'
@@ -257,11 +259,18 @@ export default function StudentInfoForm() {
                     placeholder='Chọn trường đại học của bạn...'
                     value={values.universityName}
                     onChange={(selectedOption) => {
-                      setFieldValue("universityName", selectedOption)
-                      handleSaveOption("universityName", selectedOption)
+                      handleChangeStudentInfo(
+                        "universityName",
+                        selectedOption,
+                        setFieldValue
+                      )
                     }}
                     clearValue={() => {
-                      setFieldValue("universityName", "")
+                      handleChangeStudentInfo(
+                        "universityName",
+                        "",
+                        setFieldValue
+                      )
                     }}
                     feedback={errors.universityName}
                     invalid={touched.universityName && errors.universityName}
@@ -279,14 +288,15 @@ export default function StudentInfoForm() {
                     value={values.major}
                     feedback={errors.major}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "major",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                     invalid={touched.major && errors.major}
                     isRequired
                   />
-                </div>
-                <div className='grid md:grid-cols-2 gap-6'>
                   <InputField
                     type='text'
                     name='classCode'
@@ -295,8 +305,11 @@ export default function StudentInfoForm() {
                     value={values.classCode}
                     feedback={errors.classCode}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "classCode",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                     invalid={touched.classCode && errors.classCode}
                     isRequired
@@ -309,8 +322,11 @@ export default function StudentInfoForm() {
                     value={values.studentCode}
                     feedback={errors.studentCode}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "studentCode",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                     invalid={touched.studentCode && errors.studentCode}
                     isRequired
@@ -318,117 +334,69 @@ export default function StudentInfoForm() {
                 </div>
                 <div className='grid md:grid-cols-2 gap-6'>
                   <InputField
-                    type='text'
-                    name='grade10Semester1'
-                    placeholder='Nhập điểm trung bình HK1 lớp 10...'
-                    label='Điểm trung bình HK1 lớp 10'
-                    value={values.grade10Semester1}
-                    feedback={errors.grade10Semester1}
+                    type='number'
+                    name='averageGrade10'
+                    placeholder='Nhập điểm trung bình lớp 10...'
+                    label='Điểm trung bình lớp 10'
+                    value={values.averageGrade10}
+                    feedback={errors.averageGrade10}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "averageGrade10",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade10Semester1 && errors.grade10Semester1
-                    }
+                    invalid={touched.averageGrade10 && errors.averageGrade10}
                     isRequired
                   />
                   <InputField
-                    type='text'
-                    name='grade10Semester2'
-                    placeholder='Nhập điểm trung bình HK2 lớp 10...'
-                    label='Điểm trung bình HK2 lớp 10'
-                    value={values.grade10Semester2}
-                    feedback={errors.grade10Semester2}
+                    type='number'
+                    name='averageGrade11'
+                    placeholder='Nhập điểm trung bình lớp 11...'
+                    label='Điểm trung bình lớp 11'
+                    value={values.averageGrade11}
+                    feedback={errors.averageGrade11}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "averageGrade11",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade10Semester2 && errors.grade10Semester2
-                    }
+                    invalid={touched.averageGrade11 && errors.averageGrade11}
                     isRequired
                   />
                   <InputField
-                    type='text'
-                    name='grade11Semester1'
-                    placeholder='Nhập điểm trung bình HK1 lớp 11...'
-                    label='Điểm trung bình HK1 lớp 11'
-                    value={values.grade11Semester1}
-                    feedback={errors.grade11Semester1}
+                    type='number'
+                    name='averageGrade12'
+                    placeholder='Nhập điểm trung bình lớp 12...'
+                    label='Điểm trung bình lớp 12'
+                    value={values.averageGrade12}
+                    feedback={errors.averageGrade12}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "averageGrade12",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade11Semester1 && errors.grade11Semester1
-                    }
+                    invalid={touched.averageGrade12 && errors.averageGrade12}
                     isRequired
                   />
                   <InputField
-                    type='text'
-                    name='grade11Semester2'
-                    placeholder='Nhập điểm trung bình HK2 lớp 11...'
-                    label='Điểm trung bình HK2 lớp 10'
-                    value={values.grade11Semester2}
-                    feedback={errors.grade11Semester2}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade11Semester2 && errors.grade11Semester2
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type='text'
-                    name='grade12Semester1'
-                    placeholder='Nhập điểm trung bình HK1 lớp 12...'
-                    label='Điểm trung bình HK1 lớp 12'
-                    value={values.grade12Semester1}
-                    feedback={errors.grade12Semester1}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade12Semester1 && errors.grade12Semester1
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type='text'
-                    name='grade12Semester2'
-                    placeholder='Nhập điểm trung bình HK2 lớp 12...'
-                    label='Điểm trung bình HK2 lớp 12'
-                    value={values.grade12Semester2}
-                    feedback={errors.grade12Semester2}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.grade12Semester2 && errors.grade12Semester2
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type='text'
+                    type='number'
                     name='highSchoolGraduationExamScore'
                     placeholder='Nhập điểm trúng tuyển...'
                     label='Điểm trúng tuyển'
                     value={values.highSchoolGraduationExamScore}
                     feedback={errors.highSchoolGraduationExamScore}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "highSchoolGraduationExamScore",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                     onBlur={handleBlur}
                     invalid={
@@ -438,14 +406,31 @@ export default function StudentInfoForm() {
                     isRequired
                   />
                   <InputField
-                    type='text'
+                    type='number'
                     name='dgnlScore'
                     placeholder='Nhập điểm thi ĐGNL...'
                     label='Điểm thi ĐGNL (nếu có)'
                     value={values.dgnlScore}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "dgnlScore",
+                        e.target.value,
+                        setFieldValue
+                      )
+                    }}
+                  />
+                  <InputField
+                    type='text'
+                    name='admissionViaDirectMethod'
+                    placeholder='Nhập hình thức được tuyển thẳng (HSG Tỉnh, IELTS,...)...'
+                    label='Tuyển thẳng (nếu có): '
+                    value={values.admissionViaDirectMethod}
+                    onChange={(e) => {
+                      handleChangeStudentInfo(
+                        "admissionViaDirectMethod",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                   />
                 </div>
@@ -458,20 +443,13 @@ export default function StudentInfoForm() {
                     label='Thành tích học tập'
                     value={values.achievements}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "achievements",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
-                  />
-                  <InputField
-                    type='text'
-                    name='admissionViaDirectMethod'
-                    placeholder='Nhập hình thức được tuyển thẳng (HSG Tỉnh, IELTS,...)...'
-                    label='Tuyển thẳng (nếu có): '
-                    value={values.admissionViaDirectMethod}
-                    onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
-                    }}
+                    isRequired
                   />
                   <InputField
                     type='textarea'
@@ -482,8 +460,11 @@ export default function StudentInfoForm() {
                     value={values.dream}
                     feedback={errors.dream}
                     onChange={(e) => {
-                      handleChange(e)
-                      handleSaveInput(e)
+                      handleChangeStudentInfo(
+                        "dream",
+                        e.target.value,
+                        setFieldValue
+                      )
                     }}
                     invalid={touched.dream && errors.dream}
                     isRequired
