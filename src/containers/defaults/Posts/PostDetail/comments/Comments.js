@@ -93,7 +93,7 @@ export default function Comments({ postId = null }) {
       </div>
       <div className='max-w-screen-md mx-auto my-4'>
         <ul className='space-y-5'>
-          {comments.map((comment) => (
+          {comments?.map((comment) => (
             <li key={comment.id}>
               <CommentItem comment={comment} postId={postId} />
               {comment?.childs &&
