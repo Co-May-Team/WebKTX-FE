@@ -63,7 +63,7 @@ export default function PersonalInfoForm({ setFinish }) {
   useEffect(() => {
     setLoadingEthincs(true)
     axios
-      .get("http://api.nosomovo.xyz/ethnic/getalllist")
+      .get("https://api.nosomovo.xyz/ethnic/getalllist")
       .then((response) => {
         setEthincs(response.data)
       })

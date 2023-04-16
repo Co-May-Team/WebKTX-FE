@@ -64,6 +64,11 @@ const authSlice = createSlice({
           state.status = "user"
           state.userInfo = action.payload.data.userInfo
           state.accessToken = "Bearer " + action.payload.data.accessToken
+          Toast.fire({
+            title: "Đăng nhập",
+            text: "Đăng nhập thành công",
+            icon: "success",
+          })
         } else {
           state.status = "idle"
           Toast.fire({
@@ -108,6 +113,11 @@ const authSlice = createSlice({
         state.status = "user"
         state.accessToken = "Bearer " + localStorage.getItem("accessToken")
         state.userInfo = action.payload
+        Toast.fire({
+          title: "Đăng nhập",
+          text: "Đăng nhập thành công",
+          icon: "success",
+        })
         console.log(action.payload)
       })
       .addCase(forgotPassword.pending, (state, action) => {
