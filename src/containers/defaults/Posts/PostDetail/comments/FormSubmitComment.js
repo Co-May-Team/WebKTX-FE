@@ -28,6 +28,7 @@ export default function FormSubmitComment({
     } else {
       dispatch(addComment(values))
     }
+    cancelComment()
     actions.setSubmitting(false)
   }
   return (

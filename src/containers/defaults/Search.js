@@ -389,16 +389,16 @@ export default function Search() {
                             <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-7 w-7 text-sm ring-1 ring-white dark:ring-neutral-900'>
                               <img
                                 className='absolute inset-0 w-full h-full object-cover'
-                                src={defaultAvatar}
-                                alt='Bác Phạm Văn Bên'
-                                title='Bác Phạm Văn Bên'
+                                src={result?.userInfo.avatar}
+                                alt={result?.userInfo.fullName}
+                                title={result?.userInfo.fullName}
                               />
                               <span className='wil-avatar__name'>
-                                Bác Phạm Văn Bên
+                              {result?.userInfo.fullName}
                               </span>
                             </div>
                             <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                              KTX Cỏ May
+                            {result?.userInfo.fullName}
                             </span>
                           </div>
                           <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>

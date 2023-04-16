@@ -29,7 +29,6 @@ export default function CommentItem({ postId, comment }) {
   )
   const handleDeleteComment = () => {
     dispatch(deleteComment(comment.id))
-    navigate(-1)
   }
 
   return (

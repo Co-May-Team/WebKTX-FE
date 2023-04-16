@@ -43,6 +43,7 @@ const authSlice = createSlice({
       })
       state.userInfo = {}
       state.accessToken = ""
+      localStorage.removeItem("accessToken")
     },
   },
   extraReducers: (builder) => {
@@ -64,11 +65,13 @@ const authSlice = createSlice({
           state.status = "user"
           state.userInfo = action.payload.data.userInfo
           state.accessToken = "Bearer " + action.payload.data.accessToken
+          localStorage.setItem("accessToken", "Bearer " + action.payload.data.accessToken)
           Toast.fire({
             title: "Đăng nhập",
             text: "Đăng nhập thành công",
             icon: "success",
           })
+          window.history.back()
         } else {
           state.status = "idle"
           Toast.fire({
@@ -112,7 +115,7 @@ const authSlice = createSlice({
       .addCase(getUserInfo.fulfilled, (state, action) => {
         state.status = "user"
         state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        state.userInfo = action.payload
+        state.userInfo = action.payload.data.userInfo
         Toast.fire({
           title: "Đăng nhập",
           text: "Đăng nhập thành công",
