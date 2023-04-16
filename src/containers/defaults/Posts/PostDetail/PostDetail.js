@@ -304,7 +304,7 @@ export default function PostDetail(props) {
                                   d='M15.5 11C15.5 11.2761 15.2761 11.5 15 11.5C14.7239 11.5 14.5 11.2761 14.5 11C14.5 10.7239 14.7239 10.5 15 10.5C15.2761 10.5 15.5 10.7239 15.5 11Z'
                                 />
                               </svg>
-                              <span className='ml-1'>0</span>
+                              <span className='ml-1'>{postInfo?.userInfo?.totalComment || 0}</span>
                             </button>
                           </Fade>
                         </div>
