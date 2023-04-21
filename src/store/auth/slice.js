@@ -2,6 +2,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import Swal from "sweetalert2"
 import {
+  auth,
   checkToken,
   forgotPassword,
   getUserInfo,
@@ -65,7 +66,10 @@ const authSlice = createSlice({
           state.status = "user"
           state.userInfo = action.payload.data.userInfo
           state.accessToken = "Bearer " + action.payload.data.accessToken
-          localStorage.setItem("accessToken", "Bearer " + action.payload.data.accessToken)
+          localStorage.setItem(
+            "accessToken",
+            "Bearer " + action.payload.data.accessToken
+          )
           Toast.fire({
             title: "Đăng nhập",
             text: "Đăng nhập thành công",
@@ -113,15 +117,35 @@ const authSlice = createSlice({
         })
       })
       .addCase(getUserInfo.fulfilled, (state, action) => {
+        console.log(action.payload)
+        if (action.payload.status === "ERROR") {
+          state.status = "auth"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          Toast.fire({
+            title: "Đăng nhập",
+            text: "Đăng nhập thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
+            icon: "success",
+          })
+        } else {
+          state.status = "user"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          state.userInfo = action.payload.data.userInfo
+          Toast.fire({
+            title: "Đăng nhập",
+            text: "Đăng nhập thành công",
+            icon: "success",
+          })
+        }
+      })
+      .addCase(auth.fulfilled, (state, action) => {
         state.status = "user"
         state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        state.userInfo = action.payload.data.userInfo
+        state.userInfo = action.payload.data
         Toast.fire({
-          title: "Đăng nhập",
-          text: "Đăng nhập thành công",
+          title: "Xác thực tài khoản",
+          text: "Xác thực tài khoản thành công",
           icon: "success",
         })
-        console.log(action.payload)
       })
       .addCase(forgotPassword.pending, (state, action) => {
         state.status = "loading"

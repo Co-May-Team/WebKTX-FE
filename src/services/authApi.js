@@ -6,6 +6,10 @@ const authApi = {
     const requestUrl = `${baseUrl}/signin`
     return axiosClient.post(requestUrl, userInfo)
   },
+  auth: (userInfo) => {
+    const requestUrl = `${baseUrl}/auth`
+    return axiosClient.post(requestUrl, userInfo)
+  },
   signup: (userInfo) => {
     const requestUrl = `${baseUrl}/signup`
     return axiosClient.post(requestUrl, userInfo)

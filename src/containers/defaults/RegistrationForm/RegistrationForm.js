@@ -1,13 +1,14 @@
+import { useState } from "react"
 import { useSelector } from "react-redux"
 import * as Yup from "yup"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
+import axiosClient from "~/services/axiosClient"
 import { authSelector } from "~/store/selectors"
 import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
-import { useState } from "react"
 
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
@@ -21,17 +22,23 @@ export default function RegistrationForm() {
   const handleFormStatus = (formName, status) => {
     setFormStatus({
       ...formStatus,
-      [formName]: status
-    });
+      [formName]: status,
+    })
   }
 
-  const handleGenerateFiles = () => {
+  const handleGenerateFiles = async () => {
     const info = {
       personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
       familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
       studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
     }
-    console.log(info)
+    const response = await axiosClient.post("/admission/gen-file", info)
+
+    const blob = new Blob([response.data], {
+      type: "application/pdf",
+    })
+    const url = URL.createObjectURL(blob)
+    window.open(url)
   }
 
   /* Xử lý Formik Form */
