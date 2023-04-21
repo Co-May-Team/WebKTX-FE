@@ -8,6 +8,10 @@ export const login = createAsyncThunk("auth/login", async (userInfo) => {
   const response = await authApi.login(userInfo)
   return response.data
 })
+export const auth = createAsyncThunk("auth/auth", async (userInfo) => {
+  const response = await authApi.auth(userInfo)
+  return response.data
+})
 export const signup = createAsyncThunk("auth/signup", async (userInfo) => {
   const response = await authApi.signup(userInfo)
   return response.data

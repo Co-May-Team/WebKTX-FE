@@ -28,6 +28,9 @@ export default function Login() {
         navigate(`${path.ADMIN + path.ADMIN_HOME}`)
       }
     }
+    else if (status === "auth") {
+      
+    }
   }, [])
 
   /* Xử lý form */
@@ -49,7 +52,6 @@ export default function Login() {
     const info = parseJwt(response.credential)
     localStorage.setItem("accessToken", "Bearer " + response.credential)
     await dispatch(getUserInfo(info.email))
-    navigate(-1)
   }
 
   const onFailure = (error) => {
