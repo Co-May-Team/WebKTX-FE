@@ -9,7 +9,8 @@ import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
-
+import fileSaver from 'file-saver';
+import axios from 'axios';
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
 
@@ -33,12 +34,27 @@ export default function RegistrationForm() {
       studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
     }
     const response = await axiosClient.post("/admission/gen-file", info)
-
-    const blob = new Blob([response.data], {
-      type: "application/pdf",
+    // console.log(response.data);
+    // const blob = new Blob([response.data], {
+    //   type: "application/pdf",
+    // })
+    // fileSaver.saveAs(blob, 'filename.pdf');
+    // const url = URL.createObjectURL(blob)
+    // window.open(url)
+    axios({
+      method: 'post',
+      url: 'https://devcomaydorm.tech/api/admission/gen-file',
+      data: info,
+      responseType: 'blob',
     })
-    const url = URL.createObjectURL(blob)
-    window.open(url)
+    .then(response => {
+      const pdfBlob = new Blob([response.data], {type: 'application/pdf'});
+      fileSaver.saveAs(pdfBlob, 'example.pdf');
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
   }
 
   /* Xử lý Formik Form */
