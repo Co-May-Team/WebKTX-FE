@@ -16,10 +16,10 @@ pipeline {
         }
 		stage('Deploy') { 
             steps {
-				sh 'sudo systemctl enable webKTX-FE.service'
-				sh 'sudo systemctl stop webKTX-FE'
-				sh 'sudo systemctl start webKTX-FE'
-				sh 'sudo systemctl status webKTX-FE'
+				sh 'sudo systemctl enable dev-webKTX-FE.service'
+				sh 'sudo systemctl stop dev-webKTX-FE'
+				sh 'sudo systemctl start dev-webKTX-FE'
+				sh 'sudo systemctl status dev-webKTX-FE'
             }
         }
     }
