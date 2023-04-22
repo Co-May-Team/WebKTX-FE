@@ -11,7 +11,7 @@ pipeline {
         stage('Build') { 
             steps {
 				sh 'cp -f /var/lib/jenkins/workspace/configfile/env.js /var/lib/jenkins/workspace/dev-WebKTX-FE/src/utils'
-                sh 'npm install --save --legacy-peer-deps' 
+                sh 'npm install --force' 
 				sh 'npm run build' 
             }
         }
