@@ -7,8 +7,8 @@ const authApi = {
     return axiosClient.post(requestUrl, userInfo)
   },
   auth: (userInfo) => {
-    const requestUrl = `${baseUrl}/auth`
-    return axiosClient.post(requestUrl, userInfo)
+    const requestUrl = `/users/edit `
+    return axiosClient.put(requestUrl, userInfo)
   },
   signup: (userInfo) => {
     const requestUrl = `${baseUrl}/signup`

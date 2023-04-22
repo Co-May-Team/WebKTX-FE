@@ -10,6 +10,7 @@ import {
   resetPassword,
   signup,
 } from "./actions"
+import { path } from "~/utils"
 
 const Toast = Swal.mixin({
   toast: true,
@@ -26,17 +27,16 @@ const Toast = Swal.mixin({
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    status: "idle",
+    status: "anonymous",
     accessToken: "",
     userInfo: null,
-    userId: null,
   },
   reducers: {
     setStatus: (state, action) => {
       state.status = action.payload
     },
     logout: (state, action) => {
-      state.status = "idle"
+      state.status = "anonymous"
       Toast.fire({
         title: "Đăng xuất",
         text: "Đăng xuất thành công",
@@ -49,18 +49,9 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // .addCase(getUserInfo.pending, (state, action) => {
-      //     state.status = "loading"
-      // })
-      // .addCase(getUserInfo.fulfilled, (state, action) => {
-      //     if (action.payload.id) {
-      //         state.status = "user"
-      //     }
-      //     state.userInfo = action.payload
-      // })
-      // .addCase(getUserInfo.rejected, (state, action) => {
-      //     state.status = "idle"
-      // })
+      .addCase(login.pending, (state, action) => {
+        state.status = "isLogining"
+      })
       .addCase(login.fulfilled, (state, action) => {
         if (action.payload.status === "OK") {
           state.status = "user"
@@ -77,7 +68,7 @@ const authSlice = createSlice({
           })
           window.history.back()
         } else {
-          state.status = "idle"
+          state.status = "anonymous"
           Toast.fire({
             title: "Đăng nhập",
             text: action.payload.message,
@@ -86,12 +77,15 @@ const authSlice = createSlice({
         }
       })
       .addCase(login.rejected, (state, action) => {
-        state.status = "idle"
+        state.status = "anonymous"
         Toast.fire({
           title: "Đăng nhập",
-          text: action.error.message,
+          text: "Tài khoản hoặc mật khẩu không chính xác",
           icon: "error",
         })
+      })
+      .addCase(signup.pending, (state, action) => {
+        state.status = "isSigningUp"
       })
       .addCase(signup.fulfilled, (state, action) => {
         if (action.payload?.status === "ERROR") {
@@ -109,21 +103,23 @@ const authSlice = createSlice({
         }
       })
       .addCase(signup.rejected, (state, action) => {
-        state.status = "idle"
+        state.status = "anonymous"
         Toast.fire({
           title: "Đăng ký",
-          text: action.error.message,
+          text: "Có lỗi trong quá trình đăng ký, vui lòng thử lại sau",
           icon: "error",
         })
       })
+      .addCase(getUserInfo.pending, (state, action) => {
+        state.status = "isLoginingWithGoogle"
+      })
       .addCase(getUserInfo.fulfilled, (state, action) => {
-        console.log(action.payload)
         if (action.payload.status === "ERROR") {
           state.status = "auth"
           state.accessToken = "Bearer " + localStorage.getItem("accessToken")
           Toast.fire({
-            title: "Đăng nhập",
-            text: "Đăng nhập thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
+            title: "Đăng nhập với Google",
+            text: "Đăng nhập với Google thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
             icon: "success",
           })
         } else {
@@ -131,35 +127,54 @@ const authSlice = createSlice({
           state.accessToken = "Bearer " + localStorage.getItem("accessToken")
           state.userInfo = action.payload.data.userInfo
           Toast.fire({
-            title: "Đăng nhập",
-            text: "Đăng nhập thành công",
+            title: "Đăng nhập với Google",
+            text: "Đăng nhập với Google thành công",
             icon: "success",
           })
         }
       })
+      .addCase(getUserInfo.rejected, (state, action) => {
+        state.status = "anonymous"
+        Toast.fire({
+          title: "Đăng nhập với Google",
+          text: "Có lỗi trong quá trình đăng nhập với Google, vui lòng thử lại sau",
+          icon: "error",
+        })
+      })
+      .addCase(auth.pending, (state, action) => {
+        state.status = "isAuthenticating"
+      })
       .addCase(auth.fulfilled, (state, action) => {
         state.status = "user"
         state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        state.userInfo = action.payload.data
+        console.log(action.payload)
         Toast.fire({
           title: "Xác thực tài khoản",
           text: "Xác thực tài khoản thành công",
           icon: "success",
         })
       })
+      .addCase(auth.rejected, (state, action) => {
+        state.status = "error"
+        Toast.fire({
+          title: "Xác thực tài khoản",
+          text: "Xác thực tài khoản không thành công, vui lòng thử lại sau",
+          icon: "error",
+        })
+      })
       .addCase(forgotPassword.pending, (state, action) => {
-        state.status = "loading"
+        state.status = "isForgetting"
       })
       .addCase(forgotPassword.fulfilled, (state, action) => {
         if (action.payload.status === "OK") {
-          state.status = "idle"
+          state.status = "anonymous"
           Toast.fire({
             title: "Quên mật khẩu",
             text: action.payload.message,
             icon: "success",
           })
         } else {
-          state.status = "warning"
+          state.status = "anonymous"
           Toast.fire({
             title: "Quên mật khẩu",
             text: action.payload.message,
@@ -168,7 +183,7 @@ const authSlice = createSlice({
         }
       })
       .addCase(forgotPassword.rejected, (state, action) => {
-        state.status = "error"
+        state.status = "anonymous"
         Toast.fire({
           title: "Quên mật khẩu",
           text: action.error.message,
