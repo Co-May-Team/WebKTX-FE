@@ -47,7 +47,7 @@ export default function PostsSection() {
                         className='transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800'
                         // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                       >
-                        {posts[0]?.category.categoryName}
+                        {posts[0]?.category?.categoryName}
                       </div>
                     </div>
                     <h2 className='nc-card-title text-xl sm:text-2xl font-semibold '>
@@ -75,17 +75,17 @@ export default function PostsSection() {
                       <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-10 w-10 text-base flex-shrink-0 mr-3'>
                         <img
                           className='absolute inset-0 w-full h-full object-cover'
-                          src={posts[0]?.userInfo.avatar}
-                          alt={posts[0]?.userInfo.fullName}
-                          title={posts[0]?.userInfo.fullName}
+                          src={posts[0]?.userInfo?.avatar}
+                          alt={posts[0]?.userInfo?.fullName}
+                          title={posts[0]?.userInfo?.fullName}
                         />
                         <span className='wil-avatar__name'>
-                        {posts[0]?.userInfo.fullName}
+                        {posts[0]?.userInfo?.fullName}
                         </span>
                       </div>
                       <div>
                         <h2 className='text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                        {posts[0]?.userInfo.fullName}
+                        {posts[0]?.userInfo?.fullName}
                         </h2>
                         <span className='flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400'>
                           <span>
@@ -191,7 +191,7 @@ export default function PostsSection() {
                           className='transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800'
                           // to={`/${convertToUrl(posts[0]?.category.categoryName)}`}
                         >
-                          {post?.category.categoryName}
+                          {post?.category?.categoryName}
                         </div>
                       </div>
                       <h2 className='block font-semibold text-base'>

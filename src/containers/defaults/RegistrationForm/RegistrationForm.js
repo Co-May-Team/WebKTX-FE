@@ -1,3 +1,5 @@
+import axios from "axios"
+import fileSaver from "file-saver"
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import * as Yup from "yup"
@@ -9,8 +11,6 @@ import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
-import fileSaver from 'file-saver';
-import axios from 'axios';
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
 
@@ -42,19 +42,18 @@ export default function RegistrationForm() {
     // const url = URL.createObjectURL(blob)
     // window.open(url)
     axios({
-      method: 'post',
-      url: 'https://devcomaydorm.tech/api/admission/gen-file',
+      method: "post",
+      url: "https://devcomaydorm.tech/api/admission/gen-file",
       data: info,
-      responseType: 'blob',
+      responseType: "blob",
     })
-    .then(response => {
-      const pdfBlob = new Blob([response.data], {type: 'application/pdf'});
-      fileSaver.saveAs(pdfBlob, 'example.pdf');
-    })
-    .catch(error => {
-      console.error(error);
-    });
-
+      .then((response) => {
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+        fileSaver.saveAs(pdfBlob, "Don-Xin-Vao-O-KTX-Co-May.pdf")
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   /* Xử lý Formik Form */
@@ -485,7 +484,7 @@ export default function RegistrationForm() {
                 // }
                 onClick={handleGenerateFiles}
               >
-                Tự động tạo file từ thông tin trên
+                Tải xuống Đơn xin vào ở KTX Cỏ May
               </button>
             </div>
           </FilesUploadForm>
