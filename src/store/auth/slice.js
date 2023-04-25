@@ -147,7 +147,7 @@ const authSlice = createSlice({
       .addCase(auth.fulfilled, (state, action) => {
         state.status = "user"
         state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        console.log(action.payload)
+        state.userInfo = action.payload.data.userInfo
         Toast.fire({
           title: "Xác thực tài khoản",
           text: "Xác thực tài khoản thành công",
