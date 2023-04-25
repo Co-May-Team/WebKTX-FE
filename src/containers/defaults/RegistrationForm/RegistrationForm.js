@@ -20,11 +20,10 @@ export default function RegistrationForm() {
     studentInfo: false,
     filesUpload: false,
   })
-  const handleFormStatus = (formName, status) => {
-    setFormStatus({
-      ...formStatus,
-      [formName]: status,
-    })
+  const [currentForm, setCurrentForm] = useState(1)
+
+  const handleFormChange = (formNumber) => {
+    setCurrentForm(formNumber)
   }
 
   const handleGenerateFiles = async () => {
@@ -425,69 +424,33 @@ export default function RegistrationForm() {
               SINH VÀO KÝ TÚC XÁ CỎ MAY NĂM HỌC 2023 - 2024
               <span className='text-3xl md:text-4xl leading-none'>🎉</span>
             </h2>
-            <div className='inline-flex justify-center items-center mt-20'>
-              <a
-                className='inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 w-10 h-10'
-                href='#personal-info'
-              >
-                1
-              </a>
-              <div
-                className='inline-flex bg-primary-6000'
-                style={{ width: "75px", height: "2px" }}
-              />
-              <a
-                className='inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 w-10 h-10'
-                href='#family-info'
-              >
-                2
-              </a>
-              <div
-                className='inline-flex bg-primary-6000'
-                style={{ width: "75px", height: "2px" }}
-              />
-              <a
-                className='inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 w-10 h-10'
-                href='#student-info'
-              >
-                3
-              </a>
-              <div
-                className='inline-flex bg-primary-6000'
-                style={{ width: "75px", height: "2px" }}
-              />
-              <a
-                className='inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 w-10 h-10'
-                href='#files-upload'
-              >
-                4
-              </a>
-            </div>
           </header>
-          <PersonalInfoForm handleFormStatus />
-          <FamilyInfoForm handleFormStatus />
-          <StudentInfoForm handleFormStatus />
-          <FilesUploadForm handleFormStatus>
-            <div className='flex mt-5 justify-center items-center'>
-              <button
-                className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
-                // disabled={
-                //   !Object.values({
-                //     personalInfo: JSON.parse(
-                //       localStorage.getItem("personalInfo")
-                //     )?.finished,
-                //     familyInfo: JSON.parse(localStorage.getItem("familyInfo"))
-                //       ?.finished,
-                //     studentInfo: JSON.parse(localStorage.getItem("studentInfo"))
-                //       ?.finished,
-                //   }).every((value) => value === true)
-                // }
-                onClick={handleGenerateFiles}
-              >
-                Tải xuống Đơn xin vào ở KTX Cỏ May
-              </button>
-            </div>
-          </FilesUploadForm>
+          {currentForm === 1 && <PersonalInfoForm handleFormChange={handleFormChange} />}
+          {currentForm === 2 && <FamilyInfoForm handleFormChange={handleFormChange} />}
+          {currentForm === 3 && <StudentInfoForm handleFormChange={handleFormChange} />}
+          {currentForm === 4 && (
+            <FilesUploadForm handleFormChange={handleFormChange}>
+              <div className='flex mt-5 justify-center items-center'>
+                <button
+                  className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                  // disabled={
+                  //   !Object.values({
+                  //     personalInfo: JSON.parse(
+                  //       localStorage.getItem("personalInfo")
+                  //     )?.finished,
+                  //     familyInfo: JSON.parse(localStorage.getItem("familyInfo"))
+                  //       ?.finished,
+                  //     studentInfo: JSON.parse(localStorage.getItem("studentInfo"))
+                  //       ?.finished,
+                  //   }).every((value) => value === true)
+                  // }
+                  onClick={handleGenerateFiles}
+                >
+                  Tải xuống Đơn xin vào ở KTX Cỏ May
+                </button>
+              </div>
+            </FilesUploadForm>
+          )}
         </>
       ) : (
         <div className='flex mt-5 justify-center items-center'>

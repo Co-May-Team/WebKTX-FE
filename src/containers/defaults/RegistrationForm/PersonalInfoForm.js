@@ -1,12 +1,13 @@
 import axios from "axios"
 import { Formik } from "formik"
 import { useEffect, useState } from "react"
+import { BsArrowRight } from "react-icons/bs"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import religions from "~/utils/mockData/religions"
 
-export default function PersonalInfoForm({ setFinish }) {
+export default function PersonalInfoForm({ handleFormChange }) {
   const [ethnics, setEthincs] = useState([])
   const [loadingEthincs, setLoadingEthincs] = useState(true)
   const [provinces, setProvinces] = useState([])
@@ -205,9 +206,7 @@ export default function PersonalInfoForm({ setFinish }) {
   }
 
   const handleSubmitPersonalInfo = async (values, actions) => {
-    actions.setSubmitting(true)
-    console.log(values)
-    actions.setSubmitting(false)
+    handleFormChange(2)
   }
   /* */
   return (
@@ -602,14 +601,15 @@ export default function PersonalInfoForm({ setFinish }) {
                   invalid={touched.idIssuePlace && errors.idIssuePlace}
                   isRequired
                 />
+                <div className='mt-10 inline-flex items-center justify-center gap-5'>
+                  <button
+                    className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                    type='submit'
+                  >
+                    Tiếp tục <BsArrowRight />
+                  </button>
+                </div>
               </div>
-              <button
-                className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
-                type='submit'
-              >
-                Lưu
-                {isSubmitting && "..."}
-              </button>
             </Form>
           )}
         </Formik>
