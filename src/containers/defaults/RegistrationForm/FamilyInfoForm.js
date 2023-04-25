@@ -5,6 +5,7 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
+import Motion from "~/components/Motion"
 
 export default function FamilyInfoForm({ handleFormChange }) {
   const [provinces, setProvinces] = useState([])
@@ -455,7 +456,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
   }
   /* */
   return (
-    <div id='family-info' className='container relative pb-16 lg:pb-28'>
+    <Motion className='container relative pb-16 lg:pb-28'>
       <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
@@ -1704,6 +1705,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
           )}
         </Formik>
       </div>
-    </div>
+    </Motion>
   )
 }

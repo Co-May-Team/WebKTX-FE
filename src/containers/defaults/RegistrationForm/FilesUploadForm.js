@@ -3,6 +3,7 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
+import Motion from "~/components/Motion"
 
 export default function FilesUploadForm({ children, handleFormChange }) {
   /* Thông tin cá nhân */
@@ -56,10 +57,7 @@ export default function FilesUploadForm({ children, handleFormChange }) {
   }
   /* */
   return (
-    <div
-      id='files-upload'
-      className='container relative pt-10 pb-16 lg:pt-20 lg:pb-28'
-    >
+    <Motion className='container relative pt-10 pb-16 lg:pt-20 lg:pb-28'>
       <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
         {children}
         <header className=' my-5 text-center mx-auto'>
@@ -92,69 +90,69 @@ export default function FilesUploadForm({ children, handleFormChange }) {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className='grid gap-6'>
-                  <InputField
-                    type='file'
-                    accept='application/pdf'
-                    name='application'
-                    label='Đơn xin xét chọn vào ký túc xá'
-                    value={values.application}
-                    feedback={errors.application}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.application && errors.application}
-                    isRequired
-                  />
-                  <InputField
-                    type='file'
-                    accept='application/pdf'
-                    name='transcriptAndAchievements'
-                    label='Học bạ THPT và Thành tích học tập'
-                    value={values.transcriptAndAchievements}
-                    feedback={errors.transcriptAndAchievements}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={
-                      touched.transcriptAndAchievements &&
-                      errors.transcriptAndAchievements
-                    }
-                    isRequired
-                  />
-                  <InputField
-                    type='file'
-                    accept='application/pdf'
-                    name='personalProfile'
-                    label='Lý lịch cá nhân (có dán ảnh và đóng dấu xác nhận của địa phương)'
-                    value={values.personalProfile}
-                    feedback={errors.personalProfile}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.personalProfile && errors.personalProfile}
-                    isRequired
-                  />
-                  <InputField
-                    type='file'
-                    accept='application/pdf'
-                    name='photo'
-                    label='Ảnh thẻ'
-                    value={values.photo}
-                    feedback={errors.photo}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.photo && errors.photo}
-                    isRequired
-                  />
-                  <InputField
-                    type='file'
-                    accept='application/pdf'
-                    name='houseImage'
-                    label='Hình ảnh căn nhà đang ở'
-                    value={values.houseImage}
-                    feedback={errors.houseImage}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={touched.houseImage && errors.houseImage}
-                    isRequired
-                  />
+                <InputField
+                  type='file'
+                  accept='application/pdf'
+                  name='application'
+                  label='Đơn xin xét chọn vào ký túc xá'
+                  value={values.application}
+                  feedback={errors.application}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  invalid={touched.application && errors.application}
+                  isRequired
+                />
+                <InputField
+                  type='file'
+                  accept='application/pdf'
+                  name='transcriptAndAchievements'
+                  label='Học bạ THPT và Thành tích học tập'
+                  value={values.transcriptAndAchievements}
+                  feedback={errors.transcriptAndAchievements}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  invalid={
+                    touched.transcriptAndAchievements &&
+                    errors.transcriptAndAchievements
+                  }
+                  isRequired
+                />
+                <InputField
+                  type='file'
+                  accept='application/pdf'
+                  name='personalProfile'
+                  label='Lý lịch cá nhân (có dán ảnh và đóng dấu xác nhận của địa phương)'
+                  value={values.personalProfile}
+                  feedback={errors.personalProfile}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  invalid={touched.personalProfile && errors.personalProfile}
+                  isRequired
+                />
+                <InputField
+                  type='file'
+                  accept='application/pdf'
+                  name='photo'
+                  label='Ảnh thẻ'
+                  value={values.photo}
+                  feedback={errors.photo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  invalid={touched.photo && errors.photo}
+                  isRequired
+                />
+                <InputField
+                  type='file'
+                  accept='application/pdf'
+                  name='houseImage'
+                  label='Hình ảnh căn nhà đang ở'
+                  value={values.houseImage}
+                  feedback={errors.houseImage}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  invalid={touched.houseImage && errors.houseImage}
+                  isRequired
+                />
                 <div className='mt-10 inline-flex items-center justify-center gap-5'>
                   <button
                     className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
@@ -174,6 +172,6 @@ export default function FilesUploadForm({ children, handleFormChange }) {
           )}
         </Formik>
       </div>
-    </div>
+    </Motion>
   )
 }
