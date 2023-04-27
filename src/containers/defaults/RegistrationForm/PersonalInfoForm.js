@@ -6,11 +6,10 @@ import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
+import ethnics from "~/utils/mockData/ethnics"
 import religions from "~/utils/mockData/religions"
 
 export default function PersonalInfoForm({ handleFormChange }) {
-  const [ethnics, setEthincs] = useState([])
-  const [loadingEthincs, setLoadingEthincs] = useState(true)
   const [provinces, setProvinces] = useState([])
   const [loadingProvinces, setLoadingProvinces] = useState(true)
   const [districts, setDistricts] = useState([])
@@ -60,18 +59,6 @@ export default function PersonalInfoForm({ handleFormChange }) {
         })
       )
     }
-  }, [])
-
-  useEffect(() => {
-    setLoadingEthincs(true)
-    axios
-      .get("https://api.nosomovo.xyz/ethnic/getalllist")
-      .then((response) => {
-        setEthincs(response.data)
-      })
-      .finally(() => {
-        setLoadingEthincs(false)
-      })
   }, [])
 
   useEffect(() => {
@@ -352,7 +339,6 @@ export default function PersonalInfoForm({ handleFormChange }) {
                     clearValue={() => {
                       handleChangePersonalInfo("ethnic", "", setFieldValue)
                     }}
-                    isLoading={loadingEthincs}
                     getOptionValue={(option) => option.id}
                     getOptionLabel={(option) => option.name}
                     loadingMessage={() => "Đang tải dữ liệu"}
