@@ -1,1 +1,0 @@
-export { religions as default } from './religions'
