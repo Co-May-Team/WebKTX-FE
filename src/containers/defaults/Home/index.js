@@ -20,9 +20,9 @@ export default function Home() {
     <Motion>
       <SeoHelmet title='Trang chủ' />
       {/* Hero section */}
-      {/* <div>
+      {/*
         <HeroSection />
-      </div> */}
+      */}
 
       {/* Posts section */}
       <PostsSection />
@@ -32,8 +32,6 @@ export default function Home() {
 
       {/* Videos */}
       <VideosSection />
-
-      {/* Google map */}
     </Motion>
   )
 }
