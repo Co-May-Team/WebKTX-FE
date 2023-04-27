@@ -546,7 +546,7 @@ export default function PostDetail(props) {
                     </div>
                   </div>
                 </div>
-                <Comments postInfo={postInfo} />
+                {/* <Comments postInfo={postInfo} /> */}
               </div>
             </div>
             <div className='w-full mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3'>
