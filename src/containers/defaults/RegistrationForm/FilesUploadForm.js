@@ -1,15 +1,69 @@
+import axios from "axios"
+import FileSaver from "file-saver"
 import { Formik } from "formik"
-import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs"
+import { BsArrowLeft, BsCheckLg, BsDownload } from "react-icons/bs"
 import { Form } from "reactstrap"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import admissionApi from "~/services/admissionApi"
-import axiosClient from "~/services/axiosClient"
+import { env } from "~/utils/constants/env"
 
-export default function FilesUploadForm({ children, handleFormChange }) {
-  /* Thông tin cá nhân */
+export default function FilesUploadForm({ handleFormChange }) {
+  const handleGenerateFiles = async () => {
+    const info = {
+      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    }
+    axios({
+      method: "post",
+      url: `${env.BACKEND_URL}admission/gen-file`,
+      data: {
+        ...info,
+        familyInfo: {
+          relatives: [
+            {
+              relationship: {
+                id: 1,
+                label: "Cha",
+              },
+              ...info.familyInfo.father,
+            },
+            {
+              relationship: {
+                id: 2,
+                label: "Mẹ",
+              },
+              ...info.familyInfo.mother,
+            },
+            ...info.familyInfo.relatives?.map((relative) => ({
+              status: {
+                value: "Có thông tin",
+                label: "Có thông tin",
+              },
+              ...relative,
+            })),
+          ],
+          familyBackground: info.familyInfo.familyBackground,
+        },
+      },
+      responseType: "blob",
+    })
+      .then((response) => {
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+        FileSaver.saveAs(
+          pdfBlob,
+          "Đơn xin vào ở KTX Cỏ May năm học 2023 - 2022"
+        )
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  /*  */
   const initialValuesFilesUpload = {
     application: "",
     transcriptAndAchievements: "",
@@ -20,10 +74,10 @@ export default function FilesUploadForm({ children, handleFormChange }) {
 
   const validationSchemaFilesUpload = Yup.object({
     application: Yup.mixed().required(
-      "Vui lòng tải lên đơn xin xét chọn vào ký túc xá."
+      "Vui lòng tải lên đơn xin vào ở KTX Cỏ May."
     ),
     transcriptAndAchievements: Yup.mixed().required(
-      "Vui lòng tải lên học bạ THPT."
+      "Vui lòng tải lên học bạ THPT và Thành tích học tập."
     ),
     personalProfile: Yup.mixed().required(
       "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
@@ -72,36 +126,57 @@ export default function FilesUploadForm({ children, handleFormChange }) {
         familyBackground: info.familyInfo.familyBackground,
       },
     }
-    admissionApi.submit(data).then((response) => {
-      if (response.data?.status === "OK") {
+    admissionApi
+      .submit(data)
+      .then((response) => {
+        if (response.data?.status === "OK") {
+          Swal.fire({
+            icon: "success",
+            title: "Gửi hồ sơ thành công",
+            text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!",
+          })
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Gửi hồ sơ thất bại",
+            text: response.data?.data,
+          })
+        }
+      })
+      .catch((error) => {
         Swal.fire({
           icon: "success",
-          title: "Gửi hồ sơ thành công",
-          text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!"
+          title: "Có lỗi trong quá trình gửi hồ sơ",
+          text: error?.message,
         })
-      }
-      else {
-        Swal.fire({
-          icon: "warning",
-          title: "Gửi hồ sơ thất bại",
-          text: response.data?.data
-        })
-      }
-    })
-    .catch((error) => {
-      Swal.fire({
-        icon: "success",
-        title: "Có lỗi trong quá trình gửi hồ sơ",
-        text: error?.message
       })
-    })
     actions.setSubmitting(false)
   }
   /* */
   return (
     <Motion className='container relative pt-10 pb-16 lg:pt-20 lg:pb-28'>
       <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
-        {children}
+        <div className='flex mt-5 justify-center items-center'>
+          <button
+            className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
+            // disabled={
+            //   !Object.values({
+            //     personalInfo: JSON.parse(
+            //       localStorage.getItem("personalInfo")
+            //     )?.finished,
+            //     familyInfo: JSON.parse(localStorage.getItem("familyInfo"))
+            //       ?.finished,
+            //     studentInfo: JSON.parse(localStorage.getItem("studentInfo"))
+            //       ?.finished,
+            //   }).every((value) => value === true)
+            // }
+            onClick={handleGenerateFiles}
+          >
+            <BsDownload className='me-3' />
+            Đơn xin vào ở KTX Cỏ May năm học 2023 - 2022
+            <BsDownload className='ms-3' />
+          </button>
+        </div>
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
             IV. HỒ SƠ XÉT TUYỂN
@@ -136,7 +211,7 @@ export default function FilesUploadForm({ children, handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='application'
-                  label='Đơn xin xét chọn vào ký túc xá'
+                  label='Đơn xin vào ở KTX Cỏ May:'
                   value={values.application}
                   feedback={errors.application}
                   onChange={handleChange}

@@ -11,7 +11,6 @@ import { fetchPosts, loadMorePosts } from "~/store/posts/actions"
 import { postsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import readingTime from "~/utils/commons/readingTime"
-import { defaultAvatar } from "~/utils/constants/default"
 
 export default function PostsSection() {
   const posts = useSelector(postsSelector).posts
@@ -80,12 +79,12 @@ export default function PostsSection() {
                           title={posts[0]?.userInfo?.fullName}
                         />
                         <span className='wil-avatar__name'>
-                        {posts[0]?.userInfo?.fullName}
+                          {posts[0]?.userInfo?.fullName}
                         </span>
                       </div>
                       <div>
                         <h2 className='text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                        {posts[0]?.userInfo?.fullName}
+                          {posts[0]?.userInfo?.fullName}
                         </h2>
                         <span className='flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400'>
                           <span>

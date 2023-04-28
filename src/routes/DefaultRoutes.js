@@ -10,7 +10,9 @@ import { path } from "~/utils"
 const Home = React.lazy(() => import("~/containers/defaults/Home"))
 const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
 const Login = React.lazy(() => import("~/containers/defaults/Login"))
-const Authentication = React.lazy(() => import("~/containers/defaults/Authentication"))
+const Authentication = React.lazy(() =>
+  import("~/containers/defaults/Authentication")
+)
 const PostSaved = React.lazy(() => import("~/containers/defaults/PostSaved"))
 const Search = React.lazy(() => import("~/containers/defaults/Search"))
 const PostsHome = React.lazy(() =>

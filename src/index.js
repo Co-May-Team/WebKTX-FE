@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from "react-router-dom"
 import { persistStore } from "redux-persist"
 import { PersistGate } from "redux-persist/integration/react"
 
-import "./index.css"
 import App from "~/App"
 import { GlobalStyles } from "~/components"
 import Loading from "./components/Loading"
