@@ -11,6 +11,7 @@ import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
+import { env } from "~/utils/constants/env"
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
 
@@ -42,7 +43,7 @@ export default function RegistrationForm() {
     // window.open(url)
     axios({
       method: "post",
-      url: "https://devcomaydorm.tech/api/admission/gen-file",
+      url: `${env.BACKEND_URL}admission/gen-file`,
       data: info,
       responseType: "blob",
     })

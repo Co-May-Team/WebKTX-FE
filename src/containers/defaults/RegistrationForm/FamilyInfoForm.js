@@ -6,8 +6,11 @@ import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
+import axiosClient from "~/services/axiosClient"
 
 export default function FamilyInfoForm({ handleFormChange }) {
+  const [relationships, setRelationships] = useState([])
+  const [loadingRelationships, setLoadingRelationships] = useState(true)
   const [provinces, setProvinces] = useState([])
   const [loadingProvinces, setLoadingProvinces] = useState(true)
   const [districts, setDistricts] = useState([])
@@ -83,6 +86,18 @@ export default function FamilyInfoForm({ handleFormChange }) {
   }
 
   useEffect(() => {
+    setLoadingRelationships(true)
+    axiosClient
+      .get("/relationships")
+      .then((response) => {
+        setRelationships(response.data.data)
+      })
+      .finally(() => {
+        setLoadingRelationships(false)
+      })
+  }, [])
+
+  useEffect(() => {
     if (!localStorage.getItem("familyInfo")) {
       localStorage.setItem(
         "familyInfo",
@@ -99,7 +114,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
             currentJob: "",
             placeOfWork: "",
             phoneNumberOfCompany: "",
-            income: "",
+            income: 0,
             healthStatus: "",
           },
           mother: {
@@ -114,11 +129,15 @@ export default function FamilyInfoForm({ handleFormChange }) {
             currentJob: "",
             placeOfWork: "",
             phoneNumberOfCompany: "",
-            income: "",
+            income: 0,
             healthStatus: "",
           },
           relatives: [
             {
+              status: {
+                value: "Có thông tin",
+                label: "Có thông tin",
+              },
               relationship: "",
               fullName: "",
               yearOfBirth: "",
@@ -129,7 +148,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
               detailAddress: "",
               currentJob: "",
               placeOfWorkORStudy: "",
-              income: "",
+              income: 0,
               healthStatus: "",
             },
           ],
@@ -217,7 +236,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
       currentJob: "",
       placeOfWork: "",
       phoneNumberOfCompany: "",
-      income: "",
+      income: 0,
       healthStatus: "",
     },
     mother: {
@@ -232,11 +251,15 @@ export default function FamilyInfoForm({ handleFormChange }) {
       currentJob: "",
       placeOfWork: "",
       phoneNumberOfCompany: "",
-      income: "",
+      income: 0,
       healthStatus: "",
     },
     relatives: [
       {
+        status: {
+          value: "Có thông tin",
+          label: "Có thông tin",
+        },
         relationship: "",
         fullName: "",
         yearOfBirth: "",
@@ -247,7 +270,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
         detailAddress: "",
         currentJob: "",
         placeOfWorkORStudy: "",
-        income: "",
+        income: 0,
         healthStatus: "",
       },
     ],
@@ -397,7 +420,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
     }),
     relatives: Yup.array().of(
       Yup.object().shape({
-        relationship: Yup.string().required(
+        relationship: Yup.object().required(
           "Mối quan hệ với người thân không được để trống"
         ),
         fullName: Yup.string().required(
@@ -1246,19 +1269,18 @@ export default function FamilyInfoForm({ handleFormChange }) {
                         </header>
                         <div className='grid gap-6'>
                           <InputField
-                            type='text'
+                            type='select'
                             name={`relationship`}
-                            placeholder={`Nhập mối quan hệ với người thân thứ ${
+                            placeholder={`Chọn mối quan hệ với người thân thứ ${
                               index + 1
                             }...`}
                             label={`Mối quan hệ`}
                             value={relative.relationship}
                             feedback={errors.relatives?.[index]?.relationship}
-                            note='Nhập mối quan hệ của bạn với người này. Ví dụ: bà ngoại.'
-                            onChange={(e) => {
+                            onChange={(selectedOption) => {
                               handleChangeRelativesInfo(
                                 "relationship",
-                                e.target.value,
+                                selectedOption,
                                 index,
                                 setFieldValue
                               )
@@ -1267,6 +1289,10 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               touched.relatives?.[index]?.relationship &&
                               errors.relatives?.[index]?.relationship
                             }
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.label}
+                            isLoading={loadingRelationships}
+                            options={relationships}
                             isRequired
                           />
                           <InputField
@@ -1644,19 +1670,25 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     type='button'
                     onClick={() => {
                       let temp = values.relatives
-                      temp.splice(temp.length, 0, {
-                        relationship: "",
-                        fullName: "",
-                        yearOfBirth: "",
-                        phoneNumber: "",
-                        provinceAddress: "",
-                        districtAddress: "",
-                        wardAddress: "",
-                        detailAddress: "",
-                        currentJob: "",
-                        income: "",
-                        healthStatus: "",
-                      })
+                      temp.splice(temp.length, 0, 
+                        {
+                          status: {
+                            value: "Có thông tin",
+                            label: "Có thông tin",
+                          },
+                          relationship: "",
+                          fullName: "",
+                          yearOfBirth: "",
+                          phoneNumber: "",
+                          provinceAddress: "",
+                          districtAddress: "",
+                          wardAddress: "",
+                          detailAddress: "",
+                          currentJob: "",
+                          placeOfWorkORStudy: "",
+                          income: 0,
+                          healthStatus: "",
+                        })
                       setFieldValue("relatives", temp)
                       localStorage.setItem(
                         "familyInfo",
@@ -1691,13 +1723,13 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     onClick={() => handleFormChange(1)}
                   >
-                    <BsArrowLeft /> Quay lại
+                    <BsArrowLeft className='inline' /> Quay lại
                   </button>
                   <button
                     className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     type='submit'
                   >
-                    Tiếp tục <BsArrowRight />
+                    Tiếp tục <BsArrowRight className='inline' />
                   </button>
                 </div>
               </div>
