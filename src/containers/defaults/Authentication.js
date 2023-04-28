@@ -53,9 +53,9 @@ export default function Authentication() {
           // alt="Ký Túc Xá Cỏ May"
         />
         <div className='container relative pt-10 pb-16 lg:pt-20 lg:pb-28'>
-              <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center text-center mb-10'>
-                XÁC THỰC ĐĂNG NHẬP VỚI GOOGLE
-              </h2>
+          <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center text-center mb-10'>
+            XÁC THỰC ĐĂNG NHẬP VỚI GOOGLE
+          </h2>
           <div className='p-5 mx-auto bg-white rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
             <header className='text-center max-w-2xl mx-auto'>
               <span className='block text-sm text-neutral-700 sm:text-xl dark:text-neutral-200'>

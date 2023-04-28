@@ -14,7 +14,6 @@ const admissionApi = {
     const requestUrl = `${baseUrl}/gen-file`
     return axiosClient.post(requestUrl, data)
   },
-  
 }
 //
 

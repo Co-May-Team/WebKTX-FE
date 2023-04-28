@@ -10,7 +10,6 @@ import {
   resetPassword,
   signup,
 } from "./actions"
-import { path } from "~/utils"
 
 const Toast = Swal.mixin({
   toast: true,

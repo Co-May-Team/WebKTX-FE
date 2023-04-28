@@ -1670,25 +1670,24 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     type='button'
                     onClick={() => {
                       let temp = values.relatives
-                      temp.splice(temp.length, 0, 
-                        {
-                          status: {
-                            value: "Có thông tin",
-                            label: "Có thông tin",
-                          },
-                          relationship: "",
-                          fullName: "",
-                          yearOfBirth: "",
-                          phoneNumber: "",
-                          provinceAddress: "",
-                          districtAddress: "",
-                          wardAddress: "",
-                          detailAddress: "",
-                          currentJob: "",
-                          placeOfWorkORStudy: "",
-                          income: 0,
-                          healthStatus: "",
-                        })
+                      temp.splice(temp.length, 0, {
+                        status: {
+                          value: "Có thông tin",
+                          label: "Có thông tin",
+                        },
+                        relationship: "",
+                        fullName: "",
+                        yearOfBirth: "",
+                        phoneNumber: "",
+                        provinceAddress: "",
+                        districtAddress: "",
+                        wardAddress: "",
+                        detailAddress: "",
+                        currentJob: "",
+                        placeOfWorkORStudy: "",
+                        income: 0,
+                        healthStatus: "",
+                      })
                       setFieldValue("relatives", temp)
                       localStorage.setItem(
                         "familyInfo",

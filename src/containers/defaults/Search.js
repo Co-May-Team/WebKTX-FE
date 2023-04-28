@@ -12,7 +12,6 @@ import SeoHelmet from "~/components/SeoHelmet"
 import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
 import convertToUrl from "~/utils/commons/convertToUrl"
-import { defaultAvatar } from "~/utils/constants/default"
 
 export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -394,11 +393,11 @@ export default function Search() {
                                 title={result?.userInfo.fullName}
                               />
                               <span className='wil-avatar__name'>
-                              {result?.userInfo.fullName}
+                                {result?.userInfo.fullName}
                               </span>
                             </div>
                             <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                            {result?.userInfo.fullName}
+                              {result?.userInfo.fullName}
                             </span>
                           </div>
                           <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>

@@ -7,7 +7,6 @@ import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import convertToUrl from "~/utils/commons/convertToUrl"
-import { defaultAvatar } from "~/utils/constants/default"
 
 export default function PostSaved() {
   const [savedPosts, setSavedPosts] = useState(
@@ -75,11 +74,11 @@ export default function PostSaved() {
                             title={savedPost?.userInfo.fullName}
                           />
                           <span className='wil-avatar__name'>
-                          {savedPost?.userInfo.fullName}
+                            {savedPost?.userInfo.fullName}
                           </span>
                         </div>
                         <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                        {savedPost?.userInfo.fullName}
+                          {savedPost?.userInfo.fullName}
                         </span>
                       </div>
                       <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>

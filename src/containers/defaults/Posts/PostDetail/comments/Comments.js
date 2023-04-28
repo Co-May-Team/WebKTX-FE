@@ -70,7 +70,7 @@ export default function Comments({ postInfo = null }) {
       </ul>
     )
   }
-console.log(comments)
+  console.log(comments)
   useEffect(() => {
     if (postInfo?.postId) {
       dispatch(actions.fetchComments({ postId: postInfo?.postId }))

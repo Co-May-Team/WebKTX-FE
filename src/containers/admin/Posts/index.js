@@ -15,7 +15,6 @@ import { useClickOutside } from "~/hooks"
 import { deletePost, fetchPosts, loadMorePosts } from "~/store/posts/actions"
 import { postsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
-import { defaultAvatar } from "~/utils/constants/default"
 import SubmitPost from "./SubmitPost"
 
 export default function Posts() {
@@ -337,11 +336,11 @@ export default function Posts() {
                               title={post?.userInfo.fullName}
                             />
                             <span className='wil-avatar__name'>
-                            {post?.userInfo.fullName}
+                              {post?.userInfo.fullName}
                             </span>
                           </div>
                           <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                          {post?.userInfo.fullName}
+                            {post?.userInfo.fullName}
                           </span>
                         </div>
                         <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>
