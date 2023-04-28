@@ -1,9 +1,12 @@
 import { Formik } from "formik"
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
+import { BsArrowLeft, BsArrowRight, BsCheckLg } from "react-icons/bs"
 import { Form } from "reactstrap"
+import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
+import admissionApi from "~/services/admissionApi"
+import axiosClient from "~/services/axiosClient"
 
 export default function FilesUploadForm({ children, handleFormChange }) {
   /* Thông tin cá nhân */
@@ -16,44 +19,83 @@ export default function FilesUploadForm({ children, handleFormChange }) {
   }
 
   const validationSchemaFilesUpload = Yup.object({
-    application: Yup.mixed()
-      .required("Vui lòng tải lên đơn xin xét chọn vào ký túc xá.")
-      .test("fileType", "Tệp tin phải có định dạng PDF", (value) => {
-        if (!value) return true
-        return value && value.type === "application/pdf"
-      }),
-    transcriptAndAchievements: Yup.mixed()
-      .required("Vui lòng tải lên học bạ THPT.")
-      .test("fileType", "Tệp tin phải có định dạng PDF", (value) => {
-        if (!value) return true
-        return value && value.type === "application/pdf"
-      }),
-    personalProfile: Yup.mixed()
-      .required(
-        "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
-      )
-      .test("fileType", "Tệp tin phải có định dạng PDF", (value) => {
-        if (!value) return true
-        return value && value.type === "application/pdf"
-      }),
-    photo: Yup.mixed()
-      .required(
-        "Vui lòng tải lên ảnh 4x6 cm , ghi rõ thông tin bao gồm họ tên, năm sinh phía sau ảnh."
-      )
-      .test("fileType", "Tệp tin phải có định dạng PDF", (value) => {
-        if (!value) return true
-        return value && value.type === "application/pdf"
-      }),
-    houseImage: Yup.mixed()
-      .required("Vui lòng tải lên hình ảnh căn nhà đang ở.")
-      .test("fileType", "Tệp tin phải có định dạng PDF", (value) => {
-        if (!value) return true
-        return value && value.type === "application/pdf"
-      }),
+    application: Yup.mixed().required(
+      "Vui lòng tải lên đơn xin xét chọn vào ký túc xá."
+    ),
+    transcriptAndAchievements: Yup.mixed().required(
+      "Vui lòng tải lên học bạ THPT."
+    ),
+    personalProfile: Yup.mixed().required(
+      "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
+    ),
+    photo: Yup.mixed().required(
+      "Vui lòng tải lên ảnh 4x6 cm , ghi rõ thông tin bao gồm họ tên, năm sinh phía sau ảnh."
+    ),
+    houseImage: Yup.mixed().required(
+      "Vui lòng tải lên hình ảnh căn nhà đang ở."
+    ),
   })
 
   const handleSubmitFilesUpload = async (values, actions) => {
     actions.setSubmitting(true)
+    const info = {
+      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    }
+    let data = {
+      ...info,
+      familyInfo: {
+        relatives: [
+          {
+            relationship: {
+              id: 1,
+              label: "Cha",
+            },
+            ...info.familyInfo.father,
+          },
+          {
+            relationship: {
+              id: 2,
+              label: "Mẹ",
+            },
+            ...info.familyInfo.mother,
+          },
+          ...info.familyInfo.relatives?.map((relative) => ({
+            status: {
+              value: "Có thông tin",
+              label: "Có thông tin",
+            },
+            ...relative,
+          })),
+        ],
+        familyBackground: info.familyInfo.familyBackground,
+      },
+    }
+    admissionApi.submit(data).then((response) => {
+      if (response.data?.status === "OK") {
+        Swal.fire({
+          icon: "success",
+          title: "Gửi hồ sơ thành công",
+          text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!"
+        })
+      }
+      else {
+        Swal.fire({
+          icon: "warning",
+          title: "Gửi hồ sơ thất bại",
+          text: response.data?.data
+        })
+      }
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: "success",
+        title: "Có lỗi trong quá trình gửi hồ sơ",
+        text: error?.message
+      })
+    })
+    actions.setSubmitting(false)
   }
   /* */
   return (
@@ -158,13 +200,13 @@ export default function FilesUploadForm({ children, handleFormChange }) {
                     className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     onClick={() => handleFormChange(3)}
                   >
-                    <BsArrowLeft /> Quay lại
+                    <BsArrowLeft className='inline' /> Quay lại
                   </button>
                   <button
                     className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     type='submit'
                   >
-                    Gửi <BsArrowRight />
+                    Gửi hồ sơ <BsCheckLg className='inline' />
                   </button>
                 </div>
               </div>
