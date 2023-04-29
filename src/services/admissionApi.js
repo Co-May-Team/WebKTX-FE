@@ -6,13 +6,19 @@ const admissionApi = {
     const requestUrl = `${baseUrl}/submit`
     return axiosClient.post(requestUrl, data)
   },
-  uploadFiles: (data) => {
+  uploadFiles: (formData) => {
     const requestUrl = `${baseUrl}/upload-files`
-    return axiosClient.post(requestUrl, data)
+    return axiosClient.post(requestUrl, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
   },
   genFile: (data) => {
     const requestUrl = `${baseUrl}/gen-file`
-    return axiosClient.post(requestUrl, data)
+    return axiosClient.post(requestUrl, data, {
+      responseType: "blob",
+    })
   },
 }
 //

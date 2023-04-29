@@ -1,6 +1,6 @@
-import axios from "axios"
 import FileSaver from "file-saver"
 import { Formik } from "formik"
+import { useState } from "react"
 import { BsArrowLeft, BsCheckLg, BsDownload } from "react-icons/bs"
 import { Form } from "reactstrap"
 import Swal from "sweetalert2"
@@ -8,19 +8,33 @@ import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import admissionApi from "~/services/admissionApi"
-import { env } from "~/utils/constants/env"
 
 export default function FilesUploadForm({ handleFormChange }) {
+  const [files, setFiles] = useState([])
+
+  const handleFileChange = (event, onChange) => {
+    onChange()
+    const { name, files } = event.target
+    setFiles((values) => ({
+      ...values,
+      [name]: files[0],
+    }))
+  }
+
   const handleGenerateFiles = async () => {
     const info = {
       personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
       familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
       studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
     }
-    axios({
-      method: "post",
-      url: `${env.BACKEND_URL}admission/gen-file`,
-      data: {
+    Swal.fire({
+      title: "Đang tải xuống...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+    admissionApi
+      .genFile({
         ...info,
         familyInfo: {
           relatives: [
@@ -48,22 +62,28 @@ export default function FilesUploadForm({ handleFormChange }) {
           ],
           familyBackground: info.familyInfo.familyBackground,
         },
-      },
-      responseType: "blob",
-    })
+      })
       .then((response) => {
         const pdfBlob = new Blob([response.data], { type: "application/pdf" })
         FileSaver.saveAs(
           pdfBlob,
           "Đơn xin vào ở KTX Cỏ May năm học 2023 - 2022"
         )
+        Swal.fire({
+          icon: "success",
+          title: "Tải xuống file thành công, kiểm tra trong mục Download của trình duyệt",
+        })
       })
       .catch((error) => {
-        console.error(error)
+        Swal.fire({
+          icon: "error",
+          title: "Có lỗi trong quá trình tải xuống",
+          text: error?.message,
+        })
       })
   }
 
-  /*  */
+  /* Xử lý Form */
   const initialValuesFilesUpload = {
     application: "",
     transcriptAndAchievements: "",
@@ -97,7 +117,7 @@ export default function FilesUploadForm({ handleFormChange }) {
       familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
       studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
     }
-    let data = {
+    const data = {
       ...info,
       familyInfo: {
         relatives: [
@@ -128,13 +148,36 @@ export default function FilesUploadForm({ handleFormChange }) {
     }
     admissionApi
       .submit(data)
-      .then((response) => {
+      .then(async (response) => {
         if (response.data?.status === "OK") {
-          Swal.fire({
-            icon: "success",
-            title: "Gửi hồ sơ thành công",
-            text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!",
+          /* Xử lý Submit file khi đã lưu thông tin thành công */
+          const formData = new FormData()
+          Object.keys(files).forEach((key) => {
+            formData.append("file", files[key])
           })
+          // Gửi formData lên server
+          Swal.fire({
+            title: "Đang gửi hồ sơ...",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          })
+          admissionApi
+            .uploadFiles(formData)
+            .then(() => {
+              Swal.fire({
+                icon: "success",
+                title: "Gửi hồ sơ thành công",
+                text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!",
+              })
+            })
+            .catch((error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Có lỗi trong quá trình gửi hồ sơ",
+                text: error?.message,
+              })
+            })
         } else {
           Swal.fire({
             icon: "warning",
@@ -145,7 +188,7 @@ export default function FilesUploadForm({ handleFormChange }) {
       })
       .catch((error) => {
         Swal.fire({
-          icon: "success",
+          icon: "error",
           title: "Có lỗi trong quá trình gửi hồ sơ",
           text: error?.message,
         })
@@ -211,11 +254,10 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='application'
-                  label='Đơn xin vào ở KTX Cỏ May:'
+                  label='Đơn xin vào ở KTX Cỏ May'
                   value={values.application}
                   feedback={errors.application}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
                   invalid={touched.application && errors.application}
                   isRequired
                 />
@@ -226,8 +268,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Học bạ THPT và Thành tích học tập'
                   value={values.transcriptAndAchievements}
                   feedback={errors.transcriptAndAchievements}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
                   invalid={
                     touched.transcriptAndAchievements &&
                     errors.transcriptAndAchievements
@@ -241,8 +282,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Lý lịch cá nhân (có dán ảnh và đóng dấu xác nhận của địa phương)'
                   value={values.personalProfile}
                   feedback={errors.personalProfile}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
                   invalid={touched.personalProfile && errors.personalProfile}
                   isRequired
                 />
@@ -253,8 +293,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Ảnh thẻ'
                   value={values.photo}
                   feedback={errors.photo}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
                   invalid={touched.photo && errors.photo}
                   isRequired
                 />
@@ -265,8 +304,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Hình ảnh căn nhà đang ở'
                   value={values.houseImage}
                   feedback={errors.houseImage}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
                   invalid={touched.houseImage && errors.houseImage}
                   isRequired
                 />
