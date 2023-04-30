@@ -71,7 +71,8 @@ export default function FilesUploadForm({ handleFormChange }) {
         )
         Swal.fire({
           icon: "success",
-          title: "Tải xuống file thành công, kiểm tra trong mục Download của trình duyệt",
+          title:
+            "Tải xuống file thành công, kiểm tra trong mục Download của trình duyệt",
         })
       })
       .catch((error) => {
@@ -93,21 +94,70 @@ export default function FilesUploadForm({ handleFormChange }) {
   }
 
   const validationSchemaFilesUpload = Yup.object({
-    application: Yup.mixed().required(
-      "Vui lòng tải lên đơn xin vào ở KTX Cỏ May."
-    ),
-    transcriptAndAchievements: Yup.mixed().required(
-      "Vui lòng tải lên học bạ THPT và Thành tích học tập."
-    ),
-    personalProfile: Yup.mixed().required(
-      "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
-    ),
-    photo: Yup.mixed().required(
-      "Vui lòng tải lên ảnh 4x6 cm , ghi rõ thông tin bao gồm họ tên, năm sinh phía sau ảnh."
-    ),
-    houseImage: Yup.mixed().required(
-      "Vui lòng tải lên hình ảnh căn nhà đang ở."
-    ),
+    application: Yup.mixed()
+      .required("Vui lòng tải lên đơn xin vào ở KTX Cỏ May.")
+      .test(
+        "fileSize",
+        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
+        (value) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
+      ),
+    transcriptAndAchievements: Yup.mixed()
+      .required("Vui lòng tải lên học bạ THPT và Thành tích học tập.")
+      .test(
+        "fileSize",
+        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
+        (value) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
+      ),
+    personalProfile: Yup.mixed()
+      .required(
+        "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
+      )
+      .test(
+        "fileSize",
+        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
+        (value) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
+      ),
+    photo: Yup.mixed()
+      .required(
+        "Vui lòng tải lên ảnh 4x6 cm , ghi rõ thông tin bao gồm họ tên, năm sinh phía sau ảnh."
+      )
+      .test(
+        "fileSize",
+        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
+        (value) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
+      ),
+    houseImage: Yup.mixed()
+      .required("Vui lòng tải lên hình ảnh căn nhà đang ở.")
+      .test(
+        "fileSize",
+        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
+        (value) => {
+          if (value) {
+            return value.size <= 5 * 1024 * 1024
+          }
+          return true
+        }
+      ),
   })
 
   const handleSubmitFilesUpload = async (values, actions) => {
@@ -257,7 +307,9 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Đơn xin vào ở KTX Cỏ May'
                   value={values.application}
                   feedback={errors.application}
-                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
+                  onChange={(event) =>
+                    handleFileChange(event, () => handleChange(event))
+                  }
                   invalid={touched.application && errors.application}
                   isRequired
                 />
@@ -268,7 +320,9 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Học bạ THPT và Thành tích học tập'
                   value={values.transcriptAndAchievements}
                   feedback={errors.transcriptAndAchievements}
-                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
+                  onChange={(event) =>
+                    handleFileChange(event, () => handleChange(event))
+                  }
                   invalid={
                     touched.transcriptAndAchievements &&
                     errors.transcriptAndAchievements
@@ -282,18 +336,22 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Lý lịch cá nhân (có dán ảnh và đóng dấu xác nhận của địa phương)'
                   value={values.personalProfile}
                   feedback={errors.personalProfile}
-                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
+                  onChange={(event) =>
+                    handleFileChange(event, () => handleChange(event))
+                  }
                   invalid={touched.personalProfile && errors.personalProfile}
                   isRequired
                 />
                 <InputField
                   type='file'
-                  accept='application/pdf'
+                  accept='image/*'
                   name='photo'
                   label='Ảnh thẻ'
                   value={values.photo}
                   feedback={errors.photo}
-                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
+                  onChange={(event) =>
+                    handleFileChange(event, () => handleChange(event))
+                  }
                   invalid={touched.photo && errors.photo}
                   isRequired
                 />
@@ -304,7 +362,9 @@ export default function FilesUploadForm({ handleFormChange }) {
                   label='Hình ảnh căn nhà đang ở'
                   value={values.houseImage}
                   feedback={errors.houseImage}
-                  onChange={(event) => handleFileChange(event, () => handleChange(event))}
+                  onChange={(event) =>
+                    handleFileChange(event, () => handleChange(event))
+                  }
                   invalid={touched.houseImage && errors.houseImage}
                   isRequired
                 />
