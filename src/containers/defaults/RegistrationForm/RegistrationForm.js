@@ -1,8 +1,11 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import { authSelector } from "~/store/selectors"
+import { path } from "~/utils"
+import convertToUrl from "~/utils/commons/convertToUrl"
 import FamilyInfoForm from "./FamilyInfoForm"
 import FilesUploadForm from "./FilesUploadForm"
 import PersonalInfoForm from "./PersonalInfoForm"
@@ -10,6 +13,8 @@ import StudentInfoForm from "./StudentInfoForm"
 
 export default function RegistrationForm() {
   const userInfo = useSelector(authSelector).userInfo
+
+  const navigate = useNavigate()
 
   const [currentForm, setCurrentForm] = useState(1)
 
@@ -29,6 +34,21 @@ export default function RegistrationForm() {
               SINH VÀO KÝ TÚC XÁ CỎ MAY NĂM HỌC 2023 - 2024
               <span className='text-3xl md:text-4xl leading-none'>🎉</span>
             </h2>
+            <div className='flex mt-5 justify-center items-center'>
+              <button
+                onClick={() =>
+                  navigate(
+                    `${path.FORM_DETAIL_BASE}/${convertToUrl(
+                      userInfo?.fullName
+                    )}-${userInfo?.id}`,
+                    { state: userInfo?.id }
+                  )
+                }
+                className='rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+              >
+                Xem đơn đã nộp
+              </button>
+            </div>
           </header>
           {currentForm === 1 && (
             <PersonalInfoForm handleFormChange={handleFormChange} />
@@ -44,7 +64,7 @@ export default function RegistrationForm() {
           )}
         </>
       ) : (
-        <div className='flex mt-5 justify-center items-center'>
+        <div className='flex my-5 justify-center items-center'>
           <div className='text-center'>Vui lòng đăng nhập...</div>
         </div>
       )}

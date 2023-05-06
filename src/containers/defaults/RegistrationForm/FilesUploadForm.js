@@ -333,7 +333,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='personalProfile'
-                  label='Lý lịch cá nhân (có dán ảnh và đóng dấu xác nhận của địa phương)'
+                  label='Sơ yếu lý lịch (có dán ảnh và đóng dấu xác nhận của địa phương)'
                   value={values.personalProfile}
                   feedback={errors.personalProfile}
                   onChange={(event) =>
@@ -344,9 +344,9 @@ export default function FilesUploadForm({ handleFormChange }) {
                 />
                 <InputField
                   type='file'
-                  accept='image/*'
+                  accept='.jpg'
                   name='photo'
-                  label='Ảnh thẻ'
+                  label='Ảnh thẻ (.JPG)'
                   value={values.photo}
                   feedback={errors.photo}
                   onChange={(event) =>

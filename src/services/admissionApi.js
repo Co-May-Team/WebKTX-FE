@@ -20,7 +20,14 @@ const admissionApi = {
       responseType: "blob",
     })
   },
+  getAllByYear: (year) => {
+    const requestUrl = `${baseUrl}/find-all-by-year?year=${year}`
+    return axiosClient.get(requestUrl)
+  },
+  getById: (id) => {
+    const requestUrl = `${baseUrl}/${id}`
+    return axiosClient.get(requestUrl)
+  },
 }
-//
 
 export default admissionApi

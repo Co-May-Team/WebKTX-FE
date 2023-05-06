@@ -6,6 +6,7 @@ import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
 const Posts = React.lazy(() => import("~/containers/admin/Posts"))
+const Forms = React.lazy(() => import("~/containers/admin/forms/Forms"))
 
 const adminRoutes = [
   {
@@ -24,6 +25,11 @@ const adminRoutes = [
     id: Math.random(),
     Container: Posts,
     path: path.POSTS,
+  },
+  {
+    id: Math.random(),
+    Container: Forms,
+    path: path.FORMS,
   },
 ]
 

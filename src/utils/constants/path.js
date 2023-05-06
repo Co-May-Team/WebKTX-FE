@@ -16,4 +16,7 @@ export const path = {
   ADMIN_HOME: "/quan-ly-bai-viet",
   DASHBOARD: "/bang-dieu-khien",
   POSTS: "/quan-ly-bai-viet",
+  FORMS: "/quan-ly-don-ung-tuyen",
+  FORM_DETAIL_BASE: "/chi-tiet-don-ung-tuyen",
+  FORM_DETAIL: "/chi-tiet-don-ung-tuyen/:name",
 }
