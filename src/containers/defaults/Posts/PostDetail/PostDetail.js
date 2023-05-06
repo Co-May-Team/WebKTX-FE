@@ -30,6 +30,7 @@ import Confirm from "~/components/Customs/Confirm"
 import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
+import SeoHelmet from "~/components/SeoHelmet"
 import SubmitPost from "~/containers/admin/Posts/SubmitPost"
 import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
@@ -99,7 +100,6 @@ export default function PostDetail(props) {
     postsApi
       .get(params.id)
       .then((response) => {
-        document.title = response.data.data.posts.title
         setPostInfo(response.data.data.posts)
         setRelatedPosts(response.data.data.relatedPost)
       })
@@ -191,6 +191,7 @@ export default function PostDetail(props) {
 
   return (
     <Motion>
+      <SeoHelmet title={postInfo?.title} />
       {loading ? (
         <Loading />
       ) : (

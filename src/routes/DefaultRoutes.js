@@ -1,6 +1,7 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
+import FormDetail from "~/containers/admin/forms/FormDetail"
 import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetail"
 import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetail"
 import { DefaultLayout } from "~/layouts"
@@ -26,22 +27,23 @@ const RegistrationForm = React.lazy(() =>
 // )
 
 const defaultRoutes = [
-  { id: Math.random(), Container: Home, path: path.HOME },
-  { id: Math.random(), Container: Signup, path: path.SIGNUP },
-  { id: Math.random(), Container: Login, path: path.LOGIN },
-  { id: Math.random(), Container: Authentication, path: path.AUTH },
-  { id: Math.random(), Container: PostSaved, path: path.POSTSAVED },
-  { id: Math.random(), Container: Search, path: path.SEARCH },
-  { id: Math.random(), Container: PostsHome, path: path.TAGS },
+  { id: 1, Container: Home, path: path.HOME },
+  { id: 2, Container: Signup, path: path.SIGNUP },
+  { id: 3, Container: Login, path: path.LOGIN },
+  { id: 4, Container: Authentication, path: path.AUTH },
+  { id: 5, Container: PostSaved, path: path.POSTSAVED },
+  { id: 6, Container: Search, path: path.SEARCH },
+  { id: 7, Container: PostsHome, path: path.TAGS },
   {
-    id: Math.random(),
+    id: 8,
     Container: RegistrationForm,
     path: path.REGISTRATION_FORM,
   },
-  { id: Math.random(), Container: PostDetail, path: path.POST_DETAIL },
-  { id: Math.random(), Container: ImagesDetail, path: path.IMAGES_DETAIL },
+  { id: 10, Container: PostDetail, path: path.POST_DETAIL },
+  { id: 9, Container: FormDetail, path: path.FORM_DETAIL },
+  { id: 11, Container: ImagesDetail, path: path.IMAGES_DETAIL },
   {
-    id: Math.random(),
+    id: 12,
     Container: Navigate,
     path: "*",
     replace: true,
