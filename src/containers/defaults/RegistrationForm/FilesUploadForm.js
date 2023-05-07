@@ -94,155 +94,128 @@ export default function FilesUploadForm({ handleFormChange }) {
   }
 
   const validationSchemaFilesUpload = Yup.object({
-    application: Yup.mixed()
-      .required("Vui lòng tải lên đơn xin vào ở KTX Cỏ May.")
-      .test(
-        "fileSize",
-        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
-        (value) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024
-          }
-          return true
-        }
-      ),
-    transcriptAndAchievements: Yup.mixed()
-      .required("Vui lòng tải lên học bạ THPT và Thành tích học tập.")
-      .test(
-        "fileSize",
-        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
-        (value) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024
-          }
-          return true
-        }
-      ),
-    personalProfile: Yup.mixed()
-      .required(
-        "Vui lòng tải lên lý lịch cá nhân có dán ảnh và đóng dấu xác nhận của địa phương."
-      )
-      .test(
-        "fileSize",
-        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
-        (value) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024
-          }
-          return true
-        }
-      ),
-    photo: Yup.mixed()
-      .required(
-        "Vui lòng tải lên ảnh 4x6 cm , ghi rõ thông tin bao gồm họ tên, năm sinh phía sau ảnh."
-      )
-      .test(
-        "fileSize",
-        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
-        (value) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024
-          }
-          return true
-        }
-      ),
-    houseImage: Yup.mixed()
-      .required("Vui lòng tải lên hình ảnh căn nhà đang ở.")
-      .test(
-        "fileSize",
-        "Kích thước tệp phải nhỏ hơn hoặc bằng 5MB",
-        (value) => {
-          if (value) {
-            return value.size <= 5 * 1024 * 1024
-          }
-          return true
-        }
-      ),
+    application: Yup.mixed().required(
+      "Vui lòng tải lên đơn xin vào ở KTX Cỏ May."
+    ),
+    transcriptAndAchievements: Yup.mixed().required(
+      "Vui lòng tải lên học bạ THPT và Thành tích học tập."
+    ),
+    personalProfile: Yup.mixed().required(
+      "Vui lòng tải lên sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)."
+    ),
+    photo: Yup.mixed().required("Vui lòng tải lên ảnh thẻ (.JPG)."),
+    houseImage: Yup.mixed().required(
+      "Vui lòng tải lên file PDF chứa toàn bộ hình ảnh căn nhà đang ở."
+    ),
   })
 
   const handleSubmitFilesUpload = async (values, actions) => {
     actions.setSubmitting(true)
-    const info = {
-      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
-      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
-      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    const {
+      application,
+      transcriptAndAchievements,
+      personalProfile,
+      photo,
+      houseImage,
+    } = values
+    // Kiểm tra kích thước của các tệp được tải lên
+    if (
+      application.size > 5 * 1024 * 1024 ||
+      transcriptAndAchievements.size > 5 * 1024 * 1024 ||
+      personalProfile.size > 5 * 1024 * 1024 ||
+      photo.size > 5 * 1024 * 1024 ||
+      houseImage.size > 5 * 1024 * 1024
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Lỗi",
+        text: "Kích thước các tập tin không được vượt quá 5MB",
+      })
     }
-    const data = {
-      ...info,
-      familyInfo: {
-        relatives: [
-          {
-            relationship: {
-              id: 1,
-              label: "Cha",
-            },
-            ...info.familyInfo.father,
-          },
-          {
-            relationship: {
-              id: 2,
-              label: "Mẹ",
-            },
-            ...info.familyInfo.mother,
-          },
-          ...info.familyInfo.relatives?.map((relative) => ({
-            status: {
-              value: "Có thông tin",
-              label: "Có thông tin",
-            },
-            ...relative,
-          })),
-        ],
-        familyBackground: info.familyInfo.familyBackground,
-      },
+    // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
+    const formData = new FormData()
+    for (let key in files) {
+      formData.append(key, files[key])
     }
+    // Gửi formData lên server
+    Swal.fire({
+      title: "Đang gửi các tập tin lên hệ thống...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
     admissionApi
-      .submit(data)
-      .then(async (response) => {
-        if (response.data?.status === "OK") {
-          /* Xử lý Submit file khi đã lưu thông tin thành công */
-          const formData = new FormData()
-          Object.keys(files).forEach((key) => {
-            formData.append("file", files[key])
-          })
-          // Gửi formData lên server
-          Swal.fire({
-            title: "Đang gửi hồ sơ...",
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          })
-          admissionApi
-            .uploadFiles(formData)
-            .then(() => {
+      .uploadFiles(formData)
+      .then(() => {
+        // Thực hiện cập nhật thông tin đăng ký sau khi đã gửi các tập tin lên server thành công
+        const info = {
+          personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+          familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+          studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+        }
+        const data = {
+          ...info,
+          familyInfo: {
+            relatives: [
+              {
+                relationship: {
+                  id: 1,
+                  label: "Cha",
+                },
+                ...info.familyInfo.father,
+              },
+              {
+                relationship: {
+                  id: 2,
+                  label: "Mẹ",
+                },
+                ...info.familyInfo.mother,
+              },
+              ...info.familyInfo.relatives?.map((relative) => ({
+                status: {
+                  value: "Có thông tin",
+                  label: "Có thông tin",
+                },
+                ...relative,
+              })),
+            ],
+            familyBackground: info.familyInfo.familyBackground,
+          },
+        }
+        admissionApi
+          .submit(data)
+          .then(async (response) => {
+            if (response.data?.status === "OK") {
               Swal.fire({
                 icon: "success",
                 title: "Gửi hồ sơ thành công",
-                text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong trang này và ấn gửi lần nữa!",
+                text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
               })
-            })
-            .catch((error) => {
+            } else {
               Swal.fire({
-                icon: "error",
-                title: "Có lỗi trong quá trình gửi hồ sơ",
-                text: error?.message,
+                icon: "warning",
+                title: "Gửi hồ sơ thất bại",
+                text: response.data?.data,
               })
-            })
-        } else {
-          Swal.fire({
-            icon: "warning",
-            title: "Gửi hồ sơ thất bại",
-            text: response.data?.data,
+            }
           })
-        }
+          .catch((error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Có lỗi trong quá trình gửi hồ sơ",
+              text: error?.message,
+            })
+          })
       })
       .catch((error) => {
         Swal.fire({
           icon: "error",
-          title: "Có lỗi trong quá trình gửi hồ sơ",
+          title: "Có lỗi trong quá trình gửi tập tin lên hệ thống",
           text: error?.message,
         })
       })
+    // ...
+
     actions.setSubmitting(false)
   }
   /* */
@@ -304,7 +277,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='application'
-                  label='Đơn xin vào ở KTX Cỏ May'
+                  label='Đơn xin vào ở KTX Cỏ May (.PDF)'
                   value={values.application}
                   feedback={errors.application}
                   onChange={(event) =>
@@ -317,7 +290,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='transcriptAndAchievements'
-                  label='Học bạ THPT và Thành tích học tập'
+                  label='Học bạ THPT và Thành tích học tập (.PDF)'
                   value={values.transcriptAndAchievements}
                   feedback={errors.transcriptAndAchievements}
                   onChange={(event) =>
@@ -333,7 +306,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='personalProfile'
-                  label='Sơ yếu lý lịch (có dán ảnh và đóng dấu xác nhận của địa phương)'
+                  label='Sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)(.PDF)'
                   value={values.personalProfile}
                   feedback={errors.personalProfile}
                   onChange={(event) =>
@@ -359,7 +332,7 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='houseImage'
-                  label='Hình ảnh căn nhà đang ở'
+                  label='Hình ảnh căn nhà đang ở (.PDF)'
                   value={values.houseImage}
                   feedback={errors.houseImage}
                   onChange={(event) =>
