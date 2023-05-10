@@ -1,4 +1,3 @@
-import axios from "axios"
 import { Formik } from "formik"
 import { useEffect, useState } from "react"
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
@@ -7,16 +6,19 @@ import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import axiosClient from "~/services/axiosClient"
+import districts from "~/utils/mockData/districts"
+import provinces from "~/utils/mockData/provinces"
+import wards from "~/utils/mockData/wards"
+
+const provincesData = Object.values(provinces)
 
 export default function FamilyInfoForm({ handleFormChange }) {
   const [relationships, setRelationships] = useState([])
   const [loadingRelationships, setLoadingRelationships] = useState(true)
-  const [provinces, setProvinces] = useState([])
-  const [loadingProvinces, setLoadingProvinces] = useState(true)
-  const [districts, setDistricts] = useState([])
-  const [loadingDistricts, setLoadingDistricts] = useState(true)
-  const [wards, setWards] = useState([])
-  const [loadingWards, setLoadingWards] = useState(true)
+  const [districtsData, setDistrictsData] = useState([])
+  const [loadingDistrictsData, setLoadingDistrictsData] = useState(true)
+  const [wardsData, setWardsData] = useState([])
+  const [loadingWardsData, setLoadingWardsData] = useState(true)
 
   const handleSaveInput = (e) => {
     const { name, value } = e.target
@@ -158,66 +160,22 @@ export default function FamilyInfoForm({ handleFormChange }) {
     }
   }, [])
 
-  useEffect(() => {
-    setLoadingProvinces(true)
-    if (JSON.parse(localStorage.getItem("provinces"))?.length > 0) {
-      setProvinces(JSON.parse(localStorage.getItem("provinces")))
-      setLoadingProvinces(false)
-    } else {
-      axios
-        .get("https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1")
-        .then((response) => {
-          localStorage.setItem(
-            "provinces",
-            JSON.stringify(response.data.data.data)
-          )
-          setProvinces(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingProvinces(false)
-        })
-    }
-  }, [])
-
   const handleProvinceChange = (province) => {
-    setLoadingDistricts(true)
-    if (province?.code) {
-      axios
-        .get(
-          `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${province.code}&limit=-1`
-        )
-        .then((response) => {
-          setDistricts(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingDistricts(false)
-        })
-    }
+    setLoadingDistrictsData(true)
+    setDistrictsData(
+      Object.values(districts).filter(
+        (district) => district.parent_code === province?.code
+      )
+    )
+    setLoadingDistrictsData(false)
   }
 
   const handleDistrictChange = (district) => {
-    setLoadingWards(true)
-    if (district?.code) {
-      axios
-        .get(
-          `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${district.code}&limit=-1`
-        )
-        .then((response) => {
-          setWards(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingWards(false)
-        })
-    }
+    setLoadingWardsData(true)
+    setWardsData(
+      Object.values(wards).filter((ward) => ward.parent_code === district?.code)
+    )
+    setLoadingWardsData(false)
   }
 
   /* Thông tin gia đình */
@@ -629,8 +587,8 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               "",
                               setFieldValue
                             )
-                            setDistricts([])
-                            setWards([])
+                            setDistrictsData([])
+                            setWardsData([])
                             handleProvinceChange(selectedOption)
                           }}
                           clearValue={() => {
@@ -650,15 +608,14 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               setFieldValue
                             )
                           }}
-                          isLoading={loadingProvinces}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           feedback={errors.father?.provinceAddress}
                           invalid={
                             touched.father?.provinceAddress &&
                             errors.father?.provinceAddress
                           }
-                          options={provinces}
+                          options={provincesData}
                           isRequired={
                             values.father?.status.value === "Có thông tin"
                           }
@@ -693,16 +650,16 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               setFieldValue
                             )
                           }}
-                          isLoading={loadingDistricts}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          isLoading={loadingDistrictsData}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
                           feedback={errors.father?.districtAddress}
                           invalid={
                             touched.father?.districtAddress &&
                             errors.father?.districtAddress
                           }
-                          options={districts}
+                          options={districtsData}
                           isRequired={
                             values.father?.status.value === "Có thông tin"
                           }
@@ -727,15 +684,15 @@ export default function FamilyInfoForm({ handleFormChange }) {
                             )
                           }}
                           loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                          isLoading={loadingWards}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          isLoading={loadingWardsData}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           feedback={errors.father?.wardAddress}
                           invalid={
                             touched.father?.wardAddress &&
                             errors.father?.wardAddress
                           }
-                          options={wards}
+                          options={wardsData}
                           isRequired={
                             values.father?.status.value === "Có thông tin"
                           }
@@ -1000,8 +957,8 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               "",
                               setFieldValue
                             )
-                            setDistricts([])
-                            setWards([])
+                            setDistrictsData([])
+                            setWardsData([])
                             handleProvinceChange(selectedOption)
                           }}
                           clearValue={() => {
@@ -1021,15 +978,14 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               setFieldValue
                             )
                           }}
-                          isLoading={loadingProvinces}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           feedback={errors.mother?.provinceAddress}
                           invalid={
                             touched.mother?.provinceAddress &&
                             errors.mother?.provinceAddress
                           }
-                          options={provinces}
+                          options={provincesData}
                           isRequired={
                             values.mother?.status.value === "Có thông tin"
                           }
@@ -1064,16 +1020,16 @@ export default function FamilyInfoForm({ handleFormChange }) {
                               setFieldValue
                             )
                           }}
-                          isLoading={loadingDistricts}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          isLoading={loadingDistrictsData}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
                           feedback={errors.mother?.districtAddress}
                           invalid={
                             touched.mother?.districtAddress &&
                             errors.mother?.districtAddress
                           }
-                          options={districts}
+                          options={districtsData}
                           isRequired={
                             values.mother?.status.value === "Có thông tin"
                           }
@@ -1098,15 +1054,15 @@ export default function FamilyInfoForm({ handleFormChange }) {
                             )
                           }}
                           loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                          isLoading={loadingWards}
-                          getOptionValue={(option) => option._id}
-                          getOptionLabel={(option) => option.name}
+                          isLoading={loadingWardsData}
+                          getOptionValue={(option) => option.code}
+                          getOptionLabel={(option) => option.name_with_type}
                           feedback={errors.mother?.wardAddress}
                           invalid={
                             touched.mother?.wardAddress &&
                             errors.mother?.wardAddress
                           }
-                          options={wards}
+                          options={wardsData}
                           isRequired={
                             values.mother?.status.value === "Có thông tin"
                           }
@@ -1396,8 +1352,8 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                     index,
                                     setFieldValue
                                   )
-                                  setDistricts([])
-                                  setWards([])
+                                  setDistrictsData([])
+                                  setWardsData([])
                                   handleProvinceChange(selectedOption)
                                 }}
                                 clearValue={() => {
@@ -1420,9 +1376,10 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                     setFieldValue
                                   )
                                 }}
-                                isLoading={loadingProvinces}
-                                getOptionValue={(option) => option._id}
-                                getOptionLabel={(option) => option.name}
+                                getOptionValue={(option) => option.code}
+                                getOptionLabel={(option) =>
+                                  option.name_with_type
+                                }
                                 feedback={
                                   errors?.relatives?.[index]?.provinceAddress
                                 }
@@ -1430,7 +1387,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                   touched.relatives?.[index]?.provinceAddress &&
                                   errors.relatives?.[index]?.provinceAddress
                                 }
-                                options={provinces}
+                                options={provincesData}
                                 isRequired
                               />
                               <InputField
@@ -1467,9 +1424,11 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                     setFieldValue
                                   )
                                 }}
-                                isLoading={loadingDistricts}
-                                getOptionValue={(option) => option._id}
-                                getOptionLabel={(option) => option.name}
+                                isLoading={loadingDistrictsData}
+                                getOptionValue={(option) => option.code}
+                                getOptionLabel={(option) =>
+                                  option.name_with_type
+                                }
                                 loadingMessage={() =>
                                   "Vui lòng chọn tỉnh/thành phố"
                                 }
@@ -1480,7 +1439,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                   touched.relatives?.[index]?.districtAddress &&
                                   errors.relatives?.[index]?.districtAddress
                                 }
-                                options={districts}
+                                options={districtsData}
                                 isRequired
                               />
                               <InputField
@@ -1507,9 +1466,11 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                 loadingMessage={() =>
                                   "Vui lòng chọn quận/huyện"
                                 }
-                                isLoading={loadingWards}
-                                getOptionValue={(option) => option._id}
-                                getOptionLabel={(option) => option.name}
+                                isLoading={loadingWardsData}
+                                getOptionValue={(option) => option.code}
+                                getOptionLabel={(option) =>
+                                  option.name_with_type
+                                }
                                 feedback={
                                   errors.relatives?.[index]?.wardAddress
                                 }
@@ -1517,7 +1478,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                                   touched.relatives?.[index]?.wardAddress &&
                                   errors.relatives?.[index]?.wardAddress
                                 }
-                                options={wards}
+                                options={wardsData}
                                 isRequired
                               />
                               <InputField
