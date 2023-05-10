@@ -15,6 +15,7 @@ export default function FilesUploadForm({ handleFormChange }) {
   const handleFileChange = (event, onChange) => {
     onChange()
     const { name, files } = event.target
+    console.log(files)
     setFiles((values) => ({
       ...values,
       [name]: files[0],
