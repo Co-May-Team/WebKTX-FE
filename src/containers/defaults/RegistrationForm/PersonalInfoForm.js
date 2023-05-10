@@ -1,4 +1,3 @@
-import axios from "axios"
 import { Formik } from "formik"
 import { useEffect, useState } from "react"
 import { BsArrowRight } from "react-icons/bs"
@@ -6,16 +5,19 @@ import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
+import districts from "~/utils/mockData/districts"
 import ethnics from "~/utils/mockData/ethnics"
+import provinces from "~/utils/mockData/provinces"
 import religions from "~/utils/mockData/religions"
+import wards from "~/utils/mockData/wards"
+
+const provincesData = Object.values(provinces)
 
 export default function PersonalInfoForm({ handleFormChange }) {
-  const [provinces, setProvinces] = useState([])
-  const [loadingProvinces, setLoadingProvinces] = useState(true)
-  const [districts, setDistricts] = useState([])
-  const [loadingDistricts, setLoadingDistricts] = useState(true)
-  const [wards, setWards] = useState([])
-  const [loadingWards, setLoadingWards] = useState(true)
+  const [districtsData, setDistrictsData] = useState([])
+  const [loadingDistrictsData, setLoadingDistrictsData] = useState(true)
+  const [wardsData, setWardsData] = useState([])
+  const [loadingWardsData, setLoadingWardsData] = useState(true)
 
   const handleChangePersonalInfo = (name, value, setFieldValue) => {
     let currentPersonalInfo = JSON.parse(localStorage.getItem("personalInfo"))
@@ -61,66 +63,22 @@ export default function PersonalInfoForm({ handleFormChange }) {
     }
   }, [])
 
-  useEffect(() => {
-    setLoadingProvinces(true)
-    if (JSON.parse(localStorage.getItem("provinces"))?.length > 0) {
-      setProvinces(JSON.parse(localStorage.getItem("provinces")))
-      setLoadingProvinces(false)
-    } else {
-      axios
-        .get("https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1")
-        .then((response) => {
-          localStorage.setItem(
-            "provinces",
-            JSON.stringify(response.data.data.data)
-          )
-          setProvinces(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingProvinces(false)
-        })
-    }
-  }, [])
-
   const handleProvinceChange = (province) => {
-    setLoadingDistricts(true)
-    if (province?.code) {
-      axios
-        .get(
-          `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${province.code}&limit=-1`
-        )
-        .then((response) => {
-          setDistricts(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingDistricts(false)
-        })
-    }
+    setLoadingDistrictsData(true)
+    setDistrictsData(
+      Object.values(districts).filter(
+        (district) => district.parent_code === province?.code
+      )
+    )
+    setLoadingDistrictsData(false)
   }
 
   const handleDistrictChange = (district) => {
-    setLoadingWards(true)
-    if (district?.code) {
-      axios
-        .get(
-          `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${district.code}&limit=-1`
-        )
-        .then((response) => {
-          setWards(response.data.data.data)
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-        .finally(() => {
-          setLoadingWards(false)
-        })
-    }
+    setLoadingWardsData(true)
+    setWardsData(
+      Object.values(wards).filter((ward) => ward.parent_code === district?.code)
+    )
+    setLoadingWardsData(false)
   }
 
   /* Thông tin cá nhân */
@@ -383,12 +341,11 @@ export default function PersonalInfoForm({ handleFormChange }) {
                       setFieldValue
                     )
                   }}
-                  isLoading={loadingProvinces}
-                  getOptionValue={(option) => option._id}
-                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.code}
+                  getOptionLabel={(option) => option.name_with_type}
                   feedback={errors.hometown}
                   invalid={touched.hometown && errors.hometown}
-                  options={provinces}
+                  options={provincesData}
                   isRequired
                 />
 
@@ -420,7 +377,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
                           "",
                           setFieldValue
                         )
-                        setWards([])
+                        setWardsData([])
                         handleProvinceChange(selectedOption)
                       }}
                       clearValue={() => {
@@ -435,15 +392,14 @@ export default function PersonalInfoForm({ handleFormChange }) {
                           setFieldValue
                         )
                       }}
-                      isLoading={loadingProvinces}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.code}
+                      getOptionLabel={(option) => option.name_with_type}
                       onBlur={handleBlur}
                       feedback={errors.provinceAddress}
                       invalid={
                         touched.provinceAddress && errors.provinceAddress
                       }
-                      options={provinces}
+                      options={provincesData}
                       isRequired
                     />
                     <InputField
@@ -476,15 +432,15 @@ export default function PersonalInfoForm({ handleFormChange }) {
                           setFieldValue
                         )
                       }}
-                      isLoading={loadingDistricts}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
+                      isLoading={loadingDistrictsData}
+                      getOptionValue={(option) => option.code}
+                      getOptionLabel={(option) => option.name_with_type}
                       loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
                       feedback={errors.districtAddress}
                       invalid={
                         touched.districtAddress && errors.districtAddress
                       }
-                      options={districts}
+                      options={districtsData}
                       isRequired
                     />
                     <InputField
@@ -507,12 +463,12 @@ export default function PersonalInfoForm({ handleFormChange }) {
                         )
                       }}
                       loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                      isLoading={loadingWards}
-                      getOptionValue={(option) => option._id}
-                      getOptionLabel={(option) => option.name}
+                      isLoading={loadingWardsData}
+                      getOptionValue={(option) => option.code}
+                      getOptionLabel={(option) => option.name_with_type}
                       feedback={errors.wardAddress}
                       invalid={touched.wardAddress && errors.wardAddress}
-                      options={wards}
+                      options={wardsData}
                       isRequired
                     />
                     <InputField
