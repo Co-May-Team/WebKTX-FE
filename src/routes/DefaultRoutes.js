@@ -2,6 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
 import FormDetail from "~/containers/admin/forms/FormDetail"
+import Logout from "~/containers/defaults/Logout"
 import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetail"
 import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetail"
 import { DefaultLayout } from "~/layouts"
@@ -30,6 +31,7 @@ const defaultRoutes = [
   { id: 1, Container: Home, path: path.HOME },
   { id: 2, Container: Signup, path: path.SIGNUP },
   { id: 3, Container: Login, path: path.LOGIN },
+  { id: 3, Container: Logout, path: path.LOGOUT },
   { id: 4, Container: Authentication, path: path.AUTH },
   { id: 5, Container: PostSaved, path: path.POSTSAVED },
   { id: 6, Container: Search, path: path.SEARCH },

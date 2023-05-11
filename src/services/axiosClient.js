@@ -32,29 +32,25 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   (response) => {
-    const dispatch = useDispatch()
     if (response.status === 401 || response.status === 403) {
       Swal.fire({
         title: "Cảnh báo đăng nhập",
         text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại để xác thực!",
         icon: "warning",
       }).then(() => {
-        dispatch(logout())
-        window.location.href = "/auth/login" // Chuyển hướng đến trang đăng nhập
+        window.location.href = "/dang-xuat" // Chuyển hướng đến trang đăng nhập
       })
     }
     return response
   },
   (error) => {
-    const dispatch = useDispatch()
     if (error.response.status === 401 || error.response.status === 403) {
       Swal.fire({
         title: "Cảnh báo đăng nhập",
         text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại để xác thực!",
         icon: "warning",
       }).then(() => {
-        dispatch(logout())
-        window.location.href = "/auth/login" // Chuyển hướng đến trang đăng nhập
+        window.location.href = "/dang-xuat" // Chuyển hướng đến trang đăng nhập
       })
     }
     throw error

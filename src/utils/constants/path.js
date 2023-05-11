@@ -2,6 +2,7 @@ export const path = {
   // Default path
   HOME: "/",
   LOGIN: "/dang-nhap",
+  LOGOUT: "/dang-xuat",
   AUTH: "/xac-thuc",
   SIGNUP: "/dang-ky",
   SEARCH: "/tim-kiem",
