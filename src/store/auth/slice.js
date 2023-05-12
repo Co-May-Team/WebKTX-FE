@@ -44,6 +44,7 @@ const authSlice = createSlice({
       state.userInfo = {}
       state.accessToken = ""
       localStorage.removeItem("accessToken")
+      localStorage.removeItem("persist:root")
     },
   },
   extraReducers: (builder) => {

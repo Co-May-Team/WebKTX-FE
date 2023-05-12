@@ -1,9 +1,7 @@
 // Import các thư viện cần thiết
 import axios from "axios"
 import queryString from "query-string"
-import { useDispatch } from "react-redux"
 import Swal from "sweetalert2"
-import { logout } from "~/store/auth/actions"
 import { env } from "~/utils/constants/env"
 
 // Thiết lập cấu hình mặc định cho http request
@@ -49,11 +47,15 @@ axiosClient.interceptors.response.use(
         title: "Cảnh báo đăng nhập",
         text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại để xác thực!",
         icon: "warning",
-      }).then(() => {
-        window.location.href = "/dang-xuat" // Chuyển hướng đến trang đăng nhập
+      })
+      window.location.href = "/dang-xuat"
+    } else {
+      Swal.fire({
+        title: "Cảnh báo lỗi",
+        text: "Đã xảy ra lỗi, vui lòng liên hệ nhà phát triển ứng dụng!",
+        icon: "error",
       })
     }
-    throw error
   }
 )
 
