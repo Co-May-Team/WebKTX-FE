@@ -128,6 +128,7 @@ export default function Login() {
                   isSubmitting,
                 }) => (
                   <form
+                  id="formLogin"
                     onSubmit={handleSubmit}
                     className='grid grid-cols-1 gap-6'
                   >
