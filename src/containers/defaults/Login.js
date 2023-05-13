@@ -35,7 +35,7 @@ export default function Login() {
     password: "",
   }
   const validationSchema = Yup.object({
-    username: Yup.string().required("Tên người dùng không được để trống"),
+    username: Yup.string().required("Tên đăng nhập không được để trống"),
     password: Yup.string().required("Mật khẩu không được để trống"),
   })
   const handleSubmit = async (values, actions) => {
@@ -132,10 +132,11 @@ export default function Login() {
                     className='grid grid-cols-1 gap-6'
                   >
                     <InputField
+                      id='username'
                       type='text'
                       name='username'
-                      placeholder='Nhập tên người dùng...'
-                      label='Tên người dùng'
+                      placeholder='Nhập tên đăng nhập...'
+                      label='Tên đăng nhập'
                       invalid={touched.username && errors.username}
                       value={values.username}
                       feedback={errors.username}
@@ -143,6 +144,7 @@ export default function Login() {
                       isRequired
                     />
                     <InputField
+                      id='password'
                       type='password'
                       name='password'
                       placeholder='Nhập mật khẩu...'
@@ -160,6 +162,7 @@ export default function Login() {
                       Chưa có tài khoản?
                     </NavLink>
                     <button
+                      id='loginFormSubmit'
                       type='submit'
                       className='relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     >
