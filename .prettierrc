@@ -1,8 +1,9 @@
 {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "semi": false,
-    "singleQuote": true,
-    "bracketSameLine": true,
-    "arrowParens": "avoid"
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "organizeImportsSkipDestructiveCodeActions": false
 }

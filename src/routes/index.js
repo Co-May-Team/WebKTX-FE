@@ -1,3 +1,2 @@
-export { default as AuthRoutes } from './AuthRoutes'
+export { default as AdminRoutes } from './AdminRoutes'
 export { default as DefaultRoutes } from './DefaultRoutes'
-export { default as SystemsRoutes } from './SystemsRoutes'
