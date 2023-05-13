@@ -96,6 +96,7 @@ export default function Signup() {
                     className='grid grid-cols-1 gap-4'
                   >
                     <InputField
+                      id='fullName'
                       type='text'
                       name='fullName'
                       placeholder='Nhập họ tên...'
@@ -107,6 +108,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='dob'
                       type='date'
                       name='dob'
                       label='Ngày sinh'
@@ -117,6 +119,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='email'
                       type='email'
                       name='email'
                       placeholder='Nhập email...'
@@ -128,6 +131,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='phoneNumber'
                       type='text'
                       name='phoneNumber'
                       placeholder='Nhập số điện thoại...'
@@ -139,6 +143,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='citizenId'
                       type='text'
                       name='citizenId'
                       placeholder='Nhập số CMND/CCCD...'
@@ -150,10 +155,11 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='username'
                       type='text'
                       name='username'
-                      placeholder='Nhập tên người dùng...'
-                      label='Tên người dùng'
+                      placeholder='Nhập tên đăng nhập...'
+                      label='Tên đăng nhập'
                       invalid={touched.username && errors.username}
                       value={values.username}
                       feedback={errors.username}
@@ -161,6 +167,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='password'
                       type='password'
                       name='password'
                       placeholder='Nhập mật khẩu...'
@@ -172,6 +179,7 @@ export default function Signup() {
                       isRequired
                     />
                     <InputField
+                      id='repassword'
                       type='password'
                       name='repassword'
                       placeholder='Nhập lại mật khẩu...'
@@ -189,6 +197,7 @@ export default function Signup() {
                       Đã có tài khoản?
                     </NavLink>
                     <button
+                      id='signupFormSubmit'
                       type='submit'
                       className='relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                     >
