@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types'
-import { BackToTop } from '~/components'
-import { Footer, Header } from './components'
+import PropTypes from "prop-types"
+import { Outlet } from "react-router-dom"
+import { BackToTop } from "~/components"
+import { Footer, Header } from "./components"
 
 export default function DefaultLayout({ children }) {
   return (
-    <div className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
+    <div className='bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200'>
       {/* Header */}
       <Header />
       {/* Container */}
@@ -13,6 +14,7 @@ export default function DefaultLayout({ children }) {
       <Footer />
       {/* Back To Top */}
       <BackToTop />
+      <Outlet />
     </div>
   )
 }

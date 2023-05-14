@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 
 export default function ProgressBar() {
   const progressBarRef = useRef(null)
@@ -14,18 +14,18 @@ export default function ProgressBar() {
     }
 
     // Lắng nghe sự kiện scroll của trang web
-    window.addEventListener('scroll', updateProgress)
+    window.addEventListener("scroll", updateProgress)
 
     return () => {
       // Hủy lắng nghe sự kiện scroll khi component unmount
-      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener("scroll", updateProgress)
     }
   }, [])
 
   return (
     <div
       ref={progressBarRef}
-      className="progress-bar h-[5px] bg-teal-600"
+      className='progress-bar h-[5px] bg-teal-600'
       style={{ width: `${width}%` }}
     />
   )

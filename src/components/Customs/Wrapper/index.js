@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types'
-import { bindClassNames } from '~/utils'
-import styles from './index.module.scss'
+import PropTypes from "prop-types"
+import { bindClassNames } from "~/utils"
+import styles from "./index.module.scss"
 
 const cx = bindClassNames(styles)
 
 export default function Wrapper({ children, className }) {
   return (
-    <div className={cx('default', { [className]: className })}>{children}</div>
+    <div className={cx("default", { [className]: className })}>{children}</div>
   )
 }
 

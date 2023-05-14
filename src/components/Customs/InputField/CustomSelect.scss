@@ -1,0 +1,143 @@
+/* style for the control */
+.custom-select {
+  &__control {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 9999px !important;
+    box-shadow: none;
+    cursor: pointer;
+    height: 40px;
+    padding: 0 12px;
+
+    &:hover {
+      border-color: #b3b3b3;
+    }
+    &:focus {
+      border-color: rgba(
+        var(--c-primary-300),
+        var(--comay-border-opacity)
+      ) !important;
+    }
+
+    &--is-focused,
+    &--menu-is-open {
+      border-color: #4f46ef !important;
+      box-shadow: none;
+    }
+
+    &--is-disabled {
+      opacity: 0.7 !important;
+      cursor: not-allowed;
+    }
+  }
+
+  &__single-value {
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 14px !important;
+  }
+
+  &__multi-value {
+    background-color: #4f46ef !important;
+    color: #fff;
+    font-size: 14px !important;
+
+    &__label {
+      color: #fff !important;
+    }
+
+    &__remove:hover {
+      background-color: rgba(
+        var(--c-primary-700),
+        var(--comay-bg-opacity)
+      ) !important;
+      color: #fff !important;
+    }
+  }
+
+  &__value-container {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__indicators {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    &-separator {
+      display: none;
+    }
+  }
+
+  &__placeholder {
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 14px !important;
+  }
+
+  &__dropdown-indicator {
+    color: #ccc;
+    transition: color 0.2s ease;
+    &:hover {
+      color: #999;
+    }
+  }
+
+  &__loading-indicator {
+    font-family: "Montserrat", sans-serif !important;
+    font-size: 14px !important;
+    color: #ccc;
+  }
+
+  &__menu {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 8px;
+    max-height: 300px;
+    z-index: 1;
+
+    &-list {
+      padding: 0;
+      list-style: none;
+    }
+
+    &-notice--loading {
+      color: #999 !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-size: 14px !important;
+    }
+
+    &-no--option {
+      color: #999 !important;
+      font-family: "Montserrat", sans-serif !important;
+      font-size: 14px !important;
+    }
+  }
+
+  &__option {
+    font-family: "Montserrat", sans-serif !important;
+    color: #333;
+    font-size: 14px !important;
+
+    &--is-selected {
+      background-color: #4f46ef !important;
+      color: #fff;
+    }
+
+    &--is-focused {
+      background-color: #4f46ef !important;
+      opacity: 0.8 !important;
+      color: #fff !important;
+    }
+  }
+}

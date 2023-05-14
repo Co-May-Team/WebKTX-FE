@@ -1,6 +1,6 @@
-import axiosClient from './axiosClient'
+import axiosClient from "./axiosClient"
 
-const baseUrl = '/category'
+const baseUrl = "/category"
 const categoriesApi = {
   getAll: () => {
     const requestUrl = `${baseUrl}`

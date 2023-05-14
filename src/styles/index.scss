@@ -1,12 +1,12 @@
 // @import 'mixins/banner';
 // @include bsBanner('');
 
-@use 'three-dots';
+@use "three-dots";
 // // scss-docs-start import-stack
 // // Configuration
 // @import 'functions';
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
 // @import 'maps';
 // @import 'utilities';
 
@@ -18,11 +18,11 @@
 // @import 'containers';
 // @import 'grid';
 // @import 'tables';
-@import 'forms';
-@import 'buttons';
-@import 'transitions';
+@import "forms";
+@import "buttons";
+@import "transitions";
 // @import 'dropdown';
-@import 'button-group';
+// @import 'button-group';
 // @import 'nav';
 // @import 'navbar';
 // @import 'card';
@@ -33,22 +33,22 @@
 // @import 'alert';
 // @import 'progress';
 // @import 'list-group';
-@import 'close';
+@import "close";
 // @import 'toasts';
-@import 'modal';
+@import "modal";
 // @import 'tooltip';
 // @import 'popover';
 // @import 'carousel';
 // @import 'spinners';
 // @import 'offcanvas';
-@import 'placeholders';
+// @import 'placeholders';
 
 // @import 'avatar';
 // @import 'callout';
 // @import 'footer';
-@import 'header';
+// @import 'header';
 // @import 'icon';
-@import 'sidebar';
+// @import 'sidebar';
 // @import 'subheader';
 
 // // Helpers
@@ -59,5 +59,5 @@
 // // scss-docs-end import-stack
 
 // @import 'normalize.css';
-@import 'animation';
-@import 'style';
+@import "animation";
+@import "style";
