@@ -1,3 +1,12 @@
+> # Website KTX Cỏ May - Frontend
+
+## Nội dung
+### 1. Tổng quan dự án
+
+### 2. Cấu trúc dự án
+
+### 3. Chạy dự án
+
 ### Lưu ý
 
 1.  Clone project từ repository (forked từ Co-May-Team/WebKTX-FE)
