@@ -1,18 +1,13 @@
 > # Website KTX Cỏ May - Frontend
+[![My Skills](https://skillicons.dev/icons?i=react,html,css,js,jquery,mysql,maven,eclipse,vim,github,stackoverflow)](https://skillicons.dev)
 
 ## Nội dung
 ### 1. Tổng quan dự án
-
 ### 2. Cấu trúc dự án
-
 ### 3. Chạy dự án
-
 ### 4. Đóng góp
 
-### Lưu ý
-
-- Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
-
+### 1. Tổng quan dự án
 ### 2. Cấu trúc thư mục
 ```
 .
@@ -78,6 +73,8 @@
 4. Thực hiện pull code từ nhánh `dev1.1` về local bằng câu lệnh `git pull --progress -v --no-rebase "origin" dev1.1`
 5. Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
 6. Gõ lệnh `npm start` để chạy project trên localhost.
+#### Lưu ý
+- Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
 
 ### Flow
 
