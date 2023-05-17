@@ -7,46 +7,77 @@
 
 ### 3. Chạy dự án
 
-### 4. Contributes
+### 4. Đóng góp
 
 ### Lưu ý
-
-1.  Clone project từ repository (forked từ Co-May-Team/WebKTX-FE)
-2.  Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
-3.  Gõ lệnh `npm start` để chạy project trên localhost.
 
 - Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
 
 ### 2. Cấu trúc thư mục
+```
+.
+└── WebKTX-FE/
+    ├── Email
+    ├── public
+    ├── src/
+    │   ├── assets
+    │   ├── components
+    │   ├── containers
+    │   ├── data
+    │   ├── hooks
+    │   ├── layouts
+    │   ├── services
+    │   ├── store
+    │   ├── styles
+    │   ├── utils
+    │   ├── App.js
+    │   ├── index.css
+    │   └── index.js
+    ├── .babelrc
+    ├── .gitignore
+    ├── .prettierrc
+    ├── Jenkinsfile
+    ├── README.md
+    ├── config-overrides.js
+    ├── jsconfig.json
+    ├── package.json
+    └── tailwind.config.js
+```
+- src: là thư mục chính chứa toàn bộ mã nguồn của ứng dụng.
 
+- public: chứa các tệp tĩnh như ảnh, biểu tượng favicon, index.html, vv.
 
-1. src: là thư mục chính chứa toàn bộ mã nguồn của ứng dụng.
+- src/components: chứa các thành phần UI độc lập, có thể tái sử dụng được trong toàn bộ ứng dụng.
 
-2. public: chứa các tệp tĩnh như ảnh, biểu tượng favicon, index.html, vv.
+- src/layouts: chứa các bố cục của ứng dụng.
 
-3. src/components: chứa các thành phần UI độc lập, có thể tái sử dụng được trong toàn bộ ứng dụng.
+- src/containers: chứa các thành phần lớn hơn, điều khiển nhiều thành phần UI khác nhau, thường được kết hợp từ nhiều thành phần UI.
 
-4. src/layouts: chứa các bố cục của ứng dụng.
+- src/utils: chứa các hàm tiện ích, tập hợp các hàm và chức năng khác để sử dụng trong toàn bộ ứng dụng.
 
-5. src/containers: chứa các thành phần lớn hơn, điều khiển nhiều thành phần UI khác nhau, thường được kết hợp từ nhiều thành phần UI.
+- src/store: chứa các tệp tin liên quan đến quản lý trạng thái (state management) của ứng dụng bằng thư viện Redux.
 
-6. src/utils: chứa các hàm tiện ích, tập hợp các hàm và chức năng khác để sử dụng trong toàn bộ ứng dụng.
+- src/services: chứa các hàm liên quan đến gọi API, xử lý dữ liệu.
 
-7. src/store: chứa các tệp tin liên quan đến quản lý trạng thái (state management) của ứng dụng bằng thư viện Redux.
+- src/styles: chứa các tệp CSS và Sass, và theme của ứng dụng.
 
-8. src/services: chứa các hàm liên quan đến gọi API, xử lý dữ liệu.
+- src/routes: chứa các tệp tin liên quan đến quản lý routing cho ứng dụng.
 
-9. src/styles: chứa các tệp CSS và Sass, và theme của ứng dụng.
+- src/assets: chứa các tệp tin liên quan đến hình ảnh, video, audio và các tài nguyên khác.
 
-10. src/routes: chứa các tệp tin liên quan đến quản lý routing cho ứng dụng.
+- src/constants: chứa các hằng số được sử dụng trong toàn bộ ứng dụng.
 
-11. src/assets: chứa các tệp tin liên quan đến hình ảnh, video, audio và các tài nguyên khác.
+- src/hooks: chứa các custom hooks.
 
-12. src/constants: chứa các hằng số được sử dụng trong toàn bộ ứng dụng.
+- src/tests: chứa các file liên quan đến việc test, đảm bảo chất lượng phần mềm.
 
-13. src/hooks: chứa các custom hooks.
-
-14. src/tests: chứa các file liên quan đến việc test, đảm bảo chất lượng phần mềm.
+### 3. Chạy dự án
+1. Forked project từ Co-May-Team/WebKTX-FE
+2. Clone project forked
+3. Từ foler `WebKTX-FE` mở terminal và chạy dòng lệnh `git remote add origin https://github.com/Co-May-Team/WebKTX-FE.git`
+4. Thực hiện pull code từ nhánh `dev1.1` về local bằng câu lệnh `git pull --progress -v --no-rebase "origin" dev1.1`
+5. Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
+6. Gõ lệnh `npm start` để chạy project trên localhost.
 
 ### Flow
 
