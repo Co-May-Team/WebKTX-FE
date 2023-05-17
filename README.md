@@ -1,13 +1,15 @@
 > # Website KTX Cỏ May - Frontend
-[![My Skills](https://skillicons.dev/icons?i=react,html,css,js,jquery,mysql,maven,eclipse,vim,github,stackoverflow)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=react,html,css,js,jquery,mysql,vim,github,stackoverflow)](https://skillicons.dev)
 
 ## Nội dung
-### 1. Tổng quan dự án
+### [1. Tổng quan dự án](#tong-quan)
 ### 2. Cấu trúc dự án
 ### 3. Chạy dự án
 ### 4. Đóng góp
 
-### 1. Tổng quan dự án
+>
+
+### 1. Tổng quan dự án<a name="tong-quan"></a>
 ### 2. Cấu trúc thư mục
 ```
 .
