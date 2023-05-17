@@ -7,6 +7,8 @@
 
 ### 3. Chạy dự án
 
+### 4. Contributes
+
 ### Lưu ý
 
 1.  Clone project từ repository (forked từ Co-May-Team/WebKTX-FE)
@@ -15,7 +17,8 @@
 
 - Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
 
-### Cấu trúc thư mục
+### 2. Cấu trúc thư mục
+
 
 1. src: là thư mục chính chứa toàn bộ mã nguồn của ứng dụng.
 
