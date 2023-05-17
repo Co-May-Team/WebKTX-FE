@@ -9,7 +9,7 @@
 
 >
 
-### 1. Tổng quan dự án<a name="tong-quan"></a>
+### 1. Tổng quan dự án <a name="tong-quan"></a>
 ### 2. Cấu trúc thư mục
 ```
 .
