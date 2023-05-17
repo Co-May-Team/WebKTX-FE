@@ -38,6 +38,13 @@ export default function FormItem({ formInfo }) {
           {formInfo?.status}
         </span>
       </td>
+      <td className='px-6 py-4 whitespace-nowrap'>
+        <select className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none">
+          <option>Đạt</option>
+          <option>Không đạt</option>
+          <option>Dự bị</option>
+        </select>
+      </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-neutral-300'>
         <button
           onClick={() =>
