@@ -1,0 +1,9 @@
+version: '3.8'
+  
+client:
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+
+
+

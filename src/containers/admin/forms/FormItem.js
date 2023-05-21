@@ -3,8 +3,44 @@ import { path } from "~/utils"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import { defaultAvatar } from "~/utils/constants/default"
 
-export default function FormItem({ formInfo }) {
+
+const statusOptions = [
+  {
+    id: 1,
+    code: 'CD',
+    label: 'Chờ duyệt'
+  },
+  {
+    id: 2,
+    code: 'DT',
+    label: 'Đạt'
+  },
+  {
+    id: 3,
+    code: 'KD',
+    label: 'Không đạt'
+  },
+  {
+    id: 4,
+    code: 'DB',
+    label: 'Dự bị'
+  },
+];
+
+export default function FormItem({ formInfo, updateStatusForm }) {
+
   const navigate = useNavigate()
+
+  // Hàm xử lý onChange vào select
+  function onChangeSelect(statusCode, userId){
+    // Kiểm tra dữ liệu
+    if(!statusCode || !userId) return null;
+
+    // Gọi hàm ở ListForm
+    const data = {statusCode, userId};
+    updateStatusForm(data);
+  }
+
   return (
     <tr>
       <td className='px-6 py-4'>
@@ -39,10 +75,13 @@ export default function FormItem({ formInfo }) {
         </span>
       </td>
       <td className='px-6 py-4 whitespace-nowrap'>
-        <select className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none">
-          <option>Đạt</option>
-          <option>Không đạt</option>
-          <option>Dự bị</option>
+        <select 
+          onChange={(e) => onChangeSelect(e.target.value, formInfo.userId)}
+          className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none"
+        >
+          {statusOptions.map(item => {
+            return <option value={item.code} key={item.id}>{item.label}</option>
+          })}
         </select>
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-neutral-300'>

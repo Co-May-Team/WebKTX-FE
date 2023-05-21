@@ -19,6 +19,7 @@ export default function FormDetail() {
     admissionApi
       .getById(id)
       .then((response) => {
+        console.log({detail: response.data.data})
         setFormInfo(response.data.data)
       })
       .catch((error) => setNullForm(true))

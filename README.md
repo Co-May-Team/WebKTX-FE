@@ -5,11 +5,13 @@
 ### [1. Tổng quan dự án](#tong-quan)
 ### [2. Cấu trúc dự án](#cau-truc)
 ### [3. Chạy dự án](#chay-du-an)
+### [4. Chạy dự án bằng Docker](#chay-du-an-docker)
 ### [4. Đóng góp](#dong-gop)
 
 >
 
 ### 1. Tổng quan dự án <a name="tong-quan"></a>
+
 ### 2. Cấu trúc thư mục <a name="cau-truc"></a>
 ```
 .
@@ -75,8 +77,17 @@
 4. Thực hiện pull code từ nhánh `dev1.1` về local bằng câu lệnh `git pull --progress -v --no-rebase "origin" dev1.1`
 5. Mở cmd ở thư mục root của project và gõ lệnh `npm install` để cài đặt tất cả các package.
 6. Gõ lệnh `npm start` để chạy project trên localhost.
+
 #### Lưu ý
 - Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
+
+### 4. Chạy dự án bằng docker<a name="chay-du-an-docker"></a>
+1. Forked project từ Co-May-Team/WebKTX-FE
+2. Clone project forked
+3. Từ foler `WebKTX-FE` mở terminal và chạy dòng lệnh `git remote add origin https://github.com/Co-May-Team/WebKTX-FE.git`
+4. Thực hiện pull code từ nhánh `dev1.1` về local bằng câu lệnh `git pull --progress -v --no-rebase "origin" dev1.1`
+5. Mở cmd ở thư mục root của project và gõ lệnh `docker build -f Dockerfile -t react/client:v1.0.0 .` để build docker image.
+6. Gõ lệnh `docker build run -it -p 3002:3001 react/client:v1.0.0` để chạy project trên localhost:3002
 
 ### Flow
 - src/index.js --> src/App.js --> src/routes --> src/layouts --> src/containers --> src/components
