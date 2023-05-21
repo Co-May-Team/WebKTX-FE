@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import _ from 'lodash';
+import Swal from "sweetalert2";
 import Loading from "~/components/Loading"
 import admissionApi from "~/services/admissionApi"
 import FormItem from "./FormItem"
-import { keys } from "~/utils/constants/keys";
 import { httpStatus } from "~/utils/constants/httpStatus";
+import { useDebounce } from "~/hooks";
 
 const columnNames = [
   {
@@ -27,10 +28,10 @@ const columnNames = [
     id: Math.random(),
     name: 'TRẠNG THÁI'
   },
-    {
-    id: Math.random(),
-    name: 'KẾT QUẢ'
-  },
+  //   {
+  //   id: Math.random(),
+  //   name: 'KẾT QUẢ'
+  // },
     {
     id: Math.random(),
     name: 'Hành động',
@@ -44,32 +45,23 @@ export default function ListForm() {
   const [loadingListForm, setLoadingListForm] = useState(true)
   const [listForm, setListForm] = useState([])
   const [filteredList, setFilteredList] = useState([]);
+  const query = useDebounce(searchValue, 1000);
 
-
-
-  // Hàm xử lý lọc đơn theo tên do người dùng nhập vào
-  function filterBySeacrh() {
-    // Xóa khoảng trắng
-    const query = searchValue.trim();
+  // Tự động được gọi mỗi khi người dùng nhập tên và sau 1s thì sẽ handle lọc dữ liệu
+  useEffect(() => {
     if(_.isEmpty(query)) {
       // Nếu không nhập dữ liệu và danh sách đã bị filter trước đó => Cập nhật lại danh sách đầy đủ ban đầu
-      if(listForm.length !== filteredList.length) setFilteredList(listForm);
+      if(listForm.length !== filteredList.length) 
+        setFilteredList(listForm);
       return;
     }
     // Filter theo tên người ứng tuyển
     const updatedList = listForm.filter(
       item => item.fullname.includes(query)
     );
-
     // Trigger render with updated values
     setFilteredList(updatedList);
-  }
-
-  // Lọc đơn khi người dùng ấn enter sau khi nhập tên vào input
-  function onKeyUp(e) {
-    if(e.key !== keys.ENTER) return;
-    filterBySeacrh();
-  }
+  }, [query, listForm, filteredList.length])
 
   // Render list đơn ứng tuyển đã được filter
   const renderListForm = () =>
@@ -102,12 +94,20 @@ export default function ListForm() {
       .updateStatus(data)
       .then(response => {
         console.log(response)
-          // if(response.data.status === httpStatus.OK) {
-          //   console.log(response.data);
-          // }
+          if(response.data.status === httpStatus.OK) {
+            Swal.fire(
+              'Thông báo!',
+              'Chỉnh sửa trạng thái đơn ứng tuyển thành công',
+              'success'
+            );
+          }
       })
       .catch(err => {
-        console.log(err);
+        Swal.fire(
+          'Opps!',
+          'Đã có lỗi xảy ra, vui lòng thử lại sau',
+          'error'
+        );
       })
   }
 
@@ -134,15 +134,13 @@ export default function ListForm() {
       <div className='shadow dark:border dark:border-neutral-800 overflow-scroll sm:rounded-lg'>
         <div className="m-5 flex gap-1 align-middle">
           <input 
-            onKeyUp={onKeyUp}
             className="text-sm text-black px-4 block outline-none rounded-lg border w-1/3 transition-all focus:border-primary-6000" 
-            placeholder="Tìm kiếm người ứng tuyển..."
+            placeholder="Tìm kiếm đơn ứng tuyển..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
           <button 
             className="px-4 py-2 border text-black rounded-lg text-sm transition-all hover:bg-primary-6000 hover:text-white"
-            onClick={filterBySeacrh}
           >
               Tìm kiếm
           </button>

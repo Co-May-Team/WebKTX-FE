@@ -11,9 +11,9 @@ const statusOptions = [
     label: 'Chờ duyệt'
   },
   {
-    id: 2,
-    code: 'DT',
-    label: 'Đạt'
+    id: 4,
+    code: 'DB',
+    label: 'Dự bị'
   },
   {
     id: 3,
@@ -21,9 +21,9 @@ const statusOptions = [
     label: 'Không đạt'
   },
   {
-    id: 4,
-    code: 'DB',
-    label: 'Dự bị'
+    id: 2,
+    code: 'DT',
+    label: 'Đạt'
   },
 ];
 
@@ -69,18 +69,24 @@ export default function FormItem({ formInfo, updateStatusForm }) {
       <td className='px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-400'>
         <span>{formInfo?.email}</span>
       </td>
-      <td className='px-6 py-4 whitespace-nowrap'>
+      {/* <td className='px-6 py-4 whitespace-nowrap'>
         <span className='px-4 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm'>
           {formInfo?.status}
         </span>
-      </td>
+      </td> */}
       <td className='px-6 py-4 whitespace-nowrap'>
         <select 
           onChange={(e) => onChangeSelect(e.target.value, formInfo.userId)}
           className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none"
         >
           {statusOptions.map(item => {
-            return <option value={item.code} key={item.id}>{item.label}</option>
+            return <option 
+                      value={item.code} 
+                      key={item.id}
+                      selected={formInfo.status === item.label}
+                    >
+                      {item.label}
+                    </option>
           })}
         </select>
       </td>
