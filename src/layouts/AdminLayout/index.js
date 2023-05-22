@@ -9,7 +9,8 @@ export default function AdminLayout({ children }) {
       {/* Header */}
       <Header />
       {/* Container */}
-      <div className='container py-10 lg:py-16'>{children}</div>
+      {/* <div className='container py-10 lg:py-16'>{children}</div> */}
+      <div className='py-10 lg:py-16'>{children}</div>
       {/* Footer */}
       <Footer />
       {/* Back To Top */}

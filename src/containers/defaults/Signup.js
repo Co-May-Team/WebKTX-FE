@@ -1,6 +1,6 @@
 import { Formik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, NavLink } from "react-router-dom"
+import { NavLink, Navigate } from "react-router-dom"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
@@ -92,7 +92,7 @@ export default function Signup() {
                   isSubmitting,
                 }) => (
                   <form
-                  id="formSignup"
+                    id='formSignup'
                     onSubmit={handleSubmit}
                     className='grid grid-cols-1 gap-4'
                   >
