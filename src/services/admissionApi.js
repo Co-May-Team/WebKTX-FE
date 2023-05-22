@@ -29,9 +29,9 @@ const admissionApi = {
     return axiosClient.get(requestUrl)
   },
   updateStatus: (data) => {
-    const requestUrl = `${baseUrl}/update-status`;
-    return axiosClient.put(requestUrl, data);
-  }
+    const requestUrl = `${baseUrl}/update-status`
+    return axiosClient.put(requestUrl, data)
+  },
 }
 
 export default admissionApi

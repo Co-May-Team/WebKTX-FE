@@ -1,4 +1,4 @@
 export const httpStatus = {
-  OK: 'OK',
-  FAIL: 'FAIL'
+  OK: "OK",
+  FAIL: "FAIL",
 }

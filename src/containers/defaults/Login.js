@@ -2,7 +2,7 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { Formik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, NavLink, useNavigate } from "react-router-dom"
+import { NavLink, Navigate, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
@@ -128,7 +128,7 @@ export default function Login() {
                   isSubmitting,
                 }) => (
                   <form
-                  id="formLogin"
+                    id='formLogin'
                     onSubmit={handleSubmit}
                     className='grid grid-cols-1 gap-6'
                   >

@@ -1,3 +1,3 @@
 export const keys = {
-  ENTER: 'Enter',
+  ENTER: "Enter",
 }

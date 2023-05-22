@@ -1,11 +1,17 @@
 > # Website KTX Cỏ May - Frontend
-[![My Skills](https://skillicons.dev/icons?i=react,html,css,js,jquery,mysql,vim,github,stackoverflow)](https://skillicons.dev)
+>
+> [![My Skills](https://skillicons.dev/icons?i=react,html,css,js,jquery,mysql,vim,github,stackoverflow)](https://skillicons.dev)
 
 ## Nội dung
+
 ### [1. Tổng quan dự án](#tong-quan)
+
 ### [2. Cấu trúc dự án](#cau-truc)
+
 ### [3. Chạy dự án](#chay-du-an)
+
 ### [4. Chạy dự án bằng Docker](#chay-du-an-docker)
+
 ### [4. Đóng góp](#dong-gop)
 
 >
@@ -13,6 +19,7 @@
 ### 1. Tổng quan dự án <a name="tong-quan"></a>
 
 ### 2. Cấu trúc thư mục <a name="cau-truc"></a>
+
 ```
 .
 └── WebKTX-FE/
@@ -42,6 +49,7 @@
     ├── package.json
     └── tailwind.config.js
 ```
+
 - src: là thư mục chính chứa toàn bộ mã nguồn của ứng dụng.
 
 - public: chứa các tệp tĩnh như ảnh, biểu tượng favicon, index.html, vv.
@@ -71,6 +79,7 @@
 - src/tests: chứa các file liên quan đến việc test, đảm bảo chất lượng phần mềm.
 
 ### 3. Chạy dự án <a name="chay-du-an"></a>
+
 1. Forked project từ Co-May-Team/WebKTX-FE
 2. Clone project forked
 3. Từ foler `WebKTX-FE` mở terminal và chạy dòng lệnh `git remote add origin https://github.com/Co-May-Team/WebKTX-FE.git`
@@ -79,9 +88,11 @@
 6. Gõ lệnh `npm start` để chạy project trên localhost.
 
 #### Lưu ý
+
 - Trước khi commit code, gõ lệnh `npm run format` để format code theo chuẩn của project
 
 ### 4. Chạy dự án bằng docker<a name="chay-du-an-docker"></a>
+
 1. Forked project từ Co-May-Team/WebKTX-FE
 2. Clone project forked
 3. Từ foler `WebKTX-FE` mở terminal và chạy dòng lệnh `git remote add origin https://github.com/Co-May-Team/WebKTX-FE.git`
@@ -90,6 +101,7 @@
 6. Gõ lệnh `docker build run -it -p 3002:3001 react/client:v1.0.0` để chạy project trên localhost:3002
 
 ### Flow
+
 - src/index.js --> src/App.js --> src/routes --> src/layouts --> src/containers --> src/components
 - src/containers --> src/store/{feature name}/slice.js --> src/store/{feature name}/action.js --> src/apis
 

@@ -4,12 +4,12 @@ import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import admissionApi from "~/services/admissionApi"
-import formatCurrency from "~/utils/commons/formatCurrency"
 import { path } from "~/utils"
+import formatCurrency from "~/utils/commons/formatCurrency"
 
 export default function FormDetail() {
   const id = useLocation().state
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [loadingFormInfo, setLoadingFormInfo] = useState(true)
   const [nullForm, setNullForm] = useState(false)
   const [formInfo, setFormInfo] = useState(null)
@@ -29,7 +29,7 @@ export default function FormDetail() {
 
   // Hàm xử lý quay lại trang quản lý form
   function backToListForm() {
-    navigate(`${path.ADMIN + path.FORMS}`);
+    navigate(`${path.ADMIN + path.FORMS}`)
   }
 
   return (
@@ -54,9 +54,9 @@ export default function FormDetail() {
               </h2>
             </div>
           </div>
-          <button 
+          <button
             onClick={backToListForm}
-            className="my-4 px-4 py-2 border text-black rounded-lg text-sm transition-all bg-neutral-100 hover:bg-neutral-200"
+            className='my-4 px-4 py-2 border text-black rounded-lg text-sm transition-all bg-neutral-100 hover:bg-neutral-200'
           >
             Quay lại
           </button>
