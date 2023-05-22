@@ -67,7 +67,7 @@ function Header() {
                 <ul className='hidden lg:flex lg:flex-wrap lg:items-center lg:space-x-1 relative'>
                   {navList.map((navItem) => (
                     <NavLink
-                      key={navItem?.id}
+                      key={navItem?.to}
                       className={({ isActive }) =>
                         isActive
                           ? "relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-2 sm:px-5 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0 capitalize"

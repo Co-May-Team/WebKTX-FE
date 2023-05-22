@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import admissionApi from "~/services/admissionApi"
 import formatCurrency from "~/utils/commons/formatCurrency"
+import { path } from "~/utils"
 
 export default function FormDetail() {
   const id = useLocation().state
-  const { name } = useParams()
-
+  const navigate = useNavigate();
   const [loadingFormInfo, setLoadingFormInfo] = useState(true)
   const [nullForm, setNullForm] = useState(false)
   const [formInfo, setFormInfo] = useState(null)
@@ -19,7 +19,6 @@ export default function FormDetail() {
     admissionApi
       .getById(id)
       .then((response) => {
-        console.log({detail: response.data.data})
         setFormInfo(response.data.data)
       })
       .catch((error) => setNullForm(true))
@@ -27,6 +26,11 @@ export default function FormDetail() {
         setLoadingFormInfo(false)
       })
   }, [id])
+
+  // Hàm xử lý quay lại trang quản lý form
+  function backToListForm() {
+    navigate(`${path.ADMIN + path.FORMS}`);
+  }
 
   return (
     <Motion>
@@ -50,6 +54,12 @@ export default function FormDetail() {
               </h2>
             </div>
           </div>
+          <button 
+            onClick={backToListForm}
+            className="my-4 px-4 py-2 border text-black rounded-lg text-sm transition-all bg-neutral-100 hover:bg-neutral-200"
+          >
+            Quay lại
+          </button>
           {nullForm ? (
             <div className='flex mt-5 justify-center items-center mb-4'>
               <h4 className='text-center'>Trống</h4>

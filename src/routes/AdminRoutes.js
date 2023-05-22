@@ -1,6 +1,7 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { Navigate, Route, Routes } from "react-router-dom"
+import FormDetail from "~/containers/admin/forms/FormDetail"
 import { AdminLayout } from "~/layouts"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
@@ -30,6 +31,11 @@ const adminRoutes = [
     id: Math.random(),
     Container: Forms,
     path: path.FORMS,
+  },
+  {
+    id: Math.random(),
+    Container: FormDetail,
+    path: path.FORM_DETAIL,
   },
 ]
 

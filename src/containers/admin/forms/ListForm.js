@@ -5,7 +5,7 @@ import Loading from "~/components/Loading"
 import admissionApi from "~/services/admissionApi"
 import FormItem from "./FormItem"
 import { httpStatus } from "~/utils/constants/httpStatus";
-import { useDebounce } from "~/hooks";
+import { useDebounce, useFetch } from "~/hooks";
 
 const columnNames = [
   {
@@ -41,9 +41,8 @@ const columnNames = [
 
 export default function ListForm() {
   // State
+  const {loading: loadingListForm, error, response: listForm} = useFetch(admissionApi.getAllByYear, 2023);
   const [searchValue, setSearchValue] = useState('');
-  const [loadingListForm, setLoadingListForm] = useState(true)
-  const [listForm, setListForm] = useState([])
   const [filteredList, setFilteredList] = useState([]);
   const query = useDebounce(searchValue, 1000);
 
@@ -51,7 +50,7 @@ export default function ListForm() {
   useEffect(() => {
     if(_.isEmpty(query)) {
       // Nếu không nhập dữ liệu và danh sách đã bị filter trước đó => Cập nhật lại danh sách đầy đủ ban đầu
-      if(listForm.length !== filteredList.length) 
+      if(listForm?.length !== filteredList?.length) 
         setFilteredList(listForm);
       return;
     }
@@ -61,7 +60,12 @@ export default function ListForm() {
     );
     // Trigger render with updated values
     setFilteredList(updatedList);
-  }, [query, listForm, filteredList.length])
+  }, [query, listForm, filteredList?.length])
+
+  // Thực hiện gán list form vào fillter list để thực hiện filter khi người dùng tìm kiếm
+  useEffect(() => {
+    listForm && setFilteredList(listForm)
+  }, [listForm])
 
   // Render list đơn ứng tuyển đã được filter
   const renderListForm = () =>
@@ -92,8 +96,8 @@ export default function ListForm() {
   function updateStatusForm(data) {
     admissionApi
       .updateStatus(data)
+      // Call API thành công
       .then(response => {
-        console.log(response)
           if(response.data.status === httpStatus.OK) {
             Swal.fire(
               'Thông báo!',
@@ -102,6 +106,7 @@ export default function ListForm() {
             );
           }
       })
+      // Call APIi thất bại
       .catch(err => {
         Swal.fire(
           'Opps!',
@@ -111,22 +116,6 @@ export default function ListForm() {
       })
   }
 
-  // Call API
-  useEffect(() => {
-    setLoadingListForm(true)
-    admissionApi
-      .getAllByYear(2023)
-      .then((response) => {
-        if (response.data.status === httpStatus.OK) {
-          setListForm(response.data.data);
-          setFilteredList(response.data.data);
-        }
-      })
-      .finally(() => {
-        setLoadingListForm(false)
-      })
-  }, [])
- 
   // Render data
   return (
    <div className='container-admin mx-auto'>
@@ -145,16 +134,19 @@ export default function ListForm() {
               Tìm kiếm
           </button>
         </div>
-        <table className='min-w-full divide-y divide-neutral-200 dark:divide-neutral-800'>
-          <thead className='bg-neutral-50 dark:bg-neutral-800'>
-            <tr className='text-left text-xs font-medium text-neutral-900 dark:text-neutral-300 uppercase tracking-wider'>
-              {renderColumnNames()}
-            </tr>
-          </thead>
-          <tbody className='bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800'>
-            {loadingListForm ? <Loading /> : renderListForm()}
-          </tbody>
-        </table>
+        {loadingListForm ? <Loading/> : (
+          <table className='min-w-full divide-y divide-neutral-200 dark:divide-neutral-800'>
+            <thead className='bg-neutral-50 dark:bg-neutral-800'>
+              <tr className='text-left text-xs font-medium text-neutral-900 dark:text-neutral-300 uppercase tracking-wider'>
+                {renderColumnNames()}
+              </tr>
+            </thead>
+            <tbody className='bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800'>
+              {renderListForm()}
+            </tbody>
+          </table>
+        )}
+        
       </div>
    </div>
   )

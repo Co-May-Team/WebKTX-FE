@@ -41,6 +41,29 @@ export default function FormItem({ formInfo, updateStatusForm }) {
     updateStatusForm(data);
   }
 
+  // Render select
+  function renderSelect() {
+    // Lấy ra mã code của trạng thái đơn ứng tuyển
+    const defaultValue = statusOptions.find(item => item.label.includes(formInfo?.status))?.code;
+    // Render
+    return (
+      <select 
+        defaultValue={defaultValue}
+        onChange={(e) => onChangeSelect(e.target.value, formInfo.userId)}
+        className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none"
+      >
+        {statusOptions.map(item => {
+          return <option 
+                    value={item.code} 
+                    key={item.id}
+                  >
+                    {item.label}
+                  </option>
+        })}
+      </select>
+    )
+  }
+
   return (
     <tr>
       <td className='px-6 py-4'>
@@ -75,26 +98,13 @@ export default function FormItem({ formInfo, updateStatusForm }) {
         </span>
       </td> */}
       <td className='px-6 py-4 whitespace-nowrap'>
-        <select 
-          onChange={(e) => onChangeSelect(e.target.value, formInfo.userId)}
-          className="pl-4 pr-8 py-2 inline-flex text-xs leading-5 font-medium rounded-full bg-teal-100 text-teal-900 lg:text-sm border-none"
-        >
-          {statusOptions.map(item => {
-            return <option 
-                      value={item.code} 
-                      key={item.id}
-                      selected={formInfo.status === item.label}
-                    >
-                      {item.label}
-                    </option>
-          })}
-        </select>
+        {renderSelect()} 
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-neutral-300'>
         <button
           onClick={() =>
             navigate(
-              `${path.FORM_DETAIL_BASE}/${convertToUrl(formInfo?.fullname)}-${
+              `${path.ADMIN + path.FORM_DETAIL_BASE}/${convertToUrl(formInfo?.fullname)}-${
                 formInfo?.userId
               }`,
               { state: formInfo?.userId }
@@ -103,7 +113,7 @@ export default function FormItem({ formInfo, updateStatusForm }) {
           className='text-primary-800 dark:text-primary-500 hover:text-primary-900'
         >
           Xem chi tiết
-        </button>{" "}
+        </button>
       </td>
     </tr>
   )
