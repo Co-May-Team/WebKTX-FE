@@ -2,7 +2,7 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { Formik } from "formik"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, NavLink, useNavigate } from "react-router-dom"
+import { NavLink, Navigate, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"

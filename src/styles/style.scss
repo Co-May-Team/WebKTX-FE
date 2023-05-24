@@ -594,6 +594,46 @@ select {
   --comay-backdrop-sepia: ;
 }
 
+.container-admin {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-admin {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-admin {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-admin {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-admin {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-admin {
+    max-width: 1700px;
+    padding-right: 128px;
+    padding-left: 128px;
+  }
+}
+
 .container {
   width: 100%;
   margin-right: auto;

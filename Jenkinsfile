@@ -10,16 +10,17 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                sh 'npm install --save --legacy-peer-deps' 
+				sh 'cp -f /var/lib/jenkins/workspace/configfile/env.js /var/lib/jenkins/workspace/dev-WebKTX-FE/src/utils'
+                sh 'npm install --force' 
 				sh 'npm run build' 
             }
         }
 		stage('Deploy') { 
             steps {
-				sh 'sudo systemctl enable webKTX-FE.service'
-				sh 'sudo systemctl stop webKTX-FE'
-				sh 'sudo systemctl start webKTX-FE'
-				sh 'sudo systemctl status webKTX-FE'
+				sh 'sudo systemctl enable dev-webKTX-FE.service'
+				sh 'sudo systemctl stop dev-webKTX-FE'
+				sh 'sudo systemctl start dev-webKTX-FE'
+				sh 'sudo systemctl status dev-webKTX-FE'
             }
         }
     }

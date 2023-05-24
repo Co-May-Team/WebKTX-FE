@@ -71,7 +71,7 @@ export default function Posts() {
   useClickOutside(filterDropdownRef, () => setVisibleFilterDropdown(false))
 
   return (
-    <Motion className='relative'>
+    <Motion className='relative container'>
       <div className='flex flex-col mb-8 relative'>
         <div className='relative flex flex-col items-center sm:flex-row justify-between mb-6 md:mb-8 text-neutral-900 dark:text-neutral-50'>
           <div className='max-w-2xl'>
