@@ -87,7 +87,7 @@ export default function FormDetail() {
           </div>
           <button
             onClick={backToListForm}
-            className='my-4 px-4 py-2 border text-black rounded-lg text-sm transition-all bg-neutral-100 hover:bg-neutral-200'
+            className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
           >
             Quay lại
           </button>
