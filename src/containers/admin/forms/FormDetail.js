@@ -43,7 +43,7 @@ export default function FormDetail() {
     if (fileExtension === "pdf") {
       // Hiển thị nội dung PDF
       return (
-        <div key={fileName} className="my-4">
+        <div key={fileName} className='my-4'>
           <iframe
             src={`data:application/pdf;base64,${fileContent}`}
             width='100%'
@@ -54,12 +54,11 @@ export default function FormDetail() {
     } else if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
       // Hiển thị nội dung ảnh
       return (
-        <div key={fileName} className="my-4">
+        <div key={fileName} className='my-4'>
           <img src={`data:image/${fileExtension};base64,${fileContent}`} />
         </div>
       )
     }
-
     return null
   }
 
@@ -461,18 +460,21 @@ export default function FormDetail() {
                 <div className='border-t border-neutral-200 dark:border-neutral-900'>
                   <dl>
                     {formInfo.fileUploaded.map((file) => (
-                      <div key={file.fileName} className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:gap-4 sm:px-6'>
+                      <div
+                        key={file.fileName}
+                        className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:gap-4 sm:px-6'
+                      >
                         <div>
-                        {renderFile(file)}
-                        <a
-                          href={`data:application/octet-stream;base64,${file.fileContent}`}
-                          download={file.fileName}
-                          className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
-                        >
-                          <BsDownload className='me-3' />
-                          Tài xuống
-                          <BsDownload className='ms-3' />
-                        </a>
+                          {renderFile(file)}
+                          <a
+                            href={`data:application/octet-stream;base64,${file.fileContent}`}
+                            download={file.fileName}
+                            className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
+                          >
+                            <BsDownload className='me-3' />
+                            Tải xuống
+                            <BsDownload className='ms-3' />
+                          </a>
                         </div>
                       </div>
                     ))}
