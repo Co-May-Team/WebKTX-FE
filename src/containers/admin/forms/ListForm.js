@@ -121,37 +121,37 @@ export default function ListForm() {
       </h2>
       <div className='shadow dark:border dark:border-neutral-800 overflow-scroll sm:rounded-lg'>
         <div className='m-5 flex gap-1 align-middle'>
-          <div className="relative w-[50%]">
-          <input
-            type='search'
-            className='block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 w-full'
-            placeholder='Tìm kiếm đơn ứng tuyển...'
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <span className='absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400'>
-            <svg
-              className='h-5 w-5'
-              viewBox='0 0 24 24'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z'
-                stroke='currentColor'
-                strokeWidth='1.5'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              />
-              <path
-                d='M22 22L20 20'
-                stroke='currentColor'
-                strokeWidth='1.5'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              />
-            </svg>
-          </span>
+          <div className='relative w-[50%]'>
+            <input
+              type='search'
+              className='block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 w-full'
+              placeholder='Tìm kiếm đơn ứng tuyển...'
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <span className='absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400'>
+              <svg
+                className='h-5 w-5'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z'
+                  stroke='currentColor'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
+                <path
+                  d='M22 22L20 20'
+                  stroke='currentColor'
+                  strokeWidth='1.5'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                />
+              </svg>
+            </span>
           </div>
         </div>
         {loadingListForm ? (
