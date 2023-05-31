@@ -57,7 +57,7 @@ export default function InputField({
             value={props.value}
             onChange={props.onChange}
             options={options}
-            isClearable={props.isClearable}
+            isClearable={props.isClearable || false}
             isSearchable
             blurInputOnSelect
           />
