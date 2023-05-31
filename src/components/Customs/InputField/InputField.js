@@ -57,7 +57,7 @@ export default function InputField({
             value={props.value}
             onChange={props.onChange}
             options={options}
-            isClearable
+            isClearable={props.isClearable || false}
             isSearchable
             blurInputOnSelect
           />
@@ -106,4 +106,6 @@ InputField.propTypes = {
   isRequired: PropTypes.bool,
   invalid: PropTypes.bool,
   options: PropTypes.array,
+  min: PropTypes.number,
+  max: PropTypes.number,
 }
