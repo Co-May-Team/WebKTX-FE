@@ -106,4 +106,6 @@ InputField.propTypes = {
   isRequired: PropTypes.bool,
   invalid: PropTypes.bool,
   options: PropTypes.array,
+  min: PropTypes.number,
+  max: PropTypes.number,
 }
