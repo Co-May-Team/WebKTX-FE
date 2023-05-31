@@ -178,6 +178,20 @@ export default function FamilyInfoForm({ handleFormChange }) {
   }
 
   async function handleSubmitFamilyInfo(values, actions) {
+    let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
+    if (currentFamilyInfo?.father?.status?.value === "Không rõ") {
+      currentFamilyInfo = {
+        ...currentFamilyInfo,
+        father: { ...info, status: currentFamilyInfo.father.status },
+      }
+    }
+    if (currentFamilyInfo?.mother?.status?.value === "Không rõ") {
+      currentFamilyInfo = {
+        ...currentFamilyInfo,
+        mother: { ...info, status: currentFamilyInfo.father.status },
+      }
+    }
+    localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
     handleFormChange(3)
   }
 

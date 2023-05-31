@@ -58,7 +58,6 @@ function FamilyInfoFormItem(props) {
         </header>
       )}
       <div className='grid gap-6'>
-        {console.log(errors)}
         {infoType === "relatives" ? (
           <InputField
             type='select'
