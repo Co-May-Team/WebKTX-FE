@@ -50,17 +50,17 @@ export default function FamilyInfoForm({ handleFormChange }) {
       fullName: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Họ tên là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       yearOfBirth: Yup.number().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.number().required("Năm sinh là bắt buộc"),
-        otherwise: Yup.number(),
+        otherwise: Yup.number().nullable(),
       }),
       phoneNumber: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Số điện thoại là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       provinceAddress: Yup.object().when("status", {
         is: (val) => val?.value === "Có thông tin",
@@ -80,29 +80,29 @@ export default function FamilyInfoForm({ handleFormChange }) {
       detailAddress: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Địa chỉ là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       currentJob: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Nghề nghiệp hiện tại là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       placeOfWork: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Nơi làm việc là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       phoneNumberOfCompany: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.string().required("Số điện thoại nơi làm việc là bắt buộc"),
-        otherwise: Yup.string(),
+        otherwise: Yup.string().nullable(),
       }),
       income: Yup.number().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.number()
           .min(0, "Thu nhập phải là một số lớn hơn 0")
           .required("Thu nhập là bắt buộc"),
-        otherwise: Yup.number(),
+        otherwise: Yup.number().nullable(),
       }),
     }),
     []
