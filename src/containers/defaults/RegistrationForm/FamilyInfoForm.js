@@ -10,17 +10,17 @@ import FamilyInfoFormItem from "./FamilyInfoFormItem"
 
 const info = {
   status: "",
-  fullName: "",
-  yearOfBirth: "",
-  phoneNumber: "",
+  fullName: null,
+  yearOfBirth: null,
+  phoneNumber: null,
   provinceAddress: null,
   districtAddress: null,
   wardAddress: null,
-  detailAddress: "",
-  currentJob: "",
-  placeOfWork: "",
-  phoneNumberOfCompany: "",
-  income: 0,
+  detailAddress: null,
+  currentJob: null,
+  placeOfWork: null,
+  phoneNumberOfCompany: null,
+  income: null,
 }
 
 const relativeInfo = {
