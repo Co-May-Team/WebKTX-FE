@@ -13,9 +13,9 @@ const info = {
   fullName: "",
   yearOfBirth: "",
   phoneNumber: "",
-  provinceAddress: "",
-  districtAddress: "",
-  wardAddress: "",
+  provinceAddress: null,
+  districtAddress: null,
+  wardAddress: null,
   detailAddress: "",
   currentJob: "",
   placeOfWork: "",
@@ -65,17 +65,17 @@ export default function FamilyInfoForm({ handleFormChange }) {
       provinceAddress: Yup.object().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.object().nullable().required("Tỉnh/Thành phố là bắt buộc"),
-        otherwise: Yup.object(),
+        otherwise: Yup.object().nullable(),
       }),
       districtAddress: Yup.object().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.object().nullable().required("Quận/Huyện là bắt buộc"),
-        otherwise: Yup.object(),
+        otherwise: Yup.object().nullable(),
       }),
       wardAddress: Yup.object().when("status", {
         is: (val) => val?.value === "Có thông tin",
         then: Yup.object().nullable().required("Phường/Xã là bắt buộc"),
-        otherwise: Yup.object(),
+        otherwise: Yup.object().nullable(),
       }),
       detailAddress: Yup.string().when("status", {
         is: (val) => val?.value === "Có thông tin",

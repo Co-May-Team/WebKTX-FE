@@ -86,7 +86,7 @@ export default function FormDetail() {
           </div>
           <button
             onClick={backToListForm}
-            className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+            className='block rounded-full mb-5 transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
           >
             Quay lại
           </button>
@@ -308,14 +308,6 @@ export default function FormDetail() {
                               )}
                             </dd>
                           </div>
-                          <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                            <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
-                              Tình trạng sức khỏe
-                            </dt>
-                            <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.healthStatus}
-                            </dd>
-                          </div>
                         </>
                       )}
                     </dl>
@@ -386,26 +378,10 @@ export default function FormDetail() {
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
-                        Điểm trung bình lớp 10
+                        Loại học bạ cấp 3
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.averageGrade10}
-                      </dd>
-                    </div>
-                    <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
-                        Điểm trung bình lớp 11
-                      </dt>
-                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.averageGrade11}
-                      </dd>
-                    </div>
-                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
-                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
-                        Điểm trung bình lớp 12
-                      </dt>
-                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.averageGrade12}
+                        {formInfo?.studentInfo.highSchoolType}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>

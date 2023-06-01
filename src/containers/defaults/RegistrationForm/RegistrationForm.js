@@ -46,7 +46,7 @@ export default function RegistrationForm() {
                 }
                 className='rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
               >
-                Xem đơn đã nộp
+                Xem hồ sơ đã nộp
               </button>
             </div>
           </header>
