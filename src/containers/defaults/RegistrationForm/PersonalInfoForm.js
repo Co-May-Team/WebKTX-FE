@@ -152,7 +152,6 @@ export default function PersonalInfoForm({ handleFormChange }) {
   }
 
   const handleSubmitPersonalInfo = async (values, actions) => {
-    console.log("here 1")
     handleFormChange(2)
   }
   /* */
