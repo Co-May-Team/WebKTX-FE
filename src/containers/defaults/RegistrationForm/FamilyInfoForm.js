@@ -42,12 +42,16 @@ const validationSchema = {
     then: Yup.number()
       .transform((value) => (isNaN(value) ? 0 : value))
       .nullable()
-      .required("Năm sinh là bắt buộc"),
+      .required("Năm sinh là bắt buộc")
+      .min(1900, "Vui lòng nhập năm sinh >= 1900"),
     otherwise: Yup.number().nullable(),
   }),
   phoneNumber: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
-    then: Yup.string().nullable().required("Số điện thoại là bắt buộc"),
+    then: Yup.string()
+      .nullable()
+      .required("Số điện thoại là bắt buộc")
+      .length(10, "Vui lòng nhập chính xác số điện thoại"),
     otherwise: Yup.string().nullable(),
   }),
   provinceAddress: Yup.object().when("status", {
@@ -84,7 +88,8 @@ const validationSchema = {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string()
       .nullable()
-      .required("Số điện thoại nơi làm việc là bắt buộc"),
+      .required("Số điện thoại nơi làm việc là bắt buộc")
+      .length(10, "Vui lòng nhập chính xác số điện thoại"),
     otherwise: Yup.string().nullable(),
   }),
   income: Yup.number().when("status", {
