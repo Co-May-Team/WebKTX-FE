@@ -28,7 +28,7 @@ function FamilyInfoFormItem(props) {
     relationships,
     loadingRelationships,
   } = props
-  console.log({ errors, touched })
+
   const handleProvinceChange = (province) => {
     setDistrictsData(
       Object.values(districts).filter(
