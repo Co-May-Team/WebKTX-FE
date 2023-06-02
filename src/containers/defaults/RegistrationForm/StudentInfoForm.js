@@ -127,6 +127,7 @@ export default function StudentInfoForm({ handleFormChange }) {
   const validationSchemaStudentInfo = Yup.object().shape({
     studentType: Yup.array()
       .of(Yup.object())
+      .required("Vui lòng chọn đối tượng của bạn")
       .min(1, "Bạn phải chọn ít nhất 1 đối tượng"),
     universityName: Yup.object()
       .nullable()
@@ -143,7 +144,7 @@ export default function StudentInfoForm({ handleFormChange }) {
     dgnlScore: Yup.number(
       "Điểm đánh giá năng lực phải là một số hợp lệ"
     ).nullable(),
-    admissionViaDirectMethod: Yup.string().nullable(),
+    admissionViaDirectMethod: Yup.string(),
     achievements: Yup.string().required(
       "Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được"
     ),

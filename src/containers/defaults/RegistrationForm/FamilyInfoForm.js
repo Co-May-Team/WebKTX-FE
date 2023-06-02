@@ -31,6 +31,94 @@ const relativeInfo = {
   },
 }
 
+const validationSchema = {
+  fullName: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Họ tên là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  yearOfBirth: Yup.number().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.number()
+      .transform((value) => (isNaN(value) ? 0 : value))
+      .nullable()
+      .required("Năm sinh là bắt buộc"),
+    otherwise: Yup.number().nullable(),
+  }),
+  phoneNumber: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Số điện thoại là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  provinceAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Tỉnh/Thành phố là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  districtAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Quận/Huyện là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  wardAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Phường/Xã là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  detailAddress: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Địa chỉ là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  currentJob: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Nghề nghiệp hiện tại là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  placeOfWork: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Nơi làm việc là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  phoneNumberOfCompany: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string()
+      .nullable()
+      .required("Số điện thoại nơi làm việc là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  income: Yup.number().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.number()
+      .transform((value) => (isNaN(value) ? 0 : value))
+      .nullable()
+      .min(0, "Thu nhập phải là một số lớn hơn 0")
+      .required("Thu nhập là bắt buộc"),
+    otherwise: Yup.number().nullable(),
+  }),
+}
+const validationSchemaFamilyInfo = Yup.object().shape({
+  father: Yup.object().shape({
+    status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
+    ...validationSchema,
+  }),
+  mother: Yup.object().shape({
+    status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
+    ...validationSchema,
+  }),
+  relatives: Yup.array().of(
+    Yup.object().shape({
+      relationship: Yup.object().required(
+        "Mối quan hệ với người thân không được để trống"
+      ),
+      ...validationSchema,
+    })
+  ),
+  familyBackground: Yup.string().required(
+    "Hoàn cảnh gia đình không được để trống"
+  ),
+})
+
 export default function FamilyInfoForm({ handleFormChange }) {
   const [relationships, setRelationships] = useState([])
   const [loadingRelationships, setLoadingRelationships] = useState(true)
@@ -45,89 +133,9 @@ export default function FamilyInfoForm({ handleFormChange }) {
       }
     )
   }, [])
-  const validationSchema = useMemo(
-    () => ({
-      fullName: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Họ tên là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      yearOfBirth: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number().required("Năm sinh là bắt buộc"),
-        otherwise: Yup.number().nullable(),
-      }),
-      phoneNumber: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Số điện thoại là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      provinceAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Tỉnh/Thành phố là bắt buộc"),
-        otherwise: Yup.object().nullable(),
-      }),
-      districtAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Quận/Huyện là bắt buộc"),
-        otherwise: Yup.object().nullable(),
-      }),
-      wardAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Phường/Xã là bắt buộc"),
-        otherwise: Yup.object().nullable(),
-      }),
-      detailAddress: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Địa chỉ là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      currentJob: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nghề nghiệp hiện tại là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      placeOfWork: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nơi làm việc là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      phoneNumberOfCompany: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Số điện thoại nơi làm việc là bắt buộc"),
-        otherwise: Yup.string().nullable(),
-      }),
-      income: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number()
-          .min(0, "Thu nhập phải là một số lớn hơn 0")
-          .required("Thu nhập là bắt buộc"),
-        otherwise: Yup.number().nullable(),
-      }),
-    }),
-    []
-  )
-  const validationSchemaFamilyInfo = Yup.object().shape({
-    father: Yup.object().shape({
-      status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
-      ...validationSchema,
-    }),
-    mother: Yup.object().shape({
-      status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
-      ...validationSchema,
-    }),
-    relatives: Yup.array().of(
-      Yup.object().shape({
-        relationship: Yup.object().required(
-          "Mối quan hệ với người thân không được để trống"
-        ),
-        ...validationSchema,
-      })
-    ),
-    familyBackground: Yup.string().required(
-      "Hoàn cảnh gia đình không được để trống"
-    ),
-  })
+
+  console.log(initialValuesFamilyInfo)
+
   function handleSaveInput(e) {
     const { name, value } = e.target
     const currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
@@ -179,18 +187,19 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   async function handleSubmitFamilyInfo(values, actions) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    if (currentFamilyInfo?.father?.status?.value === "Không rõ") {
-      currentFamilyInfo = {
-        ...currentFamilyInfo,
-        father: { ...info, status: currentFamilyInfo.father.status },
-      }
+    console.log({ before: currentFamilyInfo })
+    currentFamilyInfo = {
+      ...currentFamilyInfo,
+      father:
+        currentFamilyInfo?.father?.status?.value === "Không rõ"
+          ? { ...info, status: currentFamilyInfo.father.status }
+          : currentFamilyInfo.father,
+      mother:
+        currentFamilyInfo?.mother?.status?.value === "Không rõ"
+          ? { ...info, status: currentFamilyInfo.mother.status }
+          : currentFamilyInfo.mother,
     }
-    if (currentFamilyInfo?.mother?.status?.value === "Không rõ") {
-      currentFamilyInfo = {
-        ...currentFamilyInfo,
-        mother: { ...info, status: currentFamilyInfo.father.status },
-      }
-    }
+    console.log({ after: currentFamilyInfo })
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
     handleFormChange(3)
   }
@@ -214,7 +223,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
         JSON.stringify({
           father: info,
           mother: info,
-          relatives: [relativeInfo],
+          relatives: [],
           familyBackground: "",
         })
       )
@@ -302,8 +311,8 @@ export default function FamilyInfoForm({ handleFormChange }) {
                             <button
                               className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-red-500 hover:bg-red-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-0'
                               onClick={() => {
-                                let temp = values.relatives
-                                temp.splice(index, 1)
+                                const temp = values.relatives
+                                temp.pop()
                                 setFieldValue("relatives", temp)
                                 localStorage.setItem(
                                   "familyInfo",
@@ -324,8 +333,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                       className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                       type='button'
                       onClick={() => {
-                        let temp = values.relatives
-                        temp.splice(temp.length, 0, relativeInfo)
+                        const temp = [...values.relatives, relativeInfo]
                         setFieldValue("relatives", temp)
                         localStorage.setItem(
                           "familyInfo",
