@@ -10,17 +10,17 @@ import FamilyInfoFormItem from "./FamilyInfoFormItem"
 
 const info = {
   status: "",
-  fullName: "",
-  yearOfBirth: "",
-  phoneNumber: "",
-  provinceAddress: "",
-  districtAddress: "",
-  wardAddress: "",
-  detailAddress: "",
-  currentJob: "",
-  placeOfWork: "",
-  phoneNumberOfCompany: "",
-  income: 0,
+  fullName: null,
+  yearOfBirth: null,
+  phoneNumber: null,
+  provinceAddress: null,
+  districtAddress: null,
+  wardAddress: null,
+  detailAddress: null,
+  currentJob: null,
+  placeOfWork: null,
+  phoneNumberOfCompany: null,
+  income: null,
 }
 
 const relativeInfo = {
@@ -35,7 +35,7 @@ const validationSchema = {
   fullName: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string().nullable().required("Họ tên là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   yearOfBirth: Yup.number().when("status", {
     is: (val) => val?.value === "Có thông tin",
@@ -43,49 +43,49 @@ const validationSchema = {
       .transform((value) => (isNaN(value) ? 0 : value))
       .nullable()
       .required("Năm sinh là bắt buộc"),
-    otherwise: Yup.number(),
+    otherwise: Yup.number().nullable(),
   }),
   phoneNumber: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string().nullable().required("Số điện thoại là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   provinceAddress: Yup.object().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.object().nullable().required("Tỉnh/Thành phố là bắt buộc"),
-    otherwise: Yup.object(),
+    otherwise: Yup.object().nullable(),
   }),
   districtAddress: Yup.object().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.object().nullable().required("Quận/Huyện là bắt buộc"),
-    otherwise: Yup.object(),
+    otherwise: Yup.object().nullable(),
   }),
   wardAddress: Yup.object().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.object().nullable().required("Phường/Xã là bắt buộc"),
-    otherwise: Yup.object(),
+    otherwise: Yup.object().nullable(),
   }),
   detailAddress: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string().nullable().required("Địa chỉ là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   currentJob: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string().nullable().required("Nghề nghiệp hiện tại là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   placeOfWork: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string().nullable().required("Nơi làm việc là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   phoneNumberOfCompany: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string()
       .nullable()
       .required("Số điện thoại nơi làm việc là bắt buộc"),
-    otherwise: Yup.string(),
+    otherwise: Yup.string().nullable(),
   }),
   income: Yup.number().when("status", {
     is: (val) => val?.value === "Có thông tin",
@@ -94,7 +94,7 @@ const validationSchema = {
       .nullable()
       .min(0, "Thu nhập phải là một số lớn hơn 0")
       .required("Thu nhập là bắt buộc"),
-    otherwise: Yup.number(),
+    otherwise: Yup.number().nullable(),
   }),
 }
 const validationSchemaFamilyInfo = Yup.object().shape({

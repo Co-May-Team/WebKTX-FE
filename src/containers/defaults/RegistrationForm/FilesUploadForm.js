@@ -87,44 +87,28 @@ export default function FilesUploadForm({ handleFormChange }) {
   /* Xử lý Form */
   const initialValuesFilesUpload = {
     application: "",
-    transcriptAndAchievements: "",
     personalProfile: "",
     photo: "",
-    houseImage: "",
   }
 
   const validationSchemaFilesUpload = Yup.object({
     application: Yup.mixed().required(
       "Vui lòng tải lên đơn xin vào ở KTX Cỏ May."
     ),
-    transcriptAndAchievements: Yup.mixed().required(
-      "Vui lòng tải lên học bạ THPT và Thành tích học tập."
-    ),
     personalProfile: Yup.mixed().required(
       "Vui lòng tải lên sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)."
     ),
     photo: Yup.mixed().required("Vui lòng tải lên ảnh thẻ (.JPG)."),
-    houseImage: Yup.mixed().required(
-      "Vui lòng tải lên file PDF chứa toàn bộ hình ảnh căn nhà đang ở."
-    ),
   })
 
   const handleSubmitFilesUpload = async (values, actions) => {
     actions.setSubmitting(true)
-    const {
-      application,
-      transcriptAndAchievements,
-      personalProfile,
-      photo,
-      houseImage,
-    } = values
+    const { application, personalProfile, photo } = values
     // Kiểm tra kích thước của các tệp được tải lên
     if (
       application.size > 5 * 1024 * 1024 ||
-      transcriptAndAchievements.size > 5 * 1024 * 1024 ||
       personalProfile.size > 5 * 1024 * 1024 ||
-      photo.size > 5 * 1024 * 1024 ||
-      houseImage.size > 5 * 1024 * 1024
+      photo.size > 5 * 1024 * 1024
     ) {
       Swal.fire({
         icon: "warning",
@@ -271,22 +255,6 @@ export default function FilesUploadForm({ handleFormChange }) {
                 <InputField
                   type='file'
                   accept='application/pdf'
-                  name='transcriptAndAchievements'
-                  label='Học bạ THPT và Thành tích học tập (.PDF)'
-                  value={values.transcriptAndAchievements}
-                  feedback={errors.transcriptAndAchievements}
-                  onChange={(event) =>
-                    handleFileChange(event, () => handleChange(event))
-                  }
-                  invalid={
-                    touched.transcriptAndAchievements &&
-                    errors.transcriptAndAchievements
-                  }
-                  isRequired
-                />
-                <InputField
-                  type='file'
-                  accept='application/pdf'
                   name='personalProfile'
                   label='Sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)(.PDF)'
                   value={values.personalProfile}
@@ -308,19 +276,6 @@ export default function FilesUploadForm({ handleFormChange }) {
                     handleFileChange(event, () => handleChange(event))
                   }
                   invalid={touched.photo && errors.photo}
-                  isRequired
-                />
-                <InputField
-                  type='file'
-                  accept='application/pdf'
-                  name='houseImage'
-                  label='Hình ảnh căn nhà đang ở (.PDF)'
-                  value={values.houseImage}
-                  feedback={errors.houseImage}
-                  onChange={(event) =>
-                    handleFileChange(event, () => handleChange(event))
-                  }
-                  invalid={touched.houseImage && errors.houseImage}
                   isRequired
                 />
                 <div className='mt-10 inline-flex items-center justify-center gap-5'>
