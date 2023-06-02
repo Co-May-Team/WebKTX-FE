@@ -141,9 +141,9 @@ export default function StudentInfoForm({ handleFormChange }) {
     highSchoolGraduationExamScore: Yup.number().required(
       "Vui lòng nhập điểm thi tốt nghiệp"
     ),
-    dgnlScore: Yup.number(
-      "Điểm đánh giá năng lực phải là một số hợp lệ"
-    ).nullable(),
+    dgnlScore: Yup.number("Điểm đánh giá năng lực phải là một số hợp lệ")
+      .transform((value) => (isNaN(value) ? 0 : value))
+      .nullable(),
     admissionViaDirectMethod: Yup.string(),
     achievements: Yup.string().required(
       "Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được"
@@ -430,6 +430,8 @@ export default function StudentInfoForm({ handleFormChange }) {
                       )
                     }}
                     isRequired
+                    invalid={touched.achievements && errors.achievements}
+                    feedback={errors.achievements}
                   />
                   <InputField
                     type='textarea'

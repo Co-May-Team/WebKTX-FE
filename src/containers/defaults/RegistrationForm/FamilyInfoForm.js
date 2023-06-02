@@ -134,8 +134,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
     )
   }, [])
 
-  console.log(initialValuesFamilyInfo)
-
   function handleSaveInput(e) {
     const { name, value } = e.target
     const currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
