@@ -342,7 +342,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                 <div className='grid md:grid-cols-2 gap-6'>
                   <InputField
                     type='select'
-                    name='universityName'
+                    name='highSchoolType'
                     label='Loại học bạ cấp 3'
                     placeholder='Chọn loại học bạ cấp 3 của bạn...'
                     value={values.highSchoolType}
@@ -381,7 +381,6 @@ export default function StudentInfoForm({ handleFormChange }) {
                         setFieldValue
                       )
                     }}
-                    onBlur={handleBlur}
                     invalid={
                       touched.highSchoolGraduationExamScore &&
                       errors.highSchoolGraduationExamScore
@@ -425,6 +424,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                     placeholder='Ghi ngắn gọn các giải thưởng đã đạt được. Không trình bày dài dòng...'
                     label='Thành tích học tập'
                     value={values.achievements}
+                    feedback={errors.achievements}
                     onChange={(e) => {
                       handleChangeStudentInfo(
                         "achievements",
@@ -432,9 +432,8 @@ export default function StudentInfoForm({ handleFormChange }) {
                         setFieldValue
                       )
                     }}
-                    isRequired
                     invalid={touched.achievements && errors.achievements}
-                    feedback={errors.achievements}
+                    isRequired
                   />
                   <InputField
                     type='textarea'
