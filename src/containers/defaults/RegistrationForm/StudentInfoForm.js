@@ -138,11 +138,14 @@ export default function StudentInfoForm({ handleFormChange }) {
     highSchoolType: Yup.object()
       .nullable()
       .required("Vui lòng chọn loại học bạ cấp 3 của bạn"),
-    highSchoolGraduationExamScore: Yup.number().required(
-      "Vui lòng nhập điểm thi tốt nghiệp"
-    ),
+    highSchoolGraduationExamScore: Yup.number()
+      .required("Vui lòng nhập điểm thi tốt nghiệp")
+      .min(0, "Vui lòng nhập điểm >= 0")
+      .max(10, "Vui lòng nhập điểm <= 10"),
     dgnlScore: Yup.number("Điểm đánh giá năng lực phải là một số hợp lệ")
-      .transform((value) => (isNaN(value) ? 0 : value))
+      .transform((value) =>
+        isNaN(value) || value === null || value === undefined ? 0 : value
+      )
       .nullable(),
     admissionViaDirectMethod: Yup.string(),
     achievements: Yup.string().required(
