@@ -15,8 +15,6 @@ const provincesData = Object.values(provinces)
 function FamilyInfoFormItem(props) {
   const [wardsData, setWardsData] = useState([])
   const [districtsData, setDistrictsData] = useState([])
-  const [loadingDistrictsData, setLoadingDistrictsData] = useState(true)
-  const [loadingWardsData, setLoadingWardsData] = useState(true)
   const {
     title,
     infoType,
@@ -31,21 +29,17 @@ function FamilyInfoFormItem(props) {
     loadingRelationships,
   } = props
   const handleProvinceChange = (province) => {
-    setLoadingDistrictsData(true)
     setDistrictsData(
       Object.values(districts).filter(
         (district) => district.parent_code === province?.code
       )
     )
-    setLoadingDistrictsData(false)
   }
 
   const handleDistrictChange = (district) => {
-    setLoadingWardsData(true)
     setWardsData(
       Object.values(wards).filter((ward) => ward.parent_code === district?.code)
     )
-    setLoadingWardsData(false)
   }
 
   return (
@@ -270,7 +264,7 @@ function FamilyInfoFormItem(props) {
                       index
                     )
                   }}
-                  isLoading={loadingDistrictsData}
+                  // isLoading={loadingDistrictsData}
                   getOptionValue={(option) => option.code}
                   getOptionLabel={(option) => option.name_with_type}
                   loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
@@ -303,7 +297,7 @@ function FamilyInfoFormItem(props) {
                     )
                   }}
                   loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                  isLoading={loadingWardsData}
+                  // isLoading={loadingWardsData}
                   getOptionValue={(option) => option.code}
                   getOptionLabel={(option) => option.name_with_type}
                   feedback={errors?.wardAddress}
