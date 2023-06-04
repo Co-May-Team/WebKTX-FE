@@ -431,8 +431,6 @@ export default function StudentInfoForm({ handleFormChange }) {
                     }}
                     invalid={touched.achievements && errors.achievements}
                     isRequired
-                    invalid={touched.achievements && errors.achievements}
-                    feedback={errors.achievements}
                   />
                   <InputField
                     type='textarea'
