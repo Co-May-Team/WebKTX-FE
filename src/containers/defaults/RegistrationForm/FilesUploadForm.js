@@ -172,7 +172,7 @@ export default function FilesUploadForm({ handleFormChange }) {
           console.log(response)
           _.isUndefined(response)
             ? Swal.fire({
-                icon: "Error",
+                icon: "error",
                 title: "Gửi tập tin thất bại",
                 text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
               })
