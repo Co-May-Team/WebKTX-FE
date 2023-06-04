@@ -432,7 +432,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
                           setFieldValue
                         )
                       }}
-                      isLoading={loadingDistrictsData}
+                      // isLoading={loadingDistrictsData}
                       getOptionValue={(option) => option.code}
                       getOptionLabel={(option) => option.name_with_type}
                       loadingMessage={() => "Vui lòng chọn tỉnh/thành phố"}
@@ -463,7 +463,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
                         )
                       }}
                       loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                      isLoading={loadingWardsData}
+                      // isLoading={loadingWardsData}
                       getOptionValue={(option) => option.code}
                       getOptionLabel={(option) => option.name_with_type}
                       feedback={errors.wardAddress}

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import _ from "lodash"
+import React, { useEffect, useState } from "react"
 import { BsDownload } from "react-icons/bs"
 import { useLocation, useNavigate } from "react-router-dom"
 import Loading from "~/components/Loading"
@@ -27,6 +28,8 @@ export default function FormDetail() {
         setLoadingFormInfo(false)
       })
   }, [id])
+
+  console.log({ formInfo })
 
   // Hàm xử lý quay lại trang quản lý form
   function backToListForm() {
@@ -70,7 +73,7 @@ export default function FormDetail() {
         <div className='container relative pt-6 sm:pt-10 pb-16 lg:pt-20 lg:pb-28'>
           <SeoHelmet
             title={
-              formInfo?.personalInfo.fullName
+              formInfo?.personalInfo?.fullName
                 ? `Chi tiết đơn ứng tuyển của ${formInfo?.personalInfo.fullName}`
                 : "Trống"
             }
@@ -78,7 +81,7 @@ export default function FormDetail() {
           <div className='relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50'>
             <div className='text-center w-full mx-auto '>
               <h2 className='text-3xl md:text-4xl font-semibold'>
-                {formInfo?.personalInfo.fullName
+                {formInfo?.personalInfo?.fullName
                   ? `Đơn ứng tuyển của ${formInfo?.personalInfo.fullName}`
                   : "Trống"}
               </h2>
@@ -90,12 +93,12 @@ export default function FormDetail() {
           >
             Quay lại
           </button>
-          {nullForm ? (
+          {_.isNull(formInfo) ? (
             <div className='flex mt-5 justify-center items-center mb-4'>
               <h4 className='text-center'>Trống</h4>
             </div>
           ) : (
-            <>
+            <React.Fragment>
               <div className='bg-white dark:bg-neutral-900 shadow-2xl dark:shadow-primary-100 overflow-hidden sm:rounded-lg'>
                 <div className='px-4 py-5 sm:px-6'>
                   <h3 className='text-xl uppercase leading-6 font-bold text-neutral-900 dark:text-neutral-200'>
@@ -109,7 +112,8 @@ export default function FormDetail() {
                         Họ và tên
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.fullName || "Chưa có thông tin"}
+                        {formInfo?.personalInfo?.fullName ||
+                          "Chưa có thông tin"}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -117,7 +121,7 @@ export default function FormDetail() {
                         Ngày sinh
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.dateOfBirth ||
+                        {formInfo?.personalInfo?.dateOfBirth ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -126,7 +130,7 @@ export default function FormDetail() {
                         Giới tính
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.gender?.label ||
+                        {formInfo?.personalInfo?.gender?.label ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -135,7 +139,7 @@ export default function FormDetail() {
                         Số điện thoại
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.phoneNumber ||
+                        {formInfo?.personalInfo?.phoneNumber ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -144,7 +148,7 @@ export default function FormDetail() {
                         Email
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.email || "Chưa có thông tin"}
+                        {formInfo?.personalInfo?.email || "Chưa có thông tin"}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -152,7 +156,7 @@ export default function FormDetail() {
                         Dân tộc
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.ethnic?.name ||
+                        {formInfo?.personalInfo?.ethnic?.name ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -161,7 +165,7 @@ export default function FormDetail() {
                         Tôn giáo
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.religion?.name ||
+                        {formInfo?.personalInfo?.religion?.name ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -170,7 +174,7 @@ export default function FormDetail() {
                         Quê quán
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.hometown?.name_with_type ||
+                        {formInfo?.personalInfo?.hometown?.name_with_type ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -179,11 +183,17 @@ export default function FormDetail() {
                         Địa chỉ thường trú
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.detailAddress},{" "}
-                        {formInfo?.personalInfo.wardAddress?.name_with_type},{" "}
-                        {formInfo?.personalInfo.districtAddress?.name_with_type}
+                        {formInfo?.personalInfo?.detailAddress},{" "}
+                        {formInfo?.personalInfo?.wardAddress?.name_with_type},{" "}
+                        {
+                          formInfo?.personalInfo?.districtAddress
+                            ?.name_with_type
+                        }
                         ,{" "}
-                        {formInfo?.personalInfo.provinceAddress?.name_with_type}
+                        {
+                          formInfo?.personalInfo?.provinceAddress
+                            ?.name_with_type
+                        }
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -191,7 +201,8 @@ export default function FormDetail() {
                         Số CMND
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.idNumber || "Chưa có thông tin"}
+                        {formInfo?.personalInfo?.idNumber ||
+                          "Chưa có thông tin"}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -199,7 +210,7 @@ export default function FormDetail() {
                         Ngày cấp CMND
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.idIssueDate ||
+                        {formInfo?.personalInfo?.idIssueDate ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -208,7 +219,7 @@ export default function FormDetail() {
                         Nơi cấp CMND
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.personalInfo.idIssuePlace ||
+                        {formInfo?.personalInfo?.idIssuePlace ||
                           "Chưa có thông tin"}
                       </dd>
                     </div>
@@ -221,7 +232,7 @@ export default function FormDetail() {
                     Thông tin gia đình
                   </h3>
                 </div>
-                {formInfo?.familyInfo.relatives.map((relative, index) => (
+                {formInfo?.familyInfo?.relatives?.map((relative, index) => (
                   <div
                     key={index}
                     className='mt-2 shadow-lg border-neutral-200 dark:border-neutral-900'
@@ -320,7 +331,7 @@ export default function FormDetail() {
                         Hoàn cảnh gia đình
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.familyInfo.familyBackground}
+                        {formInfo?.familyInfo?.familyBackground}
                       </dd>
                     </div>
                   </dl>
@@ -339,9 +350,9 @@ export default function FormDetail() {
                         Đối tượng
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.studentType
-                          .map((type) => type.label)
-                          .join(", ")}
+                        {formInfo?.studentInfo?.studentType
+                          ?.map((type) => type.label)
+                          ?.join(", ")}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -349,7 +360,7 @@ export default function FormDetail() {
                         Tên trường đại học
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.universityName.label}
+                        {formInfo?.studentInfo?.universityName.label}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -357,7 +368,7 @@ export default function FormDetail() {
                         Chuyên ngành
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.major}
+                        {formInfo?.studentInfo?.major}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -365,7 +376,7 @@ export default function FormDetail() {
                         Mã lớp học
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.classCode}
+                        {formInfo?.studentInfo?.classCode}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -373,23 +384,23 @@ export default function FormDetail() {
                         Mã số sinh viên
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.studentCode}
+                        {formInfo?.studentInfo?.studentCode}
                       </dd>
                     </div>
-                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                    {/* <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Loại học bạ cấp 3
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.highSchoolType}
+                        {formInfo?.studentInfo?.highSchoolType}
                       </dd>
-                    </div>
+                    </div> */}
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Điểm thi tốt nghiệp THPT
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.highSchoolGraduationExamScore}
+                        {formInfo?.studentInfo?.highSchoolGraduationExamScore}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -397,7 +408,7 @@ export default function FormDetail() {
                         Điểm thi đánh giá năng lực (DGNL)
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.dgnlScore}
+                        {formInfo?.studentInfo?.dgnlScore}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -405,7 +416,7 @@ export default function FormDetail() {
                         Hình thức tuyển thẳng
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.admissionViaDirectMethod}
+                        {formInfo?.studentInfo?.admissionViaDirectMethod}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -413,7 +424,7 @@ export default function FormDetail() {
                         Thành tích học tập
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.achievements}
+                        {formInfo?.studentInfo?.achievements}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -421,7 +432,7 @@ export default function FormDetail() {
                         Định hướng và ước mơ trong tương lai
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo.dream}
+                        {formInfo?.studentInfo?.dream}
                       </dd>
                     </div>
                   </dl>
@@ -435,7 +446,7 @@ export default function FormDetail() {
                 </div>
                 <div className='border-t border-neutral-200 dark:border-neutral-900'>
                   <dl>
-                    {formInfo.fileUploaded.map((file) => (
+                    {formInfo?.fileUploaded?.map((file) => (
                       <div
                         key={file.fileName}
                         className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:gap-4 sm:px-6'
@@ -457,7 +468,7 @@ export default function FormDetail() {
                   </dl>
                 </div>
               </div>
-            </>
+            </React.Fragment>
           )}
         </div>
       )}
