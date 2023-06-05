@@ -155,12 +155,12 @@ export default function FilesUploadForm({ handleFormChange }) {
     admissionApi.submit(data).then((response) => {
       if (response.data?.status === "OK") {
         // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
-        // const formData = new FormData();
-        let formData = {}
+        const formData = new FormData()
+        // let formData = {}
         for (let key in files) {
-          formData = { ...formData, [key]: files[key] }
+          // formData = { ...formData, [key]: files[key] }
+          formData.append(key, files[key])
         }
-        console.log(formData)
         // Gửi formData lên server
         Swal.fire({
           title: "Đang gửi các tập tin lên hệ thống...",
@@ -170,17 +170,31 @@ export default function FilesUploadForm({ handleFormChange }) {
         })
         admissionApi.uploadFiles(formData).then((response) => {
           console.log(response)
-          _.isUndefined(response)
-            ? Swal.fire({
-                icon: "error",
-                title: "Gửi tập tin thất bại",
-                text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
-              })
-            : Swal.fire({
+          if (
+            _.isUndefined(response) ||
+            _.isNull(response) ||
+            _.isEmpty(response)
+          ) {
+            Swal.fire({
+              icon: "error",
+              title: "Gửi tập tin thất bại",
+              text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
+            })
+          } else {
+            if (response.data?.status === "OK") {
+              Swal.fire({
                 icon: "success",
                 title: "Gửi hồ sơ thành công",
                 text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
               })
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Gửi tập tin thất bại",
+                text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
+              })
+            }
+          }
         })
       } else {
         Swal.fire({
