@@ -155,12 +155,12 @@ export default function FilesUploadForm({ handleFormChange }) {
     admissionApi.submit(data).then((response) => {
       if (response.data?.status === "OK") {
         // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
-        // const formData = new FormData();
-        let formData = {}
+        const formData = new FormData()
+        // let formData = {}
         for (let key in files) {
-          formData = { ...formData, [key]: files[key] }
+          // formData = { ...formData, [key]: files[key] }
+          formData.append(key, files[key])
         }
-        console.log(formData)
         // Gửi formData lên server
         Swal.fire({
           title: "Đang gửi các tập tin lên hệ thống...",
