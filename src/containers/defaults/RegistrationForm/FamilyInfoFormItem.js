@@ -165,6 +165,7 @@ function FamilyInfoFormItem(props) {
                 </h2>
               </header>
               <div className='grid md:grid-cols-2 gap-6'>
+                {console.log(values?.provinceAddress)}
                 <InputField
                   type='select'
                   label='Tỉnh/Thành phố'
@@ -384,7 +385,7 @@ function FamilyInfoFormItem(props) {
                 invalid={
                   touched?.phoneNumberOfCompany && errors?.phoneNumberOfCompany
                 }
-                isRequired={values?.status?.value === "Có thông tin"}
+                // isRequired={values?.status?.value === "Có thông tin"}
               />
               <InputField
                 type='number'
