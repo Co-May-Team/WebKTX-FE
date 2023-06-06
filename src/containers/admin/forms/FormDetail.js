@@ -29,8 +29,6 @@ export default function FormDetail() {
       })
   }, [id])
 
-  console.log({ formInfo })
-
   // Hàm xử lý quay lại trang quản lý form
   function backToListForm() {
     navigate(`${path.ADMIN + path.FORMS}`)
