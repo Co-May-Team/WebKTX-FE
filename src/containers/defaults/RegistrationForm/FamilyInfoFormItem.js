@@ -384,7 +384,7 @@ function FamilyInfoFormItem(props) {
                 invalid={
                   touched?.phoneNumberOfCompany && errors?.phoneNumberOfCompany
                 }
-                isRequired={values?.status?.value === "Có thông tin"}
+                // isRequired={values?.status?.value === "Có thông tin"}
               />
               <InputField
                 type='number'

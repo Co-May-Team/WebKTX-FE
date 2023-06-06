@@ -13,9 +13,9 @@ const info = {
   fullName: null,
   yearOfBirth: null,
   phoneNumber: null,
-  provinceAddress: {},
-  districtAddress: {},
-  wardAddress: {},
+  provinceAddress: "",
+  districtAddress: "",
+  wardAddress: "",
   detailAddress: null,
   currentJob: null,
   placeOfWork: null,
@@ -88,7 +88,7 @@ const validationSchema = {
     is: (val) => val?.value === "Có thông tin",
     then: Yup.string()
       .nullable()
-      .required("Số điện thoại nơi làm việc là bắt buộc")
+      // .required("Số điện thoại nơi làm việc là bắt buộc")
       .length(10, "Vui lòng nhập chính xác số điện thoại"),
     otherwise: Yup.string().nullable(),
   }),
@@ -190,7 +190,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   async function handleSubmitFamilyInfo(values, actions) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    console.log({ before: currentFamilyInfo })
     currentFamilyInfo = {
       ...currentFamilyInfo,
       father:
@@ -202,7 +201,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
           ? { ...info, status: currentFamilyInfo.mother.status }
           : currentFamilyInfo.mother,
     }
-    console.log({ after: currentFamilyInfo })
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
     handleFormChange(3)
   }

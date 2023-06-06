@@ -169,7 +169,6 @@ export default function FilesUploadForm({ handleFormChange }) {
           allowEscapeKey: false,
         })
         admissionApi.uploadFiles(formData).then((response) => {
-          console.log(response)
           if (
             _.isUndefined(response) ||
             _.isNull(response) ||

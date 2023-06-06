@@ -133,15 +133,17 @@ export default function StudentInfoForm({ handleFormChange }) {
       .nullable()
       .required("Vui lòng chọn trường của bạn"),
     major: Yup.string().required("Vui lòng nhập ngành của bạn"),
-    classCode: Yup.string().required("Vui lòng nhập mã lớp"),
-    studentCode: Yup.string().required("Vui lòng nhập mã số sinh viên"),
+    classCode: Yup.string(),
+    // .required("Vui lòng nhập mã lớp"),
+    studentCode: Yup.string(),
+    // .required("Vui lòng nhập mã số sinh viên"),
     highSchoolType: Yup.object()
       .nullable()
       .required("Vui lòng chọn loại học bạ cấp 3 của bạn"),
     highSchoolGraduationExamScore: Yup.number()
       .required("Vui lòng nhập điểm thi tốt nghiệp")
       .min(0, "Vui lòng nhập điểm >= 0")
-      .max(10, "Vui lòng nhập điểm <= 10"),
+      .max(40, "Vui lòng nhập điểm <= 40"),
     dgnlScore: Yup.number("Điểm đánh giá năng lực phải là một số hợp lệ")
       .transform((value) =>
         isNaN(value) || value === null || value === undefined ? 0 : value
@@ -319,7 +321,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                       )
                     }}
                     invalid={touched.classCode && errors.classCode}
-                    isRequired
+                    // isRequired
                   />
                   <InputField
                     type='text'
@@ -336,7 +338,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                       )
                     }}
                     invalid={touched.studentCode && errors.studentCode}
-                    isRequired
+                    // isRequired
                   />
                 </div>
                 <div className='grid md:grid-cols-2 gap-6'>
