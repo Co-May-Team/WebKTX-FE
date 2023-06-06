@@ -190,7 +190,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   async function handleSubmitFamilyInfo(values, actions) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    console.log({ before: currentFamilyInfo })
     currentFamilyInfo = {
       ...currentFamilyInfo,
       father:
@@ -202,7 +201,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
           ? { ...info, status: currentFamilyInfo.mother.status }
           : currentFamilyInfo.mother,
     }
-    console.log({ after: currentFamilyInfo })
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
     handleFormChange(3)
   }

@@ -165,7 +165,6 @@ function FamilyInfoFormItem(props) {
                 </h2>
               </header>
               <div className='grid md:grid-cols-2 gap-6'>
-                {console.log(values?.provinceAddress)}
                 <InputField
                   type='select'
                   label='Tỉnh/Thành phố'
