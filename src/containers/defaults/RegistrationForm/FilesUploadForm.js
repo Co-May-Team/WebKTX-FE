@@ -2,16 +2,20 @@ import FileSaver from "file-saver"
 import { Formik } from "formik"
 import _ from "lodash"
 import { useState } from "react"
-import { BsArrowLeft, BsCheckLg, BsDownload } from "react-icons/bs"
+import { BsArrowLeft, BsCheckLg } from "react-icons/bs"
 import { Form } from "reactstrap"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
+import personalProfileFile from "~/assets/documents/So_yeu_ly_lich_mau.doc"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import admissionApi from "~/services/admissionApi"
 
 export default function FilesUploadForm({ handleFormChange }) {
   const [files, setFiles] = useState([])
+  const [isApplicationDownloaded, setIsApplicationDownloaded] = useState(false)
+  const [isPersonalProfileDownloaded, setIsPersonalProfileDownloaded] =
+    useState(false)
 
   const handleFileChange = (event, onChange) => {
     onChange()
@@ -85,6 +89,17 @@ export default function FilesUploadForm({ handleFormChange }) {
       })
   }
 
+  const handleApplicationDownload = () => {
+    // Xử lý việc tải xuống tệp tin đơn xin vào ở KTX Cỏ May
+    handleGenerateFiles()
+    setIsApplicationDownloaded(true)
+  }
+
+  const handlePersonalProfileDownload = () => {
+    // Xử lý việc tải xuống tệp tin sơ yếu lý lịch
+    setIsPersonalProfileDownloaded(true)
+  }
+
   /* Xử lý Form */
   const initialValuesFilesUpload = {
     application: "",
@@ -104,106 +119,116 @@ export default function FilesUploadForm({ handleFormChange }) {
 
   const handleSubmitFilesUpload = async (values, actions) => {
     actions.setSubmitting(true)
-    const { application, personalProfile, photo } = values
-    // Kiểm tra kích thước của các tệp được tải lên
-    if (
-      application.size > 5 * 1024 * 1024 ||
-      personalProfile.size > 5 * 1024 * 1024 ||
-      photo.size > 5 * 1024 * 1024
-    ) {
-      Swal.fire({
-        icon: "warning",
-        title: "Lỗi",
-        text: "Kích thước các tập tin không được vượt quá 5MB",
-      })
-    }
-    // Thực hiện cập nhật thông tin đăng ký sau khi đã gửi các tập tin lên server thành công
-    const info = {
-      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
-      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
-      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
-    }
-    const data = {
-      ...info,
-      familyInfo: {
-        relatives: [
-          {
-            relationship: {
-              id: 1,
-              label: "Cha",
-            },
-            ...info.familyInfo.father,
-          },
-          {
-            relationship: {
-              id: 2,
-              label: "Mẹ",
-            },
-            ...info.familyInfo.mother,
-          },
-          ...info.familyInfo.relatives?.map((relative) => ({
-            status: {
-              value: "Có thông tin",
-              label: "Có thông tin",
-            },
-            ...relative,
-          })),
-        ],
-        familyBackground: info.familyInfo.familyBackground,
-      },
-    }
-    admissionApi.submit(data).then((response) => {
-      if (response.data?.status === "OK") {
-        // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
-        const formData = new FormData()
-        // let formData = {}
-        for (let key in files) {
-          // formData = { ...formData, [key]: files[key] }
-          formData.append(key, files[key])
-        }
-        // Gửi formData lên server
+
+    if (isApplicationDownloaded && isPersonalProfileDownloaded) {
+      // Thực hiện xử lý gửi biểu mẫu tại đây
+      const { application, personalProfile, photo } = values
+      // Kiểm tra kích thước của các tệp được tải lên
+      if (
+        application.size > 5 * 1024 * 1024 ||
+        personalProfile.size > 5 * 1024 * 1024 ||
+        photo.size > 5 * 1024 * 1024
+      ) {
         Swal.fire({
-          title: "Đang gửi các tập tin lên hệ thống...",
-          showConfirmButton: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
+          icon: "error",
+          title: "Lỗi",
+          text: "Kích thước các tập tin không được vượt quá 5MB",
         })
-        admissionApi.uploadFiles(formData).then((response) => {
-          if (
-            _.isUndefined(response) ||
-            _.isNull(response) ||
-            _.isEmpty(response)
-          ) {
-            Swal.fire({
-              icon: "error",
-              title: "Gửi tập tin thất bại",
-              text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
-            })
-          } else {
-            if (response.data?.status === "OK") {
-              Swal.fire({
-                icon: "success",
-                title: "Gửi hồ sơ thành công",
-                text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
-              })
-            } else {
+      }
+      // Thực hiện cập nhật thông tin đăng ký sau khi đã gửi các tập tin lên server thành công
+      const info = {
+        personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+        familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+        studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+      }
+      const data = {
+        ...info,
+        familyInfo: {
+          relatives: [
+            {
+              relationship: {
+                id: 1,
+                label: "Cha",
+              },
+              ...info.familyInfo.father,
+            },
+            {
+              relationship: {
+                id: 2,
+                label: "Mẹ",
+              },
+              ...info.familyInfo.mother,
+            },
+            ...info.familyInfo.relatives?.map((relative) => ({
+              status: {
+                value: "Có thông tin",
+                label: "Có thông tin",
+              },
+              ...relative,
+            })),
+          ],
+          familyBackground: info.familyInfo.familyBackground,
+        },
+      }
+      admissionApi.submit(data).then((response) => {
+        if (response.data?.status === "OK") {
+          // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
+          const formData = new FormData()
+          // let formData = {}
+          for (let key in files) {
+            // formData = { ...formData, [key]: files[key] }
+            formData.append(key, files[key])
+          }
+          // Gửi formData lên server
+          Swal.fire({
+            title: "Đang gửi các tập tin lên hệ thống...",
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          })
+          admissionApi.uploadFiles(formData).then((response) => {
+            if (
+              _.isUndefined(response) ||
+              _.isNull(response) ||
+              _.isEmpty(response)
+            ) {
               Swal.fire({
                 icon: "error",
                 title: "Gửi tập tin thất bại",
                 text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
               })
+            } else {
+              if (response.data?.status === "OK") {
+                Swal.fire({
+                  icon: "success",
+                  title: "Gửi hồ sơ thành công",
+                  text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
+                })
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Gửi tập tin thất bại",
+                  text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
+                })
+              }
             }
-          }
-        })
-      } else {
-        Swal.fire({
-          icon: "warning",
-          title: "Gửi hồ sơ thất bại",
-          text: response.data?.data,
-        })
-      }
-    })
-    // ...
+          })
+        } else {
+          Swal.fire({
+            icon: "warning",
+            title: "Gửi hồ sơ thất bại",
+            text: response.data?.data,
+          })
+        }
+      })
+      // ...
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Cảnh báo",
+        text: "Vui lòng tải đầy đủ 2 file mẫu và thực hiện theo như hướng dẫn đã được thông báo từ trước!",
+      })
+    }
 
     actions.setSubmitting(false)
   }
@@ -211,27 +236,7 @@ export default function FilesUploadForm({ handleFormChange }) {
   return (
     <Motion className='container relative pt-10 pb-16 lg:pt-20 lg:pb-28'>
       <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
-        <div className='flex mt-5 justify-center items-center'>
-          <button
-            className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
-            // disabled={
-            //   !Object.values({
-            //     personalInfo: JSON.parse(
-            //       localStorage.getItem("personalInfo")
-            //     )?.finished,
-            //     familyInfo: JSON.parse(localStorage.getItem("familyInfo"))
-            //       ?.finished,
-            //     studentInfo: JSON.parse(localStorage.getItem("studentInfo"))
-            //       ?.finished,
-            //   }).every((value) => value === true)
-            // }
-            onClick={handleGenerateFiles}
-          >
-            <BsDownload className='me-3' />
-            Đơn xin vào ở KTX Cỏ May năm học 2023 - 2022
-            <BsDownload className='ms-3' />
-          </button>
-        </div>
+        <div className='flex mt-5 justify-center items-center'></div>
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
             IV. HỒ SƠ XÉT TUYỂN
@@ -266,7 +271,19 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='application'
-                  label='Đơn xin vào ở KTX Cỏ May (.PDF)'
+                  label={
+                    <span>
+                      Đơn xin vào ở KTX Cỏ May (
+                      <button
+                        className='text-primary-6000 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-6000 font-medium'
+                        type='button'
+                        onClick={handleApplicationDownload}
+                      >
+                        Tải xuống file có sẵn
+                      </button>
+                      )
+                    </span>
+                  }
                   value={values.application}
                   feedback={errors.application}
                   onChange={(event) =>
@@ -279,7 +296,21 @@ export default function FilesUploadForm({ handleFormChange }) {
                   type='file'
                   accept='application/pdf'
                   name='personalProfile'
-                  label='Sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)(.PDF)'
+                  label={
+                    <span>
+                      Sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)
+                      (.PDF) (
+                      <a
+                        className='text-primary-6000 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-6000 font-medium'
+                        href={personalProfileFile}
+                        target='_blank'
+                        onClick={handlePersonalProfileDownload}
+                      >
+                        Tải xuống mẫu
+                      </a>
+                      )
+                    </span>
+                  }
                   value={values.personalProfile}
                   feedback={errors.personalProfile}
                   onChange={(event) =>

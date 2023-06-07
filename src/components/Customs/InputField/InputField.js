@@ -96,7 +96,7 @@ export default function InputField({
 }
 
 InputField.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.node,
   feedback: PropTypes.string,
   note: PropTypes.string,
   formFeedbackClassName: PropTypes.string,
