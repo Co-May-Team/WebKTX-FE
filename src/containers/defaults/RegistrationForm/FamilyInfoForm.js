@@ -11,7 +11,7 @@ import FamilyInfoFormItem from "./FamilyInfoFormItem"
 const info = {
   status: "",
   fullName: "",
-  yearOfBirth: "",
+  yearOfBirth: 0,
   phoneNumber: "",
   provinceAddress: "",
   districtAddress: "",
