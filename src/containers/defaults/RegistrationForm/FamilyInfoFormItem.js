@@ -121,7 +121,7 @@ function FamilyInfoFormItem(props) {
               isRequired={values?.status?.value === "Có thông tin"}
             />
             <InputField
-              type='number'
+              type='text'
               name={`${infoType}.yearOfBirth`}
               placeholder='Nhập năm sinh ...'
               label='Năm sinh'

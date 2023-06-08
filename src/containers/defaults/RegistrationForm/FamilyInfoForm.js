@@ -42,7 +42,7 @@ const validationSchema = {
     then: Yup.string()
       .nullable()
       .required("Năm sinh là bắt buộc"),
-    otherwise: Yup.number().nullable(),
+    otherwise: Yup.string().nullable(),
   }),
   phoneNumber: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
