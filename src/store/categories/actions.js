@@ -1,8 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import categoriesApi from '~/services/categoriesApi'
+import { createAsyncThunk } from "@reduxjs/toolkit"
+import categoriesApi from "~/services/categoriesApi"
 
 export const fetchCategories = createAsyncThunk(
-  'categories/fetchCategories',
+  "categories/fetchCategories",
   async (params) => {
     const response = await categoriesApi.getAll(params)
     return response.data.data.categories

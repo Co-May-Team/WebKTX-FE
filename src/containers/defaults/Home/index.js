@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { fetchCategories } from '~/store/categories/actions'
-import { fetchTags } from '~/store/tags/actions'
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import Motion from "~/components/Motion"
+import SeoHelmet from "~/components/SeoHelmet"
+import { fetchCategories } from "~/store/categories/actions"
+import { fetchTags } from "~/store/tags/actions"
 
-const PostsSection = React.lazy(() => import('./sections/PostsSection'))
-const ImagesSection = React.lazy(() => import('./sections/ImagesSection'))
-const VideosSection = React.lazy(() => import('./sections/VideosSection'))
+const PostsSection = React.lazy(() => import("./sections/PostsSection"))
+const ImagesSection = React.lazy(() => import("./sections/ImagesSection"))
+const VideosSection = React.lazy(() => import("./sections/VideosSection"))
 
 export default function Home() {
   const dispatch = useDispatch()
@@ -15,11 +17,12 @@ export default function Home() {
     dispatch(fetchCategories())
   }, [])
   return (
-    <>
+    <Motion>
+      <SeoHelmet title='Trang chủ' />
       {/* Hero section */}
-      {/* <div>
+      {/*
         <HeroSection />
-      </div> */}
+      */}
 
       {/* Posts section */}
       <PostsSection />
@@ -29,8 +32,6 @@ export default function Home() {
 
       {/* Videos */}
       <VideosSection />
-
-      {/* Google map */}
-    </>
+    </Motion>
   )
 }

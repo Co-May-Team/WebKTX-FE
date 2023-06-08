@@ -1,4 +1,4 @@
-import sidebarSlice from './slice'
+import sidebarSlice from "./slice"
 
 export const { toggleSidebarShow } = sidebarSlice.actions
 export const { toggleSidebarBackdropShow } = sidebarSlice.actions

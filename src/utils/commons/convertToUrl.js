@@ -4,20 +4,20 @@ export default function convertToUrl(title) {
 
   // Thay thế các ký tự tiếng Việt thành các ký tự không dấu
   slug = slug
-    ?.replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, 'a')
-    .replace(/[éèẻẽẹêếềểễệ]/g, 'e')
-    .replace(/[iíìỉĩị]/g, 'i')
-    .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, 'o')
-    .replace(/[úùủũụưứừửữự]/g, 'u')
-    .replace(/[ýỳỷỹỵ]/g, 'y')
-    .replace(/đ/g, 'd')
+    ?.replace(/[áàảãạâấầẩẫậăắằẳẵặ]/g, "a")
+    .replace(/[éèẻẽẹêếềểễệ]/g, "e")
+    .replace(/[iíìỉĩị]/g, "i")
+    .replace(/[óòỏõọôốồổỗộơớờởỡợ]/g, "o")
+    .replace(/[úùủũụưứừửữự]/g, "u")
+    .replace(/[ýỳỷỹỵ]/g, "y")
+    .replace(/đ/g, "d")
 
   // Loại bỏ các ký tự đặc biệt, dấu câu, dấu chấm câu và khoảng trắng thừa
   slug = slug
-    ?.replace(/[^\w\s]|_/g, '')
-    .replace(/\s+/g, ' ')
+    ?.replace(/[^\w\s]|_/g, "")
+    .replace(/\s+/g, " ")
     .trim()
-    .replace(/\s/g, '-')
+    .replace(/\s/g, "-")
 
   // // Loại bỏ các từ ngữ bị cấm
   // const bannedWords = [
@@ -63,7 +63,7 @@ export default function convertToUrl(title) {
   // slug = slug.substring(0, 70)
 
   // Loại bỏ ký tự gạch ngang (-) cuối cùng
-  if (slug?.charAt(slug?.length - 1) === '-') {
+  if (slug?.charAt(slug?.length - 1) === "-") {
     slug = slug?.slice(0, -1)
   }
 

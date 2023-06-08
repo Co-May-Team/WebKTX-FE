@@ -1,8 +1,8 @@
-import queryString from 'query-string'
-import axiosClient from './axiosClient'
+import queryString from "query-string"
+import axiosClient from "./axiosClient"
 
 // API comment post
-const baseUrl = '/posts/comment'
+const baseUrl = "/posts/comment"
 const commentsApi = {
   getCommentList: (params) => {
     const requestUrl = `${baseUrl}?${queryString.stringify(params)}`

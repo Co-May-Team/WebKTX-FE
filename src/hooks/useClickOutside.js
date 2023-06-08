@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect } from "react"
 
 export default function useClickOutside(ref, callback) {
   useEffect(() => {
@@ -8,10 +8,10 @@ export default function useClickOutside(ref, callback) {
       }
     }
     // Bind the event listener
-    window.addEventListener('mousedown', handleClickOutside)
+    window.addEventListener("mousedown", handleClickOutside)
     return () => {
       // Unbind the event listener on clean up
-      window.removeEventListener('mousedown', handleClickOutside)
+      window.removeEventListener("mousedown", handleClickOutside)
     }
   }, [ref, callback])
   return null

@@ -1,9 +1,9 @@
-import { fetchImages } from './actions'
+import { fetchImages } from "./actions"
 
-const { createSlice } = require('@reduxjs/toolkit')
+const { createSlice } = require("@reduxjs/toolkit")
 
 const imagesSlice = createSlice({
-  name: 'images',
+  name: "images",
   initialState: {
     images: [],
   },

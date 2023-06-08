@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types'
-import '~/styles/index.scss'
+import PropTypes from "prop-types"
+import "~/index.css"
+import "~/styles/index.scss"
 
 export default function GlobalStyles({ children }) {
   return children

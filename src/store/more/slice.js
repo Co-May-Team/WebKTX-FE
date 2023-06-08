@@ -1,9 +1,9 @@
-const { createSlice } = require('@reduxjs/toolkit')
+const { createSlice } = require("@reduxjs/toolkit")
 
 const moreSlice = createSlice({
-  name: 'more',
+  name: "more",
   initialState: {
-    searchTerm: '',
+    searchTerm: "",
     isDarkMode: false,
   },
   reducers: {

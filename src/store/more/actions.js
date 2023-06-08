@@ -1,3 +1,3 @@
-import moreSlice from './slice'
+import moreSlice from "./slice"
 
 export const { searchPost, toggleDarkMode } = moreSlice.actions
