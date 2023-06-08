@@ -1,32 +1,150 @@
 import { Formik } from "formik"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import axiosClient from "~/services/axiosClient"
-import districts from "~/utils/mockData/districts"
-import provinces from "~/utils/mockData/provinces"
-import wards from "~/utils/mockData/wards"
+import FamilyInfoFormItem from "./FamilyInfoFormItem"
 
-const provincesData = Object.values(provinces)
+const info = {
+  status: "",
+  fullName: "",
+  yearOfBirth: "",
+  phoneNumber: "",
+  provinceAddress: "",
+  districtAddress: "",
+  wardAddress: "",
+  detailAddress: "",
+  currentJob: "",
+  placeOfWork: "",
+  phoneNumberOfCompany: "",
+  income: 0,
+}
+
+const relativeInfo = {
+  ...info,
+  status: {
+    value: "Có thông tin",
+    label: "Có thông tin",
+  },
+}
+
+const validationSchema = {
+  fullName: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Họ tên là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  yearOfBirth: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string()
+      .nullable()
+      .required("Năm sinh là bắt buộc"),
+    otherwise: Yup.number().nullable(),
+  }),
+  phoneNumber: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string()
+      .nullable()
+      .required("Số điện thoại là bắt buộc")
+      .length(10, "Vui lòng nhập chính xác số điện thoại"),
+    otherwise: Yup.string().nullable(),
+  }),
+  provinceAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Tỉnh/Thành phố là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  districtAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Quận/Huyện là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  wardAddress: Yup.object().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.object().nullable().required("Phường/Xã là bắt buộc"),
+    otherwise: Yup.object().nullable(),
+  }),
+  detailAddress: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Địa chỉ là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  currentJob: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Nghề nghiệp hiện tại là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  placeOfWork: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string().nullable().required("Nơi làm việc là bắt buộc"),
+    otherwise: Yup.string().nullable(),
+  }),
+  phoneNumberOfCompany: Yup.string().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.string()
+      .nullable()
+      // .required("Số điện thoại nơi làm việc là bắt buộc")
+      .length(10, "Vui lòng nhập chính xác số điện thoại"),
+    otherwise: Yup.string().nullable(),
+  }),
+  income: Yup.number().when("status", {
+    is: (val) => val?.value === "Có thông tin",
+    then: Yup.number()
+      .transform((value) => (isNaN(value) ? 0 : value))
+      .nullable()
+      .min(0, "Thu nhập phải là một số lớn hơn 0")
+      .required("Thu nhập là bắt buộc"),
+    otherwise: Yup.number().nullable(),
+  }),
+}
+const validationSchemaFamilyInfo = Yup.object().shape({
+  father: Yup.object().shape({
+    status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
+    ...validationSchema,
+  }),
+  mother: Yup.object().shape({
+    status: Yup.object().required("Trạng thái thông tin là bắt buộc"),
+    ...validationSchema,
+  }),
+  relatives: Yup.array().of(
+    Yup.object().shape({
+      relationship: Yup.object().required(
+        "Mối quan hệ với người thân không được để trống"
+      ),
+      ...validationSchema,
+    })
+  ),
+  familyBackground: Yup.string().required(
+    "Hoàn cảnh gia đình không được để trống"
+  ),
+})
 
 export default function FamilyInfoForm({ handleFormChange }) {
   const [relationships, setRelationships] = useState([])
   const [loadingRelationships, setLoadingRelationships] = useState(true)
-  const [districtsData, setDistrictsData] = useState([])
-  const [loadingDistrictsData, setLoadingDistrictsData] = useState(true)
-  const [wardsData, setWardsData] = useState([])
-  const [loadingWardsData, setLoadingWardsData] = useState(true)
+  /* Thông tin gia đình */
+  const initialValuesFamilyInfo = useMemo(() => {
+    return (
+      JSON.parse(localStorage.getItem("familyInfo")) || {
+        father: info,
+        mother: info,
+        relatives: [],
+        familyBackground: "",
+      }
+    )
+  }, [])
 
-  const handleSaveInput = (e) => {
+  function handleSaveInput(e) {
     const { name, value } = e.target
     const currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
     currentFamilyInfo[name] = value
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
   }
-  const handleChangeFatherInfo = (name, value, setFieldValue, values) => {
+
+  function handleChangeInfo(infoType, name, value, setFieldValue, index) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
     if (name === "fullName") {
       value = value
@@ -35,56 +153,54 @@ export default function FamilyInfoForm({ handleFormChange }) {
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ")
     }
-    currentFamilyInfo = {
-      ...currentFamilyInfo,
-      father: {
-        ...currentFamilyInfo?.father,
-        [name]: value,
-      },
+
+    if (infoType !== "relatives") {
+      currentFamilyInfo = {
+        ...currentFamilyInfo,
+        [infoType]: { ...currentFamilyInfo?.[infoType], [name]: value },
+      }
+    } else {
+      if (index !== "undefined") {
+        currentFamilyInfo.relatives?.splice(index, 1, {
+          ...currentFamilyInfo.relatives[index],
+          [name]: value,
+        })
+      }
     }
-    setFieldValue("father", currentFamilyInfo.father)
+    setFieldValue(infoType, currentFamilyInfo[infoType])
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
   }
-  const handleChangeMotherInfo = (name, value, setFieldValue, values) => {
+
+  async function validateForm(values) {
+    // try {
+    //   await localStorage.setItem(
+    //     "familyInfo",
+    //     JSON.stringify({ ...values, finished: true })
+    //   )
+    //   await validationSchemaFamilyInfo.validate(values, { abortEarly: false })
+    // } catch (err) {
+    //   localStorage.setItem(
+    //     "familyInfo",
+    //     JSON.stringify({ ...values, finished: false })
+    //   )
+    // }
+  }
+
+  async function handleSubmitFamilyInfo(values, actions) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    if (name === "fullName" || name === "detailAddress") {
-      value = value
-        .toLowerCase()
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    }
     currentFamilyInfo = {
       ...currentFamilyInfo,
-      mother: {
-        ...currentFamilyInfo?.mother,
-        [name]: value,
-      },
+      father:
+        currentFamilyInfo?.father?.status?.value === "Không rõ"
+          ? { ...info, status: currentFamilyInfo.father.status }
+          : currentFamilyInfo.father,
+      mother:
+        currentFamilyInfo?.mother?.status?.value === "Không rõ"
+          ? { ...info, status: currentFamilyInfo.mother.status }
+          : currentFamilyInfo.mother,
     }
-    setFieldValue("mother", currentFamilyInfo.mother)
     localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
-  }
-  const handleChangeRelativesInfo = (
-    name,
-    value,
-    index,
-    setFieldValue,
-    values
-  ) => {
-    let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    if (name === "fullName" || name === "detailAddress") {
-      value = value
-        .toLowerCase()
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    }
-    currentFamilyInfo.relatives?.splice(index, 1, {
-      ...currentFamilyInfo.relatives[index],
-      [name]: value,
-    })
-    setFieldValue("relatives", currentFamilyInfo.relatives)
-    localStorage.setItem("familyInfo", JSON.stringify(currentFamilyInfo))
+    handleFormChange(3)
   }
 
   useEffect(() => {
@@ -104,318 +220,17 @@ export default function FamilyInfoForm({ handleFormChange }) {
       localStorage.setItem(
         "familyInfo",
         JSON.stringify({
-          father: {
-            status: "",
-            fullName: "",
-            yearOfBirth: 0,
-            phoneNumber: "",
-            provinceAddress: "",
-            districtAddress: "",
-            wardAddress: "",
-            detailAddress: "",
-            currentJob: "",
-            placeOfWork: "",
-            phoneNumberOfCompany: "",
-            income: 0,
-          },
-          mother: {
-            status: "",
-            fullName: "",
-            yearOfBirth: 0,
-            phoneNumber: "",
-            provinceAddress: "",
-            districtAddress: "",
-            wardAddress: "",
-            detailAddress: "",
-            currentJob: "",
-            placeOfWork: "",
-            phoneNumberOfCompany: "",
-            income: 0,
-          },
-          relatives: [
-            // {
-            //   status: {
-            //     value: "Có thông tin",
-            //     label: "Có thông tin",
-            //   },
-            //   relationship: "",
-            //   fullName: "",
-            //   yearOfBirth: 0,
-            //   phoneNumber: "",
-            //   provinceAddress: "",
-            //   districtAddress: "",
-            //   wardAddress: "",
-            //   detailAddress: "",
-            //   currentJob: "",
-            //   placeOfWork: "",
-            //   income: 0,
-            // },
-          ],
+          father: info,
+          mother: info,
+          relatives: [],
           familyBackground: "",
         })
       )
     }
   }, [])
 
-  const handleProvinceChange = (province) => {
-    setLoadingDistrictsData(true)
-    setDistrictsData(
-      Object.values(districts).filter(
-        (district) => district.parent_code === province?.code
-      )
-    )
-    setLoadingDistrictsData(false)
-  }
-
-  const handleDistrictChange = (district) => {
-    setLoadingWardsData(true)
-    setWardsData(
-      Object.values(wards).filter((ward) => ward.parent_code === district?.code)
-    )
-    setLoadingWardsData(false)
-  }
-
-  /* Thông tin gia đình */
-  const initialValuesFamilyInfo = JSON.parse(
-    localStorage.getItem("familyInfo")
-  ) || {
-    father: {
-      status: "",
-      fullName: "",
-      yearOfBirth: 0,
-      phoneNumber: "",
-      provinceAddress: "",
-      districtAddress: "",
-      wardAddress: "",
-      detailAddress: "",
-      currentJob: "",
-      placeOfWork: "",
-      phoneNumberOfCompany: "",
-      income: 0,
-    },
-    mother: {
-      status: "",
-      fullName: "",
-      yearOfBirth: 0,
-      phoneNumber: "",
-      provinceAddress: "",
-      districtAddress: "",
-      wardAddress: "",
-      detailAddress: "",
-      currentJob: "",
-      placeOfWork: "",
-      phoneNumberOfCompany: "",
-      income: 0,
-    },
-    relatives: [
-      // {
-      //   status: {
-      //     value: "Có thông tin",
-      //     label: "Có thông tin",
-      //   },
-      //   relationship: "",
-      //   fullName: "",
-      //   yearOfBirth: "",
-      //   phoneNumber: "",
-      //   provinceAddress: "",
-      //   districtAddress: "",
-      //   wardAddress: "",
-      //   detailAddress: "",
-      //   currentJob: "",
-      //   placeOfWork: "",
-      //   income: 0,
-      //   healthStatus: "",
-      // },
-    ],
-    familyBackground: "",
-  }
-
-  const validationSchemaFamilyInfo = Yup.object().shape({
-    father: Yup.object().shape({
-      status: Yup.object().required("Trạng thái thông tin của cha là bắt buộc"),
-      fullName: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Họ tên của cha là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      yearOfBirth: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number().required("Năm sinh của cha là bắt buộc"),
-        otherwise: Yup.number(),
-      }),
-      phoneNumber: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Số điện thoại của cha là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      provinceAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object()
-          .nullable()
-          .required("Tỉnh/Thành phố của cha là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      districtAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object()
-          .nullable()
-          .required("Quận/Huyện của cha là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      wardAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Phường/Xã của cha là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      detailAddress: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Địa chỉ của cha là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      currentJob: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nghề nghiệp hiện tại của cha là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      placeOfWork: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nơi làm việc của cha là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      phoneNumberOfCompany: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string(),
-        otherwise: Yup.string(),
-      }),
-      income: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number()
-          .min(0, "Thu nhập phải là một số lớn hơn 0")
-          .required("Thu nhập của cha là bắt buộc"),
-        otherwise: Yup.number(),
-      }),
-    }),
-    mother: Yup.object().shape({
-      status: Yup.object().required("Trạng thái thông tin của mẹ là bắt buộc"),
-      fullName: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Họ tên của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      yearOfBirth: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number().required("Năm sinh của mẹ là bắt buộc"),
-        otherwise: Yup.number(),
-      }),
-      phoneNumber: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Số điện thoại của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      provinceAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object()
-          .nullable()
-          .required("Tỉnh/Thành phố của mẹ là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      districtAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Quận/Huyện của mẹ là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      wardAddress: Yup.object().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.object().nullable().required("Phường/Xã của mẹ là bắt buộc"),
-        otherwise: Yup.object(),
-      }),
-      detailAddress: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Địa chỉ của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      currentJob: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nghề nghiệp hiện tại của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      placeOfWork: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string().required("Nơi làm việc của mẹ là bắt buộc"),
-        otherwise: Yup.string(),
-      }),
-      phoneNumberOfCompany: Yup.string().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.string(),
-        otherwise: Yup.string(),
-      }),
-      income: Yup.number().when("status", {
-        is: (val) => val?.value === "Có thông tin",
-        then: Yup.number()
-          .min(0, "Thu nhập phải là một số lớn hơn 0")
-          .required("Thu nhập của mẹ là bắt buộc"),
-        otherwise: Yup.number(),
-      }),
-    }),
-    relatives: Yup.array().of(
-      Yup.object().shape({
-        relationship: Yup.object().required(
-          "Mối quan hệ với người thân không được để trống"
-        ),
-        fullName: Yup.string().required(
-          "Họ tên người thân không được để trống"
-        ),
-        yearOfBirth: Yup.string().required("Nơi sinh không được để trống"),
-        phoneNumber: Yup.string().required("Số điện thoại không được để trống"),
-        provinceAddress: Yup.object()
-          .nullable()
-          .required("Tỉnh/thành phố không được để trống"),
-        districtAddress: Yup.object()
-          .nullable()
-          .required("Quận/huyện không được để trống"),
-        wardAddress: Yup.object()
-          .nullable()
-          .required("Xã/phường/thị trấn không được để trống"),
-        detailAddress: Yup.string().required(
-          "Số nhà, tên đường không được để trống"
-        ),
-        currentJob: Yup.string().required(
-          "Công việc hiện tại của người thân không được để trống"
-        ),
-        placeOfWork: Yup.string().required(
-          "Nơi làm việc của người thân không được để trống"
-        ),
-        income: Yup.number()
-          .min(0, "Thu nhập phải là một số lớn hơn 0")
-          .required("Thu nhập của người thân không được để trống"),
-      })
-    ),
-    familyBackground: Yup.string().required(
-      "Hoàn cảnh gia đình không được để trống"
-    ),
-  })
-
-  const validateForm = async (values) => {
-    // try {
-    //   await localStorage.setItem(
-    //     "familyInfo",
-    //     JSON.stringify({ ...values, finished: true })
-    //   )
-    //   await validationSchemaFamilyInfo.validate(values, { abortEarly: false })
-    // } catch (err) {
-    //   localStorage.setItem(
-    //     "familyInfo",
-    //     JSON.stringify({ ...values, finished: false })
-    //   )
-    // }
-  }
-
-  const handleSubmitFamilyInfo = async (values, actions) => {
-    handleFormChange(3)
-  }
-  /* */
   return (
-    <Motion className='container relative pb-16 lg:pb-28'>
+    <Motion className='container relative pb-16 pt-10 lg:pb-28 lg:pt-20'>
       <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
@@ -432,1190 +247,141 @@ export default function FamilyInfoForm({ handleFormChange }) {
             touched,
             errors,
             handleChange,
-            handleBlur,
             handleSubmit,
             setFieldValue,
-            setFieldTouched,
-            setFieldError,
-            isValid,
-            dirty,
-            isSubmitting,
-          }) => (
-            <Form onSubmit={handleSubmit}>
-              <div className='grid gap-6'>
-                {/* Phần nhập thông tin cha */}
-                <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
-                  <header className=' my-5 text-center mx-auto'>
-                    <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                      1. Thông tin cha
-                    </h2>
-                  </header>
-                  <div className='grid gap-6'>
-                    <InputField
-                      type='select'
-                      label='Trạng thái thông tin'
-                      placeholder='Chọn trạng thái thông tin của cha...'
-                      value={values.father?.status}
-                      onChange={(selectedOption) => {
-                        handleChangeFatherInfo(
-                          "status",
-                          selectedOption,
-                          setFieldValue
-                        )
-                      }}
-                      feedback={errors.father?.status}
-                      invalid={touched.father?.status && errors.father?.status}
-                      options={[
-                        { value: "Có thông tin", label: "Có thông tin" },
-                        { value: "Không rõ", label: "Không rõ" },
-                        { value: "Đã qua đời", label: "Đã qua đời" },
-                      ]}
-                      isRequired
-                    />
-                    {values.father?.status?.value !== "Không rõ" && (
-                      <>
-                        <InputField
-                          type='text'
-                          name='father.fullName'
-                          placeholder='Nhập họ tên của cha...'
-                          label='Họ tên'
-                          value={values.father?.fullName}
-                          feedback={errors.father?.fullName}
-                          onChange={(e) => {
-                            handleChangeFatherInfo(
-                              "fullName",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.father?.fullName && errors.father?.fullName
-                          }
-                          isRequired={
-                            values.father?.status.value === "Có thông tin"
-                          }
-                        />
-                        <InputField
-                          type='number'
-                          name='father.yearOfBirth'
-                          placeholder='Nhập năm sinh của cha...'
-                          label='Năm sinh'
-                          value={values.father?.yearOfBirth}
-                          feedback={errors.father?.yearOfBirth}
-                          onChange={(e) => {
-                            handleChangeFatherInfo(
-                              "yearOfBirth",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.father?.yearOfBirth &&
-                            errors.father?.yearOfBirth
-                          }
-                          isRequired={
-                            values.father?.status.value === "Có thông tin"
-                          }
-                        />
-                        <InputField
-                          type='text'
-                          name='father.phoneNumber'
-                          placeholder='Nhập số điện thoại của cha...'
-                          label='Số điện thoại'
-                          value={values.father?.phoneNumber}
-                          feedback={errors.father?.phoneNumber}
-                          onChange={(e) => {
-                            handleChangeFatherInfo(
-                              "phoneNumber",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.father?.phoneNumber &&
-                            errors.father?.phoneNumber
-                          }
-                          isRequired={
-                            values.father?.status.value === "Có thông tin"
-                          }
-                        />
-                        <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900'>
-                          <header className='mb-5 text-center mx-auto'>
-                            <h2 className='flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                              Chỗ ở hiện tại
-                            </h2>
-                          </header>
-                          <div className='grid md:grid-cols-2 gap-6'>
-                            <InputField
-                              type='select'
-                              label='Tỉnh/Thành phố'
-                              placeholder='Chọn tỉnh/thành phố của cha...'
-                              value={values.father?.provinceAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeFatherInfo(
-                                  "provinceAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                setDistrictsData([])
-                                setWardsData([])
-                                handleProvinceChange(selectedOption)
-                              }}
-                              clearValue={() => {
-                                handleChangeFatherInfo(
-                                  "provinceAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              feedback={errors.father?.provinceAddress}
-                              invalid={
-                                touched.father?.provinceAddress &&
-                                errors.father?.provinceAddress
-                              }
-                              options={provincesData}
-                              isRequired={
-                                values.father?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='select'
-                              label='Quận/Huyện'
-                              placeholder='Chọn quận/huyện của cha...'
-                              value={values.father?.districtAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeFatherInfo(
-                                  "districtAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleDistrictChange(selectedOption)
-                              }}
-                              clearValue={() => {
-                                handleChangeFatherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              isLoading={loadingDistrictsData}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              loadingMessage={() =>
-                                "Vui lòng chọn tỉnh/thành phố"
-                              }
-                              feedback={errors.father?.districtAddress}
-                              invalid={
-                                touched.father?.districtAddress &&
-                                errors.father?.districtAddress
-                              }
-                              options={districtsData}
-                              isRequired={
-                                values.father?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='select'
-                              label='Xã/Phường'
-                              placeholder='Chọn xã/phường của cha...'
-                              value={values.father?.wardAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                              }}
-                              clearValue={() => {
-                                handleChangeFatherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                              isLoading={loadingWardsData}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              feedback={errors.father?.wardAddress}
-                              invalid={
-                                touched.father?.wardAddress &&
-                                errors.father?.wardAddress
-                              }
-                              options={wardsData}
-                              isRequired={
-                                values.father?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='text'
-                              name='father.detailAddress'
-                              placeholder='Nhập số nhà, tên đường, khu phố của cha...'
-                              label='Số nhà, tên đường, khu phố'
-                              value={values.father?.detailAddress}
-                              feedback={errors.father?.detailAddress}
-                              onChange={(e) => {
-                                handleChangeFatherInfo(
-                                  "detailAddress",
-                                  e.target.value,
-                                  setFieldValue
-                                )
-                              }}
-                              invalid={
-                                touched.father?.detailAddress &&
-                                errors.father?.detailAddress
-                              }
-                              isRequired={
-                                values.father?.status.value === "Có thông tin"
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className='grid lg:grid-cols-2 gap-6'>
-                          <InputField
-                            type='text'
-                            name='father.currentJob'
-                            placeholder='Nhập nghề nghiệp hiện tại của cha...'
-                            label='Nghề nghiệp hiện tại'
-                            value={values.father?.currentJob}
-                            feedback={errors.father?.currentJob}
-                            onChange={(e) => {
-                              handleChangeFatherInfo(
-                                "currentJob",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.father?.currentJob &&
-                              errors.father?.currentJob
-                            }
-                            isRequired={
-                              values.father?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='text'
-                            name='father.placeOfWork'
-                            placeholder='Nhập nơi làm việc của cha...'
-                            label='Nơi làm việc'
-                            value={values.father?.placeOfWork}
-                            feedback={errors.father?.placeOfWork}
-                            onChange={(e) => {
-                              handleChangeFatherInfo(
-                                "placeOfWork",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.father?.placeOfWork &&
-                              errors.father?.placeOfWork
-                            }
-                            isRequired={
-                              values.father?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='text'
-                            name='father.phoneNumberOfCompany'
-                            placeholder='Nhập SĐT nơi làm việc của cha...'
-                            label='SĐT nơi làm việc'
-                            value={values.father?.phoneNumberOfCompany}
-                            feedback={errors.father?.phoneNumberOfCompany}
-                            onChange={(e) => {
-                              handleChangeFatherInfo(
-                                "phoneNumberOfCompany",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.father?.phoneNumberOfCompany &&
-                              errors.father?.phoneNumberOfCompany
-                            }
-                            isRequired={
-                              values.father?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='number'
-                            name='father.income'
-                            placeholder='Nhập thu nhập của cha...'
-                            label='Thu nhập'
-                            value={values.father?.income}
-                            feedback={errors.father?.income}
-                            note='Nhập chính xác số tiền (đơn vị: VNĐ).'
-                            onChange={(e) => {
-                              handleChangeFatherInfo(
-                                "income",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.father?.income && errors.father?.income
-                            }
-                            isRequired={
-                              values.father?.status.value === "Có thông tin"
-                            }
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-                {/* Phần nhập thông tin mẹ */}
-                <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
-                  <header className=' my-5 text-center mx-auto'>
-                    <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                      2. Thông tin mẹ
-                    </h2>
-                  </header>
-                  <div className='grid gap-6'>
-                    <InputField
-                      type='select'
-                      label='Trạng thái thông tin'
-                      placeholder='Chọn trạng thái thông tin của mẹ...'
-                      value={values.mother?.status}
-                      onChange={(selectedOption) => {
-                        handleChangeMotherInfo(
-                          "status",
-                          selectedOption,
-                          setFieldValue
-                        )
-                      }}
-                      feedback={errors.mother?.status}
-                      invalid={touched.mother?.status && errors.mother?.status}
-                      options={[
-                        { value: "Có thông tin", label: "Có thông tin" },
-                        { value: "Không rõ", label: "Không rõ" },
-                        { value: "Đã qua đời", label: "Đã qua đời" },
-                      ]}
-                      isRequired
-                    />
-                    {values.mother?.status?.value !== "Không rõ" && (
-                      <>
-                        <InputField
-                          type='text'
-                          name='mother.fullName'
-                          placeholder='Nhập họ tên của mẹ...'
-                          label='Họ tên'
-                          value={values.mother?.fullName}
-                          feedback={errors.mother?.fullName}
-                          onChange={(e) => {
-                            handleChangeMotherInfo(
-                              "fullName",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.mother?.fullName && errors.mother?.fullName
-                          }
-                          isRequired={
-                            values.mother?.status.value === "Có thông tin"
-                          }
-                        />
-                        <InputField
-                          type='number'
-                          name='mother.yearOfBirth'
-                          placeholder='Nhập năm sinh của mẹ...'
-                          label='Năm sinh'
-                          value={values.mother?.yearOfBirth}
-                          feedback={errors.mother?.yearOfBirth}
-                          onChange={(e) => {
-                            handleChangeMotherInfo(
-                              "yearOfBirth",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.mother?.yearOfBirth &&
-                            errors.mother?.yearOfBirth
-                          }
-                          isRequired={
-                            values.mother?.status.value === "Có thông tin"
-                          }
-                        />
-                        <InputField
-                          type='text'
-                          name='mother.phoneNumber'
-                          placeholder='Nhập số điện thoại của mẹ...'
-                          label='Số điện thoại'
-                          value={values.mother?.phoneNumber}
-                          feedback={errors.mother?.phoneNumber}
-                          onChange={(e) => {
-                            handleChangeMotherInfo(
-                              "phoneNumber",
-                              e.target.value,
-                              setFieldValue
-                            )
-                          }}
-                          invalid={
-                            touched.mother?.phoneNumber &&
-                            errors.mother?.phoneNumber
-                          }
-                          isRequired={
-                            values.mother?.status.value === "Có thông tin"
-                          }
-                        />
-                        <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900'>
-                          <header className='mb-5 text-center mx-auto'>
-                            <h2 className='flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                              Chỗ ở hiện tại
-                            </h2>
-                          </header>
-                          <div className='grid md:grid-cols-2 gap-6'>
-                            <InputField
-                              type='select'
-                              label='Tỉnh/Thành phố'
-                              placeholder='Chọn tỉnh/thành phố của mẹ...'
-                              value={values.mother?.provinceAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeMotherInfo(
-                                  "provinceAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                setDistrictsData([])
-                                setWardsData([])
-                                handleProvinceChange(selectedOption)
-                              }}
-                              clearValue={() => {
-                                handleChangeMotherInfo(
-                                  "provinceAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              feedback={errors.mother?.provinceAddress}
-                              invalid={
-                                touched.mother?.provinceAddress &&
-                                errors.mother?.provinceAddress
-                              }
-                              options={provincesData}
-                              isRequired={
-                                values.mother?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='select'
-                              label='Quận/Huyện'
-                              placeholder='Chọn quận/huyện của mẹ...'
-                              value={values.mother?.districtAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeMotherInfo(
-                                  "districtAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleDistrictChange(selectedOption)
-                              }}
-                              clearValue={() => {
-                                handleChangeMotherInfo(
-                                  "districtAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              isLoading={loadingDistrictsData}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              loadingMessage={() =>
-                                "Vui lòng chọn tỉnh/thành phố"
-                              }
-                              feedback={errors.mother?.districtAddress}
-                              invalid={
-                                touched.mother?.districtAddress &&
-                                errors.mother?.districtAddress
-                              }
-                              options={districtsData}
-                              isRequired={
-                                values.mother?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='select'
-                              label='Xã/Phường'
-                              placeholder='Chọn xã/phường của mẹ...'
-                              value={values.mother?.wardAddress}
-                              onChange={(selectedOption) => {
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  selectedOption,
-                                  setFieldValue
-                                )
-                              }}
-                              clearValue={() => {
-                                handleChangeMotherInfo(
-                                  "wardAddress",
-                                  "",
-                                  setFieldValue
-                                )
-                              }}
-                              loadingMessage={() => "Vui lòng chọn quận/huyện"}
-                              isLoading={loadingWardsData}
-                              getOptionValue={(option) => option.code}
-                              getOptionLabel={(option) => option.name_with_type}
-                              feedback={errors.mother?.wardAddress}
-                              invalid={
-                                touched.mother?.wardAddress &&
-                                errors.mother?.wardAddress
-                              }
-                              options={wardsData}
-                              isRequired={
-                                values.mother?.status.value === "Có thông tin"
-                              }
-                            />
-                            <InputField
-                              type='text'
-                              name='mother.detailAddress'
-                              placeholder='Nhập số nhà, tên đường, khu phố của mẹ...'
-                              label='Số nhà, tên đường, khu phố'
-                              value={values.mother?.detailAddress}
-                              feedback={errors.mother?.detailAddress}
-                              onChange={(e) => {
-                                handleChangeMotherInfo(
-                                  "detailAddress",
-                                  e.target.value,
-                                  setFieldValue
-                                )
-                              }}
-                              invalid={
-                                touched.mother?.detailAddress &&
-                                errors.mother?.detailAddress
-                              }
-                              isRequired={
-                                values.mother?.status.value === "Có thông tin"
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className='grid lg:grid-cols-2 gap-6'>
-                          <InputField
-                            type='text'
-                            name='mother.currentJob'
-                            placeholder='Nhập nghề nghiệp hiện tại của mẹ...'
-                            label='Nghề nghiệp hiện tại'
-                            value={values.mother?.currentJob}
-                            feedback={errors.mother?.currentJob}
-                            onChange={(e) => {
-                              handleChangeMotherInfo(
-                                "currentJob",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.mother?.currentJob &&
-                              errors.mother?.currentJob
-                            }
-                            isRequired={
-                              values.mother?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='text'
-                            name='mother.placeOfWork'
-                            placeholder='Nhập nơi làm việc của mẹ...'
-                            label='Nơi làm việc'
-                            value={values.mother?.placeOfWork}
-                            feedback={errors.mother?.placeOfWork}
-                            onChange={(e) => {
-                              handleChangeMotherInfo(
-                                "placeOfWork",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.mother?.placeOfWork &&
-                              errors.mother?.placeOfWork
-                            }
-                            isRequired={
-                              values.mother?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='text'
-                            name='mother.phoneNumberOfCompany'
-                            placeholder='Nhập SĐT nơi làm việc của mẹ...'
-                            label='SĐT nơi làm việc'
-                            value={values.mother?.phoneNumberOfCompany}
-                            feedback={errors.mother?.phoneNumberOfCompany}
-                            onChange={(e) => {
-                              handleChangeMotherInfo(
-                                "phoneNumberOfCompany",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.mother?.phoneNumberOfCompany &&
-                              errors.mother?.phoneNumberOfCompany
-                            }
-                            isRequired={
-                              values.mother?.status.value === "Có thông tin"
-                            }
-                          />
-                          <InputField
-                            type='number'
-                            name='mother.income'
-                            placeholder='Nhập thu nhập của mẹ...'
-                            label='Thu nhập'
-                            value={values.mother?.income}
-                            feedback={errors.mother?.income}
-                            note='Nhập chính xác số tiền (đơn vị: VNĐ).'
-                            onChange={(e) => {
-                              handleChangeMotherInfo(
-                                "income",
-                                e.target.value,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.mother?.income && errors.mother?.income
-                            }
-                            isRequired={
-                              values.mother?.status.value === "Có thông tin"
-                            }
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-                {/* Phần nhập thông tin người thân */}
-                <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
-                  <header className='text-center mx-auto'>
-                    <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                      3. Thông tin người thân
-                    </h2>
-                  </header>
-                  <div className='grid gap-6'>
-                    {values.relatives?.map((relative, index) => (
-                      <div
-                        key={index}
-                        className='relative p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'
-                      >
-                        <header className='text-center mx-auto'>
-                          <h2 className='flex items-center text-2xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                            Thông tin người thân thứ {" " + (index + 1)}
-                          </h2>
-                        </header>
-                        <div className='grid gap-6'>
-                          <InputField
-                            type='select'
-                            name={`relationship`}
-                            placeholder={`Chọn mối quan hệ với người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Mối quan hệ`}
-                            value={relative.relationship}
-                            feedback={errors.relatives?.[index]?.relationship}
-                            onChange={(selectedOption) => {
-                              handleChangeRelativesInfo(
-                                "relationship",
-                                selectedOption,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.relationship &&
-                              errors.relatives?.[index]?.relationship
-                            }
-                            getOptionValue={(option) => option.id}
-                            getOptionLabel={(option) => option.label}
-                            isLoading={loadingRelationships}
-                            options={relationships}
-                            isRequired
-                          />
-                          <InputField
-                            type='text'
-                            name={`fullName`}
-                            placeholder={`Nhập họ tên của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Họ tên`}
-                            value={relative.fullName}
-                            feedback={errors.relatives?.[index]?.fullName}
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "fullName",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.fullName &&
-                              errors.relatives?.[index]?.fullName
-                            }
-                            isRequired
-                          />
-                          <InputField
-                            type='number'
-                            name={`yearOfBirth`}
-                            placeholder={`Nhập năm sinh của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Năm sinh`}
-                            value={relative.yearOfBirth}
-                            feedback={errors.relatives?.[index]?.yearOfBirth}
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "yearOfBirth",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.yearOfBirth &&
-                              errors.relatives?.[index]?.yearOfBirth
-                            }
-                            isRequired
-                          />
-                          <InputField
-                            type='text'
-                            name={`phoneNumber`}
-                            placeholder={`Nhập số điện thoại của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Số điện thoại`}
-                            value={relative.phoneNumber}
-                            feedback={errors.relatives?.[index]?.phoneNumber}
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "phoneNumber",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.phoneNumber &&
-                              errors.relatives?.[index]?.phoneNumber
-                            }
-                            isRequired
-                          />
-                          <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900'>
-                            <header className='mb-5 text-center mx-auto'>
-                              <h2 className='flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
-                                Chỗ ở hiện tại
+          }) => {
+            return (
+              <Form
+                onChange={() => validateForm(values)}
+                onSubmit={handleSubmit}
+              >
+                <div className='grid gap-6'>
+                  {/* Phần nhập thông tin cha mẹ*/}
+                  {["father", "mother"].map((item, index) => {
+                    return (
+                      <FamilyInfoFormItem
+                        key={item}
+                        title={`${index + 1}. Thông tin ${
+                          item === "father" ? "cha" : "mẹ"
+                        }`}
+                        values={values[item]}
+                        infoType={item}
+                        errors={errors[item]}
+                        touched={touched[item]}
+                        handleChangeInfo={handleChangeInfo}
+                        setFieldValue={setFieldValue}
+                      />
+                    )
+                  })}
+                  {/* Phần nhập thông tin người thân */}
+                  <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
+                    <header className='text-center mx-auto'>
+                      <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
+                        3. Thông tin người thân
+                      </h2>
+                    </header>
+                    <div className='grid gap-6'>
+                      {values?.relatives?.map((relative, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className='relative p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'
+                          >
+                            <header className='text-center mx-auto'>
+                              <h2 className='flex items-center text-2xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
+                                Thông tin người thân thứ {" " + (index + 1)}
                               </h2>
                             </header>
                             <div className='grid gap-6'>
-                              <InputField
-                                type='select'
-                                label='Tỉnh/thành phố'
-                                placeholder='Chọn tỉnh/thành phố...'
-                                name='provinceAddress'
-                                value={relative.provinceAddress}
-                                onChange={(selectedOption) => {
-                                  handleChangeRelativesInfo(
-                                    "provinceAddress",
-                                    selectedOption,
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "districtAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  setDistrictsData([])
-                                  setWardsData([])
-                                  handleProvinceChange(selectedOption)
-                                }}
-                                clearValue={() => {
-                                  handleChangeRelativesInfo(
-                                    "provinceAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "districtAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                }}
-                                getOptionValue={(option) => option.code}
-                                getOptionLabel={(option) =>
-                                  option.name_with_type
-                                }
-                                feedback={
-                                  errors?.relatives?.[index]?.provinceAddress
-                                }
-                                invalid={
-                                  touched.relatives?.[index]?.provinceAddress &&
-                                  errors.relatives?.[index]?.provinceAddress
-                                }
-                                options={provincesData}
-                                isRequired
-                              />
-                              <InputField
-                                type='select'
-                                label='Quận/huyện'
-                                placeholder='Chọn quận/huyện...'
-                                value={relative.districtAddress}
-                                onChange={(selectedOption) => {
-                                  handleChangeRelativesInfo(
-                                    "districtAddress",
-                                    selectedOption,
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleDistrictChange(selectedOption)
-                                }}
-                                clearValue={() => {
-                                  handleChangeRelativesInfo(
-                                    "districtAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                }}
-                                isLoading={loadingDistrictsData}
-                                getOptionValue={(option) => option.code}
-                                getOptionLabel={(option) =>
-                                  option.name_with_type
-                                }
-                                loadingMessage={() =>
-                                  "Vui lòng chọn tỉnh/thành phố"
-                                }
-                                feedback={
-                                  errors.relatives?.[index]?.districtAddress
-                                }
-                                invalid={
-                                  touched.relatives?.[index]?.districtAddress &&
-                                  errors.relatives?.[index]?.districtAddress
-                                }
-                                options={districtsData}
-                                isRequired
-                              />
-                              <InputField
-                                type='select'
-                                label='Xã/phường/thị trấn'
-                                placeholder='Chọn xã/phường/thị trấn...'
-                                value={relative.wardAddress}
-                                onChange={(selectedOption) => {
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    selectedOption,
-                                    index,
-                                    setFieldValue
-                                  )
-                                }}
-                                clearValue={() => {
-                                  handleChangeRelativesInfo(
-                                    "wardAddress",
-                                    "",
-                                    index,
-                                    setFieldValue
-                                  )
-                                }}
-                                loadingMessage={() =>
-                                  "Vui lòng chọn quận/huyện"
-                                }
-                                isLoading={loadingWardsData}
-                                getOptionValue={(option) => option.code}
-                                getOptionLabel={(option) =>
-                                  option.name_with_type
-                                }
-                                feedback={
-                                  errors.relatives?.[index]?.wardAddress
-                                }
-                                invalid={
-                                  touched.relatives?.[index]?.wardAddress &&
-                                  errors.relatives?.[index]?.wardAddress
-                                }
-                                options={wardsData}
-                                isRequired
-                              />
-                              <InputField
-                                type='text'
-                                name='detailAddress'
-                                placeholder='Nhập số nhà, tên đường, khu phố...'
-                                label='Số nhà, tên đường, khu phố'
-                                value={relative.detailAddress}
-                                feedback={
-                                  errors.relatives?.[index]?.detailAddress
-                                }
-                                onChange={(e) => {
-                                  handleChangeRelativesInfo(
-                                    "detailAddress",
-                                    e.target.value,
-                                    index,
-                                    setFieldValue
-                                  )
-                                }}
-                                invalid={
-                                  touched.relatives?.[index]?.detailAddress &&
-                                  errors.relatives?.[index]?.detailAddress
-                                }
-                                isRequired
+                              <FamilyInfoFormItem
+                                title={`${index}`}
+                                values={values?.["relatives"][index]}
+                                infoType={"relatives"}
+                                errors={errors["relatives"]?.[index]}
+                                touched={touched["relatives"]?.[index]}
+                                handleChangeInfo={handleChangeInfo}
+                                setFieldValue={setFieldValue}
+                                relative={relative}
+                                index={index}
+                                loadingRelationships={loadingRelationships}
+                                relationships={relationships}
                               />
                             </div>
+                            <button
+                              className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-red-500 hover:bg-red-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-0'
+                              onClick={() => {
+                                const temp = values.relatives
+                                temp.pop()
+                                setFieldValue("relatives", temp)
+                                localStorage.setItem(
+                                  "familyInfo",
+                                  JSON.stringify({
+                                    ...values,
+                                    relatives: temp,
+                                  })
+                                )
+                              }}
+                            >
+                              Xóa người thân
+                            </button>
                           </div>
-                          <InputField
-                            type='text'
-                            name={`currentJob`}
-                            placeholder={`Nhập công việc hiện tại của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Công việc hiện tại`}
-                            value={values.relatives?.[index]?.currentJob}
-                            feedback={errors.relatives?.[index]?.currentJob}
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "currentJob",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.currentJob &&
-                              errors.relatives?.[index]?.currentJob
-                            }
-                            isRequired
-                          />
-                          <InputField
-                            type='text'
-                            name={`placeOfWork`}
-                            placeholder={`Nhập nơi làm việc/học tập của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Nơi làm việc/học tập`}
-                            value={
-                              values.relatives?.[index]?.placeOfWork
-                            }
-                            feedback={
-                              errors.relatives?.[index]?.placeOfWork
-                            }
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "placeOfWork",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.placeOfWork &&
-                              errors.relatives?.[index]?.placeOfWork
-                            }
-                            isRequired
-                          />
-                          <InputField
-                            type='number'
-                            name={`income`}
-                            placeholder={`Nhập thu nhập của người thân thứ ${
-                              index + 1
-                            }...`}
-                            label={`Thu nhập`}
-                            value={relative.income}
-                            feedback={errors.relatives?.[index]?.income}
-                            note='Nhập chính xác số tiền (đơn vị: VNĐ).'
-                            onChange={(e) => {
-                              handleChangeRelativesInfo(
-                                "income",
-                                e.target.value,
-                                index,
-                                setFieldValue
-                              )
-                            }}
-                            invalid={
-                              touched.relatives?.[index]?.income &&
-                              errors.relatives?.[index]?.income
-                            }
-                            isRequired
-                          />
-                        </div>
-                        <button
-                          className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-red-500 hover:bg-red-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-0'
-                          onClick={() => {
-                            let temp = values.relatives
-                            temp.splice(index, 1)
-                            setFieldValue("relatives", temp)
-                            localStorage.setItem(
-                              "familyInfo",
-                              JSON.stringify({
-                                ...values,
-                                relatives: temp,
-                              })
-                            )
-                          }}
-                        >
-                          Xóa người thân
-                        </button>
-                      </div>
-                    ))}
+                        )
+                      })}
+                    </div>
+                    <button
+                      className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                      type='button'
+                      onClick={() => {
+                        const temp = [...values.relatives, relativeInfo]
+                        setFieldValue("relatives", temp)
+                        localStorage.setItem(
+                          "familyInfo",
+                          JSON.stringify({
+                            ...values,
+                            relatives: temp,
+                          })
+                        )
+                      }}
+                    >
+                      Thêm người thân
+                    </button>
                   </div>
-                  <button
-                    className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
-                    type='button'
-                    onClick={() => {
-                      let temp = values.relatives
-                      temp.splice(temp.length, 0, {
-                        status: {
-                          value: "Có thông tin",
-                          label: "Có thông tin",
-                        },
-                        relationship: "",
-                        fullName: "",
-                        yearOfBirth: "",
-                        phoneNumber: "",
-                        provinceAddress: "",
-                        districtAddress: "",
-                        wardAddress: "",
-                        detailAddress: "",
-                        currentJob: "",
-                        placeOfWork: "",
-                        income: 0,
-                        healthStatus: "",
-                      })
-                      setFieldValue("relatives", temp)
-                      localStorage.setItem(
-                        "familyInfo",
-                        JSON.stringify({
-                          ...values,
-                          relatives: temp,
-                        })
-                      )
+                  <InputField
+                    type='textarea'
+                    name='familyBackground'
+                    rows={10}
+                    placeholder='Nhập hoàn cảnh gia đình...'
+                    label='Hoàn cảnh gia đình'
+                    value={values.familyBackground}
+                    feedback={errors.familyBackground}
+                    onChange={(e) => {
+                      handleChange(e)
+                      handleSaveInput(e)
                     }}
-                  >
-                    Thêm người thân
-                  </button>
+                    invalid={
+                      touched.familyBackground && errors.familyBackground
+                    }
+                    note='Bạn hãy kể rõ, chi tiết về hoàn cảnh khó khăn của gia đình bạn để ban xét duyệt thấy được bạn là người xứng đáng được lựa chọn.'
+                    isRequired
+                  />
+                  <div className='mt-10 inline-flex items-center justify-center gap-5'>
+                    <button
+                      className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                      onClick={() => handleFormChange(1)}
+                    >
+                      <BsArrowLeft className='inline' /> Quay lại
+                    </button>
+                    <button
+                      className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                      type='submit'
+                    >
+                      Tiếp tục <BsArrowRight className='inline' />
+                    </button>
+                  </div>
                 </div>
-                <InputField
-                  type='textarea'
-                  name='familyBackground'
-                  rows={10}
-                  placeholder='Nhập hoàn cảnh gia đình...'
-                  label='Hoàn cảnh gia đình'
-                  value={values.familyBackground}
-                  feedback={errors.familyBackground}
-                  onChange={(e) => {
-                    handleChange(e)
-                    handleSaveInput(e)
-                  }}
-                  invalid={touched.familyBackground && errors.familyBackground}
-                  note='Bạn hãy kể rõ, chi tiết về hoàn cảnh khó khăn của gia đình bạn để ban xét duyệt thấy được bạn là người xứng đáng được lựa chọn.'
-                  isRequired
-                />
-                <div className='mt-10 inline-flex items-center justify-center gap-5'>
-                  <button
-                    className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
-                    onClick={() => handleFormChange(1)}
-                  >
-                    <BsArrowLeft className='inline' /> Quay lại
-                  </button>
-                  <button
-                    className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
-                    type='submit'
-                  >
-                    Tiếp tục <BsArrowRight className='inline' />
-                  </button>
-                </div>
-              </div>
-            </Form>
-          )}
+              </Form>
+            )
+          }}
         </Formik>
       </div>
     </Motion>
