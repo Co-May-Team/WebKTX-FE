@@ -242,8 +242,7 @@ export default function FilesUploadForm({ handleFormChange }) {
             IV. HỒ SƠ XÉT TUYỂN
           </h2>
           <span className='block text-sm mt-2 text-neutral-700 sm:text-base dark:text-neutral-200'>
-            Các bạn vui lòng tải lên đúng hồ sơ của mình ở bên dưới để tránh sai
-            sót nhé!
+            Các bạn vui lòng tải xuống 2 file mẫu và chỉnh sửa theo hướng dẫn, sau đó upload đầy đủ 3 file (kích thước mỗi file tối đa 5MB) rồi mới nhấn Gửi hồ sơ nhé!
           </span>
         </header>
         <Formik
