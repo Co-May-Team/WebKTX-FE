@@ -3,6 +3,7 @@ import Swal from "sweetalert2"
 import {
   addPost,
   deletePost,
+  fetchHiddenPosts,
   fetchPosts,
   likePost,
   loadMorePosts,
@@ -52,6 +53,17 @@ const postsSlice = createSlice({
         state.status = "success"
       })
       .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = "error"
+      })
+      .addCase(fetchHiddenPosts.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(fetchHiddenPosts.fulfilled, (state, action) => {
+        state.posts = action.payload.posts
+        state.pagination = action.payload.pagination
+        state.status = "success"
+      })
+      .addCase(fetchHiddenPosts.rejected, (state, action) => {
         state.status = "error"
       })
       .addCase(loadMorePosts.pending, (state, action) => {

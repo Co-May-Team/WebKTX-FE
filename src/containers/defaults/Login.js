@@ -156,12 +156,12 @@ export default function Login() {
                       onChange={handleChange}
                       isRequired
                     />
-                    <NavLink
+                    {/* <NavLink
                       className='text-primary-6000 hover:text-primary-800 dark:text-primary-500 dark:hover:text-primary-6000 text-sm'
                       to={path.SIGNUP}
                     >
                       Chưa có tài khoản?
-                    </NavLink>
+                    </NavLink> */}
                     <button
                       id='loginFormSubmit'
                       type='submit'

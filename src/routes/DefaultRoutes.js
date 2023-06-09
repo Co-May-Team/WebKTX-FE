@@ -10,7 +10,7 @@ import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
 const Home = React.lazy(() => import("~/containers/defaults/Home"))
-const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
+// const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
 const Login = React.lazy(() => import("~/containers/defaults/Login"))
 const Authentication = React.lazy(() =>
   import("~/containers/defaults/Authentication")
@@ -29,8 +29,8 @@ const RegistrationForm = React.lazy(() =>
 
 const defaultRoutes = [
   { id: 1, Container: Home, path: path.HOME },
-  { id: 2, Container: Signup, path: path.SIGNUP },
-  { id: 3, Container: Login, path: path.LOGIN },
+  // { id: 2, Container: Signup, path: path.SIGNUP },
+  { id: 2, Container: Login, path: path.LOGIN },
   { id: 3, Container: Logout, path: path.LOGOUT },
   { id: 4, Container: Authentication, path: path.AUTH },
   { id: 5, Container: PostSaved, path: path.POSTSAVED },
