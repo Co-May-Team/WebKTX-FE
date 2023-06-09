@@ -427,7 +427,7 @@ export default function Search() {
                               <FaEye size={15} />
                               <span className='ml-1'>{result.viewed}</span>
                             </button>
-                            <NavLink
+                            {/* <NavLink
                               className='nc-PostCardCommentBtn relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none'
                               title='Bình luận'
                               to={`/${convertToUrl(result.title)}/${
@@ -467,7 +467,7 @@ export default function Search() {
                                 />
                               </svg>
                               <span className='ml-1'>0</span>
-                            </NavLink>
+                            </NavLink> */}
                           </div>
                           <div className='flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative'>
                             <SavePostButton savedPost={result} />

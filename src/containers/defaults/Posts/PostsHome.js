@@ -67,7 +67,7 @@ export default function PostsHome() {
       <div className='relative flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 text-neutral-900 dark:text-neutral-50'>
         <div className='text-center w-full max-w-2xl mx-auto '>
           <h2 className='text-3xl md:text-4xl font-semibold'>
-            {tagInfo?.tagName.toUpperCase()}
+            {tagInfo?.tagName?.toUpperCase()}
           </h2>
         </div>
       </div>
@@ -94,7 +94,7 @@ export default function PostsHome() {
                         <FaEye size={15} />
                         <span className='ml-1'>{post?.viewed}</span>
                       </button>
-                      <NavLink
+                      {/* <NavLink
                         className='relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden xs:flex  px-3 h-8 text-xs focus:outline-none'
                         title='Bình luận'
                         to={`/${convertToUrl(post?.title)}/${
@@ -134,7 +134,7 @@ export default function PostsHome() {
                           />
                         </svg>
                         <span className='ml-1'>0</span>
-                      </NavLink>
+                      </NavLink> */}
                     </div>
                     <div className='flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative'>
                       <SavePostButton savedPost={post} />
@@ -163,7 +163,7 @@ export default function PostsHome() {
                     <div className='space-y-2.5 mb-3'>
                       <div className='flex flex-wrap space-x-2'>
                         <div className='transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-red-800 bg-red-100 hover:bg-red-800'>
-                          {post?.category.categoryName}
+                          {post?.category?.categoryName}
                         </div>
                       </div>
                       <h2 className='block text-base font-semibold text-neutral-900 dark:text-neutral-100'>
@@ -180,17 +180,17 @@ export default function PostsHome() {
                       <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-10 w-10 text-base flex-shrink-0 mr-3'>
                         <img
                           className='absolute inset-0 w-full h-full object-cover'
-                          src={post?.userInfo.avatar}
-                          alt={post?.userInfo.fullName}
-                          title={post?.userInfo.fullName}
+                          src={post?.userInfo?.avatar}
+                          alt={post?.userInfo?.fullName}
+                          title={post?.userInfo?.fullName}
                         />
                         <span className='wil-avatar__name'>
-                          {post?.userInfo.fullName}
+                          {post?.userInfo?.fullName}
                         </span>
                       </div>
                       <div>
                         <h2 className='text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                          {post?.userInfo.fullName}
+                          {post?.userInfo?.fullName}
                         </h2>
                         <span className='flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400'>
                           <span>{moment(post?.publishedAt).format("lll")}</span>

@@ -204,9 +204,9 @@ export default function PostDetail(props) {
                     <Slide left>
                       <div
                         className='transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs !px-3 text-pink-800 bg-pink-100 hover:bg-pink-800'
-                        // to={`/${convertToUrl(postInfo?.category.categoryName)}`}
+                        // to={`/${convertToUrl(postInfo?.category?.categoryName)}`}
                       >
-                        {postInfo?.category.categoryName}
+                        {postInfo?.category?.categoryName}
                       </div>
                     </Slide>
                   </div>
@@ -267,7 +267,7 @@ export default function PostDetail(props) {
                               </span>
                             </button>
                           </Fade>
-                          <Fade right>
+                          {/* <Fade right>
                             <button
                               className='relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-4 h-9 text-sm focus:outline-none'
                               title='Bình luận'
@@ -308,7 +308,7 @@ export default function PostDetail(props) {
                                 {postInfo?.userInfo?.totalComment || 0}
                               </span>
                             </button>
-                          </Fade>
+                          </Fade> */}
                         </div>
                         <Fade right>
                           <div className='px-1'>

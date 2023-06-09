@@ -7,6 +7,10 @@ const postsApi = {
     const requestUrl = `${baseUrl}?${queryString.stringify(params)}`
     return axiosClient.post(requestUrl, { ...filters })
   },
+  getAllHiddenPosts: (params, filters) => {
+    const requestUrl = `${baseUrl}/hidden?${queryString.stringify(params)}`
+    return axiosClient.post(requestUrl, { ...filters })
+  },
   get: (postId) => {
     const requestUrl = `${baseUrl}/${postId}`
     return axiosClient.get(requestUrl)
