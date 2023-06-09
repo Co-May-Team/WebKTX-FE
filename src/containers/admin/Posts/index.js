@@ -12,7 +12,13 @@ import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import { useClickOutside } from "~/hooks"
-import { deletePost, fetchPosts, loadMorePosts } from "~/store/posts/actions"
+import {
+  deletePost,
+  fetchHiddenPosts,
+  fetchPosts,
+  loadMoreHiddenPosts,
+  loadMorePosts,
+} from "~/store/posts/actions"
 import { postsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import SubmitPost from "./SubmitPost"
@@ -40,34 +46,60 @@ export default function Posts() {
   const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
   const [visibleDeletePost, setVisibleDeletePost] = useState(false)
   const [currentPost, setCurrentPost] = useState(null)
+  const [visibleHiddenPosts, setVisibleHiddenPosts] = useState(false)
 
   const handleSearch = async (e) => {
     const value = e.target.value
     setKeyWord(value)
-    if (filters.title !== undefined && filters.content === undefined) {
-      dispatch(fetchPosts({ params, filters: { title: value } }))
-    } else if (filters.content !== undefined && filters.title === undefined) {
-      dispatch(fetchPosts({ params, filters: { content: value } }))
+    if (visibleHiddenPosts) {
+      if (filters.title !== undefined && filters.content === undefined) {
+        dispatch(fetchHiddenPosts({ params, filters: { title: value } }))
+      } else if (filters.content !== undefined && filters.title === undefined) {
+        dispatch(fetchHiddenPosts({ params, filters: { content: value } }))
+      } else {
+        dispatch(
+          fetchHiddenPosts({
+            params,
+            filters: { title: value, content: value },
+          })
+        )
+      }
     } else {
-      dispatch(
-        fetchPosts({ params, filters: { title: value, content: value } })
-      )
+      if (filters.title !== undefined && filters.content === undefined) {
+        dispatch(fetchPosts({ params, filters: { title: value } }))
+      } else if (filters.content !== undefined && filters.title === undefined) {
+        dispatch(fetchPosts({ params, filters: { content: value } }))
+      } else {
+        dispatch(
+          fetchPosts({ params, filters: { title: value, content: value } })
+        )
+      }
     }
   }
 
   const handleDeletePost = () => {
-    dispatch(deletePost(currentPost.postId))
+    dispatch(deletePost(currentPost?.postId))
   }
 
   useEffect(() => {
-    if (filters.title !== undefined && filters.content === undefined) {
-      dispatch(fetchPosts({ params, filters }))
-    } else if (filters.content !== undefined && filters.title === undefined) {
-      dispatch(fetchPosts({ params, filters }))
+    if (visibleHiddenPosts) {
+      if (filters.title !== undefined && filters.content === undefined) {
+        dispatch(fetchHiddenPosts({ params, filters }))
+      } else if (filters.content !== undefined && filters.title === undefined) {
+        dispatch(fetchHiddenPosts({ params, filters }))
+      } else {
+        dispatch(fetchHiddenPosts({ params, filters }))
+      }
     } else {
-      dispatch(fetchPosts({ params, filters }))
+      if (filters.title !== undefined && filters.content === undefined) {
+        dispatch(fetchPosts({ params, filters }))
+      } else if (filters.content !== undefined && filters.title === undefined) {
+        dispatch(fetchPosts({ params, filters }))
+      } else {
+        dispatch(fetchPosts({ params, filters }))
+      }
     }
-  }, [params, filters])
+  }, [params, filters, visibleHiddenPosts])
   useClickOutside(filterDropdownRef, () => setVisibleFilterDropdown(false))
 
   return (
@@ -87,8 +119,22 @@ export default function Posts() {
             Đăng bài mới
           </button>
         </div>
+        <div
+          className='mb-3'
+          style={{ cursor: "pointer" }}
+          onClick={() => setVisibleHiddenPosts(!visibleHiddenPosts)}
+        >
+          <input
+            type='checkbox'
+            className='mr-2'
+            checked={visibleHiddenPosts}
+          />
+          <span className='text-neutral-800 font-medium text-sm dark:text-neutral-300'>
+            Chỉ hiển thị bài viết đã ẩn
+          </span>
+        </div>
         <form
-          className='relative w-full mt-8 sm:mt-11 text-left'
+          className='relative w-full text-left'
           onSubmit={(e) => {
             e.preventDefault()
           }}
@@ -159,7 +205,7 @@ export default function Posts() {
                     setFilters({ title: keyword, content: keyword })
                   }
                 >
-                  Tất cả
+                  Cả tiêu đề và nội dung
                 </button>
               </li>
             </ul>
@@ -244,7 +290,7 @@ export default function Posts() {
                       </span>
                     )}
                   </li>
-                  <li
+                  {/* <li
                     className='hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4'
                     onClick={() =>
                       setParams({ ...params, sort: "totalComment" })
@@ -270,7 +316,7 @@ export default function Posts() {
                         </svg>
                       </span>
                     )}
-                  </li>
+                  </li> */}
                 </ul>
               )}
             </div>
@@ -282,46 +328,56 @@ export default function Posts() {
           <>
             <InfiniteScroll
               dataLength={posts.length}
-              next={() =>
+              next={() => {
+                if (visibleHiddenPosts) {
+                  dispatch(
+                    loadMoreHiddenPosts({
+                      params: { ...params, page: pagination.page + 1 },
+                      filters,
+                    })
+                  )
+                }
+                else {
                 dispatch(
                   loadMorePosts({
                     params: { ...params, page: pagination.page + 1 },
                     filters,
                   })
                 )
-              }
+                }
+              }}
               hasMore={status !== "loadingFull"}
               className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8 mt-8 lg:mt-10'
               style={{ overflow: "visible" }}
             >
               {posts?.map((post) => (
-                <Fade key={post.postId} bottom>
+                <Fade key={post?.postId} bottom>
                   <div className='relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full'>
                     <div className='block flex-shrink-0 relative w-full rounded-t-xl overflow-hidden aspect-w-4 aspect-h-3'>
                       <div>
                         <div className='relative w-full h-full '>
                           <div className='absolute inset-0'>
                             <img
-                              src={post.thumbnail}
+                              src={post?.thumbnail}
                               className='object-cover w-full h-full'
-                              alt={post.title}
+                              alt={post?.title}
                             />
                           </div>
                           <NavLink
                             className='block absolute inset-0'
-                            to={`/${convertToUrl(post.title)}/${post.postId}`}
+                            to={`/${convertToUrl(post?.title)}/${post?.postId}`}
                           />
                         </div>
                       </div>
                     </div>
                     <NavLink
                       className='absolute inset-0'
-                      to={`/${convertToUrl(post.title)}/${post.postId}`}
+                      to={`/${convertToUrl(post?.title)}/${post?.postId}`}
                     />
                     <span className='absolute top-3 inset-x-3 z-10'>
                       <div className='flex flex-wrap space-x-2'>
                         <div className='transition-colors hover:text-white duration-300 nc-Badge  inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800'>
-                          {post.category.categoryName}
+                          {post?.category?.categoryName}
                         </div>
                       </div>
                     </span>
@@ -331,32 +387,32 @@ export default function Posts() {
                           <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full h-7 w-7 text-sm ring-1 ring-white dark:ring-neutral-900'>
                             <img
                               className='absolute inset-0 w-full h-full object-cover'
-                              src={post?.userInfo.avatar}
-                              alt={post?.userInfo.fullName}
-                              title={post?.userInfo.fullName}
+                              src={post?.userInfo?.avatar}
+                              alt={post?.userInfo?.fullName}
+                              title={post?.userInfo?.fullName}
                             />
                             <span className='wil-avatar__name'>
-                              {post?.userInfo.fullName}
+                              {post?.userInfo?.fullName}
                             </span>
                           </div>
                           <span className='block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium'>
-                            {post?.userInfo.fullName}
+                            {post?.userInfo?.fullName}
                           </span>
                         </div>
                         <span className='text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium'>
                           ·
                         </span>
                         <span className='text-neutral-500 dark:text-neutral-400 font-normal'>
-                          {moment(post.publishedAt).format("lll")}
+                          {moment(post?.publishedAt).format("lll")}
                         </span>
                       </div>
                       <h2 className='nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100 '>
                         <NavLink
                           className='line-clamp-2'
-                          title={post.title}
-                          to={`/${convertToUrl(post.title)}/${post.postId}`}
+                          title={post?.title}
+                          to={`/${convertToUrl(post?.title)}/${post?.postId}`}
                         >
-                          {post.title}
+                          {post?.title}
                         </NavLink>
                       </h2>
                       <div className='flex items-end justify-between mt-auto'>

@@ -15,7 +15,7 @@ const Toast = Swal.mixin({
   toast: true,
   position: "bottom-end",
   showConfirmButton: false,
-  timer: 10000,
+  timer: 5000,
   timerProgressBar: true,
   didOpen: (toast) => {
     toast.addEventListener("mouseenter", Swal.stopTimer)
@@ -120,7 +120,7 @@ const authSlice = createSlice({
           Toast.fire({
             title: "Đăng nhập với Google",
             text: "Đăng nhập với Google thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
-            icon: "success",
+            icon: "success",                
           })
         } else {
           state.status = "user"

@@ -3,8 +3,10 @@ import Swal from "sweetalert2"
 import {
   addPost,
   deletePost,
+  fetchHiddenPosts,
   fetchPosts,
   likePost,
+  loadMoreHiddenPosts,
   loadMorePosts,
   updatePost,
   uploadImages,
@@ -54,6 +56,17 @@ const postsSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "error"
       })
+      .addCase(fetchHiddenPosts.pending, (state, action) => {
+        state.status = "loading"
+      })
+      .addCase(fetchHiddenPosts.fulfilled, (state, action) => {
+        state.posts = action.payload.posts
+        state.pagination = action.payload.pagination
+        state.status = "success"
+      })
+      .addCase(fetchHiddenPosts.rejected, (state, action) => {
+        state.status = "error"
+      })
       .addCase(loadMorePosts.pending, (state, action) => {
         state.status = "loadingMore"
       })
@@ -67,6 +80,21 @@ const postsSlice = createSlice({
         }
       })
       .addCase(loadMorePosts.rejected, (state, action) => {
+        state.status = "error"
+      })
+      .addCase(loadMoreHiddenPosts.pending, (state, action) => {
+        state.status = "loadingMore"
+      })
+      .addCase(loadMoreHiddenPosts.fulfilled, (state, action) => {
+        if (action.payload.posts?.length === 0) {
+          state.status = "loadingFull"
+        } else {
+          state.posts = [...state.posts, ...action.payload.posts]
+          state.pagination = action.payload.pagination
+          state.status = "success"
+        }
+      })
+      .addCase(loadMoreHiddenPosts.rejected, (state, action) => {
         state.status = "error"
       })
       .addCase(addPost.pending, (state, action) => {

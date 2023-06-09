@@ -18,7 +18,7 @@ export default function MostViewPosts({ listPost }) {
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8'>
           {listPost?.map((post) => (
-            <Fade key={post.postId} bottom>
+            <Fade key={post?.postId} bottom>
               <div className='relative flex flex-col group rounded-3xl overflow-hidden z-0 h-full'>
                 <div className='absolute inset-x-0 top-0 p-3 flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300'>
                   <div className='flex items-center space-x-2 relative'>
@@ -29,7 +29,7 @@ export default function MostViewPosts({ listPost }) {
                       <FaEye size={15} />
                       <span className='ml-1'>{post?.viewed}</span>
                     </button>
-                    <NavLink
+                    {/* <NavLink
                       className='relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none'
                       title='Bình luận'
                       to={`/${convertToUrl(post?.title)}/${
@@ -69,7 +69,7 @@ export default function MostViewPosts({ listPost }) {
                         />
                       </svg>
                       <span className='ml-1'>0</span>
-                    </NavLink>
+                    </NavLink> */}
                   </div>
                   <div className='flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative'>
                     <SavePostButton savedPost={post} />
@@ -102,7 +102,7 @@ export default function MostViewPosts({ listPost }) {
                         className='transition-colors hover:text-white duration-300 inline-flex px-2.5 py-1 rounded-full font-medium text-xs relative text-yellow-800 bg-yellow-100 hover:bg-yellow-800'
                         // to={`/${convertToUrl(post?.category.categoryName)}`}
                       >
-                        {post?.category.categoryName}
+                        {post?.category?.categoryName}
                       </div>
                     </div>
                   </div>
@@ -115,7 +115,7 @@ export default function MostViewPosts({ listPost }) {
                       </h2>
                       <div className='flex mt-2.5 relative'>
                         <span className='block text-neutral-200 hover:text-white font-medium truncate'>
-                          {post?.userInfo.fullName}
+                          {post?.userInfo?.fullName}
                         </span>
                         <span className='mx-[6px] font-medium'>·</span>
                         <span className='font-normal truncate'>
