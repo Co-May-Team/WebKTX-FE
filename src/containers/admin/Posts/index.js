@@ -16,6 +16,7 @@ import {
   deletePost,
   fetchHiddenPosts,
   fetchPosts,
+  loadMoreHiddenPosts,
   loadMorePosts,
 } from "~/store/posts/actions"
 import { postsSelector } from "~/store/selectors"
@@ -89,8 +90,7 @@ export default function Posts() {
       } else {
         dispatch(fetchHiddenPosts({ params, filters }))
       }
-    }
-    else {
+    } else {
       if (filters.title !== undefined && filters.content === undefined) {
         dispatch(fetchPosts({ params, filters }))
       } else if (filters.content !== undefined && filters.title === undefined) {
@@ -119,8 +119,22 @@ export default function Posts() {
             Đăng bài mới
           </button>
         </div>
+        <div
+          className='mb-3'
+          style={{ cursor: "pointer" }}
+          onClick={() => setVisibleHiddenPosts(!visibleHiddenPosts)}
+        >
+          <input
+            type='checkbox'
+            className='mr-2'
+            checked={visibleHiddenPosts}
+          />
+          <span className='text-neutral-800 font-medium text-sm dark:text-neutral-300'>
+            Chỉ hiển thị bài viết đã ẩn
+          </span>
+        </div>
         <form
-          className='relative w-full mt-8 sm:mt-11 text-left'
+          className='relative w-full text-left'
           onSubmit={(e) => {
             e.preventDefault()
           }}
@@ -191,19 +205,7 @@ export default function Posts() {
                     setFilters({ title: keyword, content: keyword })
                   }
                 >
-                  Tất cả
-                </button>
-              </li>
-              <li className='relative'>
-                <button
-                  className={
-                    visibleHiddenPosts
-                      ? "block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full bg-secondary-900 text-secondary-50  focus:outline-none"
-                      : "block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none"
-                  }
-                  onClick={() => setVisibleHiddenPosts(!visibleHiddenPosts)}
-                >
-                  Bài viết đã ẩn
+                  Cả tiêu đề và nội dung
                 </button>
               </li>
             </ul>
@@ -326,14 +328,24 @@ export default function Posts() {
           <>
             <InfiniteScroll
               dataLength={posts.length}
-              next={() =>
+              next={() => {
+                if (visibleHiddenPosts) {
+                  dispatch(
+                    loadMoreHiddenPosts({
+                      params: { ...params, page: pagination.page + 1 },
+                      filters,
+                    })
+                  )
+                }
+                else {
                 dispatch(
                   loadMorePosts({
                     params: { ...params, page: pagination.page + 1 },
                     filters,
                   })
                 )
-              }
+                }
+              }}
               hasMore={status !== "loadingFull"}
               className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8 mt-8 lg:mt-10'
               style={{ overflow: "visible" }}

@@ -25,6 +25,13 @@ export const loadMorePosts = createAsyncThunk(
     return response.data.data
   }
 )
+export const loadMoreHiddenPosts = createAsyncThunk(
+  "posts/loadMoreHiddenPosts",
+  async (params) => {
+    const response = await postsApi.getAllHiddenPosts(params.params, params.filters)
+    return response.data.data
+  }
+)
 export const addPost = createAsyncThunk("posts/addPost", async (postInfo) => {
   const response = await postsApi.addPost(postInfo)
   return response.data

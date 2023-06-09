@@ -216,7 +216,7 @@ export default function Search() {
                     }
                     onClick={() => setFilters({ ...filters, filterBy: "q" })}
                   >
-                    Tất cả
+                    Cả tiêu đề và nội dung
                   </button>
                 </li>
               </ul>
