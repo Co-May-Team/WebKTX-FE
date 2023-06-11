@@ -22,13 +22,13 @@ export default function MostViewPosts({ listPost }) {
               <div className='relative flex flex-col group rounded-3xl overflow-hidden z-0 h-full'>
                 <div className='absolute inset-x-0 top-0 p-3 flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300'>
                   <div className='flex items-center space-x-2 relative'>
-                    <button
+                    {/* <button
                       className='relative min-w-[68px] flex items-center justify-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-neutral-700 bg-neutral-50 dark:text-neutral-200 dark:bg-neutral-800 hover:bg-rose-50 dark:hover:bg-rose-100 hover:text-rose-600 dark:hover:text-rose-500'
                       title='Lượt xem'
                     >
                       <FaEye size={15} />
                       <span className='ml-1'>{post?.viewed}</span>
-                    </button>
+                    </button> */}
                     {/* <NavLink
                       className='relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none'
                       title='Bình luận'
