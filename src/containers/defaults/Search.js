@@ -223,7 +223,7 @@ export default function Search() {
             </nav>
             <div className='block my-4 border-b w-full border-neutral-100 sm:hidden' />
             <div className='flex justify-end'>
-              <div
+              {/* <div
                 className='relative md:min-w-[200px]'
                 ref={filterDropdownRef}
               >
@@ -335,7 +335,7 @@ export default function Search() {
                     </li>
                   </ul>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
           {loading ? (
@@ -420,13 +420,13 @@ export default function Search() {
                         </h2>
                         <div className='flex items-end justify-between mt-auto'>
                           <div className='flex items-center space-x-2 relative'>
-                            <button
+                            {/* <button
                               className='relative min-w-[68px] flex items-center justify-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-rose-600 bg-rose-50 dark:bg-rose-100'
                               title='Lượt xem'
                             >
                               <FaEye size={15} />
                               <span className='ml-1'>{result.viewed}</span>
-                            </button>
+                            </button> */}
                             {/* <NavLink
                               className='nc-PostCardCommentBtn relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none'
                               title='Bình luận'
