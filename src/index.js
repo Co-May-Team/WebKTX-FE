@@ -1,8 +1,8 @@
 // Import các thư viện cần thiết
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import ReactDOM from "react-dom/client"
 import { Provider } from "react-redux"
-import { BrowserRouter as Router } from "react-router-dom"
+import { BrowserRouter as Router, useLocation } from "react-router-dom"
 import { persistStore } from "redux-persist"
 import { PersistGate } from "redux-persist/integration/react"
 
@@ -14,6 +14,16 @@ import store from "./store"
 // Tạo persist store
 const pStore = persistStore(store)
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
+
 // Hàm renderApp để render toàn bộ ứng dụng lên trang web
 function renderApp() {
   // Tìm đến thẻ có id="root" trong DOM để render ứng dụng
@@ -24,6 +34,7 @@ function renderApp() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={pStore}>
           <Router>
+            <ScrollToTop />
             <GlobalStyles>
               <App />
             </GlobalStyles>
