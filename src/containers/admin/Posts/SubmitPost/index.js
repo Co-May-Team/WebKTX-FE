@@ -81,7 +81,7 @@ export default function SubmitPost({ visible, setVisible, post }) {
     summary: "",
     isPublished: true,
     publishedAt: addedDate(new Date()),
-    category: {},
+    category: categories[0],
     tagModels: [tags[0]],
     thumbnail: "",
   }
