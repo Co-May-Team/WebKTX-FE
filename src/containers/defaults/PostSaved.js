@@ -101,7 +101,7 @@ export default function PostSaved() {
                     </h2>
                     <div className='flex items-end justify-between mt-auto'>
                       <div className='flex items-center space-x-2 relative'>
-                        <button
+                        {/* <button
                           className='relative min-w-[68px] flex items-center justify-center rounded-full leading-none group transition-colors px-3 h-8 text-xs focus:outline-none text-rose-600 bg-rose-50 dark:bg-rose-100'
                           title='Lượt xem'
                         >
@@ -152,7 +152,7 @@ export default function PostSaved() {
                           <span className='ml-1 text-neutral-900 dark:text-neutral-200'>
                             0
                           </span>
-                        </NavLink>
+                        </NavLink> */}
                       </div>
                       <div className='flex items-center space-x-2 text-xs text-neutral-700 dark:text-neutral-300 relative'>
                         <SavePostButton
