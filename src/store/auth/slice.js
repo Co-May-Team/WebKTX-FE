@@ -66,7 +66,6 @@ const authSlice = createSlice({
             text: "Đăng nhập thành công",
             icon: "success",
           })
-          // window.history.back()
         } else {
           state.status = "anonymous"
           Toast.fire({

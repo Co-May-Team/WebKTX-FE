@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { Formik } from "formik"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { NavLink, Navigate, useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
@@ -17,13 +18,14 @@ export default function Login() {
   const navigate = useNavigate()
 
   const status = useSelector(authSelector).status
-  const userInfo = useSelector(authSelector).userInfo
 
-  if (status === "auth") {
-    return <Navigate to={path.AUTH} />
-  } else if (status === "user") {
-    navigate(-1)
-  }
+  useEffect(() => {
+    if (status === "auth") {
+      return <Navigate to={path.AUTH} />
+    } else if (status === "user") {
+      navigate(-1)
+    }
+  }, [status])
 
   /* Xử lý form */
   const initialValues = {
