@@ -256,7 +256,7 @@ export default function PostDetail(props) {
                     <div>
                       <div className='flex flex-row space-x-2.5 items-center'>
                         <div className='flex items-center justify-center space-x-2 !space-x-2.5'>
-                          <Fade right>
+                          {/* <Fade right>
                             <button
                               className='relative min-w-[68px] flex items-center rounded-full leading-none group transition-colors px-4 h-9 text-sm focus:outline-none text-rose-600 bg-rose-50 dark:bg-rose-100'
                               title='Lượt xem'
@@ -266,7 +266,7 @@ export default function PostDetail(props) {
                                 {postInfo?.viewed}
                               </span>
                             </button>
-                          </Fade>
+                          </Fade> */}
                           {/* <Fade right>
                             <button
                               className='relative items-center min-w-[68px] rounded-full text-neutral-6000 bg-neutral-50 transition-colors dark:text-neutral-200 dark:bg-neutral-800 hover:bg-teal-50 dark:hover:bg-teal-100 hover:text-teal-600 dark:hover:text-teal-500 hidden sm:flex  px-4 h-9 text-sm focus:outline-none'
