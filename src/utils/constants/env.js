@@ -1,4 +1,4 @@
 export const env = {
-  FRONTEND_URL: "https://devcomaydorm.tech/",
-  BACKEND_URL: "https://devcomaydorm.tech/api/"
+  FRONTEND_URL: "https://ktxcomay.com.vn/",
+  BACKEND_URL: "https://ktxcomay.com.vn/api/"
 }
