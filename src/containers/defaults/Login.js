@@ -22,11 +22,7 @@ export default function Login() {
   if (status === "auth") {
     return <Navigate to={path.AUTH} />
   } else if (status === "user") {
-    if (!userInfo?.admin) {
-      return <Navigate to='/' />
-    } else {
-      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} />
-    }
+    navigate(-1)
   }
 
   /* Xử lý form */

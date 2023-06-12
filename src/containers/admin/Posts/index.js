@@ -211,7 +211,7 @@ export default function Posts() {
             </ul>
           </nav>
           <div className='block my-4 border-b w-full border-neutral-100 sm:hidden' />
-          <div className='flex justify-end'>
+          {/* <div className='flex justify-end'>
             <div className='relative md:min-w-[200px]' ref={filterDropdownRef}>
               <button
                 className='relative h-auto inline-flex items-center justify-center rounded-full transition-colors text-sm px-4 py-2 sm:py-2.5 hover:border-neutral-300 w-full justify-between text-neutral-700 border border-neutral-200 dark:text-neutral-200 dark:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
@@ -290,7 +290,7 @@ export default function Posts() {
                       </span>
                     )}
                   </li>
-                  {/* <li
+                  <li
                     className='hover:text-primary-700 dark:text-neutral-200 hover:bg-primary-50 dark:bg-neutral-700 cursor-pointer relative py-2 pl-10 pr-4'
                     onClick={() =>
                       setParams({ ...params, sort: "totalComment" })
@@ -316,11 +316,11 @@ export default function Posts() {
                         </svg>
                       </span>
                     )}
-                  </li> */}
+                  </li>
                 </ul>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
         {status === "loading" ? (
           <Loading />

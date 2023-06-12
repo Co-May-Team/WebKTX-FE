@@ -1,5 +1,7 @@
 $dark-color: #d1d5d8;
 $dark-bg: rgba(var(--c-neutral-900), var(--comay-bg-opacity));
+$dark-bg-menu: rgba(var(--c-neutral-800), var(--comay-bg-opacity));
+$dark-bg-focus: rgba(var(--c-neutral-700), var(--comay-bg-opacity));
 $dark-border-color: #6b7280;
 $dark-placeholder-color: #6b7280;
 .dark {
@@ -29,10 +31,20 @@ $dark-placeholder-color: #6b7280;
     font-family: inherit;
     color: $dark-color;
   }
+  .custom-select__input-container {
+    color: $dark-color !important;
+  }
+  .custom-select__control--is-focused {
+    background-color: $dark-bg-focus !important;
+  }
   .custom-select__control--is-disabled {
     background-color: #e9ecef;
   }
   .form-control:disabled {
     background-color: #e9ecef;
+  }
+  .custom-select__menu {
+    background-color: $dark-bg-menu !important;
+    color: $dark-color !important;
   }
 }
