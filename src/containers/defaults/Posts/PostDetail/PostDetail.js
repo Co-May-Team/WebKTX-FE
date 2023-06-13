@@ -447,30 +447,6 @@ export default function PostDetail(props) {
                                       {copied ? "Đã sao chép" : "Sao chép link"}
                                     </span>
                                   </button>
-                                  <button
-                                    className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'
-                                    onClick={() => setVisibleFormEditPost(true)}
-                                  >
-                                    <FaRegEdit
-                                      size={12}
-                                      className='mr-1 w-7 text-base'
-                                    />
-                                    <span className='truncate'>
-                                      Chỉnh sửa bài viết
-                                    </span>
-                                  </button>
-                                  <button
-                                    className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'
-                                    onClick={() => setVisibleDeletePost(true)}
-                                  >
-                                    <FaRegTrashAlt
-                                      size={12}
-                                      className='mr-1 w-7 text-base'
-                                    />
-                                    <span className='truncate'>
-                                      Xóa bài viết
-                                    </span>
-                                  </button>
                                 </div>
                               </div>
                             )}
