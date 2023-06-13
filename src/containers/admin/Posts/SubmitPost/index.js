@@ -437,15 +437,6 @@ export default function SubmitPost({ visible, setVisible, post }) {
                         onChange={(content) => {
                           setFieldValue("content", content)
                         }}
-                        onBlur={() => {
-                          setFieldTouched("content", true)
-                          if (!values.content) {
-                            setFieldError(
-                              "content",
-                              "Vui lòng nhập nội dung bài viết"
-                            )
-                          }
-                        }}
                       />
                       {errors.content && (
                         <div className='invalid-feedback d-block'>
