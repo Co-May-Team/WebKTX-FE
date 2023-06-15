@@ -31,7 +31,7 @@ export default function FormDetail() {
 
   // Hàm xử lý quay lại trang quản lý form
   function backToListForm() {
-    navigate(`${path.ADMIN + path.FORMS}`)
+    navigate(-1)
   }
 
   const renderFile = (file) => {

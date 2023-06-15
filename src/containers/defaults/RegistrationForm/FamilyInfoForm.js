@@ -369,7 +369,6 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     invalid={
                       touched.familyBackground && errors.familyBackground
                     }
-                    showLengthValue
                     note='Bạn hãy kể rõ, chi tiết về hoàn cảnh khó khăn của gia đình bạn để ban xét duyệt thấy được bạn là người xứng đáng được lựa chọn.'
                     isRequired
                   />
