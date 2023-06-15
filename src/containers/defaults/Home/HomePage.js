@@ -6,11 +6,11 @@ import SeoHelmet from "~/components/SeoHelmet"
 import { fetchCategories } from "~/store/categories/actions"
 import { fetchTags } from "~/store/tags/actions"
 
-const PostsSection = React.lazy(() => import("./sections/PostsSection"))
-const ImagesSection = React.lazy(() => import("./sections/ImagesSection"))
-const VideosSection = React.lazy(() => import("./sections/VideosSection"))
+const PostsSection = React.lazy(() => import("./PostsSection"))
+const ImagesSection = React.lazy(() => import("./ImagesSection"))
+const VideosSection = React.lazy(() => import("./VideosSection"))
 
-export default function Home() {
+export default function HomePage() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchTags())

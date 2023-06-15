@@ -39,9 +39,7 @@ const validationSchema = {
   }),
   yearOfBirth: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
-    then: Yup.string()
-      .nullable()
-      .required("Năm sinh là bắt buộc"),
+    then: Yup.string().nullable().required("Năm sinh là bắt buộc"),
     otherwise: Yup.string().nullable(),
   }),
   phoneNumber: Yup.string().when("status", {
@@ -49,7 +47,7 @@ const validationSchema = {
     then: Yup.string()
       .nullable()
       .required("Số điện thoại là bắt buộc")
-      .length(10, "Vui lòng nhập chính xác số điện thoại"),
+      .matches(/^(0)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ"),
     otherwise: Yup.string().nullable(),
   }),
   provinceAddress: Yup.object().when("status", {
@@ -117,9 +115,19 @@ const validationSchemaFamilyInfo = Yup.object().shape({
       ...validationSchema,
     })
   ),
-  familyBackground: Yup.string().required(
-    "Hoàn cảnh gia đình không được để trống"
-  ),
+  familyBackground: Yup.string()
+    .required("Hoàn cảnh gia đình không được để trống")
+    .test(
+      "wordCount",
+      "Số từ nhập vào vượt quá giới hạn (1000 từ)",
+      (value) => {
+        if (value) {
+          const wordCount = value.trim().split(/\s+/).length
+          return wordCount <= 1000
+        }
+        return true
+      }
+    ),
 })
 
 export default function FamilyInfoForm({ handleFormChange }) {
@@ -351,7 +359,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     name='familyBackground'
                     rows={10}
                     placeholder='Nhập hoàn cảnh gia đình...'
-                    label='Hoàn cảnh gia đình'
+                    label='Hoàn cảnh gia đình (tối đa 1000 từ)'
                     value={values.familyBackground}
                     feedback={errors.familyBackground}
                     onChange={(e) => {
@@ -361,6 +369,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     invalid={
                       touched.familyBackground && errors.familyBackground
                     }
+                    showLengthValue
                     note='Bạn hãy kể rõ, chi tiết về hoàn cảnh khó khăn của gia đình bạn để ban xét duyệt thấy được bạn là người xứng đáng được lựa chọn.'
                     isRequired
                   />

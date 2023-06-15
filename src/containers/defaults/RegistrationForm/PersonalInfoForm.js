@@ -107,8 +107,8 @@ export default function PersonalInfoForm({ handleFormChange }) {
     dateOfBirth: Yup.string().required("Ngày sinh không được để trống"),
     gender: Yup.object().nullable().required("Giới tính không được để trống"),
     phoneNumber: Yup.string()
-      .matches(/^(0|\+84)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ")
-      .required("Số điện thoại không được để trống"),
+      .required("Số điện thoại không được để trống")
+      .matches(/^(0)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ"),
     email: Yup.string()
       .email("Email không hợp lệ")
       .required("Email không được để trống"),

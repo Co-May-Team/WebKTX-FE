@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Formik } from "formik"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
@@ -11,19 +12,22 @@ import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
 export default function Authentication() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (status === "user") {
-    if (!userInfo?.admin) {
-      return <Navigate to='/' />
-    } else {
-      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} />
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (status === "user") {
+      if (!userInfo?.admin) {
+        navigate("/")
+      } else {
+        navigate(`${path.ADMIN + path.ADMIN_HOME}`)
+      }
     }
-  }
+  }, [status])
+
   /* Xử lý form */
   const initialValues = {
     citizenId: "",

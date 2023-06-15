@@ -2,38 +2,19 @@
 import moment from "moment"
 import "moment/locale/vi" // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from "react"
-import ReactDOM from "react-dom/client"
-import {
-  FaEnvelope,
-  FaFacebook,
-  FaLinkedin,
-  FaReddit,
-  FaTelegram,
-  FaTwitter,
-  FaWhatsapp,
-} from "react-icons/fa"
 import LazyLoad from "react-lazyload"
 import { useDispatch, useSelector } from "react-redux"
 import { Bounce, Fade, Slide, Zoom } from "react-reveal"
 import { useLocation, useNavigate } from "react-router-dom"
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  LinkedinShareButton,
-  RedditShareButton,
-  TelegramShareButton,
-  TwitterShareButton,
-  WhatsappShareButton,
-} from "react-share"
 import Loading from "~/components/Loading"
 import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
 import { authSelector } from "~/store/selectors"
 import { defaultAvatar } from "~/utils/constants/default"
-import MostViewPosts from "./MostViewPosts"
-import ProgressBar from "./ProgressBar"
+import MostViewPostsSection from "./MostViewPostsSection"
+import ShareDropdown from "./ShareDropdown"
 
-export default function ImagesDetail(props) {
+export default function ImagesDetailPage(props) {
   const userInfo = useSelector(authSelector).userInfo
 
   const dispatch = useDispatch()
@@ -77,74 +58,74 @@ export default function ImagesDetail(props) {
         setMostViewPosts(response.data.data.posts)
       })
   }, [])
-  useEffect(() => {
-    const headerPostElement = (
-      <div className='py-4'>
-        <div className='container'>
-          <div className='flex justify-end lg:justify-between'>
-            <div className='hidden lg:flex items-center mr-3'>
-              <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 text-lg ring-1 ring-white dark:ring-neutral-900'>
-                <img
-                  className='absolute inset-0 w-full h-full object-cover'
-                  src={defaultAvatar}
-                  alt='Bác Phạm Văn Bên'
-                  title='Bác Phạm Văn Bên'
-                />
-                <span className='wil-avatar__name'>Bác Phạm Văn Bên</span>
-              </div>
-              <h3 className='ml-4 text-lg line-clamp-1 text-neutral-100'>
-                {folderInfo?.title}
-              </h3>
-            </div>
-            <div className='flex items-center space-x-2 text-neutral-800 sm:space-x-3 dark:text-neutral-100'>
-              <div className='border-l border-neutral-300 dark:border-neutral-700 h-6' />
-              <div className='flex space-x-2'>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <FacebookShareButton url={window.location.href}>
-                    <span className='lab la-facebook-f' />
-                  </FacebookShareButton>
-                </div>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <TwitterShareButton url={window.location.href}>
-                    <span className='lab la-twitter' />
-                  </TwitterShareButton>
-                </div>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <LinkedinShareButton url={window.location.href}>
-                    <span className='lab la-linkedin-in' />
-                  </LinkedinShareButton>
-                </div>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <RedditShareButton url={window.location.href}>
-                    <span className='lab la-reddit' />
-                  </RedditShareButton>
-                </div>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <WhatsappShareButton url={window.location.href}>
-                    <span className='lab la-whatsapp' />
-                  </WhatsappShareButton>
-                </div>
-                <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
-                  <EmailShareButton url={window.location.href}>
-                    <span className='las la-warehouse' />
-                  </EmailShareButton>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='absolute top-full left-0 w-full progress-container h-[5px] bg-neutral-300 overflow-hidden'>
-          <ProgressBar />
-        </div>
-      </div>
-    )
-    const headerPostNode = document.getElementById("header-post")
-    const root = ReactDOM.createRoot(headerPostNode)
-    root.render(headerPostElement)
-    return () => {
-      root.unmount()
-    }
-  }, [folderInfo])
+  // useEffect(() => {
+  //   const headerPostElement = (
+  //     <div className='py-4'>
+  //       <div className='container'>
+  //         <div className='flex justify-end lg:justify-between'>
+  //           <div className='hidden lg:flex items-center mr-3'>
+  //             <div className='wil-avatar relative flex-shrink-0 inline-flex items-center justify-center overflow-hidden text-neutral-100 uppercase font-semibold shadow-inner rounded-full w-8 h-8 text-lg ring-1 ring-white dark:ring-neutral-900'>
+  //               <img
+  //                 className='absolute inset-0 w-full h-full object-cover'
+  //                 src={defaultAvatar}
+  //                 alt='Bác Phạm Văn Bên'
+  //                 title='Bác Phạm Văn Bên'
+  //               />
+  //               <span className='wil-avatar__name'>Bác Phạm Văn Bên</span>
+  //             </div>
+  //             <h3 className='ml-4 text-lg line-clamp-1 text-neutral-100'>
+  //               {folderInfo?.title}
+  //             </h3>
+  //           </div>
+  //           <div className='flex items-center space-x-2 text-neutral-800 sm:space-x-3 dark:text-neutral-100'>
+  //             <div className='border-l border-neutral-300 dark:border-neutral-700 h-6' />
+  //             <div className='flex space-x-2'>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <FacebookShareButton url={window.location.href}>
+  //                   <span className='lab la-facebook-f' />
+  //                 </FacebookShareButton>
+  //               </div>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <TwitterShareButton url={window.location.href}>
+  //                   <span className='lab la-twitter' />
+  //                 </TwitterShareButton>
+  //               </div>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <LinkedinShareButton url={window.location.href}>
+  //                   <span className='lab la-linkedin-in' />
+  //                 </LinkedinShareButton>
+  //               </div>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <RedditShareButton url={window.location.href}>
+  //                   <span className='lab la-reddit' />
+  //                 </RedditShareButton>
+  //               </div>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <WhatsappShareButton url={window.location.href}>
+  //                   <span className='lab la-whatsapp' />
+  //                 </WhatsappShareButton>
+  //               </div>
+  //               <div className='rounded-full leading-none flex items-center justify-center bg-white text-neutral-6000 w-8 h-8 bg-neutral-100 text-lg dark:bg-neutral-800 dark:text-neutral-300'>
+  //                 <EmailShareButton url={window.location.href}>
+  //                   <span className='las la-warehouse' />
+  //                 </EmailShareButton>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //       <div className='absolute top-full left-0 w-full progress-container h-[5px] bg-neutral-300 overflow-hidden'>
+  //         <ProgressBar />
+  //       </div>
+  //     </div>
+  //   )
+  //   const headerPostNode = document.getElementById("header-post")
+  //   const root = ReactDOM.createRoot(headerPostNode)
+  //   root.render(headerPostElement)
+  //   return () => {
+  //     root.unmount()
+  //   }
+  // }, [folderInfo])
 
   return (
     <>
@@ -226,57 +207,7 @@ export default function ImagesDetail(props) {
                           </svg>
                         </button>
                       </Fade>
-                      {visibleShareDropdown && (
-                        <div className='absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster'>
-                          <div
-                            className='px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300'
-                            role='none'
-                          >
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <FacebookShareButton url={window.location.href}>
-                                <FaFacebook className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Facebook</span>
-                              </FacebookShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <TwitterShareButton url={window.location.href}>
-                                <FaTwitter className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Twitter</span>
-                              </TwitterShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <LinkedinShareButton url={window.location.href}>
-                                <FaLinkedin className='mr-1 w-7 text-base' />
-                                <span className='truncate'>LinkedIn</span>
-                              </LinkedinShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <TelegramShareButton url={window.location.href}>
-                                <FaTelegram className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Telegram</span>
-                              </TelegramShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <WhatsappShareButton url={window.location.href}>
-                                <FaWhatsapp className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Whatsapp</span>
-                              </WhatsappShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <RedditShareButton url={window.location.href}>
-                                <FaReddit className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Reddit</span>
-                              </RedditShareButton>
-                            </button>
-                            <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                              <EmailShareButton url={window.location.href}>
-                                <FaEnvelope className='mr-1 w-7 text-base' />
-                                <span className='truncate'>Email</span>
-                              </EmailShareButton>
-                            </button>
-                          </div>
-                        </div>
-                      )}
+                      {visibleShareDropdown && <ShareDropdown />}
                     </div>
                     <div>
                       <div
@@ -409,7 +340,7 @@ export default function ImagesDetail(props) {
       </div>
 
       <div className='relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-28'>
-        <MostViewPosts listPost={mostViewPosts} />
+        <MostViewPostsSection listPost={mostViewPosts} />
       </div>
     </>
   )

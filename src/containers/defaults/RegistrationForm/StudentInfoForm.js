@@ -159,11 +159,11 @@ export default function StudentInfoForm({ handleFormChange }) {
       )
       .test(
         "wordCount",
-        "Số từ nhập vào vượt quá giới hạn (100 từ)",
+        "Số từ nhập vào vượt quá giới hạn (1000 từ)",
         (value) => {
           if (value) {
             const wordCount = value.trim().split(/\s+/).length
-            return wordCount <= 100
+            return wordCount <= 1000
           }
           return true
         }
@@ -442,7 +442,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                     name='dream'
                     rows={10}
                     placeholder='Bạn hãy trình bày sơ lược định hướng và ước mơ của mình trong tương lai nếu bạn nhận được học bổng....'
-                    label='Định hướng và ước mơ trong tương lai (tối đa 100 từ)'
+                    label='Định hướng và ước mơ trong tương lai (tối đa 1000 từ)'
                     value={values.dream}
                     feedback={errors.dream}
                     onChange={(e) => {

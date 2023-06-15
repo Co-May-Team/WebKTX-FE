@@ -1,11 +1,10 @@
 import moment from "moment"
-import { FaEye } from "react-icons/fa"
 import { Fade } from "react-reveal"
 import { NavLink } from "react-router-dom"
 import SavePostButton from "~/components/SavePostButton"
 import convertToUrl from "~/utils/commons/convertToUrl"
 
-export default function MostViewPosts({ listPost }) {
+export default function MostViewPostsSection({ listPost }) {
   return (
     <div className='container'>
       <div>

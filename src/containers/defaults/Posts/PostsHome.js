@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import moment from "moment"
 import { useEffect, useState } from "react"
-import { FaEye } from "react-icons/fa"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { useSelector } from "react-redux"
 import { Fade } from "react-reveal"

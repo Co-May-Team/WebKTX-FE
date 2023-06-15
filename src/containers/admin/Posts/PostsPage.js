@@ -11,6 +11,7 @@ import Confirm from "~/components/Customs/Confirm"
 import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
+import SeoHelmet from "~/components/SeoHelmet"
 import { useClickOutside } from "~/hooks"
 import {
   deletePost,
@@ -18,10 +19,10 @@ import {
   fetchPosts,
   loadMoreHiddenPosts,
   loadMorePosts,
-} from "~/store/posts/actions"
+} from "~/store/posts/slice"
 import { postsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
-import SubmitPost from "./SubmitPost"
+import SubmitPostPage from "./SubmitPost/SubmitPostPage"
 
 export default function Posts() {
   const posts = useSelector(postsSelector).posts
@@ -104,6 +105,7 @@ export default function Posts() {
 
   return (
     <Motion className='relative container'>
+      <SeoHelmet title='Quản lý bài viết' />
       <div className='flex flex-col mb-8 relative'>
         <div className='relative flex flex-col items-center sm:flex-row justify-between mb-6 md:mb-8 text-neutral-900 dark:text-neutral-50'>
           <div className='max-w-2xl'>
@@ -119,19 +121,20 @@ export default function Posts() {
             Đăng bài mới
           </button>
         </div>
-        <div
-          className='mb-3'
-          style={{ cursor: "pointer" }}
-          onClick={() => setVisibleHiddenPosts(!visibleHiddenPosts)}
-        >
+        <div className='mb-3' style={{ cursor: "pointer !important" }}>
           <input
             type='checkbox'
+            id='isVisibleHiddenPosts'
             className='mr-2'
             checked={visibleHiddenPosts}
+            onChange={() => setVisibleHiddenPosts(!visibleHiddenPosts)}
           />
-          <span className='text-neutral-800 font-medium text-sm dark:text-neutral-300'>
+          <label
+            htmlFor='isVisibleHiddenPosts'
+            className='text-neutral-800 font-medium text-sm dark:text-neutral-300'
+          >
             Chỉ hiển thị bài viết đã ẩn
-          </span>
+          </label>
         </div>
         <form
           className='relative w-full text-left'
@@ -336,14 +339,13 @@ export default function Posts() {
                       filters,
                     })
                   )
-                }
-                else {
-                dispatch(
-                  loadMorePosts({
-                    params: { ...params, page: pagination.page + 1 },
-                    filters,
-                  })
-                )
+                } else {
+                  dispatch(
+                    loadMorePosts({
+                      params: { ...params, page: pagination.page + 1 },
+                      filters,
+                    })
+                  )
                 }
               }}
               hasMore={status !== "loadingFull"}
@@ -456,13 +458,13 @@ export default function Posts() {
         )}
       </div>
       {visibleSubmitPost && (
-        <SubmitPost
+        <SubmitPostPage
           visible={visibleSubmitPost}
           setVisible={() => setVisibleSubmitPost(!visibleSubmitPost)}
         />
       )}
       {visibleFormEditPost && (
-        <SubmitPost
+        <SubmitPostPage
           visible={visibleFormEditPost}
           setVisible={() => setVisibleFormEditPost(!visibleFormEditPost)}
           post={currentPost}
