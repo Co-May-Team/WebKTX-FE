@@ -2,6 +2,7 @@ import _ from "lodash"
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
 import Loading from "~/components/Loading"
+import SeoHelmet from "~/components/SeoHelmet"
 import { useDebounce, useFetch } from "~/hooks"
 import admissionApi from "~/services/admissionApi"
 import { httpStatus } from "~/utils/constants/httpStatus"
@@ -116,6 +117,7 @@ export default function ListForm() {
   // Render data
   return (
     <div className='container-admin mx-auto'>
+      <SeoHelmet title='Quản lý đơn ứng tuyển' />
       <h2 className='text-3xl md:text-4xl font-semibold uppercase mb-4'>
         QUẢN LÝ ĐƠN ỨNG TUYỂN
       </h2>

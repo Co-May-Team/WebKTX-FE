@@ -47,4 +47,10 @@ $dark-placeholder-color: #6b7280;
     background-color: $dark-bg-menu !important;
     color: $dark-color !important;
   }
+  .ql-snow .ql-picker {
+    color: $dark-color !important;
+  }
+  .ql-snow .ql-stroke {
+    stroke: $dark-color !important;
+  }
 }

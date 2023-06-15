@@ -1,12 +1,12 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 import FormDetail from "~/containers/admin/forms/FormDetail"
 import { AdminLayout } from "~/layouts"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-const Posts = React.lazy(() => import("~/containers/admin/Posts"))
+const Posts = React.lazy(() => import("~/containers/admin/Posts/PostsPage"))
 const Forms = React.lazy(() => import("~/containers/admin/forms/Forms"))
 
 const adminRoutes = [
@@ -43,9 +43,13 @@ export default function AdminRoutes() {
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (!(status === "user") || userInfo?.admin === false) {
-    return <Navigate to='/' />
-  }
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!(status === "user") || userInfo?.admin === false) {
+      navigate("/")
+    }
+  }, [status])
 
   const renderRoutes = () => {
     return adminRoutes.map((item) => {

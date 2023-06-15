@@ -30,7 +30,7 @@ const formats = [
   "font",
   "size",
   "bold",
-  "italic", 
+  "italic",
   "underline",
   "strike",
   "blockquote",

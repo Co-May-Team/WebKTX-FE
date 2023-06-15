@@ -14,7 +14,10 @@ export const fetchPosts = createAsyncThunk(
 export const fetchHiddenPosts = createAsyncThunk(
   "posts/fetchHiddenPosts",
   async (params) => {
-    const response = await postsApi.getAllHiddenPosts(params.params, params.filters)
+    const response = await postsApi.getAllHiddenPosts(
+      params.params,
+      params.filters
+    )
     return response.data.data
   }
 )
@@ -28,7 +31,10 @@ export const loadMorePosts = createAsyncThunk(
 export const loadMoreHiddenPosts = createAsyncThunk(
   "posts/loadMoreHiddenPosts",
   async (params) => {
-    const response = await postsApi.getAllHiddenPosts(params.params, params.filters)
+    const response = await postsApi.getAllHiddenPosts(
+      params.params,
+      params.filters
+    )
     return response.data.data
   }
 )

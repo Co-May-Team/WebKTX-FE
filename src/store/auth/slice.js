@@ -119,7 +119,7 @@ const authSlice = createSlice({
           Toast.fire({
             title: "Đăng nhập với Google",
             text: "Đăng nhập với Google thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
-            icon: "success",                
+            icon: "success",
           })
         } else {
           state.status = "user"

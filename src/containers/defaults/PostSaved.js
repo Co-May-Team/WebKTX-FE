@@ -1,6 +1,5 @@
 import moment from "moment"
 import { useState } from "react"
-import { FaEye } from "react-icons/fa"
 import { Fade } from "react-reveal"
 import { NavLink } from "react-router-dom"
 import Motion from "~/components/Motion"

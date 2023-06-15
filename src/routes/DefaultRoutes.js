@@ -1,15 +1,15 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
 import FormDetail from "~/containers/admin/forms/FormDetail"
 import Logout from "~/containers/defaults/Logout"
-import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetail"
-import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetail"
+import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetailPage"
+import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetailPage"
 import { DefaultLayout } from "~/layouts"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-const Home = React.lazy(() => import("~/containers/defaults/Home"))
+const Home = React.lazy(() => import("~/containers/defaults/Home/HomePage"))
 // const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
 const Login = React.lazy(() => import("~/containers/defaults/Login"))
 const Authentication = React.lazy(() =>
@@ -55,6 +55,14 @@ const defaultRoutes = [
 
 export default function DefaultRoutes() {
   const status = useSelector(authSelector).status
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (status === "auth") {
+      navigate("/xac-thuc")
+    }
+  }, [status])
 
   const renderRoutes = () => {
     return defaultRoutes.map((item) => {
