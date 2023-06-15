@@ -108,13 +108,9 @@ export default function FilesUploadForm({ handleFormChange }) {
   }
 
   const validationSchemaFilesUpload = Yup.object({
-    application: Yup.mixed().required(
-      "Vui lòng tải lên đơn xin vào ở KTX Cỏ May."
-    ),
-    personalProfile: Yup.mixed().required(
-      "Vui lòng tải lên sơ yếu lý lịch (có dán ảnh và xác nhận của địa phương)."
-    ),
-    photo: Yup.mixed().required("Vui lòng tải lên ảnh thẻ (.JPG)."),
+    application: Yup.mixed(),
+    personalProfile: Yup.mixed(),
+    photo: Yup.mixed(),
   })
 
   const handleSubmitFilesUpload = async (values, actions) => {
@@ -281,7 +277,6 @@ export default function FilesUploadForm({ handleFormChange }) {
                     handleFileChange(event, () => handleChange(event))
                   }
                   invalid={touched.application && errors.application}
-                  isRequired
                 />
                 <InputField
                   type='file'
@@ -307,7 +302,6 @@ export default function FilesUploadForm({ handleFormChange }) {
                     handleFileChange(event, () => handleChange(event))
                   }
                   invalid={touched.personalProfile && errors.personalProfile}
-                  isRequired
                 />
                 <InputField
                   type='file'
@@ -320,7 +314,6 @@ export default function FilesUploadForm({ handleFormChange }) {
                     handleFileChange(event, () => handleChange(event))
                   }
                   invalid={touched.photo && errors.photo}
-                  isRequired
                 />
                 <div className='mt-10 inline-flex items-center justify-center gap-5'>
                   <button
