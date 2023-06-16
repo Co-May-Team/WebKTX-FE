@@ -127,7 +127,9 @@ export default function PersonalInfoForm({ handleFormChange }) {
     detailAddress: Yup.string().required(
       "Số nhà, tên đường không được để trống"
     ),
-    idNumber: Yup.string().required("Số CMND/CCCD không được để trống"),
+    idNumber: Yup.string()
+      .required("Số CMND/CCCD không được để trống")
+      .matches(/^\d{0,12}$/, "Số CNMD/CCCD không hợp lệ"),
     idIssueDate: Yup.string().required(
       "Ngày cấp CMND/CCCD không được để trống"
     ),

@@ -7,7 +7,7 @@ import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import convertToUrl from "~/utils/commons/convertToUrl"
 
-export default function PostSaved() {
+export default function PostSavedPage() {
   const [savedPosts, setSavedPosts] = useState(
     JSON.parse(localStorage.getItem("savedPosts"))
   )

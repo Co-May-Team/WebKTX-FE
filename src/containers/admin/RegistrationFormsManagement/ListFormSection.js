@@ -15,6 +15,10 @@ const columnNames = [
   },
   {
     id: Math.random(),
+    name: "MÃ SỐ",
+  },
+  {
+    id: Math.random(),
     name: "NGÀY SINH",
   },
   {
@@ -40,7 +44,7 @@ const columnNames = [
   },
 ]
 
-export default function ListForm() {
+export default function ListFormSection() {
   // State
   const {
     loading: loadingListForm,

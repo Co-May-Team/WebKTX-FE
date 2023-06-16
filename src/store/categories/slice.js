@@ -1,4 +1,5 @@
-import { fetchCategories } from "./actions"
+import { createAsyncThunk } from "@reduxjs/toolkit/dist"
+import categoriesApi from "~/services/categoriesApi"
 
 const { createSlice } = require("@reduxjs/toolkit")
 
@@ -13,5 +14,13 @@ const categoriesSlice = createSlice({
     })
   },
 })
+
+export const fetchCategories = createAsyncThunk(
+  "categories/fetchCategories",
+  async (params) => {
+    const response = await categoriesApi.getAll(params)
+    return response.data.data.categories
+  }
+)
 
 export default categoriesSlice

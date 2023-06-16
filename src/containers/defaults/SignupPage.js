@@ -5,11 +5,11 @@ import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
-import { signup } from "~/store/auth/actions"
+import { signup } from "~/store/auth/slice"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-export default function Signup() {
+export default function SignupPage() {
   const dispatch = useDispatch()
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
