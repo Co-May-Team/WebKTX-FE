@@ -1,4 +1,4 @@
-const { createSlice } = require("@reduxjs/toolkit")
+import { createSlice } from "@reduxjs/toolkit/dist"
 
 const sidebarSlice = createSlice({
   name: "sidebar",
@@ -19,5 +19,11 @@ const sidebarSlice = createSlice({
     },
   },
 })
+
+export const {
+  toggleSidebarShow,
+  toggleSidebarBackdropShow,
+  toggleSidebarUnfoldable,
+} = sidebarSlice.actions
 
 export default sidebarSlice

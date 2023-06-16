@@ -6,10 +6,9 @@ import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import admissionApi from "~/services/admissionApi"
-import { path } from "~/utils"
 import formatCurrency from "~/utils/commons/formatCurrency"
 
-export default function FormDetail() {
+export default function RegistrationFormDetailPage() {
   const id = useLocation().state
   const navigate = useNavigate()
   const [loadingFormInfo, setLoadingFormInfo] = useState(true)

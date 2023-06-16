@@ -1,4 +1,4 @@
-const { createSlice } = require("@reduxjs/toolkit")
+import { createSlice } from "@reduxjs/toolkit/dist"
 
 const moreSlice = createSlice({
   name: "more",
@@ -15,5 +15,7 @@ const moreSlice = createSlice({
     },
   },
 })
+
+export const { searchPost, toggleDarkMode } = moreSlice.actions
 
 export default moreSlice

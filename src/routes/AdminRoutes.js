@@ -1,17 +1,27 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
-import FormDetail from "~/containers/admin/forms/FormDetail"
 import { AdminLayout } from "~/layouts"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-const Posts = React.lazy(() => import("~/containers/admin/Posts/PostsPage"))
-const Forms = React.lazy(() => import("~/containers/admin/forms/Forms"))
+const PostsManagementPage = React.lazy(() =>
+  import("~/containers/admin/PostsManagement/PostsManagementPage")
+)
+const RegistrationFormsManagementPage = React.lazy(() =>
+  import(
+    "~/containers/admin/RegistrationFormsManagement/RegistrationFormsManagementPage"
+  )
+)
+const RegistrationFormDetailPage = React.lazy(() =>
+  import(
+    "~/containers/admin/RegistrationFormsManagement/RegistrationFormDetailPage"
+  )
+)
 
 const adminRoutes = [
   {
-    id: Math.random(),
+    id: "/404",
     Container: Navigate,
     path: "*",
     replace: true,
@@ -23,18 +33,18 @@ const adminRoutes = [
   //   path: path.DASHBOARD,
   // },
   {
-    id: Math.random(),
-    Container: Posts,
+    id: path.POSTS,
+    Container: PostsManagementPage,
     path: path.POSTS,
   },
   {
-    id: Math.random(),
-    Container: Forms,
+    id: path.FORMS,
+    Container: RegistrationFormsManagementPage,
     path: path.FORMS,
   },
   {
-    id: Math.random(),
-    Container: FormDetail,
+    id: path.FORM_DETAIL,
+    Container: RegistrationFormDetailPage,
     path: path.FORM_DETAIL,
   },
 ]

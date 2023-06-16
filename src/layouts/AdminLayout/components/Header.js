@@ -6,9 +6,9 @@ import { LogoIcon } from "~/components/Icons"
 import { navList } from "~/data"
 
 import { useClickOutside } from "~/hooks"
-import { fetchCategories } from "~/store/categories/actions"
+import { fetchCategories } from "~/store/categories/slice"
 import { authSelector } from "~/store/selectors"
-import { fetchTags } from "~/store/tags/actions"
+import { fetchTags } from "~/store/tags/slice"
 import AvatarDropdown from "./AvatarDropdown"
 
 function Header() {

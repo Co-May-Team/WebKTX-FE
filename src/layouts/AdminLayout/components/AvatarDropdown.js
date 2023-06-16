@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { NavLink } from "react-router-dom"
 import { useClickOutside } from "~/hooks"
-import { logout } from "~/store/auth/actions"
+import { logout } from "~/store/auth/slice"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 

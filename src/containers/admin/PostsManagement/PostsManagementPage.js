@@ -24,7 +24,7 @@ import { postsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import SubmitPostPage from "./SubmitPost/SubmitPostPage"
 
-export default function Posts() {
+export default function PostsManagementPage() {
   const posts = useSelector(postsSelector).posts
   const pagination = useSelector(postsSelector).pagination
   const status = useSelector(postsSelector).status

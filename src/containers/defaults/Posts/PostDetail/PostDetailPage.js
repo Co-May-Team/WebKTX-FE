@@ -2,9 +2,9 @@
 import moment from "moment"
 import "moment/locale/vi" // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Bounce, Fade, Slide, Zoom } from "react-reveal"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
@@ -21,8 +21,6 @@ import ShareDropdown from "./ShareDropdown"
 export default function PostDetailPage(props) {
   const userInfo = useSelector(authSelector).userInfo
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const params = useParams()
 
   const shareDropdownRef = useRef()
@@ -32,8 +30,6 @@ export default function PostDetailPage(props) {
   const [postInfo, setPostInfo] = useState(null)
   const [relatedPosts, setRelatedPosts] = useState([])
   const [mostViewPosts, setMostViewPosts] = useState([])
-  const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
-  const [visibleDeletePost, setVisibleDeletePost] = useState(false)
   const [visibleShareDropdown, setVisibleShareDropdown] = useState(false)
   const [visibleMoreActionDropdown, setVisibleMoreActionDropdown] =
     useState(false)
