@@ -6,13 +6,13 @@ import { LogoIcon } from "~/components/Icons"
 import ProgressBar from "~/containers/defaults/Posts/PostDetail/ProgressBar"
 
 import { useClickOutside } from "~/hooks"
-import { fetchCategories } from "~/store/categories/actions"
+import { fetchCategories } from "~/store/categories/slice"
 import {
   authSelector,
   categoriesSelector,
   tagsSelector,
 } from "~/store/selectors"
-import { fetchTags } from "~/store/tags/actions"
+import { fetchTags } from "~/store/tags/slice"
 import { path } from "~/utils"
 import capitalizeWords from "~/utils/commons/capitalizeWords"
 import convertToUrl from "~/utils/commons/convertToUrl"

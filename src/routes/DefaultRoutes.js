@@ -1,51 +1,63 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom"
-import FormDetail from "~/containers/admin/forms/FormDetail"
-import Logout from "~/containers/defaults/Logout"
-import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetailPage"
-import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetailPage"
+// import RegistrationFormDetailPage from "~/containers/admin/RegistrationFormsManagement/RegistrationFormDetailPage"
+// import FormDetail from "~/containers/admin/RegistrationFormsManagement/RegistrationFormDetailPage"
+// import Logout from "~/containers/defaults/LogoutPage"
+// import ImagesDetail from "~/containers/defaults/Posts/PostDetail/ImagesDetailPage"
+// import PostDetail from "~/containers/defaults/Posts/PostDetail/PostDetailPage"
 import { DefaultLayout } from "~/layouts"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-const Home = React.lazy(() => import("~/containers/defaults/Home/HomePage"))
+const HomePage = React.lazy(() => import("~/containers/defaults/Home/HomePage"))
 // const Signup = React.lazy(() => import("~/containers/defaults/Signup"))
-const Login = React.lazy(() => import("~/containers/defaults/Login"))
-const Authentication = React.lazy(() =>
-  import("~/containers/defaults/Authentication")
+const LoginPage = React.lazy(() => import("~/containers/defaults/LoginPage"))
+const LogoutPage = React.lazy(() => import("~/containers/defaults/LogoutPage"))
+const AuthenticationPage = React.lazy(() =>
+  import("~/containers/defaults/AuthenticationPage")
 )
-const PostSaved = React.lazy(() => import("~/containers/defaults/PostSaved"))
-const Search = React.lazy(() => import("~/containers/defaults/Search"))
-const PostsHome = React.lazy(() =>
-  import("~/containers/defaults/Posts/PostsHome")
+const PostSavedPage = React.lazy(() =>
+  import("~/containers/defaults/PostSavedPage")
 )
-const RegistrationForm = React.lazy(() =>
-  import("~/containers/defaults/RegistrationForm/RegistrationForm")
+const SearchPage = React.lazy(() => import("~/containers/defaults/SearchPage"))
+const PostsHomePage = React.lazy(() =>
+  import("~/containers/defaults/Posts/PostsHomePage")
 )
-// const PostDetail = React.lazy(() =>
-//   import('~/containers/defaults/Posts/PostDetail/PostDetail')
-// )
+const PostDetailPage = React.lazy(() =>
+  import("~/containers/defaults/Posts/PostDetail/PostDetailPage")
+)
+const ImagesDetailPage = React.lazy(() =>
+  import("~/containers/defaults/Posts/PostDetail/ImagesDetailPage")
+)
+const RegistrationFormPage = React.lazy(() =>
+  import("~/containers/defaults/RegistrationForm/RegistrationFormPage")
+)
+const RegistrationFormDetailPage = React.lazy(() =>
+  import(
+    "~/containers/admin/RegistrationFormsManagement/RegistrationFormDetailPage"
+  )
+)
 
 const defaultRoutes = [
-  { id: 1, Container: Home, path: path.HOME },
+  { id: path.HOME, Container: HomePage, path: path.HOME },
   // { id: 2, Container: Signup, path: path.SIGNUP },
-  { id: 2, Container: Login, path: path.LOGIN },
-  { id: 3, Container: Logout, path: path.LOGOUT },
-  { id: 4, Container: Authentication, path: path.AUTH },
-  { id: 5, Container: PostSaved, path: path.POSTSAVED },
-  { id: 6, Container: Search, path: path.SEARCH },
-  { id: 7, Container: PostsHome, path: path.TAGS },
+  { id: path.LOGIN, Container: LoginPage, path: path.LOGIN },
+  { id: path.LOGOUT, Container: LogoutPage, path: path.LOGOUT },
+  { id: path.AUTH, Container: AuthenticationPage, path: path.AUTH },
+  { id: path.POSTSAVED, Container: PostSavedPage, path: path.POSTSAVED },
+  { id: path.SEARCH, Container: SearchPage, path: path.SEARCH },
+  { id: path.TAGS, Container: PostsHomePage, path: path.TAGS },
   {
-    id: 8,
-    Container: RegistrationForm,
+    id: path.REGISTRATION_FORM,
+    Container: RegistrationFormPage,
     path: path.REGISTRATION_FORM,
   },
-  { id: 10, Container: PostDetail, path: path.POST_DETAIL },
-  { id: 9, Container: FormDetail, path: path.FORM_DETAIL },
-  { id: 11, Container: ImagesDetail, path: path.IMAGES_DETAIL },
+  { id: path.POST_DETAIL, Container: PostDetailPage, path: path.POST_DETAIL },
+  { id: path.IMAGES_DETAIL, Container: ImagesDetailPage, path: path.IMAGES_DETAIL },
+  { id: path.FORM_DETAIL, Container: RegistrationFormDetailPage, path: path.FORM_DETAIL },
   {
-    id: 12,
+    id: "/404",
     Container: Navigate,
     path: "*",
     replace: true,

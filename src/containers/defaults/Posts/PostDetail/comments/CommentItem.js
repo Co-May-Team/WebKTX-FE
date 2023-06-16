@@ -5,10 +5,10 @@ import { Fade } from "react-reveal"
 import { useNavigate } from "react-router-dom"
 import Confirm from "~/components/Customs/Confirm"
 import { useClickOutside } from "~/hooks"
-import { deleteComment } from "~/store/comments/actions"
+import { deleteComment } from "~/store/comments/slice"
 import { authSelector } from "~/store/selectors"
 import { defaultAvatar } from "~/utils/constants/default"
-import FormSubmitComment from "./FormSubmitComment"
+import SubmitCommentForm from "./SubmitCommentForm"
 
 export default function CommentItem({ postId, comment }) {
   const userInfo = useSelector(authSelector).userInfo
@@ -158,7 +158,7 @@ export default function CommentItem({ postId, comment }) {
           </div>
           <span className='block text-neutral-700 mt-2 mb-3 sm:mt-3 sm:mb-4 dark:text-neutral-300'>
             {showFormUpdateComment ? (
-              <FormSubmitComment
+              <SubmitCommentForm
                 cancelComment={() => setShowFormUpdateComment(false)}
                 postId={postId}
                 comment={comment}
@@ -209,7 +209,7 @@ export default function CommentItem({ postId, comment }) {
                 </button>
               </div>
               {showFormReplyComment && (
-                <FormSubmitComment
+                <SubmitCommentForm
                   cancelComment={() => setShowFormReplyComment(false)}
                   postId={postId}
                   parentComment={comment}

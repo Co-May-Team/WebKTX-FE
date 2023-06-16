@@ -24,6 +24,11 @@ const statusOptions = [
     code: "DT",
     label: "Đạt",
   },
+  {
+    id: 5,
+    code: "CT",
+    label: "Chưa hoàn tất"
+  }
 ]
 
 export default function FormItem({ formInfo, updateStatusForm }) {
@@ -81,6 +86,9 @@ export default function FormItem({ formInfo, updateStatusForm }) {
             </h2>
           </div>
         </div>
+      </td>
+      <td className='px-6 py-4 whitespace-nowrap text-sm font-semibold text-neutral-500 dark:text-neutral-400'>
+        <span>{formInfo?.studentCodeDorm}</span>
       </td>
       <td className='px-6 py-4 whitespace-nowrap text-sm text-neutral-500 dark:text-neutral-400'>
         <span>{formInfo?.dob}</span>

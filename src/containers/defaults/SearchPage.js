@@ -12,7 +12,7 @@ import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
 import convertToUrl from "~/utils/commons/convertToUrl"
 
-export default function Search() {
+export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const filterDropdownRef = useRef()

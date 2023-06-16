@@ -9,10 +9,10 @@ import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
-import { getUserInfo, login } from "~/store/auth/actions"
+import { getUserInfo, login } from "~/store/auth/slice"
 import { authSelector } from "~/store/selectors"
 
-export default function Login() {
+export default function LoginPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

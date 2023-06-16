@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux"
 import { Form } from "reactstrap"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
-import { addComment, updateComment } from "~/store/comments/actions"
+import { addComment, updateComment } from "~/store/comments/slice"
 
-export default function FormSubmitComment({
+export default function SubmitCommentForm({
   postId,
   parentComment,
   comment,
