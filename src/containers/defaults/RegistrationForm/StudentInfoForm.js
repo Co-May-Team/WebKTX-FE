@@ -157,17 +157,7 @@ export default function StudentInfoForm({ handleFormChange }) {
       .required(
         "Vui lòng trình bày ước mơ và định hướng của bạn trong tương lai"
       )
-      .test(
-        "wordCount",
-        "Số từ nhập vào vượt quá giới hạn (1000 từ)",
-        (value) => {
-          if (value) {
-            const wordCount = value.trim().split(/\s+/).length
-            return wordCount <= 1000
-          }
-          return true
-        }
-      ),
+      .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
   })
 
   const validateForm = async (values) => {

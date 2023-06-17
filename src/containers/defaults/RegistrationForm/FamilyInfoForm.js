@@ -117,17 +117,7 @@ const validationSchemaFamilyInfo = Yup.object().shape({
   ),
   familyBackground: Yup.string()
     .required("Hoàn cảnh gia đình không được để trống")
-    .test(
-      "wordCount",
-      "Số từ nhập vào vượt quá giới hạn (1000 từ)",
-      (value) => {
-        if (value) {
-          const wordCount = value.trim().split(/\s+/).length
-          return wordCount <= 1000
-        }
-        return true
-      }
-    ),
+    .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
 })
 
 export default function FamilyInfoForm({ handleFormChange }) {

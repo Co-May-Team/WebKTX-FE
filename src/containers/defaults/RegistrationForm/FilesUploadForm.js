@@ -202,7 +202,7 @@ export default function FilesUploadForm({ handleFormChange }) {
               Swal.fire({
                 icon: "error",
                 title: "Gửi tập tin thất bại",
-                text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
+                text: response.data?.message,
               })
             }
           }
@@ -211,7 +211,7 @@ export default function FilesUploadForm({ handleFormChange }) {
         Swal.fire({
           icon: "warning",
           title: "Gửi hồ sơ thất bại",
-          text: response.data?.data,
+          text: response.data?.message,
         })
       }
     })
