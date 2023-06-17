@@ -349,7 +349,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     name='familyBackground'
                     rows={10}
                     placeholder='Nhập hoàn cảnh gia đình...'
-                    label='Hoàn cảnh gia đình (tối đa 1000 từ)'
+                    label='Hoàn cảnh gia đình (tối đa 1000 ký tự)'
                     value={values.familyBackground}
                     feedback={errors.familyBackground}
                     onChange={(e) => {
