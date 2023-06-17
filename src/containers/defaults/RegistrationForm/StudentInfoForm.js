@@ -152,7 +152,8 @@ export default function StudentInfoForm({ handleFormChange }) {
     admissionViaDirectMethod: Yup.string(),
     achievements: Yup.string().required(
       "Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được"
-    ),
+    )
+    .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
     dream: Yup.string()
       .required(
         "Vui lòng trình bày ước mơ và định hướng của bạn trong tương lai"
@@ -414,7 +415,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                     name='achievements'
                     rows={10}
                     placeholder='Ghi ngắn gọn các giải thưởng đã đạt được. Không trình bày dài dòng...'
-                    label='Thành tích học tập'
+                    label='Thành tích học tập (tối đa 1000 ký tự)'
                     value={values.achievements}
                     feedback={errors.achievements}
                     onChange={(e) => {
@@ -432,7 +433,7 @@ export default function StudentInfoForm({ handleFormChange }) {
                     name='dream'
                     rows={10}
                     placeholder='Bạn hãy trình bày sơ lược định hướng và ước mơ của mình trong tương lai nếu bạn nhận được học bổng....'
-                    label='Định hướng và ước mơ trong tương lai (tối đa 1000 từ)'
+                    label='Định hướng và ước mơ trong tương lai (tối đa 1000 ký tự)'
                     value={values.dream}
                     feedback={errors.dream}
                     onChange={(e) => {
