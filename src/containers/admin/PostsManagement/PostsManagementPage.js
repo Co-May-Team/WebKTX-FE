@@ -430,7 +430,7 @@ export default function PostsManagementPage() {
                             <FaEdit size={15} />
                           </button>
                           <button
-                            className='relative items-center rounded-full text-rose-600 transition-colors  dark:bg-neutral-800 hover:bg-rose-50 dark:bg-rose-100 hover:text-rose-600 dark:text-rose-500 hidden sm:flex  px-3 h-8 text-xs focus:outline-none'
+                            className='relative items-center rounded-full text-rose-600 transition-colors  dark:bg-neutral-800 hover:bg-rose-50 dark:bg-rose-100 hover:text-rose-600 dark:text-rose-500 sm:flex  px-3 h-8 text-xs focus:outline-none'
                             title='Xóa'
                             onClick={() => {
                               setVisibleDeletePost(true)
