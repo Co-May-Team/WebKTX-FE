@@ -20,6 +20,12 @@ const admissionApi = {
       responseType: "blob",
     })
   },
+  donwload: (data) => {
+    const requestUrl = `${baseUrl}/export`
+    return axiosClient.get(requestUrl, data, {
+      responseType: "blob",
+    })
+  },
   getAllByYear: (year) => {
     const requestUrl = `${baseUrl}/find-all-by-year?year=${year}`
     return axiosClient.get(requestUrl)

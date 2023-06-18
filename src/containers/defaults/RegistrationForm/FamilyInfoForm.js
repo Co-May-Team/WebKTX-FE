@@ -144,7 +144,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   function handleChangeInfo(infoType, name, value, setFieldValue, index) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    if (name === "fullName") {
+    if (name === "fullName" || name === "detailAddress") {
       value = value
         .toLowerCase()
         .split(" ")

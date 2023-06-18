@@ -1,5 +1,7 @@
+import FileSaver from "file-saver"
 import _ from "lodash"
 import { useEffect, useState } from "react"
+import { BiDownload } from "react-icons/bi"
 import Swal from "sweetalert2"
 import Loading from "~/components/Loading"
 import SeoHelmet from "~/components/SeoHelmet"
@@ -7,6 +9,7 @@ import { useDebounce, useFetch } from "~/hooks"
 import admissionApi from "~/services/admissionApi"
 import { httpStatus } from "~/utils/constants/httpStatus"
 import FormItem from "./FormItem"
+import moment from "moment"
 
 const columnNames = [
   {
@@ -118,6 +121,37 @@ export default function ListFormSection() {
       })
   }
 
+  const handleDownload = () => {
+    Swal.fire({
+      title: "Đang tải xuống...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+    admissionApi
+      .donwload()
+      .then((response) => {
+        const excelBlob = new Blob([response.data], {
+          type: "application/vnd.ms-excel",
+        })
+        const currentDateTime = moment().format("DD-MM-YYYY_HH-mm-ss")
+        const fileName = `Danh_sach_don_xin_vao_o_KTX_Co_May_${currentDateTime}.xlsx`
+        FileSaver.saveAs(excelBlob, fileName)
+        Swal.fire({
+          icon: "success",
+          title:
+            "Tải xuống danh sách thành công, kiểm tra trong mục Download của trình duyệt",
+        })
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Có lỗi trong quá trình tải xuống",
+          text: error?.message,
+        })
+      })
+  }
+
   // Render data
   return (
     <div className='container-admin mx-auto'>
@@ -125,13 +159,13 @@ export default function ListFormSection() {
       <h2 className='text-3xl md:text-4xl font-semibold uppercase mb-4'>
         QUẢN LÝ ĐƠN ỨNG TUYỂN
       </h2>
-      <div className='shadow dark:border dark:border-neutral-800 overflow-scroll sm:rounded-lg'>
+      <div className='shadow dark:border-neutral-800 overflow-scroll sm:rounded-lg'>
         <div className='m-5 flex gap-1 align-middle'>
-          <div className='relative w-[50%]'>
+          <div className='relative min-w-[50%]'>
             <input
               type='search'
               className='block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 w-full'
-              placeholder='Tìm kiếm đơn ứng tuyển...'
+              placeholder='Tìm kiếm...'
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
             />
@@ -175,6 +209,14 @@ export default function ListFormSection() {
           </table>
         )}
       </div>
+      <button
+        onClick={handleDownload}
+        className='block m-auto rounded-full my-5 transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+      >
+        <BiDownload className='inline me-3' />
+        Tải xuống danh sách
+        <BiDownload className='inline ms-3' />
+      </button>
     </div>
   )
 }

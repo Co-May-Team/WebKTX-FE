@@ -21,7 +21,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
 
   const handleChangePersonalInfo = (name, value, setFieldValue) => {
     let currentPersonalInfo = JSON.parse(localStorage.getItem("personalInfo"))
-    if (name === "fullName" || name === "detailAddress") {
+    if (name === "fullName" || name === "detailAddress" || name === "idIssuePlace") {
       value = value
         .toLowerCase()
         .split(" ")
