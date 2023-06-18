@@ -20,9 +20,9 @@ const admissionApi = {
       responseType: "blob",
     })
   },
-  donwload: (data) => {
+  donwload: () => {
     const requestUrl = `${baseUrl}/export`
-    return axiosClient.get(requestUrl, data, {
+    return axiosClient.get(requestUrl, {
       responseType: "blob",
     })
   },
