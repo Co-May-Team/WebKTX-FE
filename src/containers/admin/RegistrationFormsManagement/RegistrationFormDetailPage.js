@@ -181,16 +181,7 @@ export default function RegistrationFormDetailPage() {
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
                         {formInfo?.personalInfo?.detailAddress},{" "}
-                        {formInfo?.personalInfo?.wardAddress?.name_with_type},{" "}
-                        {
-                          formInfo?.personalInfo?.districtAddress
-                            ?.name_with_type
-                        }
-                        ,{" "}
-                        {
-                          formInfo?.personalInfo?.provinceAddress
-                            ?.name_with_type
-                        }
+                        {formInfo?.personalInfo?.wardAddress?.path_with_type}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -235,23 +226,23 @@ export default function RegistrationFormDetailPage() {
                     className='mt-2 shadow-lg border-neutral-200 dark:border-neutral-900'
                   >
                     <dl>
-                      {relative.status.label === "Không rõ" ? (
+                      {relative?.status?.label === "Không rõ" ? (
                         <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                           <dt className='text-sm font-bold text-neutral-500 dark:text-neutral-300'>
-                            {index + 1 + ". " + relative.relationship.label}
+                            {index + 1 + ". " + relative?.relationship?.label}
                           </dt>
                           <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                            {relative.fullName || "Không có thông tin"}
+                            {relative?.fullName || "Không có thông tin"}
                           </dd>
                         </div>
                       ) : (
                         <>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                             <dt className='text-sm font-bold text-neutral-500 dark:text-neutral-300'>
-                              {index + 1 + ". " + relative.relationship.label}
+                              {index + 1 + ". " + relative?.relationship?.label}
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.fullName || "Không rõ"}
+                              {relative?.fullName || "Không rõ"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -259,7 +250,7 @@ export default function RegistrationFormDetailPage() {
                               Năm sinh
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.yearOfBirth || "Chưa có thông tin"}
+                              {relative?.yearOfBirth || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -267,7 +258,7 @@ export default function RegistrationFormDetailPage() {
                               Số điện thoại
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.phoneNumber || "Chưa có thông tin"}
+                              {relative?.phoneNumber || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -275,10 +266,8 @@ export default function RegistrationFormDetailPage() {
                               Địa chỉ thường trú
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.detailAddress},{" "}
-                              {relative.wardAddress?.name_with_type},{" "}
-                              {relative.districtAddress?.name_with_type},{" "}
-                              {relative.provinceAddress?.name_with_type}
+                              {relative?.detailAddress},{" "}
+                              {relative?.wardAddress?.path_with_type}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -286,7 +275,7 @@ export default function RegistrationFormDetailPage() {
                               Công việc hiện tại
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.currentJob || "Chưa có thông tin"}
+                              {relative?.currentJob || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -294,7 +283,7 @@ export default function RegistrationFormDetailPage() {
                               Nơi làm việc
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.placeOfWork || "Chưa có thông tin"}
+                              {relative?.placeOfWork || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -302,7 +291,7 @@ export default function RegistrationFormDetailPage() {
                               SĐT nơi làm việc
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.phoneNumberOfCompany ||
+                              {relative?.phoneNumberOfCompany ||
                                 "Chưa có thông tin"}
                             </dd>
                           </div>
@@ -312,7 +301,7 @@ export default function RegistrationFormDetailPage() {
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
                               {formatCurrency(
-                                Number.parseFloat(relative.income)
+                                Number.parseFloat(relative?.income)
                               )}
                             </dd>
                           </div>
@@ -323,7 +312,7 @@ export default function RegistrationFormDetailPage() {
                 ))}
                 <div className='mt-2 shadow-lg border-neutral-200 dark:border-neutral-900'>
                   <dl>
-                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                    <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Hoàn cảnh gia đình
                       </dt>
@@ -357,7 +346,23 @@ export default function RegistrationFormDetailPage() {
                         Tên trường đại học
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo?.universityName.label}
+                        {formInfo?.studentInfo?.universityName?.label}
+                      </dd>
+                    </div>
+                    <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Loại chương trình học
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.studentProgram?.label}
+                      </dd>
+                    </div>
+                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Tên trường đại học
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.universityName?.label}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -451,8 +456,8 @@ export default function RegistrationFormDetailPage() {
                         <div>
                           {renderFile(file)}
                           <a
-                            href={`data:application/octet-stream;base64,${file.fileContent}`}
-                            download={file.fileName}
+                            href={`data:application/octet-stream;base64,${file?.fileContent}`}
+                            download={file?.fileName}
                             className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
                           >
                             <BsDownload className='me-3' />
