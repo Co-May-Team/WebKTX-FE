@@ -137,20 +137,30 @@ const authSlice = createSlice({
         state.status = "isAuthenticating"
       })
       .addCase(auth.fulfilled, (state, action) => {
-        state.status = "user"
-        state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        state.userInfo = action.payload.data.userInfo
-        Toast.fire({
-          title: "Xác thực tài khoản",
-          text: "Xác thực tài khoản thành công",
-          icon: "success",
-        })
+        if (action.payload.status === "ERROR") {
+          state.status = "auth"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          Swal.fire({
+            title: "Xác thực tài khoản",
+            text: action.payload.message,
+            icon: "warning",
+          })
+        } else {
+          state.status = "user"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          state.userInfo = action.payload.data.userInfo
+          Toast.fire({
+            title: "Xác thực tài khoản",
+            text: "Xác thực tài khoản thành công",
+            icon: "success",
+          })
+        }
       })
       .addCase(auth.rejected, (state, action) => {
         state.status = "error"
         Toast.fire({
           title: "Xác thực tài khoản",
-          text: "Xác thực tài khoản không thành công, vui lòng thử lại sau",
+          text: "Xác thực tài khoản không thành công. Lỗi: " + action.error.message,
           icon: "error",
         })
       })
