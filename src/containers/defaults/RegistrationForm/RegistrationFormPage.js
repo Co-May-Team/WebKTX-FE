@@ -13,6 +13,7 @@ import PersonalInfoForm from "./PersonalInfoForm"
 import StudentInfoForm from "./StudentInfoForm"
 
 export default function RegistrationFormPage() {
+  const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
   const navigate = useNavigate()
@@ -20,30 +21,32 @@ export default function RegistrationFormPage() {
   const [currentForm, setCurrentForm] = useState(1)
 
   useEffect(() => {
-    if (
-      !JSON.parse(localStorage.getItem("personalInfo")) ||
-      !JSON.parse(localStorage.getItem("familyInfo")) ||
-      !JSON.parse(localStorage.getItem("studentInfo"))
-    )
-      admissionApi.getById(userInfo?.id).then((response) => {
-        if (response.data.status !== "ERROR") {
-          const personalInfo = response.data.data.personalInfo
-          const familyInfo = response.data.data.familyInfo
-          const studentInfo = response.data.data.studentInfo
-          localStorage.setItem("personalInfo", JSON.stringify(personalInfo))
-          localStorage.setItem(
-            "familyInfo",
-            JSON.stringify({
-              ...familyInfo,
-              father: familyInfo?.relatives[0],
-              mother: familyInfo?.relatives[1],
-              relatives: [...familyInfo.relatives.slice(2)],
-            })
-          )
-          localStorage.setItem("studentInfo", JSON.stringify(studentInfo))
-          setCurrentForm(4)
-        }
-      })
+    if (status === "user") {
+      if (
+        !JSON.parse(localStorage.getItem("personalInfo")) ||
+        !JSON.parse(localStorage.getItem("familyInfo")) ||
+        !JSON.parse(localStorage.getItem("studentInfo"))
+      )
+        admissionApi.getById(userInfo?.id).then((response) => {
+          if (response.data.status !== "ERROR") {
+            const personalInfo = response.data.data.personalInfo
+            const familyInfo = response.data.data.familyInfo
+            const studentInfo = response.data.data.studentInfo
+            localStorage.setItem("personalInfo", JSON.stringify(personalInfo))
+            localStorage.setItem(
+              "familyInfo",
+              JSON.stringify({
+                ...familyInfo,
+                father: familyInfo?.relatives[0],
+                mother: familyInfo?.relatives[1],
+                relatives: [...familyInfo.relatives.slice(2)],
+              })
+            )
+            localStorage.setItem("studentInfo", JSON.stringify(studentInfo))
+            setCurrentForm(4)
+          }
+        })
+    }
   }, [userInfo?.id])
 
   const handleFormChange = (formNumber) => {
