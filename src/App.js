@@ -6,13 +6,14 @@ import useScrollToTop from "./hooks/useScrollToTop"
 import AdminRoutes from "./routes/AdminRoutes"
 import DefaultRoutes from "./routes/DefaultRoutes"
 
-const APP_VERSION = "1.0.0" // Phiên bản hiện tại của ứng dụng
+const APP_VERSION = "1.0.1" // Phiên bản hiện tại của ứng dụng
 
 function checkAppVersion() {
   const storedVersion = localStorage.getItem("APP_VERSION")
   if (storedVersion !== APP_VERSION) {
     // Xóa dữ liệu trong localStorage
     localStorage.clear()
+    window.location.reload()
 
     // Cập nhật giá trị của biến phiên bản trong localStorage
     localStorage.setItem("APP_VERSION", APP_VERSION)
