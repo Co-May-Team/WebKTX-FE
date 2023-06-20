@@ -93,6 +93,7 @@ export default function StudentInfoForm({ handleFormChange }) {
         JSON.stringify({
           studentType: "",
           universityName: "",
+          studentProgram: "",
           major: "",
           classCode: "",
           studentCode: "",
@@ -113,6 +114,7 @@ export default function StudentInfoForm({ handleFormChange }) {
   ) || {
     studentType: "",
     universityName: "",
+    studentProgram: "",
     major: "",
     classCode: "",
     studentCode: "",
@@ -132,6 +134,9 @@ export default function StudentInfoForm({ handleFormChange }) {
     universityName: Yup.object()
       .nullable()
       .required("Vui lòng chọn trường của bạn"),
+    studentProgram: Yup.object()
+      .nullable()
+      .required("Vui lòng chọn loại chương trình học của bạn"),
     major: Yup.string().required("Vui lòng nhập ngành của bạn"),
     classCode: Yup.string(),
     // .required("Vui lòng nhập mã lớp"),
@@ -150,10 +155,9 @@ export default function StudentInfoForm({ handleFormChange }) {
       )
       .nullable(),
     admissionViaDirectMethod: Yup.string(),
-    achievements: Yup.string().required(
-      "Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được"
-    )
-    .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
+    achievements: Yup.string()
+      .required("Vui lòng nhập các thành tích hoặc giải thưởng đã đạt được")
+      .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
     dream: Yup.string()
       .required(
         "Vui lòng trình bày ước mơ và định hướng của bạn trong tương lai"
@@ -278,6 +282,45 @@ export default function StudentInfoForm({ handleFormChange }) {
                       value: university,
                       label: university,
                     }))}
+                    isRequired
+                  />
+                  <InputField
+                    type='select'
+                    name='studentProgram'
+                    label='Loại chương trình học'
+                    placeholder='Chọn loại chương trình học của bạn...'
+                    value={values.studentProgram}
+                    onChange={(selectedOption) => {
+                      handleChangeStudentInfo(
+                        "studentProgram",
+                        selectedOption,
+                        setFieldValue
+                      )
+                    }}
+                    clearValue={() => {
+                      handleChangeStudentInfo(
+                        "studentProgram",
+                        "",
+                        setFieldValue
+                      )
+                    }}
+                    feedback={errors.studentProgram}
+                    invalid={touched.studentProgram && errors.studentProgram}
+                    options={[
+                      {
+                        id: 1,
+                        value: "Đại trà",
+                      },
+                      {
+                        id: 2,
+                        value: "Chất lượng cao",
+                      },
+                      {
+                        id: 3,
+                        value: "Tiên tiến",
+                      },
+                    ]}
+                    getOptionLabel={(option) => option.value}
                     isRequired
                   />
                   <InputField

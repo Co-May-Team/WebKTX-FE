@@ -32,11 +32,9 @@ axiosClient.interceptors.response.use(
   (response) => {
     if (response.status === 401 || response.status === 403) {
       Swal.fire({
-        title: "Cảnh báo đăng nhập",
-        text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại để xác thực!",
+        title: "Cảnh báo quyền",
+        text: "Đăng nhập đã hết hạn hoặc bạn không có quyền thực hiện hành đồng này. Vui lòng thực hiện đăng xuất và đăng nhập lại đúng tài khoản!",
         icon: "warning",
-      }).then(() => {
-        window.location.href = "/dang-xuat" // Chuyển hướng đến trang đăng nhập
       })
     }
     return response
@@ -44,16 +42,15 @@ axiosClient.interceptors.response.use(
   (error) => {
     if (error.response.status === 401 || error.response.status === 403) {
       Swal.fire({
-        title: "Cảnh báo đăng nhập",
-        text: "Phát hiện truy cập không hợp lệ, vui lòng đăng nhập lại để xác thực!",
+        title: "Cảnh báo quyền",
+        text: "Đăng nhập đã hết hạn hoặc bạn không có quyền thực hiện hành đồng này. Vui lòng thực hiện đăng xuất và đăng nhập lại đúng tài khoản!",
         icon: "warning",
       })
-      window.location.href = "/dang-xuat"
     } else {
       Swal.fire({
-        title: "Cảnh báo lỗi",
-        text: "Đã xảy ra lỗi, vui lòng liên hệ nhà phát triển ứng dụng!",
-        icon: "error",
+        title: "Lỗi",
+        text: "Đã có lỗi trong quá trình truy vấn dữ liệu: " + error.message,
+        icon: "warning",
       })
     }
   }
