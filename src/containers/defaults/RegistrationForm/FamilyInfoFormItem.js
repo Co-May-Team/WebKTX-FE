@@ -43,7 +43,7 @@ function FamilyInfoFormItem(props) {
   }
 
   return (
-    <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
+    <div className='p-2 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
       {infoType !== "relatives" && (
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
@@ -158,7 +158,7 @@ function FamilyInfoFormItem(props) {
               invalid={touched?.phoneNumber && errors?.phoneNumber}
               isRequired={values?.status?.value === "Có thông tin"}
             />
-            <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900'>
+            <div className='p-2 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg dark:bg-neutral-900'>
               <header className='mb-5 text-center mx-auto'>
                 <h2 className='flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
                   Chỗ ở hiện tại

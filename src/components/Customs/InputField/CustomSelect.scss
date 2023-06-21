@@ -3,19 +3,20 @@
   &__control {
     display: flex;
     flex-wrap: wrap;
+    height: 100%;
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
     color: #333;
     font-size: 16px;
     line-height: 1.5;
-    border: 1px solid #ccc;
-    border-radius: 9999px !important;
+    --comay-border-opacity: 1;
+    border-color: rgba(var(--c-neutral-200), var(--comay-border-opacity)) !important;
+    border-radius: 1rem !important;
     box-shadow: none;
     cursor: pointer;
-    height: 40px;
-    padding: 0 12px;
-
+    padding: 0;
+    
     &:hover {
       border-color: #b3b3b3;
     }
@@ -47,7 +48,7 @@
     background-color: #4f46ef !important;
     color: #fff;
     font-size: 14px !important;
-
+    min-width: none !important;
     &__label {
       color: #fff !important;
     }

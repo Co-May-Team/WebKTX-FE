@@ -242,9 +242,9 @@ export default function StudentInfoForm({ handleFormChange }) {
                       { value: "Hộ cận nghèo", label: "Hộ cận nghèo" },
                       {
                         value:
-                          "Gia đình có hoàn cảnh khó khăn (Có xác nhận của địa phương)",
+                          "Gia đình có hoàn cảnh khó khăn",
                         label:
-                          "Gia đình có hoàn cảnh khó khăn (Có xác nhận của địa phương)",
+                          "Gia đình có hoàn cảnh khó khăn",
                       },
                       { value: "Mồ côi", label: "Mồ côi" },
                       {
