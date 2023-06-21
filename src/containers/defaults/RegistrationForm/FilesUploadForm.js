@@ -3,6 +3,8 @@ import { Formik } from "formik"
 import _ from "lodash"
 import { useEffect, useState } from "react"
 import { BsArrowLeft, BsCheckLg } from "react-icons/bs"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import { Form } from "reactstrap"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
@@ -10,8 +12,15 @@ import personalProfileFile from "~/assets/documents/So_yeu_ly_lich_mau.doc"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import admissionApi from "~/services/admissionApi"
+import { authSelector } from "~/store/selectors"
+import { path } from "~/utils"
+import convertToUrl from "~/utils/commons/convertToUrl"
 
 export default function FilesUploadForm({ handleFormChange }) {
+  const userInfo = useSelector(authSelector).userInfo
+
+  const navigate = useNavigate()
+
   const [files, setFiles] = useState([])
 
   useEffect(() => {
@@ -129,90 +138,53 @@ export default function FilesUploadForm({ handleFormChange }) {
         text: "Kích thước các tập tin không được vượt quá 5MB",
       })
     }
-    // Thực hiện cập nhật thông tin đăng ký sau khi đã gửi các tập tin lên server thành công
-    const info = {
-      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
-      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
-      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    const formData = new FormData()
+    // let formData = {}
+    for (let key in files) {
+      // formData = { ...formData, [key]: files[key] }
+      formData.append(key, files[key])
     }
-    const data = {
-      ...info,
-      familyInfo: {
-        relatives: [
-          {
-            relationship: {
-              id: 1,
-              label: "Cha",
-            },
-            ...info.familyInfo.father,
-          },
-          {
-            relationship: {
-              id: 2,
-              label: "Mẹ",
-            },
-            ...info.familyInfo.mother,
-          },
-          ...info.familyInfo.relatives?.map((relative) => ({
-            status: {
-              value: "Có thông tin",
-              label: "Có thông tin",
-            },
-            ...relative,
-          })),
-        ],
-        familyBackground: info.familyInfo.familyBackground,
-      },
-    }
-    admissionApi.submit(data).then((response) => {
-      if (response.data?.status === "OK") {
-        // Thực hiện xử lý dữ liệu tương ứng với các tệp được tải lên
-        const formData = new FormData()
-        // let formData = {}
-        for (let key in files) {
-          // formData = { ...formData, [key]: files[key] }
-          formData.append(key, files[key])
-        }
-        // Gửi formData lên server
+    // Gửi formData lên server
+    Swal.fire({
+      title: "Đang gửi các tập tin lên hệ thống...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+    admissionApi.uploadFiles(formData).then((response) => {
+      if (
+        _.isUndefined(response) ||
+        _.isNull(response) ||
+        _.isEmpty(response)
+      ) {
         Swal.fire({
-          title: "Đang gửi các tập tin lên hệ thống...",
-          showConfirmButton: false,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        })
-        admissionApi.uploadFiles(formData).then((response) => {
-          if (
-            _.isUndefined(response) ||
-            _.isNull(response) ||
-            _.isEmpty(response)
-          ) {
-            Swal.fire({
-              icon: "error",
-              title: "Gửi tập tin thất bại",
-              text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
-            })
-          } else {
-            if (response.data?.status === "OK") {
-              Swal.fire({
-                icon: "success",
-                title: "Gửi hồ sơ thành công",
-                text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
-              })
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Gửi tập tin thất bại",
-                text: response.data?.message,
-              })
-            }
-          }
+          icon: "error",
+          title: "Gửi tập tin thất bại",
+          text: "Đã có lỗi xảy ra vui lòng kiểm tra lại",
         })
       } else {
-        Swal.fire({
-          icon: "warning",
-          title: "Gửi hồ sơ thất bại",
-          text: response.data?.message,
-        })
+        if (response.data?.status === "OK") {
+          Swal.fire({
+            icon: "success",
+            title: "Gửi hồ sơ thành công",
+            text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
+          })
+          .then(() => {
+            
+            navigate(
+              `${path.FORM_DETAIL_BASE}/${convertToUrl(
+                userInfo?.fullName
+              )}-${userInfo?.id}`,
+              { state: userInfo?.id }
+            )
+          })
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Gửi tập tin thất bại",
+            text: response.data?.message,
+          })
+        }
       }
     })
 

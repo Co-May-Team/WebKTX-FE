@@ -67,7 +67,7 @@ export default function RegistrationFormDetailPage() {
       {loadingFormInfo ? (
         <Loading />
       ) : (
-        <div className='container relative pt-6 sm:pt-10 pb-16 lg:pt-20 lg:pb-28'>
+        <div className='container relative pt-6 sm:pt-10 pb-16 lg:pt-20 lg:pb-28 '>
           <SeoHelmet
             title={
               formInfo?.personalInfo?.fullName
@@ -104,6 +104,15 @@ export default function RegistrationFormDetailPage() {
                 </div>
                 <div className='border-t border-neutral-200 dark:border-neutral-900'>
                   <dl>
+                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Mã hồ sơ
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.dormStudentCode ||
+                          "Chưa có thông tin"}
+                      </dd>
+                    </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Họ và tên
