@@ -2,6 +2,7 @@ import FileSaver from "file-saver"
 import { Formik } from "formik"
 import _ from "lodash"
 import { useEffect, useState } from "react"
+import { BiDownload } from "react-icons/bi"
 import { BsArrowLeft, BsCheckLg } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -39,6 +40,65 @@ export default function FilesUploadForm({ handleFormChange }) {
       ...values,
       [name]: files[0],
     }))
+  }
+
+  const handleGeneratProfileCoverFile = async () => {
+    const info = {
+      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    }
+    Swal.fire({
+      title: "Đang tải xuống...",
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    })
+    admissionApi
+      .genProfileCover({
+        ...info,
+        familyInfo: {
+          relatives: [
+            {
+              relationship: {
+                id: 1,
+                label: "Cha",
+              },
+              ...info.familyInfo.father,
+            },
+            {
+              relationship: {
+                id: 2,
+                label: "Mẹ",
+              },
+              ...info.familyInfo.mother,
+            },
+            ...info.familyInfo.relatives?.map((relative) => ({
+              status: {
+                value: "Có thông tin",
+                label: "Có thông tin",
+              },
+              ...relative,
+            })),
+          ],
+          familyBackground: info.familyInfo.familyBackground,
+        },
+      })
+      .then((response) => {
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" })
+        FileSaver.saveAs(pdfBlob, "Bìa đựng hồ sơ")
+        Swal.fire({
+          icon: "success",
+          title: "Tải xuống bìa đựng hồ sơ thành công.",
+        })
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Có lỗi trong quá trình tải xuống",
+          text: error?.message,
+        })
+      })
   }
 
   const handleGenerateFiles = async () => {
@@ -168,13 +228,11 @@ export default function FilesUploadForm({ handleFormChange }) {
             icon: "success",
             title: "Gửi hồ sơ thành công",
             text: "Nếu bạn muốn cập nhật lại hồ sơ, hãy cập nhật lại thông tin trong biểu mẫu này và ấn gửi lần nữa!",
-          })
-          .then(() => {
-            
+          }).then(() => {
             navigate(
-              `${path.FORM_DETAIL_BASE}/${convertToUrl(
-                userInfo?.fullName
-              )}-${userInfo?.id}`,
+              `${path.FORM_DETAIL_BASE}/${convertToUrl(userInfo?.fullName)}-${
+                userInfo?.id
+              }`,
               { state: userInfo?.id }
             )
           })
@@ -226,6 +284,15 @@ export default function FilesUploadForm({ handleFormChange }) {
           }) => (
             <Form onSubmit={handleSubmit}>
               <div className='grid gap-6'>
+                <button
+                  onClick={handleGeneratProfileCoverFile}
+                  className='block m-auto rounded-full my-5 transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                  type="button"
+                >
+                  <BiDownload className='inline me-3' />
+                  Tải xuống bìa đựng hồ sơ
+                  <BiDownload className='inline ms-3' />
+                </button>
                 <InputField
                   type='file'
                   accept='application/pdf'

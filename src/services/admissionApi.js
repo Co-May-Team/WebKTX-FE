@@ -20,6 +20,12 @@ const admissionApi = {
       responseType: "blob",
     })
   },
+  genProfileCover: (data) => {
+    const requestUrl = `${baseUrl}/gen-file/profile-cover`
+    return axiosClient.post(requestUrl, data, {
+      responseType: "blob",
+    })
+  },
   donwload: () => {
     const requestUrl = `${baseUrl}/export`
     return axiosClient.get(requestUrl, {
