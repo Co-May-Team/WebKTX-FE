@@ -2,9 +2,11 @@ import { Formik } from "formik"
 import { useEffect } from "react"
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs"
 import { Form } from "reactstrap"
+import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
+import admissionApi from "~/services/admissionApi"
 
 const universities = [
   "Đại học Văn Hiến",
@@ -181,7 +183,67 @@ export default function StudentInfoForm({ handleFormChange }) {
   }
 
   const handleSubmitStudentInfo = async (values, actions) => {
-    handleFormChange(4)
+    actions.setSubmitting(true)
+
+    // Thực hiện cập nhật thông tin đăng ký sau khi đã gửi các tập tin lên server thành công
+    const info = {
+      personalInfo: JSON.parse(localStorage.getItem("personalInfo")),
+      familyInfo: JSON.parse(localStorage.getItem("familyInfo")),
+      studentInfo: JSON.parse(localStorage.getItem("studentInfo")),
+    }
+    const data = {
+      ...info,
+      familyInfo: {
+        relatives: [
+          {
+            relationship: {
+              id: 1,
+              label: "Cha",
+            },
+            ...info.familyInfo.father,
+          },
+          {
+            relationship: {
+              id: 2,
+              label: "Mẹ",
+            },
+            ...info.familyInfo.mother,
+          },
+          ...info.familyInfo.relatives?.map((relative) => ({
+            status: {
+              value: "Có thông tin",
+              label: "Có thông tin",
+            },
+            ...relative,
+          })),
+        ],
+        familyBackground: info.familyInfo.familyBackground,
+      },
+    }
+
+    admissionApi.submit(data).then((response) => {
+      if (response.data?.status === "OK") {
+        let currentStudentInfo = JSON.parse(localStorage.getItem("studentInfo"))
+        currentStudentInfo = {
+          ...currentStudentInfo,
+          dormStudentCode: response.data.data,
+        }
+        localStorage.setItem("studentInfo", JSON.stringify(currentStudentInfo))
+        Swal.fire({
+          icon: "success",
+          title: "Lưu thông tin thành công",
+          text: "Thông tin hồ sơ của bạn đã được cập nhật lên hệ thống thành công. Vui lòng thực hiện tiếp tục bước upload hồ sơ",
+        }).then(() => handleFormChange(4))
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "Lưu thông tin hồ sơ thất bại",
+          text: response.data?.message,
+        })
+      }
+    })
+
+    actions.setSubmitting(false)
   }
   /* */
   return (
@@ -241,10 +303,8 @@ export default function StudentInfoForm({ handleFormChange }) {
                       { value: "Hộ nghèo", label: "Hộ nghèo" },
                       { value: "Hộ cận nghèo", label: "Hộ cận nghèo" },
                       {
-                        value:
-                          "Gia đình có hoàn cảnh khó khăn",
-                        label:
-                          "Gia đình có hoàn cảnh khó khăn",
+                        value: "Gia đình có hoàn cảnh khó khăn",
+                        label: "Gia đình có hoàn cảnh khó khăn",
                       },
                       { value: "Mồ côi", label: "Mồ côi" },
                       {
@@ -500,6 +560,28 @@ export default function StudentInfoForm({ handleFormChange }) {
                       className='block rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-10 disabled:bg-opacity-70 bg-primary-6000 hover:bg-primary-700 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                       type='submit'
                     >
+                      {isSubmitting && (
+                        <svg
+                          className='animate-spin -ml-1 mr-3 h-5 w-5 inline'
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                        >
+                          <circle
+                            className='opacity-25'
+                            cx={12}
+                            cy={12}
+                            r={10}
+                            stroke='currentColor'
+                            strokeWidth={3}
+                          />
+                          <path
+                            className='opacity-75'
+                            fill='currentColor'
+                            d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                          />
+                        </svg>
+                      )}
                       Tiếp tục <BsArrowRight className='inline' />
                     </button>
                   </div>

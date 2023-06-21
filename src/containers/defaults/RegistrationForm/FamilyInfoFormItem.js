@@ -139,6 +139,7 @@ function FamilyInfoFormItem(props) {
               invalid={touched?.yearOfBirth && errors?.yearOfBirth}
               isRequired={values?.status?.value === "Có thông tin"}
             />
+            
             <InputField
               type='text'
               name={`${infoType}.phoneNumber`}
