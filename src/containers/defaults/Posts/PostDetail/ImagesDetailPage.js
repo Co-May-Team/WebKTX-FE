@@ -20,7 +20,6 @@ export default function ImagesDetailPage(props) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const folderInfo = useLocation().state
-  console.log(folderInfo)
 
   const shareDropdownRef = useRef()
   const moreActionDropdownRef = useRef()

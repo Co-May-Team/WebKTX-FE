@@ -28,8 +28,7 @@ export default function PostSavedPage() {
             style={{ overflow: "visible" }}
           >
             {savedPosts?.map((savedPost) => (
-              <Fade key={savedPost.postId} bottom>
-                <div className='relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full'>
+                <div key={savedPost.postId} className='relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full'>
                   <div className='block flex-shrink-0 relative w-full rounded-t-xl overflow-hidden aspect-w-4 aspect-h-3'>
                     <div>
                       <div className='relative w-full h-full '>
@@ -164,7 +163,6 @@ export default function PostSavedPage() {
                     </div>
                   </div>
                 </div>
-              </Fade>
             ))}
           </div>
         ) : (
