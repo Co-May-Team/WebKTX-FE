@@ -5,7 +5,7 @@ const apiKey = "AIzaSyAS1KDnvd2dT6OeVnOwYCxtzlD4xGTsAi8"
 
 const imagesApi = {
   getFolders: (params) => {
-    const folderParentId = "19rP6BezjZtNZYNYYLuW904GjkGZeI72a"
+    const folderParentId = "1ATTZh4LqfbkNAtvQQ_s1uNEI6xZaVZL5"
     const requestUrl = `https://www.googleapis.com/drive/v3/files?q='${folderParentId}'%20in%20parents&fields=nextPageToken,files(id,name,mimeType,createdTime)&key=${apiKey}&${queryString.stringify(
       params
     )}`
