@@ -6,10 +6,9 @@ import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
 import admissionApi from "~/services/admissionApi"
-import { path } from "~/utils"
 import formatCurrency from "~/utils/commons/formatCurrency"
 
-export default function FormDetail() {
+export default function RegistrationFormDetailPage() {
   const id = useLocation().state
   const navigate = useNavigate()
   const [loadingFormInfo, setLoadingFormInfo] = useState(true)
@@ -31,7 +30,7 @@ export default function FormDetail() {
 
   // Hàm xử lý quay lại trang quản lý form
   function backToListForm() {
-    navigate(`${path.ADMIN + path.FORMS}`)
+    navigate(-1)
   }
 
   const renderFile = (file) => {
@@ -68,7 +67,7 @@ export default function FormDetail() {
       {loadingFormInfo ? (
         <Loading />
       ) : (
-        <div className='container relative pt-6 sm:pt-10 pb-16 lg:pt-20 lg:pb-28'>
+        <div className='container relative pt-6 sm:pt-10 pb-16 lg:pt-20 lg:pb-28 '>
           <SeoHelmet
             title={
               formInfo?.personalInfo?.fullName
@@ -105,6 +104,15 @@ export default function FormDetail() {
                 </div>
                 <div className='border-t border-neutral-200 dark:border-neutral-900'>
                   <dl>
+                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Mã hồ sơ
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.dormStudentCode ||
+                          "Chưa có thông tin"}
+                      </dd>
+                    </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Họ và tên
@@ -182,16 +190,7 @@ export default function FormDetail() {
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
                         {formInfo?.personalInfo?.detailAddress},{" "}
-                        {formInfo?.personalInfo?.wardAddress?.name_with_type},{" "}
-                        {
-                          formInfo?.personalInfo?.districtAddress
-                            ?.name_with_type
-                        }
-                        ,{" "}
-                        {
-                          formInfo?.personalInfo?.provinceAddress
-                            ?.name_with_type
-                        }
+                        {formInfo?.personalInfo?.wardAddress?.path_with_type}
                       </dd>
                     </div>
                     <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -236,23 +235,23 @@ export default function FormDetail() {
                     className='mt-2 shadow-lg border-neutral-200 dark:border-neutral-900'
                   >
                     <dl>
-                      {relative.status.label === "Không rõ" ? (
+                      {relative?.status?.label === "Không rõ" ? (
                         <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                           <dt className='text-sm font-bold text-neutral-500 dark:text-neutral-300'>
-                            {index + 1 + ". " + relative.relationship.label}
+                            {index + 1 + ". " + relative?.relationship?.label}
                           </dt>
                           <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                            {relative.fullName || "Không có thông tin"}
+                            {relative?.fullName || "Không có thông tin"}
                           </dd>
                         </div>
                       ) : (
                         <>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                             <dt className='text-sm font-bold text-neutral-500 dark:text-neutral-300'>
-                              {index + 1 + ". " + relative.relationship.label}
+                              {index + 1 + ". " + relative?.relationship?.label}
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.fullName || "Không rõ"}
+                              {relative?.fullName || "Không rõ"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -260,7 +259,7 @@ export default function FormDetail() {
                               Năm sinh
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.yearOfBirth || "Chưa có thông tin"}
+                              {relative?.yearOfBirth || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -268,7 +267,7 @@ export default function FormDetail() {
                               Số điện thoại
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.phoneNumber || "Chưa có thông tin"}
+                              {relative?.phoneNumber || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -276,10 +275,8 @@ export default function FormDetail() {
                               Địa chỉ thường trú
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.detailAddress},{" "}
-                              {relative.wardAddress?.name_with_type},{" "}
-                              {relative.districtAddress?.name_with_type},{" "}
-                              {relative.provinceAddress?.name_with_type}
+                              {relative?.detailAddress},{" "}
+                              {relative?.wardAddress?.path_with_type}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -287,7 +284,7 @@ export default function FormDetail() {
                               Công việc hiện tại
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.currentJob || "Chưa có thông tin"}
+                              {relative?.currentJob || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -295,7 +292,7 @@ export default function FormDetail() {
                               Nơi làm việc
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.placeOfWork || "Chưa có thông tin"}
+                              {relative?.placeOfWork || "Chưa có thông tin"}
                             </dd>
                           </div>
                           <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -303,7 +300,7 @@ export default function FormDetail() {
                               SĐT nơi làm việc
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                              {relative.phoneNumberOfCompany ||
+                              {relative?.phoneNumberOfCompany ||
                                 "Chưa có thông tin"}
                             </dd>
                           </div>
@@ -313,7 +310,7 @@ export default function FormDetail() {
                             </dt>
                             <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
                               {formatCurrency(
-                                Number.parseFloat(relative.income)
+                                Number.parseFloat(relative?.income)
                               )}
                             </dd>
                           </div>
@@ -324,7 +321,7 @@ export default function FormDetail() {
                 ))}
                 <div className='mt-2 shadow-lg border-neutral-200 dark:border-neutral-900'>
                   <dl>
-                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                    <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
                       <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
                         Hoàn cảnh gia đình
                       </dt>
@@ -358,7 +355,23 @@ export default function FormDetail() {
                         Tên trường đại học
                       </dt>
                       <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
-                        {formInfo?.studentInfo?.universityName.label}
+                        {formInfo?.studentInfo?.universityName?.label}
+                      </dd>
+                    </div>
+                    <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Loại chương trình học
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.studentProgram?.label}
+                      </dd>
+                    </div>
+                    <div className='bg-white dark:bg-neutral-900 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
+                      <dt className='text-sm font-medium text-neutral-500 dark:text-neutral-300'>
+                        Tên trường đại học
+                      </dt>
+                      <dd className='mt-1 text-sm text-neutral-900 dark:text-neutral-200 font-medium sm:mt-0 sm:col-span-2'>
+                        {formInfo?.studentInfo?.universityName?.label}
                       </dd>
                     </div>
                     <div className='bg-neutral-50 dark:bg-neutral-800 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6'>
@@ -452,8 +465,8 @@ export default function FormDetail() {
                         <div>
                           {renderFile(file)}
                           <a
-                            href={`data:application/octet-stream;base64,${file.fileContent}`}
-                            download={file.fileName}
+                            href={`data:application/octet-stream;base64,${file?.fileContent}`}
+                            download={file?.fileName}
                             className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-sky-700 hover:bg-sky-600 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-600 dark:focus:ring-offset-0'
                           >
                             <BsDownload className='me-3' />

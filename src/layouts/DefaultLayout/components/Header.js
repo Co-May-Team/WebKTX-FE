@@ -6,13 +6,13 @@ import { LogoIcon } from "~/components/Icons"
 import ProgressBar from "~/containers/defaults/Posts/PostDetail/ProgressBar"
 
 import { useClickOutside } from "~/hooks"
-import { fetchCategories } from "~/store/categories/actions"
+import { fetchCategories } from "~/store/categories/slice"
 import {
   authSelector,
   categoriesSelector,
   tagsSelector,
 } from "~/store/selectors"
-import { fetchTags } from "~/store/tags/actions"
+import { fetchTags } from "~/store/tags/slice"
 import { path } from "~/utils"
 import capitalizeWords from "~/utils/commons/capitalizeWords"
 import convertToUrl from "~/utils/commons/convertToUrl"
@@ -419,6 +419,56 @@ function Header() {
                                       )}
                                     </span>
                                   </div>
+                                  <div className='my-3 block sm:hidden flex-grow max-w-xs'>
+                  <div className='relative'>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault()
+                        navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
+                      }}
+                    >
+                      <input
+                        type='search'
+                        className='block w-full border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200/50 bg-white dark:border-neutral-500 dark:focus:ring-primary-500/30 dark:bg-neutral-900 rounded-full text-sm font-normal h-[42px] pl-4 py-3 pr-10 w-full'
+                        placeholder='Tìm kiếm...'
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                      <span className='absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500 dark:text-neutral-400'>
+                        <svg
+                          className='h-5 w-5'
+                          viewBox='0 0 24 24'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            d='M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z'
+                            stroke='currentColor'
+                            strokeWidth='1.5'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                          />
+                          <path
+                            d='M22 22L20 20'
+                            stroke='currentColor'
+                            strokeWidth='1.5'
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                          />
+                        </svg>
+                      </span>
+                      <input
+                        type='submit'
+                        onSubmit={(e) => {
+                          e.preventDefault()
+                          navigate(`${path.SEARCH}?tu-khoa=${searchTerm}`)
+                        }}
+                        hidden
+                        defaultValue
+                      />
+                    </form>
+                  </div>
+                </div>
                                   <NavLink
                                     className='text-neutral-900 dark:text-white'
                                     to='/bai-viet-da-luu'

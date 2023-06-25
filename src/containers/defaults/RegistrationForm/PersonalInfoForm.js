@@ -21,7 +21,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
 
   const handleChangePersonalInfo = (name, value, setFieldValue) => {
     let currentPersonalInfo = JSON.parse(localStorage.getItem("personalInfo"))
-    if (name === "fullName" || name === "detailAddress") {
+    if (name === "fullName" || name === "detailAddress" || name === "idIssuePlace") {
       value = value
         .toLowerCase()
         .split(" ")
@@ -107,8 +107,8 @@ export default function PersonalInfoForm({ handleFormChange }) {
     dateOfBirth: Yup.string().required("Ngày sinh không được để trống"),
     gender: Yup.object().nullable().required("Giới tính không được để trống"),
     phoneNumber: Yup.string()
-      .matches(/^(0|\+84)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ")
-      .required("Số điện thoại không được để trống"),
+      .required("Số điện thoại không được để trống")
+      .matches(/^(0)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ"),
     email: Yup.string()
       .email("Email không hợp lệ")
       .required("Email không được để trống"),
@@ -127,7 +127,9 @@ export default function PersonalInfoForm({ handleFormChange }) {
     detailAddress: Yup.string().required(
       "Số nhà, tên đường không được để trống"
     ),
-    idNumber: Yup.string().required("Số CMND/CCCD không được để trống"),
+    idNumber: Yup.string()
+      .required("Số CMND/CCCD không được để trống")
+      .matches(/^\d{0,12}$/, "Số CNMD/CCCD không hợp lệ"),
     idIssueDate: Yup.string().required(
       "Ngày cấp CMND/CCCD không được để trống"
     ),
@@ -349,7 +351,7 @@ export default function PersonalInfoForm({ handleFormChange }) {
                   isRequired
                 />
 
-                <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
+                <div className='p-2 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
                   <header className='mb-5 text-center mx-auto'>
                     <h2 className='flex items-center leading-[115%] md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
                       Địa chỉ thường trú (xem trong hộ khẩu)

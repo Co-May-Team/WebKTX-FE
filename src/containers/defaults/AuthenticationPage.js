@@ -1,29 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Formik } from "formik"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
-import { auth } from "~/store/auth/actions"
+import { auth } from "~/store/auth/slice"
 import { authSelector } from "~/store/selectors"
 import { path } from "~/utils"
 
-export default function Authentication() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
+export default function AuthenticationPage() {
   const status = useSelector(authSelector).status
   const userInfo = useSelector(authSelector).userInfo
 
-  if (status === "user") {
-    if (!userInfo?.admin) {
-      return <Navigate to='/' />
-    } else {
-      return <Navigate to={`${path.ADMIN + path.ADMIN_HOME}`} />
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (status === "user") {
+      if (!userInfo?.admin) {
+        navigate("/")
+      } else {
+        navigate(`${path.ADMIN + path.ADMIN_HOME}`)
+      }
     }
-  }
+  }, [status])
+
   /* Xử lý form */
   const initialValues = {
     citizenId: "",
@@ -31,12 +35,15 @@ export default function Authentication() {
     dob: "",
   }
   const validationSchema = Yup.object({
-    citizenId: Yup.string().required("Vui lòng nhập số CNMD/CCCD"),
+    citizenId: Yup.string()
+      .required("Vui lòng nhập số CNMD/CCCD")
+      .matches(/^\d{0,12}$/, "Số CNMD/CCCD không hợp lệ"),
     phoneNumber: Yup.string()
-      .matches(/^(03|05|07|08|09)+([0-9]{8})\b/, "Số điện thoại không hợp lệ")
-      .required("Vui lòng nhập số điện thoại"),
+      .required("Vui lòng nhập số điện thoại")
+      .matches(/^(03|05|07|08|09)+([0-9]{8})\b/, "Số điện thoại không hợp lệ"),
     dob: Yup.string().required("Vui lòng nhập ngày sinh"),
-  })
+  });
+  
   const handleSubmit = async (values, actions) => {
     actions.setSubmitting(true)
     await dispatch(auth(values))

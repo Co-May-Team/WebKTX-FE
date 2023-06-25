@@ -2,50 +2,25 @@
 import moment from "moment"
 import "moment/locale/vi" // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from "react"
-import {
-  FaEnvelope,
-  FaEye,
-  FaFacebook,
-  FaLinkedin,
-  FaReddit,
-  FaRegEdit,
-  FaRegTrashAlt,
-  FaTelegram,
-  FaTwitter,
-  FaWhatsapp,
-} from "react-icons/fa"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import { Bounce, Fade, Slide, Zoom } from "react-reveal"
-import { useNavigate, useParams } from "react-router-dom"
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  LinkedinShareButton,
-  RedditShareButton,
-  TelegramShareButton,
-  TwitterShareButton,
-  WhatsappShareButton,
-} from "react-share"
-import Confirm from "~/components/Customs/Confirm"
+import { useParams } from "react-router-dom"
 import Loading from "~/components/Loading"
 import Motion from "~/components/Motion"
 import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
-import SubmitPost from "~/containers/admin/Posts/SubmitPost"
 import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
-import { deletePost } from "~/store/posts/actions"
 import { authSelector } from "~/store/selectors"
 import readingTime from "~/utils/commons/readingTime"
 import { defaultAvatar } from "~/utils/constants/default"
-import MostViewPosts from "./MostViewPosts"
-import RelatedPosts from "./RelatedPosts"
+import MostViewPostsSection from "./MostViewPostsSection"
+import RelatedPostsSection from "./RelatedPostsSection"
+import ShareDropdown from "./ShareDropdown"
 
-export default function PostDetail(props) {
+export default function PostDetailPage(props) {
   const userInfo = useSelector(authSelector).userInfo
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const params = useParams()
 
   const shareDropdownRef = useRef()
@@ -55,8 +30,6 @@ export default function PostDetail(props) {
   const [postInfo, setPostInfo] = useState(null)
   const [relatedPosts, setRelatedPosts] = useState([])
   const [mostViewPosts, setMostViewPosts] = useState([])
-  const [visibleFormEditPost, setVisibleFormEditPost] = useState(false)
-  const [visibleDeletePost, setVisibleDeletePost] = useState(false)
   const [visibleShareDropdown, setVisibleShareDropdown] = useState(false)
   const [visibleMoreActionDropdown, setVisibleMoreActionDropdown] =
     useState(false)
@@ -184,14 +157,9 @@ export default function PostDetail(props) {
   //   }
   // }, [postInfo])
 
-  const handleDeletePost = () => {
-    dispatch(deletePost(postInfo.postId))
-    navigate(-1)
-  }
-
   return (
     <Motion>
-      <SeoHelmet title={postInfo?.title} />
+      <SeoHelmet title={postInfo?.title} description={postInfo?.summary} />
       {loading ? (
         <Loading />
       ) : (
@@ -346,67 +314,7 @@ export default function PostDetail(props) {
                               </svg>
                             </button>
                           </Fade>
-                          {visibleShareDropdown && (
-                            <div className='absolute origin-top-right right-0 w-56 mt-2 bg-white dark:bg-neutral-900 rounded-lg divide-y divide-neutral-100 shadow-lg ring-1 ring-black dark:ring-white ring-opacity-5 dark:ring-opacity-10 focus:outline-none z-30 transform opacity-100 scale-100 animate__animated animate__zoomIn animate__faster'>
-                              <div
-                                className='px-1 py-3 text-sm text-neutral-6000 dark:text-neutral-300'
-                                role='none'
-                              >
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <FacebookShareButton
-                                    url={window.location.href}
-                                  >
-                                    <FaFacebook className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Facebook</span>
-                                  </FacebookShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <TwitterShareButton
-                                    url={window.location.href}
-                                  >
-                                    <FaTwitter className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Twitter</span>
-                                  </TwitterShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <LinkedinShareButton
-                                    url={window.location.href}
-                                  >
-                                    <FaLinkedin className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>LinkedIn</span>
-                                  </LinkedinShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <TelegramShareButton
-                                    url={window.location.href}
-                                  >
-                                    <FaTelegram className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Telegram</span>
-                                  </TelegramShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <WhatsappShareButton
-                                    url={window.location.href}
-                                  >
-                                    <FaWhatsapp className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Whatsapp</span>
-                                  </WhatsappShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <RedditShareButton url={window.location.href}>
-                                    <FaReddit className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Reddit</span>
-                                  </RedditShareButton>
-                                </button>
-                                <button className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'>
-                                  <EmailShareButton url={window.location.href}>
-                                    <FaEnvelope className='mr-1 w-7 text-base' />
-                                    <span className='truncate'>Email</span>
-                                  </EmailShareButton>
-                                </button>
-                              </div>
-                            </div>
-                          )}
+                          {visibleShareDropdown && <ShareDropdown />}
                         </div>
                         <div>
                           <div
@@ -442,33 +350,9 @@ export default function PostDetail(props) {
                                     className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'
                                     onClick={handleCopyClick}
                                   >
-                                    <i className='las la-copy mr-1 w-7 text-base' />
+                                    <i className='las la-copy mr-1 w-7 text-base inline' />
                                     <span className='truncate'>
                                       {copied ? "Đã sao chép" : "Sao chép link"}
-                                    </span>
-                                  </button>
-                                  <button
-                                    className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'
-                                    onClick={() => setVisibleFormEditPost(true)}
-                                  >
-                                    <FaRegEdit
-                                      size={12}
-                                      className='mr-1 w-7 text-base'
-                                    />
-                                    <span className='truncate'>
-                                      Chỉnh sửa bài viết
-                                    </span>
-                                  </button>
-                                  <button
-                                    className='flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate focus:outline-none'
-                                    onClick={() => setVisibleDeletePost(true)}
-                                  >
-                                    <FaRegTrashAlt
-                                      size={12}
-                                      className='mr-1 w-7 text-base'
-                                    />
-                                    <span className='truncate'>
-                                      Xóa bài viết
                                     </span>
                                   </button>
                                 </div>
@@ -553,29 +437,13 @@ export default function PostDetail(props) {
             </div>
             <div className='w-full mt-12 lg:mt-0 lg:w-2/5 lg:pl-10 xl:pl-0 xl:w-1/3'>
               <div className='nc-SingleSidebar space-y-6 '></div>
-              <RelatedPosts listPost={relatedPosts} />
+              <RelatedPostsSection listPost={relatedPosts} />
             </div>
           </div>
 
           <div className='relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-28'>
-            <MostViewPosts listPost={mostViewPosts} />
+            <MostViewPostsSection listPost={mostViewPosts} />
           </div>
-          {visibleFormEditPost && (
-            <SubmitPost
-              visible={visibleFormEditPost}
-              setVisible={() => setVisibleFormEditPost(!visibleFormEditPost)}
-              post={postInfo}
-            />
-          )}
-          {visibleDeletePost && (
-            <Confirm
-              visible={visibleDeletePost}
-              setVisible={() => setVisibleDeletePost(!visibleDeletePost)}
-              title='Xóa bài đăng'
-              content='Bạn có chắc muốn xóa bài đăng này?'
-              onConfirm={handleDeletePost}
-            />
-          )}
         </>
       )}
     </Motion>

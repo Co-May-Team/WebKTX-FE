@@ -9,10 +9,10 @@ import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Modal from "~/components/Customs/Modal"
 import postsApi from "~/services/postsApi"
-import { fetchCategories } from "~/store/categories/actions"
-import { addPostToList, updatePostList } from "~/store/posts/actions"
+import { fetchCategories } from "~/store/categories/slice"
+import { addPostToList, updatePostList } from "~/store/posts/slice"
 import { categoriesSelector, tagsSelector } from "~/store/selectors"
-import { fetchTags } from "~/store/tags/actions"
+import { fetchTags } from "~/store/tags/slice"
 import { defaultThumbnail } from "~/utils/constants/default"
 import QuillEditor from "./QuillEditor"
 
@@ -437,18 +437,9 @@ export default function SubmitPost({ visible, setVisible, post }) {
                         onChange={(content) => {
                           setFieldValue("content", content)
                         }}
-                        onBlur={() => {
-                          setFieldTouched("content", true)
-                          if (!values.content) {
-                            setFieldError(
-                              "content",
-                              "Vui lòng nhập nội dung bài viết"
-                            )
-                          }
-                        }}
                       />
                       {errors.content && (
-                        <div className='invalid-feedback d-block'>
+                        <div className='invalid-feedback inline'>
                           {errors.content}
                         </div>
                       )}
@@ -472,21 +463,24 @@ export default function SubmitPost({ visible, setVisible, post }) {
                 />
               </div>
               <div
-                className='mb-3'
+                className='mb-3 flex items-center'
                 style={{ cursor: "pointer!important" }}
-                onClick={() =>
-                  setFieldValue("isPublished", !values.isPublished)
-                }
               >
                 <input
                   type='checkbox'
-                  className='mr-2'
-                  name='isPublished'
+                  className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                  id='isPublished'
                   checked={!values.isPublished}
+                  onChange={() =>
+                    setFieldValue("isPublished", !values.isPublished)
+                  }
                 />
-                <span className='text-neutral-800 font-medium text-sm dark:text-neutral-300'>
+                <label
+                  htmlFor='isPublished'
+                  className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
+                >
                   Ẩn bài viết
-                </span>
+                </label>
               </div>
               <div style={{ marginBottom: "4rem" }} />
               <ModalFooter className='bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200'>

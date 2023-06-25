@@ -1,15 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk } from "@reduxjs/toolkit/dist"
 import Swal from "sweetalert2"
-import {
-  auth,
-  checkToken,
-  forgotPassword,
-  getUserInfo,
-  login,
-  resetPassword,
-  signup,
-} from "./actions"
+import authApi from "~/services/authApi"
 
 const Toast = Swal.mixin({
   toast: true,
@@ -119,7 +112,7 @@ const authSlice = createSlice({
           Toast.fire({
             title: "Đăng nhập với Google",
             text: "Đăng nhập với Google thành công. vui lòng xác thực tài khoản cho lần đầu đăng nhập.",
-            icon: "success",                
+            icon: "success",
           })
         } else {
           state.status = "user"
@@ -144,20 +137,30 @@ const authSlice = createSlice({
         state.status = "isAuthenticating"
       })
       .addCase(auth.fulfilled, (state, action) => {
-        state.status = "user"
-        state.accessToken = "Bearer " + localStorage.getItem("accessToken")
-        state.userInfo = action.payload.data.userInfo
-        Toast.fire({
-          title: "Xác thực tài khoản",
-          text: "Xác thực tài khoản thành công",
-          icon: "success",
-        })
+        if (action.payload.status === "ERROR") {
+          state.status = "auth"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          Swal.fire({
+            title: "Xác thực tài khoản",
+            text: action.payload.message,
+            icon: "warning",
+          })
+        } else {
+          state.status = "user"
+          state.accessToken = "Bearer " + localStorage.getItem("accessToken")
+          state.userInfo = action.payload.data.userInfo
+          Toast.fire({
+            title: "Xác thực tài khoản",
+            text: "Xác thực tài khoản thành công",
+            icon: "success",
+          })
+        }
       })
       .addCase(auth.rejected, (state, action) => {
         state.status = "error"
         Toast.fire({
           title: "Xác thực tài khoản",
-          text: "Xác thực tài khoản không thành công, vui lòng thử lại sau",
+          text: "Xác thực tài khoản không thành công. Lỗi: " + action.error.message,
           icon: "error",
         })
       })
@@ -236,5 +239,45 @@ const authSlice = createSlice({
       })
   },
 })
+
+export const { setStatus, logout } = authSlice.actions
+
+export const login = createAsyncThunk("auth/login", async (userInfo) => {
+  const response = await authApi.login(userInfo)
+  return response.data
+})
+export const auth = createAsyncThunk("auth/auth", async (userInfo) => {
+  const response = await authApi.auth(userInfo)
+  return response.data
+})
+export const signup = createAsyncThunk("auth/signup", async (userInfo) => {
+  const response = await authApi.signup(userInfo)
+  return response.data
+})
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email) => {
+    const response = await authApi.forgotPassword(email)
+    return response.data
+  }
+)
+export const checkToken = createAsyncThunk("auth/checkToken", async (token) => {
+  const response = await authApi.checkToken(token)
+  return response.data
+})
+export const resetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (body) => {
+    const response = await authApi.resetPassword(body)
+    return response.data
+  }
+)
+export const getUserInfo = createAsyncThunk(
+  "auth/getUserInfo",
+  async (username) => {
+    const response = await authApi.getUserInfo(username)
+    return response.data
+  }
+)
 
 export default authSlice

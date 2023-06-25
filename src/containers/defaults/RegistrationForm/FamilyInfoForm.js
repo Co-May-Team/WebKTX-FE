@@ -39,9 +39,7 @@ const validationSchema = {
   }),
   yearOfBirth: Yup.string().when("status", {
     is: (val) => val?.value === "Có thông tin",
-    then: Yup.string()
-      .nullable()
-      .required("Năm sinh là bắt buộc"),
+    then: Yup.string().nullable().required("Năm sinh là bắt buộc"),
     otherwise: Yup.string().nullable(),
   }),
   phoneNumber: Yup.string().when("status", {
@@ -49,7 +47,7 @@ const validationSchema = {
     then: Yup.string()
       .nullable()
       .required("Số điện thoại là bắt buộc")
-      .length(10, "Vui lòng nhập chính xác số điện thoại"),
+      .matches(/^(0)[3|5|7|8|9][0-9]{8}$/, "Số điện thoại không hợp lệ"),
     otherwise: Yup.string().nullable(),
   }),
   provinceAddress: Yup.object().when("status", {
@@ -117,9 +115,9 @@ const validationSchemaFamilyInfo = Yup.object().shape({
       ...validationSchema,
     })
   ),
-  familyBackground: Yup.string().required(
-    "Hoàn cảnh gia đình không được để trống"
-  ),
+  familyBackground: Yup.string()
+    .required("Hoàn cảnh gia đình không được để trống")
+    .max(1000, "Tối đa 1000 ký tự, vui lòng điều chỉnh lại cho hợp lý."),
 })
 
 export default function FamilyInfoForm({ handleFormChange }) {
@@ -146,7 +144,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   function handleChangeInfo(infoType, name, value, setFieldValue, index) {
     let currentFamilyInfo = JSON.parse(localStorage.getItem("familyInfo"))
-    if (name === "fullName") {
+    if (name === "fullName" || name === "detailAddress") {
       value = value
         .toLowerCase()
         .split(" ")
@@ -231,7 +229,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
 
   return (
     <Motion className='container relative pb-16 pt-10 lg:pb-28 lg:pt-20'>
-      <div className='p-5 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
+      <div className='p-2 mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-2xl sm:p-10 lg:p-16 dark:bg-neutral-900'>
         <header className=' my-5 text-center mx-auto'>
           <h2 className='flex items-center text-3xl leading-[115%] md:text-5xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
             II. HOÀN CẢNH GIA ĐÌNH
@@ -274,7 +272,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     )
                   })}
                   {/* Phần nhập thông tin người thân */}
-                  <div className='p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
+                  <div className='p-2 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'>
                     <header className='text-center mx-auto'>
                       <h2 className='flex items-center text-2xl leading-[115%] md:text-4xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
                         3. Thông tin người thân
@@ -285,7 +283,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                         return (
                           <div
                             key={index}
-                            className='relative p-5 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'
+                            className='relative p-2 w-full mx-auto bg-white rounded-xl sm:rounded-3xl lg:rounded-[40px] shadow-lg sm:p-10 lg:p-16 dark:bg-neutral-900'
                           >
                             <header className='text-center mx-auto'>
                               <h2 className='flex items-center text-2xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center'>
@@ -329,7 +327,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                       })}
                     </div>
                     <button
-                      className='relative w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
+                      className='w-full h-auto mt-5 inline-flex items-center justify-center rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 sm:px-6 disabled:bg-opacity-70 bg-green-500 hover:bg-green-800 text-neutral-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-6000 dark:focus:ring-offset-0'
                       type='button'
                       onClick={() => {
                         const temp = [...values.relatives, relativeInfo]
@@ -351,7 +349,7 @@ export default function FamilyInfoForm({ handleFormChange }) {
                     name='familyBackground'
                     rows={10}
                     placeholder='Nhập hoàn cảnh gia đình...'
-                    label='Hoàn cảnh gia đình'
+                    label='Hoàn cảnh gia đình (tối đa 1000 ký tự)'
                     value={values.familyBackground}
                     feedback={errors.familyBackground}
                     onChange={(e) => {

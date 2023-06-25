@@ -2,7 +2,7 @@ $dark-color: #d1d5d8;
 $dark-bg: rgba(var(--c-neutral-900), var(--comay-bg-opacity));
 $dark-bg-menu: rgba(var(--c-neutral-800), var(--comay-bg-opacity));
 $dark-bg-focus: rgba(var(--c-neutral-700), var(--comay-bg-opacity));
-$dark-border-color: #6b7280;
+$dark-border-color: rgba(var(--c-neutral-500), var(--comay-border-opacity)) !important;;
 $dark-placeholder-color: #6b7280;
 .dark {
   font-family: "Montserrat", sans-serif !important;
@@ -46,5 +46,11 @@ $dark-placeholder-color: #6b7280;
   .custom-select__menu {
     background-color: $dark-bg-menu !important;
     color: $dark-color !important;
+  }
+  .ql-snow .ql-picker {
+    color: $dark-color !important;
+  }
+  .ql-snow .ql-stroke {
+    stroke: $dark-color !important;
   }
 }

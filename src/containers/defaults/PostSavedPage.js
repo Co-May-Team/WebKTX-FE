@@ -1,6 +1,5 @@
 import moment from "moment"
 import { useState } from "react"
-import { FaEye } from "react-icons/fa"
 import { Fade } from "react-reveal"
 import { NavLink } from "react-router-dom"
 import Motion from "~/components/Motion"
@@ -8,7 +7,7 @@ import SavePostButton from "~/components/SavePostButton"
 import SeoHelmet from "~/components/SeoHelmet"
 import convertToUrl from "~/utils/commons/convertToUrl"
 
-export default function PostSaved() {
+export default function PostSavedPage() {
   const [savedPosts, setSavedPosts] = useState(
     JSON.parse(localStorage.getItem("savedPosts"))
   )
@@ -29,8 +28,7 @@ export default function PostSaved() {
             style={{ overflow: "visible" }}
           >
             {savedPosts?.map((savedPost) => (
-              <Fade key={savedPost.postId} bottom>
-                <div className='relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full'>
+                <div key={savedPost.postId} className='relative flex flex-col group [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] h-full'>
                   <div className='block flex-shrink-0 relative w-full rounded-t-xl overflow-hidden aspect-w-4 aspect-h-3'>
                     <div>
                       <div className='relative w-full h-full '>
@@ -165,7 +163,6 @@ export default function PostSaved() {
                     </div>
                   </div>
                 </div>
-              </Fade>
             ))}
           </div>
         ) : (

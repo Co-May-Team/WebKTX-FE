@@ -3,26 +3,23 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google"
 import { Formik } from "formik"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import * as Yup from "yup"
 import { InputField } from "~/components/Customs"
 import Motion from "~/components/Motion"
 import SeoHelmet from "~/components/SeoHelmet"
-import { getUserInfo, login } from "~/store/auth/actions"
+import { getUserInfo, login } from "~/store/auth/slice"
 import { authSelector } from "~/store/selectors"
-import { path } from "~/utils"
 
-export default function Login() {
+export default function LoginPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const status = useSelector(authSelector).status
 
   useEffect(() => {
-    if (status === "auth") {
-      return <Navigate to={path.AUTH} />
-    } else if (status === "user") {
+    if (status === "user") {
       navigate(-1)
     }
   }, [status])

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import moment from "moment"
 import { useEffect, useState } from "react"
-import { FaEye } from "react-icons/fa"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { useSelector } from "react-redux"
 import { Fade } from "react-reveal"
@@ -15,7 +14,7 @@ import { tagsSelector } from "~/store/selectors"
 import convertToUrl from "~/utils/commons/convertToUrl"
 import readingTime from "~/utils/commons/readingTime"
 
-export default function PostsHome() {
+export default function PostsHomePage() {
   const tagList = useSelector(tagsSelector).tags
 
   const url = useParams().url

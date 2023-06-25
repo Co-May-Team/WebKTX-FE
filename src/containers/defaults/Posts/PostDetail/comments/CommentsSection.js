@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import * as actions from "~/store/comments/actions"
+import * as actions from "~/store/comments/slice"
 import { authSelector, commentsSelector } from "~/store/selectors"
 import CommentItem from "./CommentItem"
-import AddComment from "./FormSubmitComment"
+import AddComment from "./SubmitCommentForm"
 
-export default function Comments({ postInfo = null }) {
+export default function CommentsSection({ postInfo = null }) {
   const userInfo = useSelector(authSelector).userInfo
   const comments = useSelector(commentsSelector).comments
 

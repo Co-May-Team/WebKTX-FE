@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import moment from "moment"
 import { useEffect, useRef, useState } from "react"
-import { FaEye } from "react-icons/fa"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { Fade } from "react-reveal"
 import { NavLink, useSearchParams } from "react-router-dom"
@@ -13,7 +12,7 @@ import { useClickOutside } from "~/hooks"
 import postsApi from "~/services/postsApi"
 import convertToUrl from "~/utils/commons/convertToUrl"
 
-export default function Search() {
+export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const filterDropdownRef = useRef()
