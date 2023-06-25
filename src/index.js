@@ -13,7 +13,7 @@ import store from "./store"
 // Tạo persist store
 const pStore = persistStore(store)
 
-const APP_VERSION = "1.0.0" // Phiên bản hiện tại của ứng dụng
+const APP_VERSION = "1.1.0" // Phiên bản hiện tại của ứng dụng
 
 // Hàm renderApp để render toàn bộ ứng dụng lên trang web
 function renderApp() {
