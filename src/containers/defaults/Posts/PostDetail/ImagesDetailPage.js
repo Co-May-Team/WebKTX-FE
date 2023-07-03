@@ -4,7 +4,7 @@ import "moment/locale/vi" // Import Moment locale for Vietnamese
 import { useEffect, useRef, useState } from "react"
 import LazyLoad from "react-lazyload"
 import { useDispatch, useSelector } from "react-redux"
-import { Bounce, Fade, Slide, Zoom } from "react-reveal"
+import { Fade, Slide } from "react-reveal"
 import { useLocation, useNavigate } from "react-router-dom"
 import Loading from "~/components/Loading"
 import { useClickOutside } from "~/hooks"
@@ -143,9 +143,7 @@ export default function ImagesDetailPage(props) {
                 className=' text-neutral-900 font-semibold text-3xl md:text-4xl md:!leading-[120%] lg:text-5xl dark:text-neutral-100 max-w-4xl '
                 title={folderInfo?.title}
               >
-                <Bounce right cascade>
-                  {folderInfo?.title}
-                </Bounce>
+                {folderInfo?.title}
               </h1>
               <div className='w-full border-b border-neutral-100 dark:border-neutral-800' />
               <div className='flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5'>
@@ -270,26 +268,24 @@ export default function ImagesDetailPage(props) {
       <div className='container flex flex-col my-10 lg:flex-row '>
         <div className='w-full'>
           <div className='space-y-10'>
-            <Zoom right cascade>
-              <div className='prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert content-wrapper'>
-                {folderInfo?.images.map((image) => (
-                  <Fade key={image.id} bottom>
-                    <LazyLoad placeholder={<Loading />} offset={100}>
-                      <img
-                        src={image.webContentLink}
-                        alt={folderInfo.title}
-                        title={folderInfo.title}
-                      />
-                    </LazyLoad>
+            <div className='prose lg:prose-lg !max-w-screen-md mx-auto dark:prose-invert content-wrapper'>
+              {folderInfo?.images.map((image) => (
+                <Fade key={image.id} bottom>
+                  <LazyLoad placeholder={<Loading />} offset={100}>
                     <img
                       src={image.webContentLink}
                       alt={folderInfo.title}
                       title={folderInfo.title}
                     />
-                  </Fade>
-                ))}
-              </div>
-            </Zoom>
+                  </LazyLoad>
+                  <img
+                    src={image.webContentLink}
+                    alt={folderInfo.title}
+                    title={folderInfo.title}
+                  />
+                </Fade>
+              ))}
+            </div>
             {/* <div className="max-w-screen-md mx-auto flex flex-wrap">
                             <div
                                 className="nc-Tag inline-block bg-white text-sm text-neutral-600 dark:text-neutral-300 py-2 px-3 rounded-lg border border-neutral-100 md:py-2.5 md:px-4 dark:bg-neutral-700 dark:border-neutral-700 hover:border-neutral-200 dark:hover:border-neutral-6000 mr-2 mb-2"
